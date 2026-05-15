@@ -1,0 +1,80 @@
+# build results
+bin/
+obj/
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+
+# visual studio
+.vs/
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# rider / jetbrains
+.idea/
+*.sln.iml
+
+# resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# nuget
+*.nupkg
+*.snupkg
+packages/
+!packages/build/
+.nuget/
+
+# dotnet
+project.lock.json
+project.assets.json
+artifacts/
+
+# test results
+TestResults/
+coverage/
+coverage.xml
+coverage.json
+*.coverage
+*.coveragexml
+
+# logs
+*.log
+
+# temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.cache
+
+# os files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# visual studio code, optional
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# publish output
+publish/
+app.publish/
+
+# local configuration / secrets
+appsettings.Development.json
+secrets.json
+.env
+.env.*
