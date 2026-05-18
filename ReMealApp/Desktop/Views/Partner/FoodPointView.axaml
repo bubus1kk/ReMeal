@@ -1,0 +1,63 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ReMeal.Desktop.ViewModels.Partner"
+             x:Class="ReMeal.Desktop.Views.Partner.FoodPointView"
+             x:DataType="vm:FoodPointViewModel">
+
+    <Grid ColumnDefinitions="*,360">
+        <Border Grid.Column="0" Classes="card">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top"
+                            Orientation="Horizontal"
+                            Spacing="8"
+                            Margin="0,0,0,12">
+                    <Button Content="Новая точка"
+                            Command="{Binding NewFormCommand}"/>
+                    <Button Content="Создать лот"
+                            Command="{Binding CreateLotForSelectedCommand}"/>
+                </StackPanel>
+
+                <DataGrid ItemsSource="{Binding FoodPoints}"
+                          SelectedItem="{Binding SelectedFoodPoint}"
+                          IsReadOnly="True"
+                          AutoGenerateColumns="False"
+                          GridLinesVisibility="Horizontal">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*"/>
+                        <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" Width="2*"/>
+                        <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" Width="120"/>
+                        <DataGridCheckBoxColumn Header="Активна" Binding="{Binding IsActive}" Width="80"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Column="1" Classes="card" Margin="16,0,0,0">
+            <StackPanel Spacing="10">
+                <TextBlock Text="Точка питания"
+                           Classes="section-title"/>
+
+                <TextBox Watermark="Название" Text="{Binding Name}"/>
+                <TextBox Watermark="Адрес" Text="{Binding Address}"/>
+                <TextBox Watermark="Описание"
+                         Text="{Binding Description}"
+                         AcceptsReturn="True"
+                         Height="80"/>
+                <TextBox Watermark="Телефон" Text="{Binding Phone}"/>
+
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Content="Сохранить"
+                            Command="{Binding SaveCommand}"/>
+                    <Button Content="Деактивировать"
+                            Command="{Binding DeactivateCommand}"/>
+                    <Button Content="Удалить"
+                            Command="{Binding DeleteCommand}"/>
+                </StackPanel>
+
+                <TextBlock Text="{Binding StatusMessage}"
+                           TextWrapping="Wrap"
+                           Opacity="0.8"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

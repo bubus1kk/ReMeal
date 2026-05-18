@@ -5,6 +5,8 @@
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>ReMeal.Tests</RootNamespace>
+    <AssemblyName>ReMeal.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

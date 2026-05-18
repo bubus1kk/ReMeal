@@ -4,6 +4,8 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>ReMeal.Domain</RootNamespace>
+    <AssemblyName>ReMeal.Domain</AssemblyName>
   </PropertyGroup>
 
 </Project>
