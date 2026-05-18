@@ -3,5 +3,5 @@
   <Project Path="Domain/Domain.csproj" Id="bff36bc7-8d0a-40b1-b331-83f8902bc3f5" />
   <Project Path="Infrastructure/Infrastructure.csproj" Id="ddd373c0-b004-49e5-bf3f-2a086fe5d68a" />
   <Project Path="ReMealApp/ReMealApp.csproj" />
-  <Project Path="Tests/Tests.csproj" />
+  <Project Path="Tests/Tests.csproj" Id="cf3f5887-4301-4e7c-bfa7-43129080264a" />
 </Solution>
