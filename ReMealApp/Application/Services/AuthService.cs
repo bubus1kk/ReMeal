@@ -10,11 +10,16 @@ namespace Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly IRememberedUserStore? _rememberedUserStore;
 
-        public AuthService(IUserRepository userRepository, IPasswordHasher passwordHasher)
+        public AuthService(
+            IUserRepository userRepository,
+            IPasswordHasher passwordHasher,
+            IRememberedUserStore? rememberedUserStore = null)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
+            _rememberedUserStore = rememberedUserStore;
         }
 
         public Guid? CurrentUserId { get; private set; }
@@ -58,7 +63,30 @@ namespace Application.Services
 
             CurrentUserId = user.Id;
 
+            if (request.RememberMe)
+                _rememberedUserStore?.RememberUser(user.Id);
+            else
+                _rememberedUserStore?.ForgetUser();
+
             return AuthResult.Success(MapToProfile(user));
+        }
+
+        public async Task<UserProfileDto?> TryRestoreRememberedUserAsync(CancellationToken cancellationToken = default)
+        {
+            var rememberedUserId = _rememberedUserStore?.GetRememberedUserId();
+            if (rememberedUserId is null)
+                return null;
+
+            var user = await _userRepository.GetByIdAsync(rememberedUserId.Value, cancellationToken);
+            if (user is null)
+            {
+                _rememberedUserStore?.ForgetUser();
+                return null;
+            }
+
+            CurrentUserId = user.Id;
+
+            return MapToProfile(user);
         }
 
         public async Task<UserProfileDto?> GetCurrentUserAsync(CancellationToken cancellationToken = default)
@@ -73,6 +101,7 @@ namespace Application.Services
         public void Logout()
         {
             CurrentUserId = null;
+            _rememberedUserStore?.ForgetUser();
         }
 
         internal static UserProfileDto MapToProfile(User user)

@@ -18,11 +18,14 @@ namespace ReMealApp
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 var userModule = ReMealUserModule.CreateDefault();
+                var mainWindowViewModel = new MainWindowViewModel(userModule.AuthService, userModule.UserProfileService);
 
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(userModule.AuthService, userModule.UserProfileService),
+                    DataContext = mainWindowViewModel,
                 };
+
+                _ = mainWindowViewModel.InitializeAsync();
             }
 
             base.OnFrameworkInitializationCompleted();

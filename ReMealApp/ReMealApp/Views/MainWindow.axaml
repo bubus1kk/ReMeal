@@ -6,6 +6,10 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="520"
         x:Class="ReMealApp.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
+        Width="1366"
+        Height="768"
+        MinWidth="1120"
+        MinHeight="700"
         Icon="/Assets/avalonia-logo.ico"
         Title="ReMealApp">
 

@@ -11,6 +11,8 @@ namespace Application.Interfaces
 
         Task<AuthResult> LoginAsync(LoginUserRequest request, CancellationToken cancellationToken = default);
 
+        Task<UserProfileDto?> TryRestoreRememberedUserAsync(CancellationToken cancellationToken = default);
+
         Task<UserProfileDto?> GetCurrentUserAsync(CancellationToken cancellationToken = default);
 
         void Logout();

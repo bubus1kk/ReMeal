@@ -20,14 +20,16 @@ namespace ReMealApp.ViewModels
             _currentViewModel = CreateLoginViewModel();
         }
 
-        private LoginViewModel CreateLoginViewModel()
+        public async Task InitializeAsync()
         {
-            return new LoginViewModel(_authService, ShowRegistration, ShowProfile, CreateProfileViewModel);
+            var rememberedUser = await _authService.TryRestoreRememberedUserAsync();
+            if (rememberedUser is not null)
+                await ShowProfile();
         }
 
-        private RegisterViewModel CreateRegisterViewModel()
+        private LoginViewModel CreateLoginViewModel()
         {
-            return new RegisterViewModel(_authService, ShowLogin, ShowProfile, CreateProfileViewModel);
+            return new LoginViewModel(_authService, ShowProfile);
         }
 
         private UserProfileViewModel CreateProfileViewModel()
@@ -35,19 +37,16 @@ namespace ReMealApp.ViewModels
             return new UserProfileViewModel(_userProfileService, _authService, ShowLogin);
         }
 
+        private async Task ShowProfile()
+        {
+            var profileViewModel = CreateProfileViewModel();
+            await profileViewModel.LoadAsync();
+            CurrentViewModel = profileViewModel;
+        }
+
         private void ShowLogin()
         {
             CurrentViewModel = CreateLoginViewModel();
-        }
-
-        private void ShowRegistration()
-        {
-            CurrentViewModel = CreateRegisterViewModel();
-        }
-
-        private void ShowProfile(UserProfileViewModel profileViewModel)
-        {
-            CurrentViewModel = profileViewModel;
         }
     }
 }

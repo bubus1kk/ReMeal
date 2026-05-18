@@ -31,7 +31,8 @@ namespace Infrastructure
 
             IUserRepository userRepository = new UserRepository(dbContext);
             IPasswordHasher passwordHasher = new PasswordHasher();
-            IAuthService authService = new AuthService(userRepository, passwordHasher);
+            IRememberedUserStore rememberedUserStore = RememberedUserStore.CreateDefault();
+            IAuthService authService = new AuthService(userRepository, passwordHasher, rememberedUserStore);
             IUserProfileService userProfileService = new UserProfileService(authService, userRepository);
 
             return new ReMealUserModule(authService, userProfileService);
