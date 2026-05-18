@@ -5,14 +5,15 @@
              x:DataType="vm:LoginViewModel">
     <UserControl.Styles>
         <Style Selector="TextBox.auth-input">
-            <Setter Property="Height" Value="56"/>
+            <Setter Property="Height" Value="44"/>
             <Setter Property="Background" Value="#0F1715"/>
             <Setter Property="BorderBrush" Value="#31413B"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Foreground" Value="#F3F7F0"/>
-            <Setter Property="FontSize" Value="17"/>
-            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
         <Style Selector="TextBox.auth-input:pointerover /template/ Border#PART_BorderElement">
@@ -26,13 +27,29 @@
         </Style>
 
         <Style Selector="Button.auth-tab">
-            <Setter Property="Height" Value="54"/>
-            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontSize" Value="15"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      CornerRadius="{TemplateBinding CornerRadius}"
+                                      Padding="{TemplateBinding Padding}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                </ControlTemplate>
+            </Setter>
         </Style>
 
         <Style Selector="Button.active-tab">
@@ -53,6 +70,24 @@
             <Setter Property="Foreground" Value="#8FDB61"/>
         </Style>
 
+        <Style Selector="Button.active-tab:focus">
+            <Setter Property="Background" Value="#203520"/>
+            <Setter Property="BorderBrush" Value="#6FAF43"/>
+            <Setter Property="Foreground" Value="#8FDB61"/>
+        </Style>
+
+        <Style Selector="Button.active-tab:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#203520"/>
+        </Style>
+
+        <Style Selector="Button.active-tab:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#203520"/>
+        </Style>
+
+        <Style Selector="Button.active-tab:focus /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#203520"/>
+        </Style>
+
         <Style Selector="Button.inactive-tab">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
@@ -71,12 +106,30 @@
             <Setter Property="Foreground" Value="#A9B8B0"/>
         </Style>
 
+        <Style Selector="Button.inactive-tab:focus">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#A9B8B0"/>
+        </Style>
+
+        <Style Selector="Button.inactive-tab:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <Style Selector="Button.inactive-tab:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <Style Selector="Button.inactive-tab:focus /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
         <Style Selector="Button.text-link">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Foreground" Value="#86CF5B"/>
             <Setter Property="Padding" Value="4,0"/>
-            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="FontSize" Value="14"/>
         </Style>
 
         <Style Selector="Button.text-link:pointerover">
@@ -89,15 +142,25 @@
             <Setter Property="Foreground" Value="#86CF5B"/>
         </Style>
 
+        <Style Selector="Button.text-link:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <Style Selector="Button.text-link:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
         <Style Selector="Button.primary-action">
-            <Setter Property="Height" Value="62"/>
+            <Setter Property="Height" Value="48"/>
             <Setter Property="Background" Value="#43893A"/>
-            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="CornerRadius" Value="12"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
             <Setter Property="Foreground" Value="#F8FFF4"/>
-            <Setter Property="FontSize" Value="21"/>
+            <Setter Property="FontSize" Value="17"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
         <Style Selector="Button.primary-action:pointerover">
@@ -110,11 +173,19 @@
             <Setter Property="Foreground" Value="#F8FFF4"/>
         </Style>
 
+        <Style Selector="Button.primary-action:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#43893A"/>
+        </Style>
+
+        <Style Selector="Button.primary-action:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#43893A"/>
+        </Style>
+
         <Style Selector="Button.password-action">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Foreground" Value="#B0C5B8"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="Padding" Value="8,0"/>
         </Style>
 
@@ -136,9 +207,99 @@
             <Setter Property="Foreground" Value="#B0C5B8"/>
         </Style>
 
+        <Style Selector="Button.password-action:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <Style Selector="Button.password-action:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <Style Selector="ComboBox.auth-combo">
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Background" Value="#0F1715"/>
+            <Setter Property="BorderBrush" Value="#31413B"/>
+            <Setter Property="Foreground" Value="#F3F7F0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
+        <Style Selector="ComboBox.auth-combo:pointerover">
+            <Setter Property="Background" Value="#131D1A"/>
+            <Setter Property="BorderBrush" Value="#3B5048"/>
+        </Style>
+
+        <Style Selector="ComboBox.auth-combo:pointerover /template/ Border">
+            <Setter Property="Background" Value="#131D1A"/>
+            <Setter Property="BorderBrush" Value="#3B5048"/>
+        </Style>
+
+        <Style Selector="ComboBox.auth-combo:focus">
+            <Setter Property="Background" Value="#17221F"/>
+            <Setter Property="BorderBrush" Value="#5F8F4A"/>
+        </Style>
+
+        <Style Selector="ComboBox.auth-combo:focus /template/ Border">
+            <Setter Property="Background" Value="#17221F"/>
+            <Setter Property="BorderBrush" Value="#5F8F4A"/>
+        </Style>
+
+        <Style Selector="ComboBox.auth-combo:focus-within">
+            <Setter Property="Background" Value="#17221F"/>
+            <Setter Property="BorderBrush" Value="#5F8F4A"/>
+        </Style>
+
+        <Style Selector="ComboBox.auth-combo:focus-within /template/ Border">
+            <Setter Property="Background" Value="#17221F"/>
+            <Setter Property="BorderBrush" Value="#5F8F4A"/>
+        </Style>
+
+        <Style Selector="ComboBox.auth-combo:pressed">
+            <Setter Property="Background" Value="#17221F"/>
+            <Setter Property="BorderBrush" Value="#5F8F4A"/>
+        </Style>
+
+        <Style Selector="ComboBox.auth-combo:pressed /template/ Border">
+            <Setter Property="Background" Value="#17221F"/>
+            <Setter Property="BorderBrush" Value="#5F8F4A"/>
+        </Style>
+
+        <Style Selector="ComboBox.auth-combo:dropdownopen">
+            <Setter Property="Background" Value="#17221F"/>
+            <Setter Property="BorderBrush" Value="#5F8F4A"/>
+        </Style>
+
+        <Style Selector="ComboBox.auth-combo:dropdownopen /template/ Border">
+            <Setter Property="Background" Value="#17221F"/>
+            <Setter Property="BorderBrush" Value="#5F8F4A"/>
+        </Style>
+
+        <Style Selector="ComboBoxItem">
+            <Setter Property="Background" Value="#101716"/>
+            <Setter Property="Foreground" Value="#F3F7F0"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style Selector="ComboBoxItem:pointerover">
+            <Setter Property="Background" Value="#17221F"/>
+            <Setter Property="Foreground" Value="#F3F7F0"/>
+        </Style>
+
+        <Style Selector="ComboBoxItem:selected">
+            <Setter Property="Background" Value="#203520"/>
+            <Setter Property="Foreground" Value="#8FDB61"/>
+        </Style>
+
+        <Style Selector="ComboBoxItem:selected:pointerover">
+            <Setter Property="Background" Value="#203520"/>
+            <Setter Property="Foreground" Value="#8FDB61"/>
+        </Style>
+
         <Style Selector="TextBlock.field-label">
             <Setter Property="Foreground" Value="#DCE7DD"/>
-            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
     </UserControl.Styles>
@@ -153,167 +314,70 @@
         </Grid.Background>
 
         <Grid RowDefinitions="*,Auto"
-              Margin="44,34,44,30">
+              Margin="40,28,40,24">
             <Grid Grid.Row="0"
-                  MaxWidth="1500"
+                  MaxWidth="1520"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  ColumnDefinitions="590,80,590">
+                  ColumnDefinitions="*,92,500">
                     <Grid Grid.Column="0"
-                          Width="590"
-                          RowDefinitions="Auto,Auto,Auto,Auto,*"
-                          Margin="0,0,0,0"
-                          VerticalAlignment="Center">
-                        <Image Grid.Row="0"
-                               Source="/Assets/Brand/remeal-logo.png"
-                               Width="420"
-                               Height="145"
-                               HorizontalAlignment="Left"
-                               Stretch="Uniform"
-                               Margin="-54,-34,0,-18"/>
+                          RowDefinitions="Auto,Auto,Auto"
+                          MaxWidth="620"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Center"
+                          Margin="-70,-112,0,0">
+                        <Grid Grid.Row="0"
+                              Width="500"
+                              Height="122"
+                              Margin="0,-10,0,50"
+                              HorizontalAlignment="Left"
+                              ClipToBounds="True">
+                            <Image Source="/Assets/Brand/remeal-logo.png"
+                                   Width="550"
+                                   Height="550"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Stretch="Uniform"
+                                   Margin="-55,-215,0,0"/>
+                        </Grid>
 
                         <StackPanel Grid.Row="1"
-                                    Margin="0,18,0,0"
                                     Spacing="2">
                             <TextBlock Text="Сохраняем еду."
                                        Foreground="#F7FBF4"
-                                       FontSize="39"
+                                       FontSize="42"
                                        FontWeight="SemiBold"/>
                             <TextBlock Text="Снижаем отходы."
                                        Foreground="#F7FBF4"
-                                       FontSize="39"
+                                       FontSize="42"
                                        FontWeight="SemiBold"/>
                             <TextBlock Text="Получаем выгоду."
                                        Foreground="#8FD75E"
-                                       FontSize="39"
+                                       FontSize="42"
                                        FontWeight="SemiBold"/>
                         </StackPanel>
 
                         <TextBlock Grid.Row="2"
                                    Text="ReMeal помогает находить и бронировать готовые наборы еды по сниженной цене, чтобы хорошие блюда не отправлялись в отходы."
-                                   Width="560"
-                                   Margin="0,18,0,0"
+                                   Width="520"
+                                   HorizontalAlignment="Left"
+                                   TextAlignment="Left"
+                                   Margin="0,22,0,0"
                                    Foreground="#AEB9B1"
-                                   FontSize="19"
-                                   LineHeight="28"
+                                   FontSize="18"
+                                   LineHeight="27"
                                    TextWrapping="Wrap"/>
-
-                        <StackPanel Grid.Row="3"
-                                    Margin="0,34,0,0"
-                                    Spacing="12"
-                                    VerticalAlignment="Top">
-                            <Border CornerRadius="13"
-                                    Padding="16"
-                                    BorderBrush="#263A33"
-                                    BorderThickness="1"
-                                    Background="#141D1A">
-                                <Grid ColumnDefinitions="42, *">
-                                    <Border Width="34"
-                                            Height="34"
-                                            CornerRadius="10"
-                                            Background="#213A25"
-                                            HorizontalAlignment="Left">
-                                        <TextBlock Text="+"
-                                                   Foreground="#92D75E"
-                                                   FontSize="21"
-                                                   FontWeight="Bold"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"/>
-                                    </Border>
-                                    <StackPanel Grid.Column="1"
-                                                Spacing="3">
-                                        <TextBlock Text="Экономьте на готовых наборах"
-                                                   Foreground="#F3F7F0"
-                                                   FontSize="17"
-                                                   FontWeight="SemiBold"/>
-                                        <TextBlock Text="Бронируйте еду по сниженной цене."
-                                                   Foreground="#9CA8A0"
-                                                   FontSize="15"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-
-                            <Border CornerRadius="13"
-                                    Padding="16"
-                                    BorderBrush="#263A33"
-                                    BorderThickness="1"
-                                    Background="#141D1A">
-                                <Grid ColumnDefinitions="42, *">
-                                    <Border Width="34"
-                                            Height="34"
-                                            CornerRadius="10"
-                                            Background="#213A25"
-                                            HorizontalAlignment="Left">
-                                        <TextBlock Text="✓"
-                                                   Foreground="#92D75E"
-                                                   FontSize="18"
-                                                   FontWeight="Bold"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"/>
-                                    </Border>
-                                    <StackPanel Grid.Column="1"
-                                                Spacing="3">
-                                        <TextBlock Text="Помогайте сокращать отходы"
-                                                   Foreground="#F3F7F0"
-                                                   FontSize="17"
-                                                   FontWeight="SemiBold"/>
-                                        <TextBlock Text="Хорошие блюда получают второй шанс."
-                                                   Foreground="#9CA8A0"
-                                                   FontSize="15"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-
-                            <Border CornerRadius="13"
-                                    Padding="16"
-                                    BorderBrush="#263A33"
-                                    BorderThickness="1"
-                                    Background="#141D1A">
-                                <Grid ColumnDefinitions="42, *">
-                                    <Border Width="34"
-                                            Height="34"
-                                            CornerRadius="10"
-                                            Background="#213A25"
-                                            HorizontalAlignment="Left">
-                                        <TextBlock Text="•"
-                                                   Foreground="#92D75E"
-                                                   FontSize="24"
-                                                   FontWeight="Bold"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"/>
-                                    </Border>
-                                    <StackPanel Grid.Column="1"
-                                                Spacing="3">
-                                        <TextBlock Text="Забирайте в удобное время"
-                                                   Foreground="#F3F7F0"
-                                                   FontSize="17"
-                                                   FontWeight="SemiBold"/>
-                                        <TextBlock Text="Партнёры заранее указывают доступный интервал."
-                                                   Foreground="#9CA8A0"
-                                                   FontSize="15"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-                        </StackPanel>
-
-                        <Image Grid.Row="4"
-                               Source="/Assets/Illustrations/auth-hero.png"
-                               Width="410"
-                               Height="270"
-                               Margin="170,12,0,0"
-                               HorizontalAlignment="Left"
-                               Stretch="Uniform"/>
                     </Grid>
 
                     <Border Grid.Column="1"
                             Width="1"
-                            Margin="34,28,45,28"
+                            Margin="45,42,46,42"
                             Background="#244037"/>
 
                     <Border Grid.Column="2"
-                            Width="590"
-                            MinHeight="680"
-                            Padding="42"
+                            Width="500"
+                            MaxHeight="650"
+                            Padding="28"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             CornerRadius="22"
@@ -323,8 +387,8 @@
                             BoxShadow="0 24 70 0 #4D000000">
                         <Grid RowDefinitions="Auto,Auto,*">
                             <Border Grid.Row="0"
-                                    Width="448"
-                                    Height="62"
+                                    Width="390"
+                                    Height="50"
                                     HorizontalAlignment="Center"
                                     Padding="4"
                                     CornerRadius="15"
@@ -335,22 +399,26 @@
                                     <Button Grid.Column="0"
                                             Classes="auth-tab active-tab"
                                             Content="Вход"
+                                            Focusable="False"
                                             IsVisible="{Binding IsLoginMode}"
                                             Command="{Binding ShowLoginCommand}"/>
                                     <Button Grid.Column="0"
                                             Classes="auth-tab inactive-tab"
                                             Content="Вход"
+                                            Focusable="False"
                                             IsVisible="{Binding IsRegisterMode}"
                                             Command="{Binding ShowLoginCommand}"/>
 
                                     <Button Grid.Column="1"
                                             Classes="auth-tab inactive-tab"
                                             Content="Регистрация"
+                                            Focusable="False"
                                             IsVisible="{Binding IsLoginMode}"
                                             Command="{Binding ShowRegisterCommand}"/>
                                     <Button Grid.Column="1"
                                             Classes="auth-tab active-tab"
                                             Content="Регистрация"
+                                            Focusable="False"
                                             IsVisible="{Binding IsRegisterMode}"
                                             Command="{Binding ShowRegisterCommand}"/>
                                 </Grid>
@@ -358,24 +426,24 @@
 
                             <Border Grid.Row="1"
                                     Height="1"
-                                    Margin="0,26,0,26"
+                                    Margin="0,20,0,20"
                                     Background="#22312C"/>
 
                             <Grid Grid.Row="2">
                                 <StackPanel IsVisible="{Binding IsLoginMode}"
-                                            Spacing="18"
-                                            Width="470"
+                                            Spacing="13"
+                                            Width="390"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center">
                                     <StackPanel Spacing="6"
                                                 Margin="0,0,0,8">
                                         <TextBlock Text="Добро пожаловать"
                                                    Foreground="#F7FBF4"
-                                                   FontSize="35"
+                                                   FontSize="28"
                                                    FontWeight="SemiBold"/>
                                         <TextBlock Text="Войдите в аккаунт, чтобы продолжить."
                                                    Foreground="#9EA9A2"
-                                                   FontSize="19"/>
+                                                   FontSize="15"/>
                                     </StackPanel>
 
                                     <StackPanel Spacing="7">
@@ -383,7 +451,7 @@
                                                    Text="Логин"/>
                                         <TextBox Classes="auth-input"
                                                  PlaceholderText="Введите логин"
-                                                 MaxLength="100"
+                                                 MaxLength="67"
                                                  Text="{Binding Login, Mode=TwoWay}"/>
                                     </StackPanel>
 
@@ -394,14 +462,14 @@
                                             <TextBox Classes="auth-input"
                                                      PlaceholderText="Введите пароль"
                                                      PasswordChar="*"
-                                                     MaxLength="100"
-                                                     Padding="16,0,88,0"
+                                                     MaxLength="67"
+                                                     Padding="14,0,74,0"
                                                      IsVisible="{Binding IsPasswordHidden}"
                                                      Text="{Binding Password, Mode=TwoWay}"/>
                                             <TextBox Classes="auth-input"
                                                      PlaceholderText="Введите пароль"
-                                                     MaxLength="100"
-                                                     Padding="16,0,88,0"
+                                                     MaxLength="67"
+                                                     Padding="14,0,74,0"
                                                      IsVisible="{Binding IsPasswordVisible}"
                                                      Text="{Binding Password, Mode=TwoWay}"/>
                                             <Button Classes="password-action"
@@ -419,7 +487,7 @@
                                         <CheckBox Content="Запомнить меня"
                                                   IsChecked="{Binding RememberMe, Mode=TwoWay}"
                                                   Foreground="#D8E2DA"
-                                                  FontSize="17"/>
+                                                  FontSize="14"/>
                                         <Button Grid.Column="1"
                                                 Classes="text-link"
                                                 Content="Забыли пароль?"/>
@@ -427,7 +495,7 @@
 
                                     <TextBlock Text="{Binding ErrorMessage}"
                                                Foreground="#FF8F8F"
-                                               FontSize="15"
+                                               FontSize="13"
                                                TextWrapping="Wrap"/>
 
                                     <Button Classes="primary-action"
@@ -440,7 +508,7 @@
                                                 Margin="0,12,0,0">
                                         <TextBlock Text="Нет аккаунта?"
                                                    Foreground="#9EA9A2"
-                                                   FontSize="17"
+                                                   FontSize="14"
                                                    VerticalAlignment="Center"/>
                                         <Button Classes="text-link"
                                                 Content="Зарегистрироваться"
@@ -451,18 +519,18 @@
                                 <ScrollViewer IsVisible="{Binding IsRegisterMode}"
                                               VerticalScrollBarVisibility="Auto"
                                               HorizontalScrollBarVisibility="Disabled">
-                                <StackPanel Spacing="12"
-                                            Width="470"
+                                <StackPanel Spacing="9"
+                                            Width="390"
                                             HorizontalAlignment="Center">
                                     <StackPanel Spacing="6"
                                                 Margin="0,0,0,6">
                                         <TextBlock Text="Создайте аккаунт"
                                                    Foreground="#F7FBF4"
-                                                   FontSize="35"
+                                                   FontSize="28"
                                                    FontWeight="SemiBold"/>
                                         <TextBlock Text="Заполните данные, чтобы начать пользоваться ReMeal."
                                                    Foreground="#9EA9A2"
-                                                   FontSize="19"
+                                                   FontSize="15"
                                                    TextWrapping="Wrap"/>
                                     </StackPanel>
 
@@ -471,7 +539,7 @@
                                                    Text="Логин"/>
                                         <TextBox Classes="auth-input"
                                                  PlaceholderText="Введите логин"
-                                                 MaxLength="100"
+                                                 MaxLength="67"
                                                  Text="{Binding Login, Mode=TwoWay}"/>
                                     </StackPanel>
 
@@ -480,7 +548,7 @@
                                                    Text="ФИО"/>
                                         <TextBox Classes="auth-input"
                                                  PlaceholderText="Введите ФИО"
-                                                 MaxLength="100"
+                                                 MaxLength="67"
                                                  Text="{Binding Name, Mode=TwoWay}"/>
                                     </StackPanel>
 
@@ -489,7 +557,7 @@
                                                    Text="Электронная почта"/>
                                         <TextBox Classes="auth-input"
                                                  PlaceholderText="Введите email"
-                                                 MaxLength="100"
+                                                 MaxLength="67"
                                                  Text="{Binding Email, Mode=TwoWay}"/>
                                     </StackPanel>
 
@@ -498,19 +566,14 @@
                                                    Text="Телефон"/>
                                         <TextBox Classes="auth-input"
                                                  PlaceholderText="Введите телефон"
-                                                 MaxLength="100"
+                                                 MaxLength="67"
                                                  Text="{Binding Phone, Mode=TwoWay}"/>
                                     </StackPanel>
 
                                     <StackPanel Spacing="7">
                                         <TextBlock Classes="field-label"
                                                    Text="Роль"/>
-                                        <ComboBox Height="56"
-                                                  CornerRadius="12"
-                                                  Background="#0F1715"
-                                                  BorderBrush="#31413B"
-                                                  Foreground="#F3F7F0"
-                                                  FontSize="16"
+                                        <ComboBox Classes="auth-combo"
                                                   ItemsSource="{Binding Roles}"
                                                   SelectedItem="{Binding SelectedRole, Mode=TwoWay}"
                                                   HorizontalAlignment="Stretch"/>
@@ -523,14 +586,14 @@
                                             <TextBox Classes="auth-input"
                                                      PlaceholderText="Создайте пароль"
                                                      PasswordChar="*"
-                                                     MaxLength="100"
-                                                     Padding="16,0,88,0"
+                                                     MaxLength="67"
+                                                     Padding="14,0,74,0"
                                                      IsVisible="{Binding IsPasswordHidden}"
                                                      Text="{Binding Password, Mode=TwoWay}"/>
                                             <TextBox Classes="auth-input"
                                                      PlaceholderText="Создайте пароль"
-                                                     MaxLength="100"
-                                                     Padding="16,0,88,0"
+                                                     MaxLength="67"
+                                                     Padding="14,0,74,0"
                                                      IsVisible="{Binding IsPasswordVisible}"
                                                      Text="{Binding Password, Mode=TwoWay}"/>
                                             <Button Classes="password-action"
@@ -550,14 +613,14 @@
                                             <TextBox Classes="auth-input"
                                                      PlaceholderText="Повторите пароль"
                                                      PasswordChar="*"
-                                                     MaxLength="100"
-                                                     Padding="16,0,88,0"
+                                                     MaxLength="67"
+                                                     Padding="14,0,74,0"
                                                      IsVisible="{Binding IsConfirmPasswordHidden}"
                                                      Text="{Binding ConfirmPassword, Mode=TwoWay}"/>
                                             <TextBox Classes="auth-input"
                                                      PlaceholderText="Повторите пароль"
-                                                     MaxLength="100"
-                                                     Padding="16,0,88,0"
+                                                     MaxLength="67"
+                                                     Padding="14,0,74,0"
                                                      IsVisible="{Binding IsConfirmPasswordVisible}"
                                                      Text="{Binding ConfirmPassword, Mode=TwoWay}"/>
                                             <Button Classes="password-action"
@@ -573,11 +636,11 @@
                                     <CheckBox Content="Я принимаю условия использования и политику конфиденциальности"
                                               IsChecked="{Binding AcceptedTerms, Mode=TwoWay}"
                                               Foreground="#D8E2DA"
-                                              FontSize="16"/>
+                                              FontSize="13"/>
 
                                     <TextBlock Text="{Binding ErrorMessage}"
                                                Foreground="#FF8F8F"
-                                               FontSize="15"
+                                               FontSize="13"
                                                TextWrapping="Wrap"/>
 
                                     <Button Classes="primary-action"
@@ -590,7 +653,7 @@
                                                 Margin="0,8,0,0">
                                         <TextBlock Text="Уже есть аккаунт?"
                                                    Foreground="#9EA9A2"
-                                                   FontSize="17"
+                                                   FontSize="14"
                                                    VerticalAlignment="Center"/>
                                         <Button Classes="text-link"
                                                 Content="Войти"
@@ -607,7 +670,7 @@
                        Margin="0,20,0,0"
                        Text="Ваши данные защищены и не передаются третьим лицам."
                        Foreground="#7F8E84"
-                       FontSize="13"
+                       FontSize="12"
                        HorizontalAlignment="Center"/>
         </Grid>
     </Grid>

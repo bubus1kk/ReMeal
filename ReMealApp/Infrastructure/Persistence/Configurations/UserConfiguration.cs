@@ -14,7 +14,7 @@ namespace Infrastructure.Persistence.Configurations
             builder.HasKey(user => user.Id);
 
             builder.Property(user => user.Login)
-                .HasMaxLength(64)
+                .HasMaxLength(67)
                 .IsRequired();
 
             builder.HasIndex(user => user.Login)
@@ -25,20 +25,20 @@ namespace Infrastructure.Persistence.Configurations
                 .IsRequired();
 
             builder.Property(user => user.FullName)
-                .HasMaxLength(160)
+                .HasMaxLength(67)
                 .IsRequired();
 
             builder.Property(user => user.Email)
-                .HasMaxLength(160)
+                .HasMaxLength(67)
                 .IsRequired();
 
             builder.Property(user => user.Phone)
-                .HasMaxLength(32)
+                .HasMaxLength(67)
                 .IsRequired();
 
             builder.Property(user => user.Role)
                 .HasConversion<string>()
-                .HasMaxLength(64)
+                .HasMaxLength(67)
                 .HasDefaultValue(UserRole.StudentCustomer)
                 .IsRequired();
         }

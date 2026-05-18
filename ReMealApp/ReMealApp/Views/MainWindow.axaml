@@ -8,8 +8,8 @@
         x:DataType="vm:MainWindowViewModel"
         Width="1366"
         Height="768"
-        MinWidth="1120"
-        MinHeight="700"
+        MinWidth="1180"
+        MinHeight="720"
         Icon="/Assets/avalonia-logo.ico"
         Title="ReMealApp">
 

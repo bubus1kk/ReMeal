@@ -14,7 +14,7 @@ namespace ReMealApp.ViewModels.Auth
 
     public partial class LoginViewModel : ViewModelBase
     {
-        private const int MaxInputLength = 100;
+        private const int MaxInputLength = 67;
 
         private readonly IAuthService _authService;
         private readonly Func<Task> _showProfileAsync;
@@ -47,7 +47,7 @@ namespace ReMealApp.ViewModels.Auth
         private bool _acceptedTerms;
 
         [ObservableProperty]
-        private UserRole _selectedRole = UserRole.StudentCustomer;
+        private AuthRoleOption _selectedRole;
 
         [ObservableProperty]
         private string _errorMessage = string.Empty;
@@ -62,13 +62,14 @@ namespace ReMealApp.ViewModels.Auth
         {
             _authService = authService;
             _showProfileAsync = showProfileAsync;
+            _selectedRole = Roles[0];
         }
 
-        public UserRole[] Roles { get; } =
+        public AuthRoleOption[] Roles { get; } =
         [
-            UserRole.StudentCustomer,
-            UserRole.FoodPointRepresentative,
-            UserRole.Administrator
+            new AuthRoleOption(UserRole.StudentCustomer, "Студент"),
+            new AuthRoleOption(UserRole.Administrator, "Администратор"),
+            new AuthRoleOption(UserRole.FoodPointRepresentative, "Партнер")
         ];
 
         public bool IsLoginMode => CurrentMode == AuthMode.Login;
@@ -136,7 +137,7 @@ namespace ReMealApp.ViewModels.Auth
                 FullName = Name,
                 Email = Email,
                 Phone = Phone,
-                Role = SelectedRole
+                Role = SelectedRole.Role
             });
 
             if (!result.IsSuccess)
@@ -211,6 +212,24 @@ namespace ReMealApp.ViewModels.Auth
         private static string LimitInput(string value)
         {
             return value.Length <= MaxInputLength ? value : value[..MaxInputLength];
+        }
+
+        public sealed class AuthRoleOption
+        {
+            public AuthRoleOption(UserRole role, string displayName)
+            {
+                Role = role;
+                DisplayName = displayName;
+            }
+
+            public UserRole Role { get; }
+
+            public string DisplayName { get; }
+
+            public override string ToString()
+            {
+                return DisplayName;
+            }
         }
     }
 }
