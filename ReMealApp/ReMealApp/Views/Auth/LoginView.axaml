@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ReMealApp.ViewModels.Auth"
+             x:Class="ReMealApp.Views.Auth.LoginView"
+             x:DataType="vm:LoginViewModel">
+    <Grid RowDefinitions="*" ColumnDefinitions="*">
+        <StackPanel Width="360"
+                    Spacing="12"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBlock Text="Вход в ReMeal"
+                       FontSize="24"
+                       FontWeight="SemiBold"/>
+
+            <TextBox PlaceholderText="Логин"
+                     Text="{Binding Login, Mode=TwoWay}"/>
+
+            <TextBox PlaceholderText="Пароль"
+                     PasswordChar="*"
+                     Text="{Binding Password, Mode=TwoWay}"/>
+
+            <TextBlock Text="{Binding ErrorMessage}"
+                       Foreground="#B00020"
+                       TextWrapping="Wrap"/>
+
+            <Button Content="Войти"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding LoginCommand}"/>
+
+            <Button Content="Создать аккаунт"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding OpenRegistrationCommand}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

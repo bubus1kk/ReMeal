@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ReMealApp.ViewModels.Auth"
+             x:Class="ReMealApp.Views.Auth.RegisterView"
+             x:DataType="vm:RegisterViewModel">
+    <ScrollViewer>
+        <StackPanel Width="420"
+                    Spacing="12"
+                    Margin="24"
+                    HorizontalAlignment="Center">
+            <TextBlock Text="Регистрация"
+                       FontSize="24"
+                       FontWeight="SemiBold"/>
+
+            <TextBox PlaceholderText="Логин"
+                     Text="{Binding Login, Mode=TwoWay}"/>
+
+            <TextBox PlaceholderText="Пароль"
+                     PasswordChar="*"
+                     Text="{Binding Password, Mode=TwoWay}"/>
+
+            <TextBox PlaceholderText="ФИО"
+                     Text="{Binding FullName, Mode=TwoWay}"/>
+
+            <TextBox PlaceholderText="Email"
+                     Text="{Binding Email, Mode=TwoWay}"/>
+
+            <TextBox PlaceholderText="Телефон"
+                     Text="{Binding Phone, Mode=TwoWay}"/>
+
+            <ComboBox ItemsSource="{Binding Roles}"
+                      SelectedItem="{Binding SelectedRole, Mode=TwoWay}"
+                      HorizontalAlignment="Stretch"/>
+
+            <TextBlock Text="{Binding ErrorMessage}"
+                       Foreground="#B00020"
+                       TextWrapping="Wrap"/>
+
+            <Button Content="Зарегистрироваться"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding RegisterCommand}"/>
+
+            <Button Content="Уже есть аккаунт"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding OpenLoginCommand}"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

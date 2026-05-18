@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ReMealApp.ViewModels.Profile"
+             x:Class="ReMealApp.Views.Profile.UserProfileView"
+             x:DataType="vm:UserProfileViewModel">
+    <ScrollViewer>
+        <StackPanel Width="460"
+                    Spacing="12"
+                    Margin="24"
+                    HorizontalAlignment="Center">
+            <TextBlock Text="Личный кабинет"
+                       FontSize="24"
+                       FontWeight="SemiBold"/>
+
+            <TextBlock Text="Логин"/>
+            <TextBox Text="{Binding Login}"
+                     IsReadOnly="True"/>
+
+            <TextBlock Text="Роль"/>
+            <TextBox Text="{Binding RoleText}"
+                     IsReadOnly="True"/>
+
+            <TextBlock Text="ФИО"/>
+            <TextBox Text="{Binding FullName, Mode=TwoWay}"/>
+
+            <TextBlock Text="Email"/>
+            <TextBox Text="{Binding Email, Mode=TwoWay}"/>
+
+            <TextBlock Text="Телефон"/>
+            <TextBox Text="{Binding Phone, Mode=TwoWay}"/>
+
+            <TextBlock Text="{Binding StatusMessage}"
+                       TextWrapping="Wrap"/>
+
+            <Button Content="Сохранить"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding SaveCommand}"/>
+
+            <Button Content="Выйти"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding LogoutCommand}"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

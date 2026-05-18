@@ -1,15 +1,12 @@
-using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
-using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using Infrastructure;
 using ReMealApp.ViewModels;
 using ReMealApp.Views;
-using System.Linq;
 
 namespace ReMealApp
 {
-    public partial class App : Application
+    public partial class App : Avalonia.Application
     {
         public override void Initialize()
         {
@@ -20,9 +17,11 @@ namespace ReMealApp
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+                var userModule = ReMealUserModule.CreateDefault();
+
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(),
+                    DataContext = new MainWindowViewModel(userModule.AuthService, userModule.UserProfileService),
                 };
             }
 
