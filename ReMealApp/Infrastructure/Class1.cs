@@ -1,4 +1,4 @@
-﻿namespace FoodSave.Infrastructure
+﻿namespace Infrastructure
 {
     public class Class1
     {

@@ -1,4 +1,4 @@
-﻿namespace FoodSave.Application
+﻿namespace Application
 {
     public class Class1
     {

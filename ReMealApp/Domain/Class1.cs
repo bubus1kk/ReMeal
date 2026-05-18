@@ -1,4 +1,4 @@
-﻿namespace FoodSave.Domain
+﻿namespace Domain
 {
     public class Class1
     {
