@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="FoodSave.Application/Application.csproj" />
+  <Project Path="FoodSave.Domain/Domain.csproj" />
+  <Project Path="FoodSave.Infrastructure/Infrastructure.csproj" />
+  <Project Path="ReMealApp/ReMealApp.csproj" />
+  <Project Path="Tests/Tests.csproj" />
+</Solution>
