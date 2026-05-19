@@ -36,6 +36,9 @@ namespace ReMealApp.ViewModels.Partner
         private DateTimeOffset _pickupDeadline = DateTimeOffset.Now.AddHours(4);
 
         [ObservableProperty]
+        private TimeSpan _pickupTime = DateTimeOffset.Now.AddHours(4).TimeOfDay;
+
+        [ObservableProperty]
         private bool _isEditMode;
 
         [ObservableProperty]
@@ -116,7 +119,9 @@ namespace ReMealApp.ViewModels.Partner
                 Composition = entity.Composition;
                 TotalQuantity = entity.TotalQuantity;
                 Price = entity.Price;
-                PickupDeadline = new DateTimeOffset(entity.PickupDeadline.ToLocalTime());
+                var localDeadline = new DateTimeOffset(entity.PickupDeadline.ToLocalTime());
+                PickupDeadline = localDeadline;
+                PickupTime = localDeadline.TimeOfDay;
                 StatusMessage = "Режим редактирования.";
             }
             catch (Exception ex)
@@ -144,7 +149,7 @@ namespace ReMealApp.ViewModels.Partner
             try
             {
                 IsBusy = true;
-                var pickupUtc = PickupDeadline.UtcDateTime;
+                var pickupUtc = BuildPickupDeadlineUtc();
 
                 if (IsEditMode && _editingLotId is Guid lotId)
                 {
@@ -207,12 +212,22 @@ namespace ReMealApp.ViewModels.Partner
 
         private void ResetFields()
         {
+            var defaultDeadline = DateTimeOffset.Now.AddHours(4);
+
             Title = string.Empty;
             Description = string.Empty;
             Composition = string.Empty;
             TotalQuantity = 1;
             Price = 0;
-            PickupDeadline = DateTimeOffset.Now.AddHours(4);
+            PickupDeadline = defaultDeadline;
+            PickupTime = defaultDeadline.TimeOfDay;
+        }
+
+        private DateTime BuildPickupDeadlineUtc()
+        {
+            var localDeadline = PickupDeadline.Date + PickupTime;
+            var offset = TimeZoneInfo.Local.GetUtcOffset(localDeadline);
+            return new DateTimeOffset(localDeadline, offset).UtcDateTime;
         }
     }
 }

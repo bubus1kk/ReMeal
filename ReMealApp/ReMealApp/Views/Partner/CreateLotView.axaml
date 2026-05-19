@@ -36,6 +36,8 @@
                     <TextBlock Text="Количество" Opacity="0.7" FontSize="12"/>
                     <NumericUpDown Value="{Binding TotalQuantity}"
                                    Minimum="1"
+                                   Increment="1"
+                                   FormatString="0"
                                    IsEnabled="{Binding IsCreateMode}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Spacing="4" Margin="6,0,0,0">
@@ -48,7 +50,14 @@
 
             <StackPanel Spacing="4">
                 <TextBlock Text="Срок получения" Opacity="0.7" FontSize="12"/>
-                <DatePicker SelectedDate="{Binding PickupDeadline}"/>
+                <Grid ColumnDefinitions="*,*">
+                    <DatePicker Grid.Column="0"
+                                SelectedDate="{Binding PickupDeadline}"
+                                Margin="0,0,6,0"/>
+                    <TimePicker Grid.Column="1"
+                                SelectedTime="{Binding PickupTime}"
+                                Margin="6,0,0,0"/>
+                </Grid>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Spacing="8">

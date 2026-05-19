@@ -39,6 +39,9 @@ namespace Domain.Entities
             if (string.IsNullOrWhiteSpace(address))
                 throw new ArgumentException("Требуется указать адрес.", nameof(address));
 
+            if (string.IsNullOrWhiteSpace(phone))
+                throw new ArgumentException("Требуется указать телефон.", nameof(phone));
+
             if (ownerId == Guid.Empty)
                 throw new ArgumentException("Требуется id владельца.", nameof(ownerId));
 
@@ -66,6 +69,9 @@ namespace Domain.Entities
 
             if (string.IsNullOrWhiteSpace(address))
                 throw new ArgumentException("Требуется указать адрес.", nameof(address));
+
+            if (string.IsNullOrWhiteSpace(phone))
+                throw new ArgumentException("Требуется указать телефон.", nameof(phone));
 
             Name = name.Trim();
             Address = address.Trim();

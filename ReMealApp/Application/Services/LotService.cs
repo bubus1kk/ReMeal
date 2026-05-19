@@ -65,7 +65,8 @@ namespace Application.Services
         public async Task DeleteLotAsync(Guid lotId, CancellationToken cancellationToken = default)
         {
             var lot = await GetOwnedLotAsync(lotId, cancellationToken);
-            await _foodLotRepository.DeleteAsync(lot, cancellationToken);
+            lot.Cancel();
+            await _foodLotRepository.UpdateAsync(lot, cancellationToken);
             await _foodLotRepository.SaveChangesAsync(cancellationToken);
         }
 

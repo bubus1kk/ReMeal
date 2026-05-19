@@ -82,7 +82,7 @@ namespace ReMealApp.ViewModels.Partner
             {
                 IsBusy = true;
                 await _lotService.DeleteLotAsync(SelectedLot.Id);
-                StatusMessage = "Лот удален.";
+                StatusMessage = "Лот отменен.";
                 await LoadAsync();
             }
             catch (Exception ex)

@@ -43,7 +43,7 @@ namespace Domain.Entities
             decimal price,
             DateTime pickupDeadline)
         {
-            ValidateCreation(foodPointId, title, totalQuantity, price, pickupDeadline);
+            ValidateCreation(foodPointId, title, composition, totalQuantity, price, pickupDeadline);
 
             Id = Guid.NewGuid();
             FoodPointId = foodPointId;
@@ -72,6 +72,9 @@ namespace Domain.Entities
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Требуется название.", nameof(title));
 
+            if (string.IsNullOrWhiteSpace(composition))
+                throw new ArgumentException("Требуется состав.", nameof(composition));
+
             if (price < 0)
                 throw new ArgumentException("Цена не может быть отрицательной.", nameof(price));
 
@@ -90,6 +93,18 @@ namespace Domain.Entities
         public void MarkExpired()
         {
             Status = LotStatus.Expired;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void Cancel()
+        {
+            if (Status == LotStatus.Expired)
+                throw new InvalidOperationException("Не удается отменить истекший лот.");
+
+            if (Status == LotStatus.Cancelled)
+                return;
+
+            Status = LotStatus.Cancelled;
             UpdatedAt = DateTime.UtcNow;
         }
 
@@ -120,6 +135,7 @@ namespace Domain.Entities
         internal static void ValidateCreation(
             Guid foodPointId,
             string title,
+            string composition,
             int totalQuantity,
             decimal price,
             DateTime pickupDeadline)
@@ -129,6 +145,9 @@ namespace Domain.Entities
 
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Требуется название.", nameof(title));
+
+            if (string.IsNullOrWhiteSpace(composition))
+                throw new ArgumentException("Требуется состав.", nameof(composition));
 
             if (totalQuantity <= 0)
                 throw new ArgumentException("Количество должно быть больше нуля.", nameof(totalQuantity));

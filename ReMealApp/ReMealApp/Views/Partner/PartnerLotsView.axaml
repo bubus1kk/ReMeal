@@ -20,7 +20,7 @@
                         Command="{Binding CreateNewCommand}"/>
                 <Button Content="Редактировать"
                         Command="{Binding EditSelectedCommand}"/>
-                <Button Content="Удалить"
+                <Button Content="Отменить"
                         Command="{Binding DeleteCommand}"/>
                 <CheckBox Content="Только доступные"
                           IsChecked="{Binding ShowAvailableOnly}"
