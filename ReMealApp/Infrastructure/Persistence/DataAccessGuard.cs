@@ -114,11 +114,13 @@ namespace Infrastructure.Persistence
         {
             return exception.SqliteErrorCode switch
             {
+                SqliteError when exception.Message.Contains("no such table", StringComparison.OrdinalIgnoreCase) =>
+                    "Приложение не смогло подготовить локальные данные. Закройте и откройте приложение снова.",
                 SqliteConstraint => "Нарушено ограничение данных: возможно, такая запись уже существует или связанная запись не найдена.",
                 SqliteBusy or SqliteLocked => "База данных временно занята или заблокирована. Закройте другие окна/инструменты с этой БД и повторите операцию.",
                 SqliteReadonly => "База данных открыта только для чтения. Проверьте права на файл БД.",
                 SqliteIoErr or SqliteCantOpen => "Не удалось открыть или записать файл базы данных. Проверьте путь, диск и права доступа.",
-                SqliteCorrupt or SqliteNotADatabase => "Файл базы данных поврежден или имеет неверный формат.",
+                SqliteCorrupt or SqliteNotADatabase => "Локальное хранилище данных повреждено. Приложение попробует восстановить его автоматически при запуске.",
                 SqliteError => "SQLite не смог выполнить запрос к базе данных.",
                 _ => "Произошла ошибка SQLite при работе с базой данных."
             };

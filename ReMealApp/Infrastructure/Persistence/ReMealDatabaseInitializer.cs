@@ -11,6 +11,18 @@ namespace Infrastructure.Persistence
                 dbContext.Database.EnsureCreated();
 
                 dbContext.Database.ExecuteSqlRaw("""
+                    CREATE TABLE IF NOT EXISTS Users (
+                        Id TEXT NOT NULL CONSTRAINT PK_Users PRIMARY KEY,
+                        Login TEXT NOT NULL,
+                        PasswordHash TEXT NOT NULL,
+                        FullName TEXT NOT NULL,
+                        Email TEXT NOT NULL,
+                        Phone TEXT NOT NULL,
+                        Role TEXT NOT NULL DEFAULT 'StudentCustomer'
+                    );
+                    """);
+
+                dbContext.Database.ExecuteSqlRaw("""
                     CREATE TABLE IF NOT EXISTS FoodPoints (
                         Id TEXT NOT NULL CONSTRAINT PK_FoodPoints PRIMARY KEY,
                         Name TEXT NOT NULL,
@@ -42,6 +54,7 @@ namespace Infrastructure.Persistence
                     );
                     """);
 
+                dbContext.Database.ExecuteSqlRaw("CREATE UNIQUE INDEX IF NOT EXISTS IX_Users_Login ON Users (Login);");
                 dbContext.Database.ExecuteSqlRaw("CREATE UNIQUE INDEX IF NOT EXISTS IX_FoodPoints_OwnerId ON FoodPoints (OwnerId);");
                 dbContext.Database.ExecuteSqlRaw("CREATE INDEX IF NOT EXISTS IX_FoodLots_FoodPointId ON FoodLots (FoodPointId);");
                 dbContext.Database.ExecuteSqlRaw("CREATE INDEX IF NOT EXISTS IX_FoodLots_PickupDeadline ON FoodLots (PickupDeadline);");

@@ -1,3 +1,4 @@
+using Application.Exceptions;
 using Application.Interfaces;
 using Application.Services;
 using Domain.Repositories;
@@ -35,12 +36,25 @@ namespace Infrastructure
         {
             return DataAccessGuard.Execute(() =>
             {
+                var databasePath = ReMealDatabasePath.GetDefaultPath();
                 var options = new DbContextOptionsBuilder<ReMealDbContext>()
-                    .UseSqlite($"Data Source={ReMealDatabasePath.GetDefaultPath()}")
+                    .UseSqlite($"Data Source={databasePath}")
                     .Options;
 
                 var dbContext = new ReMealDbContext(options);
-                ReMealDatabaseInitializer.EnsureSchema(dbContext);
+
+                try
+                {
+                    ReMealDatabaseInitializer.EnsureSchema(dbContext);
+                }
+                catch (DataAccessException ex) when (ReMealDatabaseRecovery.CanRecover(ex))
+                {
+                    dbContext.Dispose();
+                    ReMealDatabaseRecovery.MoveDatabaseToBackup(databasePath);
+
+                    dbContext = new ReMealDbContext(options);
+                    ReMealDatabaseInitializer.EnsureSchema(dbContext);
+                }
 
                 IUserRepository userRepository = new UserRepository(dbContext);
                 IPasswordHasher passwordHasher = new PasswordHasher();
