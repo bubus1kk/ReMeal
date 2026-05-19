@@ -1,7 +1,7 @@
 using Application.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ReMealApp.ViewModels.Auth;
-using ReMealApp.ViewModels.Profile;
+using ReMealApp.ViewModels.Shell;
 
 namespace ReMealApp.ViewModels
 {
@@ -9,14 +9,22 @@ namespace ReMealApp.ViewModels
     {
         private readonly IAuthService _authService;
         private readonly IUserProfileService _userProfileService;
+        private readonly IFoodPointService _foodPointService;
+        private readonly ILotService _lotService;
 
         [ObservableProperty]
         private ViewModelBase _currentViewModel;
 
-        public MainWindowViewModel(IAuthService authService, IUserProfileService userProfileService)
+        public MainWindowViewModel(
+            IAuthService authService,
+            IUserProfileService userProfileService,
+            IFoodPointService foodPointService,
+            ILotService lotService)
         {
             _authService = authService;
             _userProfileService = userProfileService;
+            _foodPointService = foodPointService;
+            _lotService = lotService;
             _currentViewModel = CreateLoginViewModel();
         }
 
@@ -24,24 +32,25 @@ namespace ReMealApp.ViewModels
         {
             var rememberedUser = await _authService.TryRestoreRememberedUserAsync();
             if (rememberedUser is not null)
-                await ShowProfile();
+                await ShowHomeAsync();
         }
 
         private LoginViewModel CreateLoginViewModel()
         {
-            return new LoginViewModel(_authService, ShowProfile);
+            return new LoginViewModel(_authService, ShowHomeAsync);
         }
 
-        private UserProfileViewModel CreateProfileViewModel()
+        private async Task ShowHomeAsync()
         {
-            return new UserProfileViewModel(_userProfileService, _authService, ShowLogin);
-        }
+            var homeViewModel = new HomeViewModel(
+                _authService,
+                _userProfileService,
+                _foodPointService,
+                _lotService,
+                ShowLogin);
 
-        private async Task ShowProfile()
-        {
-            var profileViewModel = CreateProfileViewModel();
-            await profileViewModel.LoadAsync();
-            CurrentViewModel = profileViewModel;
+            await homeViewModel.InitializeAsync();
+            CurrentViewModel = homeViewModel;
         }
 
         private void ShowLogin()

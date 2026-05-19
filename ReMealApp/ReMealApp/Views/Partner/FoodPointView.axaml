@@ -1,0 +1,66 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ReMealApp.ViewModels.Partner"
+             x:Class="ReMealApp.Views.Partner.FoodPointView"
+             x:DataType="vm:FoodPointViewModel">
+
+    <Grid ColumnDefinitions="*,360">
+        <Border Grid.Column="0" Classes="card">
+            <StackPanel Spacing="10">
+                <TextBlock Text="Ваша точка питания"
+                           Classes="section-title"/>
+
+                <TextBlock Text="Текущий партнер может управлять только своей точкой питания."
+                           TextWrapping="Wrap"
+                           Opacity="0.7"/>
+
+                <Grid ColumnDefinitions="140,*" RowDefinitions="Auto,Auto,Auto">
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Статус" Opacity="0.7"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1"
+                               Text="{Binding FoodPointStateText}"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Название" Opacity="0.7"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CurrentFoodPoint.Name}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Адрес" Opacity="0.7"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentFoodPoint.Address}"/>
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Content="Обновить"
+                            Command="{Binding LoadCommand}"/>
+                    <Button Content="Создать лот"
+                            Command="{Binding CreateLotCommand}"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="1" Classes="card" Margin="16,0,0,0">
+            <StackPanel Spacing="10">
+                <TextBlock Text="Данные точки"
+                           Classes="section-title"/>
+
+                <TextBox PlaceholderText="Название" Text="{Binding Name}"/>
+                <TextBox PlaceholderText="Адрес" Text="{Binding Address}"/>
+                <TextBox PlaceholderText="Описание"
+                         Text="{Binding Description}"
+                         AcceptsReturn="True"
+                         Height="80"/>
+                <TextBox PlaceholderText="Телефон" Text="{Binding Phone}"/>
+
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Content="Сохранить"
+                            Command="{Binding SaveCommand}"/>
+                    <Button Content="Деактивировать"
+                            Command="{Binding DeactivateCommand}"/>
+                    <Button Content="Удалить"
+                            Command="{Binding DeleteCommand}"/>
+                </StackPanel>
+
+                <TextBlock Text="{Binding StatusMessage}"
+                           TextWrapping="Wrap"
+                           Opacity="0.8"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

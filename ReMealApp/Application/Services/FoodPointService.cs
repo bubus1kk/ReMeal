@@ -1,81 +1,113 @@
-﻿using ReMeal.Application.DTOs.FoodPoints;
-using ReMeal.Application.Interfaces;
-using ReMeal.Domain.Entities;
+using Application.DTOs.FoodPoints;
+using Application.DTOs.Users;
+using Application.Interfaces;
+using Domain.Entities;
+using Domain.Enums;
 
-namespace ReMeal.Application.Services;
-
-public class FoodPointService : IFoodPointService
+namespace Application.Services
 {
-    private readonly IFoodPointRepository _foodPointRepository;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public FoodPointService(IFoodPointRepository foodPointRepository, IUnitOfWork unitOfWork)
+    public class FoodPointService : IFoodPointService
     {
-        _foodPointRepository = foodPointRepository;
-        _unitOfWork = unitOfWork;
-    }
+        private readonly IFoodPointRepository _foodPointRepository;
+        private readonly IAuthService _authService;
 
-    public async Task<FoodPoint> CreateFoodPointAsync(
-        CreateFoodPointRequest request,
-        CancellationToken cancellationToken = default)
-    {
-        var foodPoint = new FoodPoint(
-            request.Name,
-            request.Address,
-            request.Description,
-            request.Phone,
-            request.OwnerId);
+        public FoodPointService(IFoodPointRepository foodPointRepository, IAuthService authService)
+        {
+            _foodPointRepository = foodPointRepository;
+            _authService = authService;
+        }
 
-        await _foodPointRepository.AddAsync(foodPoint, cancellationToken);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-        return foodPoint;
-    }
+        public async Task<FoodPoint> CreateFoodPointAsync(
+            CreateFoodPointRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var partner = await GetCurrentPartnerAsync(cancellationToken);
+            var existingFoodPoint = await _foodPointRepository.GetByOwnerIdAsync(partner.Id, cancellationToken);
 
-    public async Task<FoodPoint> UpdateFoodPointAsync(
-        UpdateFoodPointRequest request,
-        CancellationToken cancellationToken = default)
-    {
-        var foodPoint = await _foodPointRepository.GetByIdAsync(request.Id, cancellationToken)
-            ?? throw new KeyNotFoundException($"Food point '{request.Id}' was not found.");
+            if (existingFoodPoint is not null)
+                throw new InvalidOperationException("У текущего партнера уже есть точка питания.");
 
-        foodPoint.UpdateInformation(request.Name, request.Address, request.Description, request.Phone);
-        await _foodPointRepository.UpdateAsync(foodPoint, cancellationToken);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-        return foodPoint;
-    }
+            var foodPoint = new FoodPoint(
+                request.Name,
+                request.Address,
+                request.Description,
+                request.Phone,
+                partner.Id);
 
-    public async Task DeactivateFoodPointAsync(
-        Guid foodPointId,
-        CancellationToken cancellationToken = default)
-    {
-        var foodPoint = await _foodPointRepository.GetByIdAsync(foodPointId, cancellationToken)
-            ?? throw new KeyNotFoundException($"Food point '{foodPointId}' was not found.");
+            await _foodPointRepository.AddAsync(foodPoint, cancellationToken);
+            await _foodPointRepository.SaveChangesAsync(cancellationToken);
+            return foodPoint;
+        }
 
-        foodPoint.Deactivate();
-        await _foodPointRepository.UpdateAsync(foodPoint, cancellationToken);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-    }
+        public async Task<FoodPoint> UpdateFoodPointAsync(
+            UpdateFoodPointRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var foodPoint = await GetOwnedFoodPointAsync(request.Id, cancellationToken);
+            foodPoint.UpdateInformation(request.Name, request.Address, request.Description, request.Phone);
+            await _foodPointRepository.UpdateAsync(foodPoint, cancellationToken);
+            await _foodPointRepository.SaveChangesAsync(cancellationToken);
+            return foodPoint;
+        }
 
-    public async Task DeleteFoodPointAsync(
-        Guid foodPointId,
-        CancellationToken cancellationToken = default)
-    {
-        var foodPoint = await _foodPointRepository.GetByIdAsync(foodPointId, cancellationToken)
-            ?? throw new KeyNotFoundException($"Food point '{foodPointId}' was not found.");
+        public async Task DeactivateFoodPointAsync(
+            Guid foodPointId,
+            CancellationToken cancellationToken = default)
+        {
+            var foodPoint = await GetOwnedFoodPointAsync(foodPointId, cancellationToken);
+            foodPoint.Deactivate();
+            await _foodPointRepository.UpdateAsync(foodPoint, cancellationToken);
+            await _foodPointRepository.SaveChangesAsync(cancellationToken);
+        }
 
-        await _foodPointRepository.DeleteAsync(foodPoint, cancellationToken);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-    }
+        public async Task DeleteFoodPointAsync(
+            Guid foodPointId,
+            CancellationToken cancellationToken = default)
+        {
+            var foodPoint = await GetOwnedFoodPointAsync(foodPointId, cancellationToken);
+            await _foodPointRepository.DeleteAsync(foodPoint, cancellationToken);
+            await _foodPointRepository.SaveChangesAsync(cancellationToken);
+        }
 
-    public Task<List<FoodPoint>> GetAllFoodPointsAsync(CancellationToken cancellationToken = default)
-    {
-        return _foodPointRepository.GetAllAsync(cancellationToken);
-    }
+        public async Task<FoodPoint?> GetCurrentPartnerFoodPointAsync(CancellationToken cancellationToken = default)
+        {
+            var partner = await GetCurrentPartnerAsync(cancellationToken);
+            return await _foodPointRepository.GetByOwnerIdAsync(partner.Id, cancellationToken);
+        }
 
-    public Task<FoodPoint?> GetFoodPointAsync(
-        Guid foodPointId,
-        CancellationToken cancellationToken = default)
-    {
-        return _foodPointRepository.GetByIdAsync(foodPointId, cancellationToken);
+        public Task<List<FoodPoint>> GetAllFoodPointsAsync(CancellationToken cancellationToken = default)
+        {
+            return _foodPointRepository.GetAllAsync(cancellationToken);
+        }
+
+        public Task<FoodPoint?> GetFoodPointAsync(
+            Guid foodPointId,
+            CancellationToken cancellationToken = default)
+        {
+            return _foodPointRepository.GetByIdAsync(foodPointId, cancellationToken);
+        }
+
+        private async Task<FoodPoint> GetOwnedFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken)
+        {
+            var partner = await GetCurrentPartnerAsync(cancellationToken);
+            var foodPoint = await _foodPointRepository.GetByIdAsync(foodPointId, cancellationToken)
+                ?? throw new KeyNotFoundException($"Точка питания '{foodPointId}' не найдена.");
+
+            if (foodPoint.OwnerId != partner.Id)
+                throw new UnauthorizedAccessException("Нельзя управлять чужой точкой питания.");
+
+            return foodPoint;
+        }
+
+        private async Task<UserProfileDto> GetCurrentPartnerAsync(CancellationToken cancellationToken)
+        {
+            var user = await _authService.GetCurrentUserAsync(cancellationToken)
+                ?? throw new UnauthorizedAccessException("Пользователь не авторизован.");
+
+            if (user.Role != UserRole.FoodPointRepresentative)
+                throw new UnauthorizedAccessException("Управление точкой питания доступно только партнеру.");
+
+            return user;
+        }
     }
 }

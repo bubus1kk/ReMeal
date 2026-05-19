@@ -41,6 +41,10 @@ namespace Infrastructure.Persistence.Configurations
                 .HasMaxLength(67)
                 .HasDefaultValue(UserRole.StudentCustomer)
                 .IsRequired();
+
+            builder.HasMany(user => user.FoodPoints)
+                .WithOne(foodPoint => foodPoint.Owner)
+                .HasForeignKey(foodPoint => foodPoint.OwnerId);
         }
     }
 }

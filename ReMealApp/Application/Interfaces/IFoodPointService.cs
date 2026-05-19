@@ -1,23 +1,26 @@
-﻿using ReMeal.Application.DTOs.FoodPoints;
-using ReMeal.Domain.Entities;
+using Application.DTOs.FoodPoints;
+using Domain.Entities;
 
-namespace ReMeal.Application.Interfaces;
-
-public interface IFoodPointService
+namespace Application.Interfaces
 {
-    Task<FoodPoint> CreateFoodPointAsync(
-        CreateFoodPointRequest request,
-        CancellationToken cancellationToken = default);
+    public interface IFoodPointService
+    {
+        Task<FoodPoint> CreateFoodPointAsync(
+            CreateFoodPointRequest request,
+            CancellationToken cancellationToken = default);
 
-    Task<FoodPoint> UpdateFoodPointAsync(
-        UpdateFoodPointRequest request,
-        CancellationToken cancellationToken = default);
+        Task<FoodPoint> UpdateFoodPointAsync(
+            UpdateFoodPointRequest request,
+            CancellationToken cancellationToken = default);
 
-    Task DeactivateFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken = default);
+        Task DeactivateFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken = default);
 
-    Task DeleteFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken = default);
+        Task DeleteFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken = default);
 
-    Task<List<FoodPoint>> GetAllFoodPointsAsync(CancellationToken cancellationToken = default);
+        Task<FoodPoint?> GetCurrentPartnerFoodPointAsync(CancellationToken cancellationToken = default);
 
-    Task<FoodPoint?> GetFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken = default);
+        Task<List<FoodPoint>> GetAllFoodPointsAsync(CancellationToken cancellationToken = default);
+
+        Task<FoodPoint?> GetFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken = default);
+    }
 }

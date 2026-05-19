@@ -10,8 +10,7 @@
         Height="768"
         MinWidth="1180"
         MinHeight="720"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="ReMealApp">
+        Title="ReMeal">
 
     <ContentControl Content="{Binding CurrentViewModel}"/>
 

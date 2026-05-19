@@ -1,0 +1,44 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ReMealApp.ViewModels.Shell"
+             xmlns:profile="using:ReMealApp.Views.Profile"
+             xmlns:catalog="using:ReMealApp.Views.Catalog"
+             xmlns:partner="using:ReMealApp.Views.Partner"
+             x:Class="ReMealApp.Views.Shell.HomeView"
+             x:DataType="vm:HomeViewModel">
+
+    <Grid RowDefinitions="Auto,*" Margin="24">
+        <StackPanel Grid.Row="0" Spacing="4" Margin="0,0,0,12">
+            <TextBlock Text="ReMeal" Classes="section-title" FontSize="22"/>
+            <TextBlock Text="Информационная система перераспределения пищевых наборов"
+                       Opacity="0.7"/>
+        </StackPanel>
+
+        <TabControl Grid.Row="1"
+                    SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem Header="Личный кабинет">
+                <profile:UserProfileView DataContext="{Binding Profile}"/>
+            </TabItem>
+
+            <TabItem Header="Каталог"
+                     IsVisible="{Binding IsCatalogVisible}">
+                <catalog:CatalogView DataContext="{Binding Catalog}"/>
+            </TabItem>
+
+            <TabItem Header="Точка питания"
+                     IsVisible="{Binding IsPartner}">
+                <partner:FoodPointView DataContext="{Binding FoodPoint}"/>
+            </TabItem>
+
+            <TabItem Header="Лоты"
+                     IsVisible="{Binding IsPartner}">
+                <partner:PartnerLotsView DataContext="{Binding PartnerLots}"/>
+            </TabItem>
+
+            <TabItem Header="Создать / редактировать лот"
+                     IsVisible="{Binding IsPartner}">
+                <partner:CreateLotView DataContext="{Binding CreateLot}"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

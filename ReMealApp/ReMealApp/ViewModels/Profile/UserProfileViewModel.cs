@@ -3,6 +3,7 @@ using Application.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Domain.Enums;
+using ReMealApp.ViewModels;
 
 namespace ReMealApp.ViewModels.Profile
 {

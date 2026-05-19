@@ -1,46 +1,53 @@
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ReMeal.Domain.Entities;
 
-namespace ReMeal.Infrastructure.Configurations;
-
-public class FoodPointConfiguration : IEntityTypeConfiguration<FoodPoint>
+namespace Infrastructure.Persistence.Configurations
 {
-    public void Configure(EntityTypeBuilder<FoodPoint> builder)
+    public class FoodPointConfiguration : IEntityTypeConfiguration<FoodPoint>
     {
-        builder.ToTable("FoodPoints");
+        public void Configure(EntityTypeBuilder<FoodPoint> builder)
+        {
+            builder.ToTable("FoodPoints");
 
-        builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Name)
-            .HasMaxLength(200)
-            .IsRequired();
+            builder.Property(x => x.Name)
+                .HasMaxLength(200)
+                .IsRequired();
 
-        builder.Property(x => x.Address)
-            .HasMaxLength(500)
-            .IsRequired();
+            builder.Property(x => x.Address)
+                .HasMaxLength(500)
+                .IsRequired();
 
-        builder.Property(x => x.Description)
-            .HasMaxLength(2000);
+            builder.Property(x => x.Description)
+                .HasMaxLength(2000);
 
-        builder.Property(x => x.Phone)
-            .HasMaxLength(50)
-            .IsRequired();
+            builder.Property(x => x.Phone)
+                .HasMaxLength(50)
+                .IsRequired();
 
-        builder.Property(x => x.OwnerId)
-            .IsRequired();
+            builder.Property(x => x.OwnerId)
+                .IsRequired();
 
-        builder.Property(x => x.CreatedAt)
-            .IsRequired();
+            builder.Property(x => x.CreatedAt)
+                .IsRequired();
 
-        builder.Property(x => x.IsActive)
-            .IsRequired();
+            builder.Property(x => x.IsActive)
+                .IsRequired();
 
-        builder.HasMany(x => x.Lots)
-            .WithOne(x => x.FoodPoint)
-            .HasForeignKey(x => x.FoodPointId)
-            .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(x => x.Owner)
+                .WithMany(x => x.FoodPoints)
+                .HasForeignKey(x => x.OwnerId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => x.OwnerId);
+            builder.HasMany(x => x.Lots)
+                .WithOne(x => x.FoodPoint)
+                .HasForeignKey(x => x.FoodPointId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasIndex(x => x.OwnerId)
+                .IsUnique();
+        }
     }
 }
