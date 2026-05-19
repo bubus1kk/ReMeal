@@ -1,7 +1,15 @@
 <Solution>
+<<<<<<< HEAD
   <Project Path="Desktop/ReMealApp.csproj" />
   <Project Path="Domain/Domain.csproj" />
   <Project Path="Application/Application.csproj" />
   <Project Path="Infrastructure/Infrastructure.csproj" />
   <Project Path="Tests/Tests.csproj" />
+=======
+  <Project Path="ReMealApp/ReMealApp.csproj" />
+  <Project Path="Application/Application.csproj" Id="dd8727e8-2e60-4159-a40e-3aec63959e9d" />
+  <Project Path="Domain/Domain.csproj" Id="bff36bc7-8d0a-40b1-b331-83f8902bc3f5" />
+  <Project Path="Infrastructure/Infrastructure.csproj" Id="ddd373c0-b004-49e5-bf3f-2a086fe5d68a" />
+  <Project Path="Tests/Tests.csproj" Id="cf3f5887-4301-4e7c-bfa7-43129080264a" />
+>>>>>>> 391b64cda26f12377fd2b875b12fd4d13f32c98f
 </Solution>
