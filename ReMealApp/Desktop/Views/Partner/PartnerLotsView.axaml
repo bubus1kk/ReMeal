@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ReMeal.Desktop.ViewModels.Partner"
+             xmlns:conv="using:ReMeal.Desktop.Converters"
+             xmlns:ent="using:ReMeal.Domain.Entities"
+             x:Class="ReMeal.Desktop.Views.Partner.PartnerLotsView"
+             x:DataType="vm:PartnerLotsViewModel">
+
+    <UserControl.Resources>
+        <conv:LotStatusToTextConverter x:Key="LotStatusConverter"/>
+    </UserControl.Resources>
+
+    <Border Classes="card">
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Top"
+                        Orientation="Horizontal"
+                        Spacing="8"
+                        Margin="0,0,0,12">
+                <Button Content="Создать лот"
+                        Command="{Binding CreateNewCommand}"/>
+                <Button Content="Редактировать"
+                        Command="{Binding EditSelectedCommand}"/>
+                <Button Content="Удалить"
+                        Command="{Binding DeleteCommand}"/>
+                <CheckBox Content="Только доступные"
+                          IsChecked="{Binding ShowAvailableOnly}"
+                          VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <TextBlock DockPanel.Dock="Bottom"
+                       Text="{Binding StatusMessage}"
+                       Margin="0,12,0,0"
+                       Opacity="0.8"/>
+
+            <DataGrid ItemsSource="{Binding Lots}"
+                      SelectedItem="{Binding SelectedLot}"
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False"
+                      GridLinesVisibility="Horizontal">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Название" Binding="{Binding Title}" Width="*"/>
+                    <DataGridTextColumn Header="Точка" Binding="{Binding FoodPoint.Name}" Width="*"/>
+                    <DataGridTextColumn Header="Доступно" Binding="{Binding AvailableQuantity}" Width="80"/>
+                    <DataGridTextColumn Header="Всего" Binding="{Binding TotalQuantity}" Width="70"/>
+                    <DataGridTextColumn Header="Цена" Binding="{Binding Price, StringFormat={}{0:N2}}" Width="80"/>
+                    <DataGridTemplateColumn Header="Статус" Width="110">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="ent:FoodLot">
+                                <TextBlock Text="{Binding Status, Converter={StaticResource LotStatusConverter}, Mode=OneWay}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Получить до"
+                                        Binding="{Binding PickupDeadline, StringFormat={}{0:dd.MM.yyyy HH:mm}}"
+                                        Width="140"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </Border>
+</UserControl>
