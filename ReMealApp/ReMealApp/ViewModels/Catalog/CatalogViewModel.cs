@@ -42,7 +42,7 @@ namespace ReMealApp.ViewModels.Catalog
             }
             catch (Exception ex)
             {
-                StatusMessage = ex.Message;
+                StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
             }
             finally
             {

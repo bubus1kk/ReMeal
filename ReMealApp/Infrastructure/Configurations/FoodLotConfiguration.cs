@@ -17,10 +17,12 @@ namespace Infrastructure.Persistence.Configurations
                 .IsRequired();
 
             builder.Property(x => x.Description)
-                .HasMaxLength(2000);
+                .HasMaxLength(2000)
+                .IsRequired();
 
             builder.Property(x => x.Composition)
-                .HasMaxLength(2000);
+                .HasMaxLength(2000)
+                .IsRequired();
 
             builder.Property(x => x.TotalQuantity)
                 .IsRequired();

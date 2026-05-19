@@ -1,4 +1,5 @@
 using Application.Interfaces;
+using Infrastructure.Persistence;
 
 namespace Infrastructure.Security
 {
@@ -13,36 +14,48 @@ namespace Infrastructure.Security
 
         public static RememberedUserStore CreateDefault()
         {
-            var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var directory = Path.Combine(appData, "ReMeal");
+            return DataAccessGuard.Execute(() =>
+            {
+                var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                var directory = Path.Combine(appData, "ReMeal");
 
-            Directory.CreateDirectory(directory);
+                Directory.CreateDirectory(directory);
 
-            return new RememberedUserStore(Path.Combine(directory, "remembered-user.txt"));
+                return new RememberedUserStore(Path.Combine(directory, "remembered-user.txt"));
+            }, "подготовить хранилище автологина");
         }
 
         public Guid? GetRememberedUserId()
         {
-            if (!File.Exists(_filePath))
-                return null;
+            return DataAccessGuard.Execute<Guid?>(() =>
+            {
+                if (!File.Exists(_filePath))
+                    return null;
 
-            var text = File.ReadAllText(_filePath).Trim();
-            return Guid.TryParse(text, out var userId) ? userId : null;
+                var text = File.ReadAllText(_filePath).Trim();
+                return Guid.TryParse(text, out var userId) ? userId : null;
+            }, "прочитать сохраненного пользователя");
         }
 
         public void RememberUser(Guid userId)
         {
-            var directory = Path.GetDirectoryName(_filePath);
-            if (!string.IsNullOrWhiteSpace(directory))
-                Directory.CreateDirectory(directory);
+            DataAccessGuard.Execute(() =>
+            {
+                var directory = Path.GetDirectoryName(_filePath);
+                if (!string.IsNullOrWhiteSpace(directory))
+                    Directory.CreateDirectory(directory);
 
-            File.WriteAllText(_filePath, userId.ToString());
+                File.WriteAllText(_filePath, userId.ToString());
+            }, "сохранить автологин");
         }
 
         public void ForgetUser()
         {
-            if (File.Exists(_filePath))
-                File.Delete(_filePath);
+            DataAccessGuard.Execute(() =>
+            {
+                if (File.Exists(_filePath))
+                    File.Delete(_filePath);
+            }, "удалить автологин");
         }
     }
 }

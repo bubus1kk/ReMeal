@@ -48,14 +48,21 @@ namespace ReMealApp.ViewModels.Profile
 
         public async Task LoadAsync()
         {
-            var profile = await _userProfileService.GetCurrentProfileAsync();
-            if (profile is null)
+            try
             {
-                StatusMessage = "Пользователь не авторизован.";
-                return;
-            }
+                var profile = await _userProfileService.GetCurrentProfileAsync();
+                if (profile is null)
+                {
+                    StatusMessage = "Пользователь не авторизован.";
+                    return;
+                }
 
-            ApplyProfile(profile);
+                ApplyProfile(profile);
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
         }
 
         [RelayCommand]
@@ -63,28 +70,42 @@ namespace ReMealApp.ViewModels.Profile
         {
             StatusMessage = string.Empty;
 
-            var profile = await _userProfileService.UpdateCurrentProfileAsync(new UpdateUserProfileRequest
+            try
             {
-                FullName = FullName,
-                Email = Email,
-                Phone = Phone
-            });
+                var profile = await _userProfileService.UpdateCurrentProfileAsync(new UpdateUserProfileRequest
+                {
+                    FullName = FullName,
+                    Email = Email,
+                    Phone = Phone
+                });
 
-            if (profile is null)
-            {
-                StatusMessage = "Не удалось сохранить профиль.";
-                return;
+                if (profile is null)
+                {
+                    StatusMessage = "Не удалось сохранить профиль.";
+                    return;
+                }
+
+                ApplyProfile(profile);
+                StatusMessage = "Профиль сохранён.";
             }
-
-            ApplyProfile(profile);
-            StatusMessage = "Профиль сохранён.";
+            catch (Exception ex)
+            {
+                StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
         }
 
         [RelayCommand]
         private void Logout()
         {
-            _authService.Logout();
-            _showLogin();
+            try
+            {
+                _authService.Logout();
+                _showLogin();
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
         }
 
         partial void OnRoleChanged(UserRole value)

@@ -15,32 +15,44 @@ namespace Infrastructure.Persistence.Repositories
 
         public Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return _dbContext.Users.FirstOrDefaultAsync(user => user.Id == id, cancellationToken);
+            return DataAccessGuard.ExecuteAsync(
+                () => _dbContext.Users.FirstOrDefaultAsync(user => user.Id == id, cancellationToken),
+                "получить пользователя по id");
         }
 
         public Task<User?> GetByLoginAsync(string login, CancellationToken cancellationToken = default)
         {
-            return _dbContext.Users.FirstOrDefaultAsync(user => user.Login == login, cancellationToken);
+            return DataAccessGuard.ExecuteAsync(
+                () => _dbContext.Users.FirstOrDefaultAsync(user => user.Login == login, cancellationToken),
+                "получить пользователя по логину");
         }
 
         public Task<bool> LoginExistsAsync(string login, CancellationToken cancellationToken = default)
         {
-            return _dbContext.Users.AnyAsync(user => user.Login == login, cancellationToken);
+            return DataAccessGuard.ExecuteAsync(
+                () => _dbContext.Users.AnyAsync(user => user.Login == login, cancellationToken),
+                "проверить логин пользователя");
         }
 
         public Task AddAsync(User user, CancellationToken cancellationToken = default)
         {
-            return _dbContext.Users.AddAsync(user, cancellationToken).AsTask();
+            return DataAccessGuard.ExecuteAsync(
+                async () => await _dbContext.Users.AddAsync(user, cancellationToken),
+                "добавить пользователя");
         }
 
         public void Update(User user)
         {
-            _dbContext.Users.Update(user);
+            DataAccessGuard.Execute(
+                () => _dbContext.Users.Update(user),
+                "обновить пользователя");
         }
 
         public Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            return _dbContext.SaveChangesAsync(cancellationToken);
+            return DataAccessGuard.ExecuteAsync(
+                () => _dbContext.SaveChangesAsync(cancellationToken),
+                "сохранить изменения пользователя");
         }
     }
 }

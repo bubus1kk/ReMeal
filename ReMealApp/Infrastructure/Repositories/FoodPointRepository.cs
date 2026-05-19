@@ -16,49 +16,65 @@ namespace Infrastructure.Repositories
 
         public Task<FoodPoint?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return _dbContext.FoodPoints
-                .Include(x => x.Lots)
-                .Include(x => x.Owner)
-                .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            return DataAccessGuard.ExecuteAsync(
+                () => _dbContext.FoodPoints
+                    .Include(x => x.Lots)
+                    .Include(x => x.Owner)
+                    .FirstOrDefaultAsync(x => x.Id == id, cancellationToken),
+                "получить точку питания по id");
         }
 
         public Task<FoodPoint?> GetByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default)
         {
-            return _dbContext.FoodPoints
-                .Include(x => x.Lots)
-                .Include(x => x.Owner)
-                .FirstOrDefaultAsync(x => x.OwnerId == ownerId, cancellationToken);
+            return DataAccessGuard.ExecuteAsync(
+                () => _dbContext.FoodPoints
+                    .Include(x => x.Lots)
+                    .Include(x => x.Owner)
+                    .FirstOrDefaultAsync(x => x.OwnerId == ownerId, cancellationToken),
+                "получить точку питания партнера");
         }
 
         public Task<List<FoodPoint>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return _dbContext.FoodPoints
-                .Include(x => x.Lots)
-                .Include(x => x.Owner)
-                .OrderByDescending(x => x.CreatedAt)
-                .ToListAsync(cancellationToken);
+            return DataAccessGuard.ExecuteAsync(
+                () => _dbContext.FoodPoints
+                    .Include(x => x.Lots)
+                    .Include(x => x.Owner)
+                    .OrderByDescending(x => x.CreatedAt)
+                    .ToListAsync(cancellationToken),
+                "получить список точек питания");
         }
 
         public async Task AddAsync(FoodPoint foodPoint, CancellationToken cancellationToken = default)
         {
-            await _dbContext.FoodPoints.AddAsync(foodPoint, cancellationToken);
+            await DataAccessGuard.ExecuteAsync(
+                async () => await _dbContext.FoodPoints.AddAsync(foodPoint, cancellationToken),
+                "добавить точку питания");
         }
 
         public Task UpdateAsync(FoodPoint foodPoint, CancellationToken cancellationToken = default)
         {
-            _dbContext.FoodPoints.Update(foodPoint);
+            DataAccessGuard.Execute(
+                () => _dbContext.FoodPoints.Update(foodPoint),
+                "обновить точку питания");
+
             return Task.CompletedTask;
         }
 
         public Task DeleteAsync(FoodPoint foodPoint, CancellationToken cancellationToken = default)
         {
-            _dbContext.FoodPoints.Remove(foodPoint);
+            DataAccessGuard.Execute(
+                () => _dbContext.FoodPoints.Remove(foodPoint),
+                "удалить точку питания");
+
             return Task.CompletedTask;
         }
 
         public Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            return _dbContext.SaveChangesAsync(cancellationToken);
+            return DataAccessGuard.ExecuteAsync(
+                () => _dbContext.SaveChangesAsync(cancellationToken),
+                "сохранить изменения точки питания");
         }
     }
 }

@@ -65,7 +65,7 @@ namespace ReMealApp.ViewModels.Partner
             }
             catch (Exception ex)
             {
-                StatusMessage = ex.Message;
+                StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
             }
             finally
             {
@@ -109,7 +109,7 @@ namespace ReMealApp.ViewModels.Partner
             }
             catch (Exception ex)
             {
-                StatusMessage = ex.Message;
+                StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
             }
             finally
             {
@@ -135,7 +135,7 @@ namespace ReMealApp.ViewModels.Partner
             }
             catch (Exception ex)
             {
-                StatusMessage = ex.Message;
+                StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
             }
             finally
             {
@@ -162,7 +162,7 @@ namespace ReMealApp.ViewModels.Partner
             }
             catch (Exception ex)
             {
-                StatusMessage = ex.Message;
+                StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
             }
             finally
             {

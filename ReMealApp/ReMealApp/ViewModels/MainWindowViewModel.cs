@@ -30,14 +30,21 @@ namespace ReMealApp.ViewModels
 
         public async Task InitializeAsync()
         {
-            var rememberedUser = await _authService.TryRestoreRememberedUserAsync();
-            if (rememberedUser is not null)
-                await ShowHomeAsync();
+            try
+            {
+                var rememberedUser = await _authService.TryRestoreRememberedUserAsync();
+                if (rememberedUser is not null)
+                    await ShowHomeAsync();
+            }
+            catch (Exception ex)
+            {
+                CurrentViewModel = CreateLoginViewModel(ExceptionMessageFormatter.ToUserMessage(ex));
+            }
         }
 
-        private LoginViewModel CreateLoginViewModel()
+        private LoginViewModel CreateLoginViewModel(string initialErrorMessage = "")
         {
-            return new LoginViewModel(_authService, ShowHomeAsync);
+            return new LoginViewModel(_authService, ShowHomeAsync, initialErrorMessage);
         }
 
         private async Task ShowHomeAsync()

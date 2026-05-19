@@ -59,10 +59,14 @@ namespace ReMealApp.ViewModels.Auth
         [ObservableProperty]
         private bool _isConfirmPasswordVisible;
 
-        public LoginViewModel(IAuthService authService, Func<Task> showProfileAsync)
+        public LoginViewModel(
+            IAuthService authService,
+            Func<Task> showProfileAsync,
+            string initialErrorMessage = "")
         {
             _authService = authService;
             _showProfileAsync = showProfileAsync;
+            _errorMessage = initialErrorMessage;
             _selectedRole = Roles[0];
         }
 
@@ -104,20 +108,27 @@ namespace ReMealApp.ViewModels.Auth
         {
             ErrorMessage = string.Empty;
 
-            var result = await _authService.LoginAsync(new LoginUserRequest
+            try
             {
-                Login = Login,
-                Password = Password,
-                RememberMe = RememberMe
-            });
+                var result = await _authService.LoginAsync(new LoginUserRequest
+                {
+                    Login = Login,
+                    Password = Password,
+                    RememberMe = RememberMe
+                });
 
-            if (!result.IsSuccess)
-            {
-                ErrorMessage = result.ErrorMessage ?? "Не удалось войти.";
-                return;
+                if (!result.IsSuccess)
+                {
+                    ErrorMessage = result.ErrorMessage ?? "Не удалось войти.";
+                    return;
+                }
+
+                await _showProfileAsync();
             }
-
-            await _showProfileAsync();
+            catch (Exception ex)
+            {
+                ErrorMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
         }
 
         [RelayCommand]
@@ -131,23 +142,30 @@ namespace ReMealApp.ViewModels.Auth
                 return;
             }
 
-            var result = await _authService.RegisterAsync(new RegisterUserRequest
+            try
             {
-                Login = Login,
-                Password = Password,
-                FullName = Name,
-                Email = Email,
-                Phone = Phone,
-                Role = SelectedRole.Role
-            });
+                var result = await _authService.RegisterAsync(new RegisterUserRequest
+                {
+                    Login = Login,
+                    Password = Password,
+                    FullName = Name,
+                    Email = Email,
+                    Phone = Phone,
+                    Role = SelectedRole.Role
+                });
 
-            if (!result.IsSuccess)
-            {
-                ErrorMessage = result.ErrorMessage ?? "Не удалось зарегистрироваться.";
-                return;
+                if (!result.IsSuccess)
+                {
+                    ErrorMessage = result.ErrorMessage ?? "Не удалось зарегистрироваться.";
+                    return;
+                }
+
+                await _showProfileAsync();
             }
-
-            await _showProfileAsync();
+            catch (Exception ex)
+            {
+                ErrorMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
         }
 
         [RelayCommand]

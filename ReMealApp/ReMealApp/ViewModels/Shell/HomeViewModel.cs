@@ -47,21 +47,30 @@ namespace ReMealApp.ViewModels.Shell
 
         public async Task InitializeAsync()
         {
-            await Profile.LoadAsync();
-
-            var currentUser = await _authService.GetCurrentUserAsync();
-            IsPartner = currentUser?.Role == UserRole.FoodPointRepresentative;
-            IsCatalogVisible = currentUser?.Role != UserRole.FoodPointRepresentative;
-
-            if (IsPartner)
+            try
             {
-                await FoodPoint.LoadAsync();
-                await PartnerLots.LoadAsync();
-                await CreateLot.RefreshAsync();
+                await Profile.LoadAsync();
+
+                var currentUser = await _authService.GetCurrentUserAsync();
+                IsPartner = currentUser?.Role == UserRole.FoodPointRepresentative;
+                IsCatalogVisible = currentUser?.Role != UserRole.FoodPointRepresentative;
+
+                if (IsPartner)
+                {
+                    await FoodPoint.LoadAsync();
+                    await PartnerLots.LoadAsync();
+                    await CreateLot.RefreshAsync();
+                }
+                else
+                {
+                    await Catalog.LoadAsync();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                await Catalog.LoadAsync();
+                Profile.StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+                IsPartner = false;
+                IsCatalogVisible = false;
             }
         }
 
@@ -79,32 +88,53 @@ namespace ReMealApp.ViewModels.Shell
 
         public async void OpenLotEditor(Guid lotId)
         {
-            await CreateLot.LoadForEditAsync(lotId);
-            SelectedTabIndex = 4;
+            try
+            {
+                await CreateLot.LoadForEditAsync(lotId);
+                SelectedTabIndex = 4;
+            }
+            catch (Exception ex)
+            {
+                Profile.StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
         }
 
         public async void OpenCreateLot()
         {
-            await CreateLot.PrepareCreateAsync();
-            SelectedTabIndex = 4;
+            try
+            {
+                await CreateLot.PrepareCreateAsync();
+                SelectedTabIndex = 4;
+            }
+            catch (Exception ex)
+            {
+                Profile.StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
         }
 
         private async Task RefreshTabAsync(int tabIndex)
         {
-            switch (tabIndex)
+            try
             {
-                case 1 when IsCatalogVisible:
-                    await Catalog.LoadAsync();
-                    break;
-                case 2 when IsPartner:
-                    await FoodPoint.LoadAsync();
-                    break;
-                case 3 when IsPartner:
-                    await PartnerLots.LoadAsync();
-                    break;
-                case 4 when IsPartner:
-                    await CreateLot.RefreshAsync();
-                    break;
+                switch (tabIndex)
+                {
+                    case 1 when IsCatalogVisible:
+                        await Catalog.LoadAsync();
+                        break;
+                    case 2 when IsPartner:
+                        await FoodPoint.LoadAsync();
+                        break;
+                    case 3 when IsPartner:
+                        await PartnerLots.LoadAsync();
+                        break;
+                    case 4 when IsPartner:
+                        await CreateLot.RefreshAsync();
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Profile.StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
             }
         }
     }
