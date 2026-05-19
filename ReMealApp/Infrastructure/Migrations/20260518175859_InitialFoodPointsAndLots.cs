@@ -5,10 +5,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ReMeal.Infrastructure.Migrations
 {
-    /// <inheritdoc />
     public partial class InitialFoodPointsAndLots : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -78,7 +76,6 @@ namespace ReMeal.Infrastructure.Migrations
                 column: "OwnerId");
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

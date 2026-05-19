@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         x:Class="ReMeal.Desktop.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Title="ReMeal — Точки питания и лоты"
+        Title="ReMeal"
         Width="1100"
         Height="720"
         MinWidth="900"

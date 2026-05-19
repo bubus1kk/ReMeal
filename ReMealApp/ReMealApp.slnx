@@ -1,7 +1,7 @@
 <Solution>
+  <Project Path="Desktop/ReMealApp.csproj" />
   <Project Path="Domain/Domain.csproj" />
   <Project Path="Application/Application.csproj" />
   <Project Path="Infrastructure/Infrastructure.csproj" />
-  <Project Path="Desktop/Desktop.csproj" />
   <Project Path="Tests/Tests.csproj" />
 </Solution>

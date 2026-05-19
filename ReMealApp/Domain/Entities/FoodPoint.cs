@@ -32,13 +32,13 @@ public class FoodPoint
         Guid ownerId)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name is required.", nameof(name));
+            throw new ArgumentException("Требуется указать имя.", nameof(name));
 
         if (string.IsNullOrWhiteSpace(address))
-            throw new ArgumentException("Address is required.", nameof(address));
+            throw new ArgumentException("Требуется указать адресс.", nameof(address));
 
         if (ownerId == Guid.Empty)
-            throw new ArgumentException("OwnerId is required.", nameof(ownerId));
+            throw new ArgumentException("Требуется id владельца.", nameof(ownerId));
 
         Id = Guid.NewGuid();
         Name = name.Trim();
@@ -57,13 +57,13 @@ public class FoodPoint
         string phone)
     {
         if (!IsActive)
-            throw new InvalidOperationException("Cannot update a deactivated food point.");
+            throw new InvalidOperationException("Не удается обновить деактивированную точку питания.");
 
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name is required.", nameof(name));
+            throw new ArgumentException("Требуется указать имя.", nameof(name));
 
         if (string.IsNullOrWhiteSpace(address))
-            throw new ArgumentException("Address is required.", nameof(address));
+            throw new ArgumentException("Требуется указать адрес.", nameof(address));
 
         Name = name.Trim();
         Address = address.Trim();

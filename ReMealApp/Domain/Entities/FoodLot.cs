@@ -67,16 +67,16 @@ public class FoodLot
         DateTime pickupDeadline)
     {
         if (Status is LotStatus.Cancelled or LotStatus.Expired)
-            throw new InvalidOperationException("Cannot update a cancelled or expired lot.");
+            throw new InvalidOperationException("Не удается обновить отмененную партию или истек срок годности.");
 
         if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentException("Title is required.", nameof(title));
+            throw new ArgumentException("Требуется название.", nameof(title));
 
         if (price < 0)
-            throw new ArgumentException("Price cannot be negative.", nameof(price));
+            throw new ArgumentException("Цена не может быть отрицательной.", nameof(price));
 
         if (pickupDeadline <= DateTime.UtcNow)
-            throw new ArgumentException("Pickup deadline must be in the future.", nameof(pickupDeadline));
+            throw new ArgumentException("Крайний срок доставки должен быть в будущем.", nameof(pickupDeadline));
 
         Title = title.Trim();
         Description = description.Trim();
@@ -96,10 +96,10 @@ public class FoodLot
     public void DecreaseQuantity(int amount)
     {
         if (amount <= 0)
-            throw new ArgumentOutOfRangeException(nameof(amount), "Amount must be positive.");
+            throw new ArgumentOutOfRangeException(nameof(amount), "Сумма должна быть положительной.");
 
         if (AvailableQuantity < amount)
-            throw new InvalidOperationException("Not enough available quantity.");
+            throw new InvalidOperationException("Недостаточно доступного количества.");
 
         AvailableQuantity -= amount;
         UpdatedAt = DateTime.UtcNow;
@@ -109,7 +109,7 @@ public class FoodLot
     public void IncreaseQuantity(int amount)
     {
         if (amount <= 0)
-            throw new ArgumentOutOfRangeException(nameof(amount), "Amount must be positive.");
+            throw new ArgumentOutOfRangeException(nameof(amount), "Сумма должна быть положительной.");
 
         AvailableQuantity += amount;
         TotalQuantity += amount;
@@ -124,16 +124,16 @@ public class FoodLot
         DateTime pickupDeadline)
     {
         if (foodPointId == Guid.Empty)
-            throw new ArgumentException("Food point is required.", nameof(foodPointId));
+            throw new ArgumentException("Требуется пункт питания.", nameof(foodPointId));
 
         if (totalQuantity <= 0)
-            throw new ArgumentException("Quantity must be greater than zero.", nameof(totalQuantity));
+            throw new ArgumentException("Количество должно быть больше нуля.", nameof(totalQuantity));
 
         if (price < 0)
-            throw new ArgumentException("Price cannot be negative.", nameof(price));
+            throw new ArgumentException("Цена не может быть отрицательной.", nameof(price));
 
         if (pickupDeadline <= DateTime.UtcNow)
-            throw new ArgumentException("Pickup deadline must be in the future.", nameof(pickupDeadline));
+            throw new ArgumentException("Крайний срок доставки должен быть в будущем.", nameof(pickupDeadline));
     }
 
     internal void RefreshStatus()

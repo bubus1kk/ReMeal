@@ -26,10 +26,10 @@ public class LotService : ILotService
         CancellationToken cancellationToken = default)
     {
         var foodPoint = await _foodPointRepository.GetByIdAsync(request.FoodPointId, cancellationToken)
-            ?? throw new KeyNotFoundException($"Food point '{request.FoodPointId}' was not found.");
+            ?? throw new KeyNotFoundException($"Точка питания '{request.FoodPointId}' не найдена.");
 
         if (!foodPoint.IsActive)
-            throw new InvalidOperationException("Cannot create a lot for an inactive food point.");
+            throw new InvalidOperationException("Невозможно создать много места для неактивной точки питания.");
 
         var lot = new FoodLot(
             request.FoodPointId,
@@ -50,7 +50,7 @@ public class LotService : ILotService
         CancellationToken cancellationToken = default)
     {
         var lot = await _foodLotRepository.GetByIdAsync(request.Id, cancellationToken)
-            ?? throw new KeyNotFoundException($"Lot '{request.Id}' was not found.");
+            ?? throw new KeyNotFoundException($"Лот '{request.Id}' не найден.");
 
         lot.Update(
             request.Title,
@@ -67,7 +67,7 @@ public class LotService : ILotService
     public async Task DeleteLotAsync(Guid lotId, CancellationToken cancellationToken = default)
     {
         var lot = await _foodLotRepository.GetByIdAsync(lotId, cancellationToken)
-            ?? throw new KeyNotFoundException($"Lot '{lotId}' was not found.");
+            ?? throw new KeyNotFoundException($"Лот '{lotId}' не найден.");
 
         await _foodLotRepository.DeleteAsync(lot, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
