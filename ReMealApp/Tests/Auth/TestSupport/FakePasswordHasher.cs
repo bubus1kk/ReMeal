@@ -1,4 +1,4 @@
-﻿namespace Tests.TestSupport;
+﻿namespace ReMeal.Tests.Auth.TestSupport;
 
 public class FakePasswordHasher
 {
