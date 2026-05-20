@@ -9,6 +9,7 @@ namespace Tests.TestSupport
     internal sealed class TestAuthService : IAuthService
     {
         private UserProfileDto? _currentUser;
+        private Guid? _rememberedUserId;
 
         public Guid? CurrentUserId => _currentUser?.Id;
 
@@ -60,8 +61,21 @@ namespace Tests.TestSupport
             };
         }
 
-        public void Logout()
+        public bool IsCurrentUserRemembered()
         {
+            return _currentUser is not null && _rememberedUserId == _currentUser.Id;
+        }
+
+        public void RememberCurrentUser()
+        {
+            _rememberedUserId = _currentUser?.Id;
+        }
+
+        public void Logout(bool forgetRememberedUser = true)
+        {
+            if (forgetRememberedUser)
+                _rememberedUserId = null;
+
             _currentUser = null;
         }
     }

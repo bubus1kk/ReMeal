@@ -62,11 +62,13 @@ namespace ReMealApp.ViewModels.Auth
         public LoginViewModel(
             IAuthService authService,
             Func<Task> showProfileAsync,
-            string initialErrorMessage = "")
+            string initialErrorMessage = "",
+            string initialLogin = "")
         {
             _authService = authService;
             _showProfileAsync = showProfileAsync;
             _errorMessage = initialErrorMessage;
+            _login = initialLogin;
             _selectedRole = Roles[0];
         }
 

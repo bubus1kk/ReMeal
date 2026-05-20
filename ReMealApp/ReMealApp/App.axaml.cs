@@ -33,7 +33,8 @@ namespace ReMealApp
                         userModule.UserProfileService,
                         userModule.FoodPointService,
                         userModule.LotService,
-                        userModule.ProfileStatisticsService);
+                        userModule.ProfileStatisticsService,
+                        () => desktop.Shutdown());
 
                     desktop.MainWindow = new MainWindow
                     {

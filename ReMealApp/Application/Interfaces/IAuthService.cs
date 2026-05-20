@@ -15,6 +15,8 @@ namespace Application.Interfaces
 
         Task<UserProfileDto?> GetCurrentUserAsync(CancellationToken cancellationToken = default);
 
-        void Logout();
+        bool IsCurrentUserRemembered();
+
+        void Logout(bool forgetRememberedUser = true);
     }
 }

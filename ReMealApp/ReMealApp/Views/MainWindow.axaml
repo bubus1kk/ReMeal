@@ -10,7 +10,8 @@
         Height="768"
         MinWidth="1180"
         MinHeight="720"
-        Title="ReMeal">
+        Title="ReMeal"
+        Icon="/Assets/Brand/app-icon-taskbar.png">
 
     <ContentControl Content="{Binding CurrentViewModel}"/>
 

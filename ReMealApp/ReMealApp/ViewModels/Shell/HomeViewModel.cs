@@ -22,7 +22,8 @@ namespace ReMealApp.ViewModels.Shell
         public const string CreateLotSection = "create-lot";
 
         private readonly IAuthService _authService;
-        private readonly Action _showLogin;
+        private readonly Action<string> _showLogin;
+        private readonly Action _exitApplication;
 
         [ObservableProperty]
         private ViewModelBase _currentSectionViewModel;
@@ -42,16 +43,21 @@ namespace ReMealApp.ViewModels.Shell
         [ObservableProperty]
         private bool _isLogoutConfirmationOpen;
 
+        [ObservableProperty]
+        private bool _isApplicationExitConfirmationOpen;
+
         public HomeViewModel(
             IAuthService authService,
             IUserProfileService userProfileService,
             IFoodPointService foodPointService,
             ILotService lotService,
             IProfileStatisticsService profileStatisticsService,
-            Action showLogin)
+            Action<string> showLogin,
+            Action exitApplication)
         {
             _authService = authService;
             _showLogin = showLogin;
+            _exitApplication = exitApplication;
 
             Profile = new UserProfileViewModel(
                 userProfileService,
@@ -89,11 +95,11 @@ namespace ReMealApp.ViewModels.Shell
 
         public bool IsSettingsSelected => SelectedSectionKey == SettingsSection;
 
-        public double SidebarWidth => IsSidebarExpanded ? 244 : 92;
+        public double SidebarWidth => IsSidebarExpanded ? 196 : 72;
 
-        public double SidebarLogoWidth => IsSidebarExpanded ? 96 : 0;
+        public double SidebarLogoWidth => IsSidebarExpanded ? 138 : 0;
 
-        public double SidebarLogoHeight => IsSidebarExpanded ? 96 : 0;
+        public double SidebarLogoHeight => IsSidebarExpanded ? 58 : 0;
 
         public string SidebarToggleText => IsSidebarExpanded ? "<" : ">";
 
@@ -164,28 +170,20 @@ namespace ReMealApp.ViewModels.Shell
         [RelayCommand]
         private void Logout()
         {
-            IsLogoutConfirmationOpen = true;
+            IsApplicationExitConfirmationOpen = true;
         }
 
         [RelayCommand]
-        private void CancelLogout()
+        private void CancelApplicationExit()
         {
-            IsLogoutConfirmationOpen = false;
+            IsApplicationExitConfirmationOpen = false;
         }
 
         [RelayCommand]
-        private void ConfirmLogout()
+        private void ConfirmApplicationExit()
         {
-            try
-            {
-                IsLogoutConfirmationOpen = false;
-                _authService.Logout();
-                _showLogin();
-            }
-            catch (Exception ex)
-            {
-                Profile.StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
-            }
+            IsApplicationExitConfirmationOpen = false;
+            _exitApplication();
         }
 
         public async Task RefreshPartnerAsync()

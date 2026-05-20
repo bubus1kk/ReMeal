@@ -110,6 +110,22 @@
             <Setter Property="Foreground" Value="#EDF6EF"/>
             <Setter Property="Padding" Value="12,0"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
+        <Style Selector="TextBox.profile-input:pointerover /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="#17211E"/>
+            <Setter Property="BorderBrush" Value="#3A5047"/>
+        </Style>
+
+        <Style Selector="TextBox.profile-input:focus /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="#18231F"/>
+            <Setter Property="BorderBrush" Value="#74CF61"/>
+        </Style>
+
+        <Style Selector="TextBox.profile-input:focus-within /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="#18231F"/>
+            <Setter Property="BorderBrush" Value="#74CF61"/>
         </Style>
 
         <Style Selector="ListBox.point-list">
@@ -239,16 +255,13 @@
                                             Spacing="10"
                                             MinWidth="150"
                                             VerticalAlignment="Center">
-                                    <Button Classes="icon-action"
-                                            Command="{Binding OpenEditModalCommand}"
-                                            HorizontalAlignment="Right">
-                                        <Image Source="/Assets/Icons/edit.png"
-                                               Width="18"
-                                               Height="18"/>
-                                    </Button>
                                     <Button Classes="profile-action"
                                             Content="{Binding RoleActionText}"
                                             Command="{Binding RoleActionCommand}"
+                                            HorizontalAlignment="Stretch"/>
+                                    <Button Classes="profile-action"
+                                            Content="Выйти из профиля"
+                                            Command="{Binding LogoutCommand}"
                                             HorizontalAlignment="Stretch"/>
                                 </StackPanel>
                             </Grid>
@@ -881,5 +894,6 @@
                 </StackPanel>
             </Border>
         </Grid>
+
     </Grid>
 </UserControl>

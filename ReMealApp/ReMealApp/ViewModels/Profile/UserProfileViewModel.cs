@@ -18,7 +18,7 @@ namespace ReMealApp.ViewModels.Profile
         private readonly IAuthService _authService;
         private readonly IProfileStatisticsService _profileStatisticsService;
         private readonly Action<string> _navigateToSection;
-        private readonly Action _showLogin;
+        private readonly Action<string> _showLogin;
 
         [ObservableProperty]
         private string _login = string.Empty;
@@ -83,12 +83,15 @@ namespace ReMealApp.ViewModels.Profile
         [ObservableProperty]
         private bool _hasRoleDistribution;
 
+        [ObservableProperty]
+        private bool _isLogoutConfirmationOpen;
+
         public UserProfileViewModel(
             IUserProfileService userProfileService,
             IAuthService authService,
             IProfileStatisticsService profileStatisticsService,
             Action<string> navigateToSection,
-            Action showLogin)
+            Action<string> showLogin)
         {
             _userProfileService = userProfileService;
             _authService = authService;
@@ -325,10 +328,24 @@ namespace ReMealApp.ViewModels.Profile
         [RelayCommand]
         private void Logout()
         {
+            IsLogoutConfirmationOpen = true;
+        }
+
+        [RelayCommand]
+        private void CancelLogout()
+        {
+            IsLogoutConfirmationOpen = false;
+        }
+
+        [RelayCommand]
+        private void ConfirmLogout()
+        {
             try
             {
-                _authService.Logout();
-                _showLogin();
+                var initialLogin = _authService.IsCurrentUserRemembered() ? Login : string.Empty;
+                _authService.Logout(string.IsNullOrWhiteSpace(initialLogin));
+                IsLogoutConfirmationOpen = false;
+                _showLogin(initialLogin);
             }
             catch (Exception ex)
             {

@@ -12,6 +12,7 @@ namespace ReMealApp.ViewModels
         private readonly IFoodPointService _foodPointService;
         private readonly ILotService _lotService;
         private readonly IProfileStatisticsService _profileStatisticsService;
+        private readonly Action _exitApplication;
 
         [ObservableProperty]
         private ViewModelBase _currentViewModel;
@@ -21,13 +22,15 @@ namespace ReMealApp.ViewModels
             IUserProfileService userProfileService,
             IFoodPointService foodPointService,
             ILotService lotService,
-            IProfileStatisticsService profileStatisticsService)
+            IProfileStatisticsService profileStatisticsService,
+            Action exitApplication)
         {
             _authService = authService;
             _userProfileService = userProfileService;
             _foodPointService = foodPointService;
             _lotService = lotService;
             _profileStatisticsService = profileStatisticsService;
+            _exitApplication = exitApplication;
             _currentViewModel = CreateLoginViewModel();
         }
 
@@ -45,9 +48,9 @@ namespace ReMealApp.ViewModels
             }
         }
 
-        private LoginViewModel CreateLoginViewModel(string initialErrorMessage = "")
+        private LoginViewModel CreateLoginViewModel(string initialErrorMessage = "", string initialLogin = "")
         {
-            return new LoginViewModel(_authService, ShowHomeAsync, initialErrorMessage);
+            return new LoginViewModel(_authService, ShowHomeAsync, initialErrorMessage, initialLogin);
         }
 
         private async Task ShowHomeAsync()
@@ -58,15 +61,16 @@ namespace ReMealApp.ViewModels
                 _foodPointService,
                 _lotService,
                 _profileStatisticsService,
-                ShowLogin);
+                ShowLogin,
+                _exitApplication);
 
             await homeViewModel.InitializeAsync();
             CurrentViewModel = homeViewModel;
         }
 
-        private void ShowLogin()
+        private void ShowLogin(string initialLogin = "")
         {
-            CurrentViewModel = CreateLoginViewModel();
+            CurrentViewModel = CreateLoginViewModel(initialLogin: initialLogin);
         }
     }
 }

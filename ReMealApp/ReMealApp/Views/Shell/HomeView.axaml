@@ -24,13 +24,14 @@
             <Setter Property="Width" Value="34"/>
             <Setter Property="Height" Value="34"/>
             <Setter Property="Padding" Value="0"/>
-            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="CornerRadius" Value="0,12,12,0"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="#23332D"/>
             <Setter Property="Background" Value="#101916"/>
             <Setter Property="Foreground" Value="#74CF61"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="15"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
 
@@ -38,6 +39,7 @@
             <Setter Property="Height" Value="42"/>
             <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
@@ -82,27 +84,19 @@
 
         <Border Grid.Column="0"
                 Width="{Binding SidebarWidth}"
-                Padding="14,20"
+                Padding="12,20"
                 BorderBrush="#18251F"
                 BorderThickness="0,0,1,0"
                 Background="#090F0E">
             <Grid RowDefinitions="Auto,*">
-                <Grid Grid.Row="0"
-                      ColumnDefinitions="*,Auto">
-                    <Image Source="/Assets/Brand/remeal-logo.png"
+                <Grid Grid.Row="0">
+                    <Image Source="/Assets/Brand/remeal-logo-sidebar.png"
                            Width="{Binding SidebarLogoWidth}"
                            Height="{Binding SidebarLogoHeight}"
                            IsVisible="{Binding IsSidebarExpanded}"
                            Stretch="Uniform"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"/>
-
-                    <Button Grid.Column="1"
-                            Classes="sidebar-toggle"
-                            Content="{Binding SidebarToggleText}"
-                            Command="{Binding ToggleSidebarCommand}"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"/>
                 </Grid>
 
                 <Grid Grid.Row="1"
@@ -319,10 +313,66 @@
             <ContentControl Content="{Binding CurrentSectionViewModel}"/>
         </Border>
 
+        <Button Grid.Column="1"
+                Classes="sidebar-toggle"
+                Content="{Binding SidebarToggleText}"
+                Command="{Binding ToggleSidebarCommand}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="-1,28,0,0"
+                ZIndex="20"/>
+
         <Grid Grid.ColumnSpan="2"
-              IsVisible="{Binding IsLogoutConfirmationOpen}"
+              IsVisible="{Binding IsApplicationExitConfirmationOpen}"
               Background="#99000000">
-            <Border Width="430"
+            <Border Width="600"
+                    Padding="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    CornerRadius="18"
+                    BorderBrush="#31443A"
+                    BorderThickness="1"
+                    Background="#101917"
+                    BoxShadow="0 24 70 0 #99000000">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Закрыть ReMeal?"
+                               Foreground="#F2F8F1"
+                               FontSize="22"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="Приложение будет закрыто. Текущий аккаунт останется сохранённым согласно настройке входа."
+                               Foreground="#AAB9B0"
+                               FontSize="14"
+                               LineHeight="21"
+                               TextWrapping="Wrap"/>
+                    <Grid ColumnDefinitions="*,*"
+                          ColumnSpacing="12"
+                          Margin="0,8,0,0">
+                        <Button Classes="dialog-button"
+                                Content="Отмена"
+                                Command="{Binding CancelApplicationExitCommand}"
+                                HorizontalAlignment="Stretch"
+                                Background="#14201C"
+                                BorderBrush="#2C4238"
+                                BorderThickness="1"
+                                Foreground="#E7F1EA"/>
+                        <Button Grid.Column="1"
+                                Classes="dialog-button"
+                                Content="Закрыть"
+                                Command="{Binding ConfirmApplicationExitCommand}"
+                                HorizontalAlignment="Stretch"
+                                Background="#4C923E"
+                                BorderThickness="0"
+                                Foreground="#F8FFF4"
+                                FontWeight="SemiBold"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid Grid.ColumnSpan="2"
+              IsVisible="{Binding Profile.IsLogoutConfirmationOpen}"
+              Background="#99000000">
+            <Border Width="600"
                     Padding="24"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -346,7 +396,7 @@
                           Margin="0,8,0,0">
                         <Button Classes="dialog-button"
                                 Content="Отмена"
-                                Command="{Binding CancelLogoutCommand}"
+                                Command="{Binding Profile.CancelLogoutCommand}"
                                 Background="#14201C"
                                 BorderBrush="#2C4238"
                                 BorderThickness="1"
@@ -354,7 +404,7 @@
                         <Button Grid.Column="1"
                                 Classes="dialog-button"
                                 Content="Выйти"
-                                Command="{Binding ConfirmLogoutCommand}"
+                                Command="{Binding Profile.ConfirmLogoutCommand}"
                                 Background="#4C923E"
                                 BorderThickness="0"
                                 Foreground="#F8FFF4"

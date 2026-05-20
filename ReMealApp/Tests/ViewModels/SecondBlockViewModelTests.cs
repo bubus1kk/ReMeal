@@ -134,6 +134,7 @@ namespace Tests.ViewModels
                 database.FoodPointService,
                 database.LotService,
                 profileStatisticsService,
+                _ => { },
                 () => { });
         }
 
