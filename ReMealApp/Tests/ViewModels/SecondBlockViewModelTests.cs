@@ -122,12 +122,18 @@ namespace Tests.ViewModels
         private static HomeViewModel CreateHomeViewModel(SqliteTestDatabase database)
         {
             var userProfileService = new UserProfileService(database.Auth, database.UserRepository);
+            var profileStatisticsService = new ProfileStatisticsService(
+                database.Auth,
+                database.UserRepository,
+                database.FoodPointRepository,
+                database.FoodLotRepository);
 
             return new HomeViewModel(
                 database.Auth,
                 userProfileService,
                 database.FoodPointService,
                 database.LotService,
+                profileStatisticsService,
                 () => { });
         }
 

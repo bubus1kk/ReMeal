@@ -32,7 +32,8 @@ namespace ReMealApp
                         userModule.AuthService,
                         userModule.UserProfileService,
                         userModule.FoodPointService,
-                        userModule.LotService);
+                        userModule.LotService,
+                        userModule.ProfileStatisticsService);
 
                     desktop.MainWindow = new MainWindow
                     {

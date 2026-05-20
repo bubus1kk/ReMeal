@@ -113,6 +113,7 @@ namespace Application.Services
                 FullName = user.FullName,
                 Email = user.Email,
                 Phone = user.Phone,
+                AvatarPath = user.AvatarPath,
                 Role = user.Role
             };
         }

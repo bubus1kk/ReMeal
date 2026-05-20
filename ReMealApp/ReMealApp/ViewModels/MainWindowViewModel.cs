@@ -11,6 +11,7 @@ namespace ReMealApp.ViewModels
         private readonly IUserProfileService _userProfileService;
         private readonly IFoodPointService _foodPointService;
         private readonly ILotService _lotService;
+        private readonly IProfileStatisticsService _profileStatisticsService;
 
         [ObservableProperty]
         private ViewModelBase _currentViewModel;
@@ -19,12 +20,14 @@ namespace ReMealApp.ViewModels
             IAuthService authService,
             IUserProfileService userProfileService,
             IFoodPointService foodPointService,
-            ILotService lotService)
+            ILotService lotService,
+            IProfileStatisticsService profileStatisticsService)
         {
             _authService = authService;
             _userProfileService = userProfileService;
             _foodPointService = foodPointService;
             _lotService = lotService;
+            _profileStatisticsService = profileStatisticsService;
             _currentViewModel = CreateLoginViewModel();
         }
 
@@ -54,6 +57,7 @@ namespace ReMealApp.ViewModels
                 _userProfileService,
                 _foodPointService,
                 _lotService,
+                _profileStatisticsService,
                 ShowLogin);
 
             await homeViewModel.InitializeAsync();

@@ -1,44 +1,367 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ReMealApp.ViewModels.Shell"
-             xmlns:profile="using:ReMealApp.Views.Profile"
-             xmlns:catalog="using:ReMealApp.Views.Catalog"
-             xmlns:partner="using:ReMealApp.Views.Partner"
+             xmlns:conv="using:ReMealApp.Converters"
              x:Class="ReMealApp.Views.Shell.HomeView"
              x:DataType="vm:HomeViewModel">
+    <UserControl.Resources>
+        <conv:ImagePathToBitmapConverter x:Key="ImagePathConverter"/>
+    </UserControl.Resources>
 
-    <Grid RowDefinitions="Auto,*" Margin="24">
-        <StackPanel Grid.Row="0" Spacing="4" Margin="0,0,0,12">
-            <TextBlock Text="ReMeal" Classes="section-title" FontSize="22"/>
-            <TextBlock Text="Информационная система перераспределения пищевых наборов"
-                       Opacity="0.7"/>
-        </StackPanel>
+    <UserControl.Styles>
+        <Style Selector="Button.nav-button">
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#B7C4BD"/>
+        </Style>
 
-        <TabControl Grid.Row="1"
-                    SelectedIndex="{Binding SelectedTabIndex}">
-            <TabItem Header="Личный кабинет">
-                <profile:UserProfileView DataContext="{Binding Profile}"/>
-            </TabItem>
+        <Style Selector="Button.sidebar-toggle">
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#23332D"/>
+            <Setter Property="Background" Value="#101916"/>
+            <Setter Property="Foreground" Value="#74CF61"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
 
-            <TabItem Header="Каталог"
-                     IsVisible="{Binding IsCatalogVisible}">
-                <catalog:CatalogView DataContext="{Binding Catalog}"/>
-            </TabItem>
+        <Style Selector="Button.dialog-button">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
 
-            <TabItem Header="Точка питания"
-                     IsVisible="{Binding IsPartner}">
-                <partner:FoodPointView DataContext="{Binding FoodPoint}"/>
-            </TabItem>
+        <Style Selector="Button.nav-button:pointerover">
+            <Setter Property="Background" Value="#141F1B"/>
+            <Setter Property="Foreground" Value="#E6F1E9"/>
+        </Style>
 
-            <TabItem Header="Лоты"
-                     IsVisible="{Binding IsPartner}">
-                <partner:PartnerLotsView DataContext="{Binding PartnerLots}"/>
-            </TabItem>
+        <Style Selector="Button.nav-button:pressed">
+            <Setter Property="Background" Value="#18261F"/>
+        </Style>
 
-            <TabItem Header="Создать / редактировать лот"
-                     IsVisible="{Binding IsPartner}">
-                <partner:CreateLotView DataContext="{Binding CreateLot}"/>
-            </TabItem>
-        </TabControl>
+        <Style Selector="Button.nav-button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#141F1B"/>
+        </Style>
+
+        <Style Selector="Button.nav-button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#18261F"/>
+        </Style>
+
+        <Style Selector="TextBlock.nav-label">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#B7C4BD"/>
+        </Style>
+
+        <Style Selector="Image.nav-icon">
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Opacity" Value="0.9"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid ColumnDefinitions="Auto,*">
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                <GradientStop Color="#070C0B" Offset="0"/>
+                <GradientStop Color="#0B1210" Offset="0.55"/>
+                <GradientStop Color="#101916" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Border Grid.Column="0"
+                Width="{Binding SidebarWidth}"
+                Padding="14,20"
+                BorderBrush="#18251F"
+                BorderThickness="0,0,1,0"
+                Background="#090F0E">
+            <Grid RowDefinitions="Auto,*">
+                <Grid Grid.Row="0"
+                      ColumnDefinitions="*,Auto">
+                    <Image Source="/Assets/Brand/remeal-logo.png"
+                           Width="{Binding SidebarLogoWidth}"
+                           Height="{Binding SidebarLogoHeight}"
+                           IsVisible="{Binding IsSidebarExpanded}"
+                           Stretch="Uniform"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"/>
+
+                    <Button Grid.Column="1"
+                            Classes="sidebar-toggle"
+                            Content="{Binding SidebarToggleText}"
+                            Command="{Binding ToggleSidebarCommand}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"/>
+                </Grid>
+
+                <Grid Grid.Row="1"
+                      RowDefinitions="*,Auto"
+                      Margin="0,34,0,0">
+                    <StackPanel Grid.Row="0"
+                                Spacing="8">
+                        <Button Classes="nav-button"
+                                Command="{Binding ShowHomeCommand}">
+                            <Grid ColumnDefinitions="4,38,*"
+                                  Margin="0,0,8,0">
+                                <Border Grid.Column="0"
+                                        Width="4"
+                                        Height="24"
+                                        CornerRadius="3"
+                                        Background="#75C943"
+                                        IsVisible="{Binding IsHomeSelected}"/>
+                                <Image Grid.Column="1"
+                                       Classes="nav-icon"
+                                       Source="/Assets/Icons/home.png"/>
+                                <TextBlock Grid.Column="2"
+                                           Classes="nav-label"
+                                           Text="Главная"
+                                           IsVisible="{Binding IsSidebarExpanded}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+
+                        <Button Classes="nav-button"
+                                Command="{Binding ShowCatalogCommand}">
+                            <Grid ColumnDefinitions="4,38,*"
+                                  Margin="0,0,8,0">
+                                <Border Grid.Column="0"
+                                        Width="4"
+                                        Height="24"
+                                        CornerRadius="3"
+                                        Background="#75C943"
+                                        IsVisible="{Binding IsCatalogSelected}"/>
+                                <Image Grid.Column="1"
+                                       Classes="nav-icon"
+                                       Source="/Assets/Icons/sets.png"/>
+                                <TextBlock Grid.Column="2"
+                                           Classes="nav-label"
+                                           Text="Наборы"
+                                           IsVisible="{Binding IsSidebarExpanded}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+
+                        <Button Classes="nav-button"
+                                Command="{Binding ShowBookingsCommand}">
+                            <Grid ColumnDefinitions="4,38,*"
+                                  Margin="0,0,8,0">
+                                <Image Grid.Column="1"
+                                       Classes="nav-icon"
+                                       Source="/Assets/Icons/bookings.png"/>
+                                <TextBlock Grid.Column="2"
+                                           Classes="nav-label"
+                                           Text="Мои брони"
+                                           IsVisible="{Binding IsSidebarExpanded}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+
+                        <Button Classes="nav-button"
+                                Command="{Binding ShowFavoritesCommand}">
+                            <Grid ColumnDefinitions="4,38,*"
+                                  Margin="0,0,8,0">
+                                <Image Grid.Column="1"
+                                       Classes="nav-icon"
+                                       Source="/Assets/Icons/favorites.png"/>
+                                <TextBlock Grid.Column="2"
+                                           Classes="nav-label"
+                                           Text="Избранное"
+                                           IsVisible="{Binding IsSidebarExpanded}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+
+                        <Button Classes="nav-button"
+                                Focusable="False">
+                            <Grid ColumnDefinitions="4,38,*"
+                                  Margin="0,0,8,0">
+                                <Image Grid.Column="1"
+                                       Classes="nav-icon"
+                                       Source="/Assets/Icons/message.png"/>
+                                <TextBlock Grid.Column="2"
+                                           Classes="nav-label"
+                                           Text="Сообщения"
+                                           IsVisible="{Binding IsSidebarExpanded}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+
+                        <Button Classes="nav-button"
+                                Command="{Binding ShowFoodPointsCommand}">
+                            <Grid ColumnDefinitions="4,38,*"
+                                  Margin="0,0,8,0">
+                                <Border Grid.Column="0"
+                                        Width="4"
+                                        Height="24"
+                                        CornerRadius="3"
+                                        Background="#75C943"
+                                        IsVisible="{Binding IsFoodPointsSelected}"/>
+                                <Image Grid.Column="1"
+                                       Classes="nav-icon"
+                                       Source="{Binding FoodPointsNavigationIconPath, Converter={StaticResource ImagePathConverter}}"/>
+                                <TextBlock Grid.Column="2"
+                                           Classes="nav-label"
+                                           Text="{Binding FoodPointsNavigationText}"
+                                           IsVisible="{Binding IsSidebarExpanded}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+
+                        <Button Classes="nav-button"
+                                Command="{Binding ShowAnalyticsCommand}">
+                            <Grid ColumnDefinitions="4,38,*"
+                                  Margin="0,0,8,0">
+                                <Border Grid.Column="0"
+                                        Width="4"
+                                        Height="24"
+                                        CornerRadius="3"
+                                        Background="#75C943"
+                                        IsVisible="{Binding IsAnalyticsSelected}"/>
+                                <Image Grid.Column="1"
+                                       Classes="nav-icon"
+                                       Source="/Assets/Icons/analytics.png"/>
+                                <TextBlock Grid.Column="2"
+                                           Classes="nav-label"
+                                           Text="Аналитика"
+                                           IsVisible="{Binding IsSidebarExpanded}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1"
+                                Spacing="8">
+                        <Border Height="1"
+                                Margin="0,0,0,10"
+                                Background="#223029"/>
+
+                        <Button Classes="nav-button"
+                                Command="{Binding ShowProfileCommand}">
+                            <Grid ColumnDefinitions="4,38,*"
+                                  Margin="0,0,8,0">
+                                <Border Grid.Column="0"
+                                        Width="4"
+                                        Height="24"
+                                        CornerRadius="3"
+                                        Background="#75C943"
+                                        IsVisible="{Binding IsProfileSelected}"/>
+                                <Image Grid.Column="1"
+                                       Classes="nav-icon"
+                                       Source="/Assets/Icons/profile.png"/>
+                                <TextBlock Grid.Column="2"
+                                           Classes="nav-label"
+                                           Text="Профиль"
+                                           IsVisible="{Binding IsSidebarExpanded}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+
+                        <Button Classes="nav-button"
+                                Command="{Binding ShowSettingsCommand}">
+                            <Grid ColumnDefinitions="4,38,*"
+                                  Margin="0,0,8,0">
+                                <Border Grid.Column="0"
+                                        Width="4"
+                                        Height="24"
+                                        CornerRadius="3"
+                                        Background="#75C943"
+                                        IsVisible="{Binding IsSettingsSelected}"/>
+                                <Image Grid.Column="1"
+                                       Classes="nav-icon"
+                                       Source="/Assets/Icons/settings.png"/>
+                                <TextBlock Grid.Column="2"
+                                           Classes="nav-label"
+                                           Text="Настройки"
+                                           IsVisible="{Binding IsSidebarExpanded}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+
+                        <Button Classes="nav-button"
+                                Command="{Binding LogoutCommand}">
+                            <Grid ColumnDefinitions="4,38,*"
+                                  Margin="0,0,8,0">
+                                <Path Grid.Column="1"
+                                      Width="18"
+                                      Height="18"
+                                      Data="M3,3 L15,15 M15,3 L3,15"
+                                      Stroke="#74CF61"
+                                      StrokeThickness="2"
+                                      StrokeLineCap="Round"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2"
+                                           Classes="nav-label"
+                                           Text="Выход"
+                                           IsVisible="{Binding IsSidebarExpanded}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Border Grid.Column="1"
+                Padding="30,26"
+                Background="#0A100F">
+            <ContentControl Content="{Binding CurrentSectionViewModel}"/>
+        </Border>
+
+        <Grid Grid.ColumnSpan="2"
+              IsVisible="{Binding IsLogoutConfirmationOpen}"
+              Background="#99000000">
+            <Border Width="430"
+                    Padding="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    CornerRadius="18"
+                    BorderBrush="#31443A"
+                    BorderThickness="1"
+                    Background="#101917"
+                    BoxShadow="0 24 70 0 #99000000">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Выйти из профиля?"
+                               Foreground="#F2F8F1"
+                               FontSize="22"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="Текущая сессия будет завершена, и приложение вернётся на экран входа."
+                               Foreground="#AAB9B0"
+                               FontSize="14"
+                               LineHeight="21"
+                               TextWrapping="Wrap"/>
+                    <Grid ColumnDefinitions="*,*"
+                          ColumnSpacing="12"
+                          Margin="0,8,0,0">
+                        <Button Classes="dialog-button"
+                                Content="Отмена"
+                                Command="{Binding CancelLogoutCommand}"
+                                Background="#14201C"
+                                BorderBrush="#2C4238"
+                                BorderThickness="1"
+                                Foreground="#E7F1EA"/>
+                        <Button Grid.Column="1"
+                                Classes="dialog-button"
+                                Content="Выйти"
+                                Command="{Binding ConfirmLogoutCommand}"
+                                Background="#4C923E"
+                                BorderThickness="0"
+                                Foreground="#F8FFF4"
+                                FontWeight="SemiBold"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

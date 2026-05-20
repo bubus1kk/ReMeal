@@ -27,6 +27,16 @@ namespace Infrastructure.Persistence.Repositories
                 "получить пользователя по логину");
         }
 
+        public Task<List<User>> GetAllAsync(CancellationToken cancellationToken = default)
+        {
+            return DataAccessGuard.ExecuteAsync(
+                () => _dbContext.Users
+                    .OrderBy(user => user.FullName)
+                    .ThenBy(user => user.Login)
+                    .ToListAsync(cancellationToken),
+                "получить список пользователей");
+        }
+
         public Task<bool> LoginExistsAsync(string login, CancellationToken cancellationToken = default)
         {
             return DataAccessGuard.ExecuteAsync(

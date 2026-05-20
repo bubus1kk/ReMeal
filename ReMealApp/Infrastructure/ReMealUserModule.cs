@@ -16,12 +16,14 @@ namespace Infrastructure
             IAuthService authService,
             IUserProfileService userProfileService,
             IFoodPointService foodPointService,
-            ILotService lotService)
+            ILotService lotService,
+            IProfileStatisticsService profileStatisticsService)
         {
             AuthService = authService;
             UserProfileService = userProfileService;
             FoodPointService = foodPointService;
             LotService = lotService;
+            ProfileStatisticsService = profileStatisticsService;
         }
 
         public IAuthService AuthService { get; }
@@ -31,6 +33,8 @@ namespace Infrastructure
         public IFoodPointService FoodPointService { get; }
 
         public ILotService LotService { get; }
+
+        public IProfileStatisticsService ProfileStatisticsService { get; }
 
         public static ReMealUserModule CreateDefault()
         {
@@ -66,8 +70,13 @@ namespace Infrastructure
                 IFoodLotRepository foodLotRepository = new FoodLotRepository(dbContext);
                 IFoodPointService foodPointService = new FoodPointService(foodPointRepository, authService);
                 ILotService lotService = new LotService(foodPointRepository, foodLotRepository, authService);
+                IProfileStatisticsService profileStatisticsService = new ProfileStatisticsService(
+                    authService,
+                    userRepository,
+                    foodPointRepository,
+                    foodLotRepository);
 
-                return new ReMealUserModule(authService, userProfileService, foodPointService, lotService);
+                return new ReMealUserModule(authService, userProfileService, foodPointService, lotService, profileStatisticsService);
             }, "инициализировать доступ к данным приложения");
         }
     }

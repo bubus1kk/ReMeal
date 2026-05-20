@@ -41,6 +41,7 @@ namespace Tests.TestSupport
                 FullName = user.FullName,
                 Email = user.Email,
                 Phone = user.Phone,
+                AvatarPath = user.AvatarPath,
                 Role = user.Role
             };
         }
@@ -54,6 +55,7 @@ namespace Tests.TestSupport
                 FullName = "Test User",
                 Email = $"user-{id:N}@example.test",
                 Phone = "+10000000000",
+                AvatarPath = string.Empty,
                 Role = role
             };
         }
