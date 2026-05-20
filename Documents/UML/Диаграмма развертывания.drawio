@@ -1,0 +1,56 @@
+<mxfile host="Electron">
+  <diagram name="Страница-1" id="JmPS558WBopSFWq53wfN">
+    <mxGraphModel dx="1355" dy="825" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="UkzAhqfzN8LclzXS9CjS-32" edge="1" parent="1" source="UkzAhqfzN8LclzXS9CjS-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="UkzAhqfzN8LclzXS9CjS-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UkzAhqfzN8LclzXS9CjS-33" connectable="0" parent="UkzAhqfzN8LclzXS9CjS-32" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="HTTPS / API-запросы" vertex="1">
+          <mxGeometry relative="1" x="-0.11" y="2" as="geometry">
+            <mxPoint x="52" y="-13" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="UkzAhqfzN8LclzXS9CjS-4" parent="1" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;whiteSpace=wrap;" value="Рабочая станция" vertex="1">
+          <mxGeometry height="200" width="740" x="50" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="UkzAhqfzN8LclzXS9CjS-30" edge="1" parent="1" source="UkzAhqfzN8LclzXS9CjS-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="UkzAhqfzN8LclzXS9CjS-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UkzAhqfzN8LclzXS9CjS-31" connectable="0" parent="UkzAhqfzN8LclzXS9CjS-30" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Локальный доступ" vertex="1">
+          <mxGeometry relative="1" x="-0.1178" y="-4" as="geometry">
+            <mxPoint x="-4" y="19" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="UkzAhqfzN8LclzXS9CjS-15" parent="1" style="html=1;dropTarget=0;whiteSpace=wrap;" value="ReMeal Desktop App&lt;div&gt;Avalonia UI / .NET&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="180" x="140" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="UkzAhqfzN8LclzXS9CjS-16" parent="UkzAhqfzN8LclzXS9CjS-15" style="shape=module;jettyWidth=8;jettyHeight=4;" value="" vertex="1">
+          <mxGeometry height="20" relative="1" width="20" x="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="UkzAhqfzN8LclzXS9CjS-17" parent="1" style="html=1;dropTarget=0;whiteSpace=wrap;" value="remeal.db&lt;div&gt;SQLite Database File&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="180" x="560" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="UkzAhqfzN8LclzXS9CjS-18" parent="UkzAhqfzN8LclzXS9CjS-17" style="shape=module;jettyWidth=8;jettyHeight=4;" value="" vertex="1">
+          <mxGeometry height="20" relative="1" width="20" x="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="UkzAhqfzN8LclzXS9CjS-19" parent="1" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;whiteSpace=wrap;" value="Внешний картографический сервис" vertex="1">
+          <mxGeometry height="210" width="300" x="300" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="UkzAhqfzN8LclzXS9CjS-20" parent="1" style="html=1;dropTarget=0;whiteSpace=wrap;" value="Geocoding API" vertex="1">
+          <mxGeometry height="90" width="180" x="330" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="UkzAhqfzN8LclzXS9CjS-21" parent="UkzAhqfzN8LclzXS9CjS-20" style="shape=module;jettyWidth=8;jettyHeight=4;" value="" vertex="1">
+          <mxGeometry height="20" relative="1" width="20" x="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
