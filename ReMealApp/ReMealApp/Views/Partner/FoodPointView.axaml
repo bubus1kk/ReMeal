@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ReMealApp.ViewModels.Partner"
+             xmlns:ent="using:Domain.Entities"
              x:Class="ReMealApp.Views.Partner.FoodPointView"
              x:DataType="vm:FoodPointViewModel">
 
@@ -10,9 +11,19 @@
                 <TextBlock Text="Ваша точка питания"
                            Classes="section-title"/>
 
-                <TextBlock Text="Текущий партнер может управлять только своей точкой питания."
+                <TextBlock Text="Текущий партнер может управлять своими точками питания."
                            TextWrapping="Wrap"
                            Opacity="0.7"/>
+
+                <ComboBox ItemsSource="{Binding FoodPoints}"
+                          SelectedItem="{Binding SelectedFoodPoint}"
+                          HorizontalAlignment="Stretch">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="ent:FoodPoint">
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
 
                 <Grid ColumnDefinitions="140,*" RowDefinitions="Auto,Auto,Auto">
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Статус" Opacity="0.7"/>
@@ -20,15 +31,17 @@
                                Text="{Binding FoodPointStateText}"/>
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Название" Opacity="0.7"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CurrentFoodPoint.Name}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedFoodPoint.Name}"/>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Адрес" Opacity="0.7"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentFoodPoint.Address}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedFoodPoint.Address}"/>
                 </Grid>
 
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <Button Content="Обновить"
                             Command="{Binding LoadCommand}"/>
+                    <Button Content="Новая точка"
+                            Command="{Binding NewFoodPointCommand}"/>
                     <Button Content="Создать лот"
                             Command="{Binding CreateLotCommand}"/>
                 </StackPanel>

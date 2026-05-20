@@ -17,7 +17,7 @@ namespace Tests.Lots
             database.Auth.SetCurrentUser(partner);
 
             var lot = await database.LotService.CreateLotAsync(
-                new CreateLotRequest("Lunch set", "Fresh lunch", "Soup, salad", 7, 149.50m, DateTime.UtcNow.AddHours(4)));
+                new CreateLotRequest(foodPoint.Id, "Lunch set", "Fresh lunch", "Soup, salad", 7, 149.50m, DateTime.UtcNow.AddHours(4)));
 
             Assert.AreEqual(foodPoint.Id, lot.FoodPointId);
             Assert.AreEqual(7, lot.TotalQuantity);
@@ -27,15 +27,15 @@ namespace Tests.Lots
         }
 
         [TestMethod]
-        public async Task CreateLotAsync_WhenPartnerHasNoFoodPoint_ThrowsInvalidOperationException()
+        public async Task CreateLotAsync_WhenFoodPointDoesNotExist_ThrowsKeyNotFoundException()
         {
             await using var database = await SqliteTestDatabase.CreateAsync();
             var partner = await database.AddUserAsync(UserRole.FoodPointRepresentative);
             database.Auth.SetCurrentUser(partner);
 
-            await AssertEx.ThrowsAsync<InvalidOperationException>(() =>
+            await AssertEx.ThrowsAsync<KeyNotFoundException>(() =>
                 database.LotService.CreateLotAsync(
-                    new CreateLotRequest("Lunch", "Description", "Composition", 1, 10, DateTime.UtcNow.AddHours(1))));
+                    new CreateLotRequest(Guid.NewGuid(), "Lunch", "Description", "Composition", 1, 10, DateTime.UtcNow.AddHours(1))));
         }
 
         [TestMethod]
@@ -47,7 +47,21 @@ namespace Tests.Lots
 
             await AssertEx.ThrowsAsync<UnauthorizedAccessException>(() =>
                 database.LotService.CreateLotAsync(
-                    new CreateLotRequest("Lunch", "Description", "Composition", 1, 10, DateTime.UtcNow.AddHours(1))));
+                    new CreateLotRequest(Guid.NewGuid(), "Lunch", "Description", "Composition", 1, 10, DateTime.UtcNow.AddHours(1))));
+        }
+
+        [TestMethod]
+        public async Task CreateLotAsync_WhenFoodPointBelongsToOtherPartner_ThrowsUnauthorizedAccessException()
+        {
+            await using var database = await SqliteTestDatabase.CreateAsync();
+            var owner = await database.AddUserAsync(UserRole.FoodPointRepresentative);
+            var otherPartner = await database.AddUserAsync(UserRole.FoodPointRepresentative);
+            var foodPoint = await database.AddFoodPointAsync(owner);
+            database.Auth.SetCurrentUser(otherPartner);
+
+            await AssertEx.ThrowsAsync<UnauthorizedAccessException>(() =>
+                database.LotService.CreateLotAsync(
+                    new CreateLotRequest(foodPoint.Id, "Lunch", "Description", "Composition", 1, 10, DateTime.UtcNow.AddHours(1))));
         }
 
         [TestMethod]
@@ -63,7 +77,7 @@ namespace Tests.Lots
 
             await AssertEx.ThrowsAsync<InvalidOperationException>(() =>
                 database.LotService.CreateLotAsync(
-                    new CreateLotRequest("Lunch", "Description", "Composition", 1, 10, DateTime.UtcNow.AddHours(1))));
+                    new CreateLotRequest(foodPoint.Id, "Lunch", "Description", "Composition", 1, 10, DateTime.UtcNow.AddHours(1))));
         }
 
         [TestMethod]
@@ -71,28 +85,28 @@ namespace Tests.Lots
         {
             await using var database = await SqliteTestDatabase.CreateAsync();
             var partner = await database.AddUserAsync(UserRole.FoodPointRepresentative);
-            await database.AddFoodPointAsync(partner);
+            var foodPoint = await database.AddFoodPointAsync(partner);
             database.Auth.SetCurrentUser(partner);
 
             await AssertEx.ThrowsAsync<ArgumentException>(() =>
                 database.LotService.CreateLotAsync(
-                    new CreateLotRequest("", "Description", "Composition", 1, 10, DateTime.UtcNow.AddHours(1))));
+                    new CreateLotRequest(foodPoint.Id, "", "Description", "Composition", 1, 10, DateTime.UtcNow.AddHours(1))));
 
             await AssertEx.ThrowsAsync<ArgumentException>(() =>
                 database.LotService.CreateLotAsync(
-                    new CreateLotRequest("Lunch", "Description", "", 1, 10, DateTime.UtcNow.AddHours(1))));
+                    new CreateLotRequest(foodPoint.Id, "Lunch", "Description", "", 1, 10, DateTime.UtcNow.AddHours(1))));
 
             await AssertEx.ThrowsAsync<ArgumentException>(() =>
                 database.LotService.CreateLotAsync(
-                    new CreateLotRequest("Lunch", "Description", "Composition", 0, 10, DateTime.UtcNow.AddHours(1))));
+                    new CreateLotRequest(foodPoint.Id, "Lunch", "Description", "Composition", 0, 10, DateTime.UtcNow.AddHours(1))));
 
             await AssertEx.ThrowsAsync<ArgumentException>(() =>
                 database.LotService.CreateLotAsync(
-                    new CreateLotRequest("Lunch", "Description", "Composition", 1, -1, DateTime.UtcNow.AddHours(1))));
+                    new CreateLotRequest(foodPoint.Id, "Lunch", "Description", "Composition", 1, -1, DateTime.UtcNow.AddHours(1))));
 
             await AssertEx.ThrowsAsync<ArgumentException>(() =>
                 database.LotService.CreateLotAsync(
-                    new CreateLotRequest("Lunch", "Description", "Composition", 1, 10, DateTime.UtcNow.AddMinutes(-1))));
+                    new CreateLotRequest(foodPoint.Id, "Lunch", "Description", "Composition", 1, 10, DateTime.UtcNow.AddMinutes(-1))));
         }
 
         [TestMethod]
@@ -102,16 +116,19 @@ namespace Tests.Lots
             var firstPartner = await database.AddUserAsync(UserRole.FoodPointRepresentative);
             var secondPartner = await database.AddUserAsync(UserRole.FoodPointRepresentative);
             var firstPoint = await database.AddFoodPointAsync(firstPartner, "First cafe");
+            var firstBranch = await database.AddFoodPointAsync(firstPartner, "First cafe branch");
             var secondPoint = await database.AddFoodPointAsync(secondPartner, "Second cafe");
             var ownLot = await database.AddLotAsync(firstPoint, "Own lot");
+            var branchLot = await database.AddLotAsync(firstBranch, "Branch lot");
             await database.AddLotAsync(secondPoint, "Other lot");
             database.Auth.SetCurrentUser(firstPartner);
 
             var lots = await database.LotService.GetCurrentPartnerLotsAsync();
-            var result = lots.Single();
+            var ids = lots.Select(x => x.Id).ToArray();
 
-            Assert.AreEqual(ownLot.Id, result.Id);
-            Assert.AreEqual(firstPoint.Id, result.FoodPointId);
+            CollectionAssert.Contains(ids, ownLot.Id);
+            CollectionAssert.Contains(ids, branchLot.Id);
+            CollectionAssert.AreEquivalent(new[] { ownLot.Id, branchLot.Id }, ids);
         }
 
         [TestMethod]

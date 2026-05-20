@@ -2,7 +2,9 @@ using Application.DTOs.Lots;
 using Application.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Domain.Entities;
 using ReMealApp.ViewModels.Shell;
+using System.Collections.ObjectModel;
 
 namespace ReMealApp.ViewModels.Partner
 {
@@ -15,7 +17,10 @@ namespace ReMealApp.ViewModels.Partner
         private Guid? _editingLotId;
 
         [ObservableProperty]
-        private string _foodPointName = string.Empty;
+        private ObservableCollection<FoodPoint> _foodPoints = new();
+
+        [ObservableProperty]
+        private FoodPoint? _selectedFoodPoint;
 
         [ObservableProperty]
         private string _title = string.Empty;
@@ -71,9 +76,7 @@ namespace ReMealApp.ViewModels.Partner
             try
             {
                 IsBusy = true;
-                var foodPoint = await _foodPointService.GetCurrentPartnerFoodPointAsync();
-                FoodPointName = foodPoint?.Name ?? string.Empty;
-                HasNoFoodPoint = foodPoint is null || !foodPoint.IsActive;
+                await ReloadFoodPointsAsync(SelectedFoodPoint?.Id);
             }
             catch (Exception ex)
             {
@@ -85,13 +88,13 @@ namespace ReMealApp.ViewModels.Partner
             }
         }
 
-        public async Task PrepareCreateAsync()
+        public async Task PrepareCreateAsync(Guid? foodPointId = null)
         {
             _editingLotId = null;
             IsEditMode = false;
             IsCreateMode = true;
             ResetFields();
-            await RefreshAsync();
+            await ReloadFoodPointsAsync(foodPointId);
         }
 
         public async Task LoadForEditAsync(Guid lotId)
@@ -107,9 +110,7 @@ namespace ReMealApp.ViewModels.Partner
                     return;
                 }
 
-                var foodPoint = await _foodPointService.GetCurrentPartnerFoodPointAsync();
-                FoodPointName = foodPoint?.Name ?? string.Empty;
-                HasNoFoodPoint = foodPoint is null || !foodPoint.IsActive;
+                await ReloadFoodPointsAsync(entity.FoodPointId);
 
                 _editingLotId = entity.Id;
                 IsEditMode = true;
@@ -140,9 +141,9 @@ namespace ReMealApp.ViewModels.Partner
             if (IsBusy)
                 return;
 
-            if (HasNoFoodPoint)
+            if (SelectedFoodPoint is not { IsActive: true })
             {
-                StatusMessage = "Сначала создайте активную точку питания.";
+                StatusMessage = "Сначала выберите активную точку питания.";
                 return;
             }
 
@@ -166,6 +167,7 @@ namespace ReMealApp.ViewModels.Partner
                 else
                 {
                     await _lotService.CreateLotAsync(new CreateLotRequest(
+                        SelectedFoodPoint.Id,
                         Title,
                         Description,
                         Composition,
@@ -208,6 +210,21 @@ namespace ReMealApp.ViewModels.Partner
         partial void OnIsEditModeChanged(bool value)
         {
             IsCreateMode = !value;
+        }
+
+        partial void OnSelectedFoodPointChanged(FoodPoint? value)
+        {
+            HasNoFoodPoint = value is not { IsActive: true };
+        }
+
+        private async Task ReloadFoodPointsAsync(Guid? selectedFoodPointId)
+        {
+            var foodPoints = await _foodPointService.GetCurrentPartnerFoodPointsAsync();
+            FoodPoints = new ObservableCollection<FoodPoint>(foodPoints);
+            SelectedFoodPoint = selectedFoodPointId is Guid id
+                ? FoodPoints.FirstOrDefault(x => x.Id == id) ?? FoodPoints.FirstOrDefault(x => x.IsActive) ?? FoodPoints.FirstOrDefault()
+                : FoodPoints.FirstOrDefault(x => x.IsActive) ?? FoodPoints.FirstOrDefault();
+            HasNoFoodPoint = SelectedFoodPoint is not { IsActive: true };
         }
 
         private void ResetFields()

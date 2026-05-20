@@ -22,10 +22,6 @@ namespace Application.Services
             CancellationToken cancellationToken = default)
         {
             var partner = await GetCurrentPartnerAsync(cancellationToken);
-            var existingFoodPoint = await _foodPointRepository.GetByOwnerIdAsync(partner.Id, cancellationToken);
-
-            if (existingFoodPoint is not null)
-                throw new InvalidOperationException("У текущего партнера уже есть точка питания.");
 
             var foodPoint = new FoodPoint(
                 request.Name,
@@ -69,7 +65,7 @@ namespace Application.Services
             await _foodPointRepository.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<FoodPoint?> GetCurrentPartnerFoodPointAsync(CancellationToken cancellationToken = default)
+        public async Task<List<FoodPoint>> GetCurrentPartnerFoodPointsAsync(CancellationToken cancellationToken = default)
         {
             var partner = await GetCurrentPartnerAsync(cancellationToken);
             return await _foodPointRepository.GetByOwnerIdAsync(partner.Id, cancellationToken);

@@ -72,7 +72,8 @@ namespace Tests.ViewModels
         {
             await using var database = await SqliteTestDatabase.CreateAsync();
             var partner = await database.AddUserAsync(UserRole.FoodPointRepresentative);
-            await database.AddFoodPointAsync(partner);
+            await database.AddFoodPointAsync(partner, "First cafe");
+            var selectedPoint = await database.AddFoodPointAsync(partner, "Second cafe");
             database.Auth.SetCurrentUser(partner);
             var home = CreateHomeViewModel(database);
             await home.InitializeAsync();
@@ -81,7 +82,7 @@ namespace Tests.ViewModels
             var localTime = new TimeSpan(15, 30, 0);
             var expectedUtc = ToUtc(localDate, localTime);
 
-            await home.CreateLot.PrepareCreateAsync();
+            await home.CreateLot.PrepareCreateAsync(selectedPoint.Id);
             home.CreateLot.Title = "Timed lot";
             home.CreateLot.Description = "Dinner";
             home.CreateLot.Composition = "Main course";
@@ -96,7 +97,26 @@ namespace Tests.ViewModels
             var result = lots.Single();
 
             Assert.AreEqual("Timed lot", result.Title);
+            Assert.AreEqual(selectedPoint.Id, result.FoodPointId);
             Assert.AreEqual(expectedUtc, result.PickupDeadline);
+        }
+
+        [TestMethod]
+        public async Task FoodPointViewModel_LoadAsync_WhenPartnerHasSeveralFoodPoints_LoadsAllFoodPoints()
+        {
+            await using var database = await SqliteTestDatabase.CreateAsync();
+            var partner = await database.AddUserAsync(UserRole.FoodPointRepresentative);
+            var firstPoint = await database.AddFoodPointAsync(partner, "First cafe");
+            var secondPoint = await database.AddFoodPointAsync(partner, "Second cafe");
+            database.Auth.SetCurrentUser(partner);
+            var home = CreateHomeViewModel(database);
+
+            await home.InitializeAsync();
+
+            var ids = home.FoodPoint.FoodPoints.Select(x => x.Id).ToArray();
+
+            CollectionAssert.AreEquivalent(new[] { firstPoint.Id, secondPoint.Id }, ids);
+            Assert.IsTrue(home.FoodPoint.HasFoodPoints);
         }
 
         private static HomeViewModel CreateHomeViewModel(SqliteTestDatabase database)

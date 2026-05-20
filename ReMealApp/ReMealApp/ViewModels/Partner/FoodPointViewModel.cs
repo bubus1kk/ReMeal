@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Domain.Entities;
 using ReMealApp.ViewModels.Shell;
+using System.Collections.ObjectModel;
 
 namespace ReMealApp.ViewModels.Partner
 {
@@ -13,7 +14,10 @@ namespace ReMealApp.ViewModels.Partner
         private readonly HomeViewModel _shell;
 
         [ObservableProperty]
-        private FoodPoint? _currentFoodPoint;
+        private ObservableCollection<FoodPoint> _foodPoints = new();
+
+        [ObservableProperty]
+        private FoodPoint? _selectedFoodPoint;
 
         [ObservableProperty]
         private string _name = string.Empty;
@@ -34,7 +38,7 @@ namespace ReMealApp.ViewModels.Partner
         private bool _isBusy;
 
         [ObservableProperty]
-        private bool _hasFoodPoint;
+        private bool _hasFoodPoints;
 
         [ObservableProperty]
         private bool _canCreateLot;
@@ -57,11 +61,10 @@ namespace ReMealApp.ViewModels.Partner
             try
             {
                 IsBusy = true;
-                CurrentFoodPoint = await _foodPointService.GetCurrentPartnerFoodPointAsync();
-                ApplyFoodPoint(CurrentFoodPoint);
-                StatusMessage = CurrentFoodPoint is null
-                    ? "У вас еще нет точки питания. Заполните форму и сохраните ее."
-                    : "Загружена ваша точка питания.";
+                await ReloadFoodPointsAsync();
+                StatusMessage = FoodPoints.Count == 0
+                    ? "У вас еще нет точек питания. Заполните форму и сохраните первую."
+                    : $"Загружено точек питания: {FoodPoints.Count}.";
             }
             catch (Exception ex)
             {
@@ -83,25 +86,27 @@ namespace ReMealApp.ViewModels.Partner
             {
                 IsBusy = true;
 
-                if (CurrentFoodPoint is null)
+                if (SelectedFoodPoint is null)
                 {
-                    await _foodPointService.CreateFoodPointAsync(new CreateFoodPointRequest(
+                    var created = await _foodPointService.CreateFoodPointAsync(new CreateFoodPointRequest(
                         Name,
                         Address,
                         Description,
                         Phone));
 
+                    await ReloadFoodPointsAsync(created.Id);
                     StatusMessage = "Точка питания создана.";
                 }
                 else
                 {
-                    await _foodPointService.UpdateFoodPointAsync(new UpdateFoodPointRequest(
-                        CurrentFoodPoint.Id,
+                    var updated = await _foodPointService.UpdateFoodPointAsync(new UpdateFoodPointRequest(
+                        SelectedFoodPoint.Id,
                         Name,
                         Address,
                         Description,
                         Phone));
 
+                    await ReloadFoodPointsAsync(updated.Id);
                     StatusMessage = "Точка питания обновлена.";
                 }
 
@@ -120,16 +125,17 @@ namespace ReMealApp.ViewModels.Partner
         [RelayCommand]
         private async Task DeactivateAsync()
         {
-            if (CurrentFoodPoint is null || IsBusy)
+            if (SelectedFoodPoint is null || IsBusy)
             {
-                StatusMessage = "Сначала создайте точку питания.";
+                StatusMessage = "Сначала выберите точку питания.";
                 return;
             }
 
             try
             {
                 IsBusy = true;
-                await _foodPointService.DeactivateFoodPointAsync(CurrentFoodPoint.Id);
+                await _foodPointService.DeactivateFoodPointAsync(SelectedFoodPoint.Id);
+                await ReloadFoodPointsAsync(SelectedFoodPoint.Id);
                 StatusMessage = "Точка питания деактивирована.";
                 await _shell.RefreshPartnerAsync();
             }
@@ -146,18 +152,18 @@ namespace ReMealApp.ViewModels.Partner
         [RelayCommand]
         private async Task DeleteAsync()
         {
-            if (CurrentFoodPoint is null || IsBusy)
+            if (SelectedFoodPoint is null || IsBusy)
             {
-                StatusMessage = "Сначала создайте точку питания.";
+                StatusMessage = "Сначала выберите точку питания.";
                 return;
             }
 
             try
             {
                 IsBusy = true;
-                await _foodPointService.DeleteFoodPointAsync(CurrentFoodPoint.Id);
+                await _foodPointService.DeleteFoodPointAsync(SelectedFoodPoint.Id);
                 StatusMessage = "Точка питания и связанные с ней лоты удалены.";
-                ClearForm();
+                await ReloadFoodPointsAsync();
                 await _shell.RefreshPartnerAsync();
             }
             catch (Exception ex)
@@ -173,26 +179,47 @@ namespace ReMealApp.ViewModels.Partner
         [RelayCommand]
         private void CreateLot()
         {
-            if (CurrentFoodPoint is null || !CurrentFoodPoint.IsActive)
+            if (SelectedFoodPoint is null || !SelectedFoodPoint.IsActive)
             {
-                StatusMessage = "Сначала создайте активную точку питания.";
+                StatusMessage = "Сначала выберите активную точку питания.";
                 return;
             }
 
-            _shell.OpenCreateLot();
+            _shell.OpenCreateLot(SelectedFoodPoint.Id);
+        }
+
+        [RelayCommand]
+        private void NewFoodPoint()
+        {
+            SelectedFoodPoint = null;
+            ClearForm();
+            StatusMessage = "Заполните форму для новой точки питания.";
+        }
+
+        private async Task ReloadFoodPointsAsync(Guid? selectedFoodPointId = null)
+        {
+            var preferredId = selectedFoodPointId ?? SelectedFoodPoint?.Id;
+            var foodPoints = await _foodPointService.GetCurrentPartnerFoodPointsAsync();
+            FoodPoints = new ObservableCollection<FoodPoint>(foodPoints);
+            HasFoodPoints = FoodPoints.Count > 0;
+            SelectedFoodPoint = preferredId is Guid id
+                ? FoodPoints.FirstOrDefault(x => x.Id == id)
+                : FoodPoints.FirstOrDefault();
+
+            ApplyFoodPoint(SelectedFoodPoint);
         }
 
         private void ApplyFoodPoint(FoodPoint? foodPoint)
         {
-            HasFoodPoint = foodPoint is not null;
+            HasFoodPoints = FoodPoints.Count > 0;
             CanCreateLot = foodPoint is { IsActive: true };
             FoodPointStateText = foodPoint is null
-                ? "Не создана"
+                ? "Новая точка"
                 : foodPoint.IsActive ? "Активна" : "Деактивирована";
 
             if (foodPoint is null)
             {
-                ClearForm();
+                ClearFormFields();
                 return;
             }
 
@@ -204,14 +231,22 @@ namespace ReMealApp.ViewModels.Partner
 
         private void ClearForm()
         {
-            CurrentFoodPoint = null;
-            HasFoodPoint = false;
             CanCreateLot = false;
-            FoodPointStateText = "Не создана";
+            FoodPointStateText = "Новая точка";
+            ClearFormFields();
+        }
+
+        private void ClearFormFields()
+        {
             Name = string.Empty;
             Address = string.Empty;
             Description = string.Empty;
             Phone = string.Empty;
+        }
+
+        partial void OnSelectedFoodPointChanged(FoodPoint? value)
+        {
+            ApplyFoodPoint(value);
         }
     }
 }

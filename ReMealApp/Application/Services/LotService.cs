@@ -26,7 +26,7 @@ namespace Application.Services
             CreateLotRequest request,
             CancellationToken cancellationToken = default)
         {
-            var foodPoint = await GetCurrentPartnerFoodPointAsync(cancellationToken);
+            var foodPoint = await GetOwnedFoodPointAsync(request.FoodPointId, cancellationToken);
 
             if (!foodPoint.IsActive)
                 throw new InvalidOperationException("Нельзя создать лот для неактивной точки питания.");
@@ -93,11 +93,20 @@ namespace Application.Services
 
         public async Task<List<FoodLot>> GetCurrentPartnerLotsAsync(CancellationToken cancellationToken = default)
         {
-            var foodPoint = await GetCurrentPartnerFoodPointOrNullAsync(cancellationToken);
-            if (foodPoint is null)
+            var partner = await GetCurrentPartnerAsync(cancellationToken);
+            var foodPoints = await _foodPointRepository.GetByOwnerIdAsync(partner.Id, cancellationToken);
+            if (foodPoints.Count == 0)
                 return new List<FoodLot>();
 
-            return await _foodLotRepository.GetByFoodPointIdAsync(foodPoint.Id, cancellationToken);
+            var lots = new List<FoodLot>();
+            foreach (var foodPoint in foodPoints)
+            {
+                lots.AddRange(await _foodLotRepository.GetByFoodPointIdAsync(foodPoint.Id, cancellationToken));
+            }
+
+            return lots
+                .OrderByDescending(x => x.CreatedAt)
+                .ToList();
         }
 
         public Task<List<FoodLot>> GetFoodPointLotsAsync(
@@ -157,16 +166,16 @@ namespace Application.Services
                 throw new UnauthorizedAccessException("Нельзя управлять лотом чужой точки питания.");
         }
 
-        private async Task<FoodPoint> GetCurrentPartnerFoodPointAsync(CancellationToken cancellationToken)
-        {
-            var foodPoint = await GetCurrentPartnerFoodPointOrNullAsync(cancellationToken);
-            return foodPoint ?? throw new InvalidOperationException("Сначала создайте точку питания партнера.");
-        }
-
-        private async Task<FoodPoint?> GetCurrentPartnerFoodPointOrNullAsync(CancellationToken cancellationToken)
+        private async Task<FoodPoint> GetOwnedFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken)
         {
             var partner = await GetCurrentPartnerAsync(cancellationToken);
-            return await _foodPointRepository.GetByOwnerIdAsync(partner.Id, cancellationToken);
+            var foodPoint = await _foodPointRepository.GetByIdAsync(foodPointId, cancellationToken)
+                ?? throw new KeyNotFoundException($"Точка питания '{foodPointId}' не найдена.");
+
+            if (foodPoint.OwnerId != partner.Id)
+                throw new UnauthorizedAccessException("Нельзя создать лот для чужой точки питания.");
+
+            return foodPoint;
         }
 
         private async Task<UserProfileDto> GetCurrentPartnerAsync(CancellationToken cancellationToken)
