@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Tests.Services;
+namespace ReMeal.Tests.Auth.Services;
 
 [TestClass]
 public class AuthServiceTests

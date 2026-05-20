@@ -1,0 +1,66 @@
+<mxfile host="Electron">
+  <diagram name="Страница-1" id="uL2mcitFuwueI5ikn-ph">
+    <mxGraphModel dx="1020" dy="619" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-6" edge="1" parent="1" source="ROYTZ6Y0UatOiXhO7JNp-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ROYTZ6Y0UatOiXhO7JNp-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-1" parent="1" style="html=1;whiteSpace=wrap;" value="Пользователь" vertex="1">
+          <mxGeometry height="50" width="110" x="120" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-13" edge="1" parent="1" source="ROYTZ6Y0UatOiXhO7JNp-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ROYTZ6Y0UatOiXhO7JNp-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-2" parent="1" style="html=1;whiteSpace=wrap;" value="Сервис регистрации" vertex="1">
+          <mxGeometry height="50" width="110" x="120" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-12" edge="1" parent="1" source="ROYTZ6Y0UatOiXhO7JNp-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="ROYTZ6Y0UatOiXhO7JNp-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="545" y="440" />
+              <mxPoint x="175" y="440" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-3" parent="1" style="html=1;whiteSpace=wrap;" value="Экран регистрации" vertex="1">
+          <mxGeometry height="50" width="110" x="490" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-4" parent="1" style="html=1;whiteSpace=wrap;" value="БД" vertex="1">
+          <mxGeometry height="50" width="110" x="490" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-7" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1. Ввести данные регистрации() =&amp;gt;" vertex="1">
+          <mxGeometry height="30" width="170" x="240" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-8" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="2. Нажать &quot;Зарегистрироваться&quot;() =&amp;gt;" vertex="1">
+          <mxGeometry height="30" width="226" x="244" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-10" parent="1" style="text;whiteSpace=wrap;html=1;" value="&amp;lt;= 3. Отправить данные регистрации()" vertex="1">
+          <mxGeometry height="40" width="230" x="244" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-14" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="4. Проверить существование логина() =&amp;gt;" vertex="1">
+          <mxGeometry height="30" width="250" x="234" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-15" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;= 5. Вернуть результат проверки()" vertex="1">
+          <mxGeometry height="30" width="230" x="244" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-16" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="6. Сохранить пользователя() =&amp;gt;" vertex="1">
+          <mxGeometry height="30" width="200" x="234" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-17" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;= 7. Пользователь сохранён()" vertex="1">
+          <mxGeometry height="30" width="190" x="262" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-18" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="8. Вернуть результат регистрации() =&amp;gt;" vertex="1">
+          <mxGeometry height="30" width="236" x="254" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-19" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;= 9. Показать успешную регистрацию()" vertex="1">
+          <mxGeometry height="30" width="250" x="232" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="ROYTZ6Y0UatOiXhO7JNp-21" parent="1" style="text;whiteSpace=wrap;html=1;" value="&lt;span&gt;Диаграмма коммуникации показывает взаимодействие объектов системы ReMeal в процессе регистрации пользователя.&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span&gt;Диаграмма отражает обмен сообщениями между интерфейсом пользователя, сервисом регистрации и базой данных при создании нового аккаунта.&lt;/span&gt;" vertex="1">
+          <mxGeometry height="100" width="560" x="140" y="110" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Tests.Persistence;
+namespace ReMeal.Tests.Auth.Persistence;
 
 [TestClass]
 public class UserRepositoryTests
