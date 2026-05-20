@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ReMealApp.ViewModels.Shell"
+             xmlns:conv="using:ReMealApp.Converters"
+             x:Class="ReMealApp.Views.Shell.ModulePlaceholderView"
+             x:DataType="vm:ModulePlaceholderViewModel">
+    <UserControl.Resources>
+        <conv:ImagePathToBitmapConverter x:Key="ImagePathConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Border Width="520"
+                Padding="28"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                CornerRadius="18"
+                BorderBrush="#24342F"
+                BorderThickness="1"
+                Background="#111917">
+            <StackPanel Spacing="14"
+                        HorizontalAlignment="Center">
+                <Border Width="56"
+                        Height="56"
+                        CornerRadius="18"
+                        Background="#1A2A22"
+                        HorizontalAlignment="Center">
+                    <Image Source="{Binding IconPath, Converter={StaticResource ImagePathConverter}}"
+                           Width="28"
+                           Height="28"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+                </Border>
+
+                <TextBlock Text="{Binding Title}"
+                           Foreground="#F1F7EF"
+                           FontSize="24"
+                           FontWeight="SemiBold"
+                           TextAlignment="Center"/>
+
+                <TextBlock Text="{Binding Message}"
+                           Foreground="#9EAAA4"
+                           FontSize="14"
+                           LineHeight="22"
+                           Width="420"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

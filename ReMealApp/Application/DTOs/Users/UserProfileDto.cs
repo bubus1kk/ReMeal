@@ -14,6 +14,8 @@ namespace Application.DTOs.Users
 
         public string Phone { get; set; } = string.Empty;
 
+        public string AvatarPath { get; set; } = string.Empty;
+
         public UserRole Role { get; set; }
     }
 }

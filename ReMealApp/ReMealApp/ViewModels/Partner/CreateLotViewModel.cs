@@ -184,7 +184,7 @@ namespace ReMealApp.ViewModels.Partner
                 IsCreateMode = true;
 
                 await _shell.PartnerLots.LoadAsync();
-                _shell.SelectedTabIndex = 3;
+                await _shell.OpenPartnerLotsAsync();
             }
             catch (Exception ex)
             {

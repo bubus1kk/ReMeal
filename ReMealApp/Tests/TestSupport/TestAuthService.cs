@@ -9,6 +9,7 @@ namespace Tests.TestSupport
     internal sealed class TestAuthService : IAuthService
     {
         private UserProfileDto? _currentUser;
+        private Guid? _rememberedUserId;
 
         public Guid? CurrentUserId => _currentUser?.Id;
 
@@ -41,6 +42,7 @@ namespace Tests.TestSupport
                 FullName = user.FullName,
                 Email = user.Email,
                 Phone = user.Phone,
+                AvatarPath = user.AvatarPath,
                 Role = user.Role
             };
         }
@@ -54,12 +56,26 @@ namespace Tests.TestSupport
                 FullName = "Test User",
                 Email = $"user-{id:N}@example.test",
                 Phone = "+10000000000",
+                AvatarPath = string.Empty,
                 Role = role
             };
         }
 
-        public void Logout()
+        public bool IsCurrentUserRemembered()
         {
+            return _currentUser is not null && _rememberedUserId == _currentUser.Id;
+        }
+
+        public void RememberCurrentUser()
+        {
+            _rememberedUserId = _currentUser?.Id;
+        }
+
+        public void Logout(bool forgetRememberedUser = true)
+        {
+            if (forgetRememberedUser)
+                _rememberedUserId = null;
+
             _currentUser = null;
         }
     }

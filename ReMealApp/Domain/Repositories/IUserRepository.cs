@@ -8,6 +8,8 @@ namespace Domain.Repositories
 
         Task<User?> GetByLoginAsync(string login, CancellationToken cancellationToken = default);
 
+        Task<List<User>> GetAllAsync(CancellationToken cancellationToken = default);
+
         Task<bool> LoginExistsAsync(string login, CancellationToken cancellationToken = default);
 
         Task AddAsync(User user, CancellationToken cancellationToken = default);

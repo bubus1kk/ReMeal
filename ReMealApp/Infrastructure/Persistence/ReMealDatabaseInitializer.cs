@@ -18,9 +18,16 @@ namespace Infrastructure.Persistence
                         FullName TEXT NOT NULL,
                         Email TEXT NOT NULL,
                         Phone TEXT NOT NULL,
+                        AvatarPath TEXT NOT NULL DEFAULT '',
                         Role TEXT NOT NULL DEFAULT 'StudentCustomer'
                     );
                     """);
+
+                EnsureColumn(
+                    dbContext,
+                    "Users",
+                    "AvatarPath",
+                    "ALTER TABLE Users ADD COLUMN AvatarPath TEXT NOT NULL DEFAULT '';");
 
                 dbContext.Database.ExecuteSqlRaw("""
                     CREATE TABLE IF NOT EXISTS FoodPoints (
@@ -61,6 +68,39 @@ namespace Infrastructure.Persistence
                 dbContext.Database.ExecuteSqlRaw("CREATE INDEX IF NOT EXISTS IX_FoodLots_PickupDeadline ON FoodLots (PickupDeadline);");
                 dbContext.Database.ExecuteSqlRaw("CREATE INDEX IF NOT EXISTS IX_FoodLots_Status ON FoodLots (Status);");
             }, "подготовить схему базы данных");
+        }
+
+        private static void EnsureColumn(
+            ReMealDbContext dbContext,
+            string tableName,
+            string columnName,
+            string addColumnSql)
+        {
+            var connection = dbContext.Database.GetDbConnection();
+            var shouldClose = connection.State == System.Data.ConnectionState.Closed;
+
+            if (shouldClose)
+                connection.Open();
+
+            try
+            {
+                using var command = connection.CreateCommand();
+                command.CommandText = $"PRAGMA table_info({tableName});";
+
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    if (string.Equals(reader.GetString(1), columnName, StringComparison.OrdinalIgnoreCase))
+                        return;
+                }
+            }
+            finally
+            {
+                if (shouldClose)
+                    connection.Close();
+            }
+
+            dbContext.Database.ExecuteSqlRaw(addColumnSql);
         }
     }
 }

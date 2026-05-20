@@ -36,6 +36,11 @@ namespace Infrastructure.Persistence.Configurations
                 .HasMaxLength(67)
                 .IsRequired();
 
+            builder.Property(user => user.AvatarPath)
+                .HasMaxLength(1024)
+                .HasDefaultValue(string.Empty)
+                .IsRequired();
+
             builder.Property(user => user.Role)
                 .HasConversion<string>()
                 .HasMaxLength(67)

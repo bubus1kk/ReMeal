@@ -16,6 +16,8 @@ namespace Domain.Entities
 
         public string Phone { get; set; } = string.Empty;
 
+        public string AvatarPath { get; set; } = string.Empty;
+
         public UserRole Role { get; set; } = UserRole.StudentCustomer;
 
         public ICollection<FoodPoint> FoodPoints { get; set; } = new List<FoodPoint>();

@@ -98,10 +98,17 @@ namespace Application.Services
             return user is null ? null : MapToProfile(user);
         }
 
-        public void Logout()
+        public bool IsCurrentUserRemembered()
+        {
+            return CurrentUserId is Guid currentUserId &&
+                _rememberedUserStore?.GetRememberedUserId() == currentUserId;
+        }
+
+        public void Logout(bool forgetRememberedUser = true)
         {
             CurrentUserId = null;
-            _rememberedUserStore?.ForgetUser();
+            if (forgetRememberedUser)
+                _rememberedUserStore?.ForgetUser();
         }
 
         internal static UserProfileDto MapToProfile(User user)
@@ -113,6 +120,7 @@ namespace Application.Services
                 FullName = user.FullName,
                 Email = user.Email,
                 Phone = user.Phone,
+                AvatarPath = user.AvatarPath,
                 Role = user.Role
             };
         }

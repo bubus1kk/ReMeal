@@ -1,46 +1,899 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ReMealApp.ViewModels.Profile"
+             xmlns:conv="using:ReMealApp.Converters"
              x:Class="ReMealApp.Views.Profile.UserProfileView"
              x:DataType="vm:UserProfileViewModel">
-    <ScrollViewer>
-        <StackPanel Width="460"
-                    Spacing="12"
-                    Margin="24"
-                    HorizontalAlignment="Center">
-            <TextBlock Text="Личный кабинет"
-                       FontSize="24"
-                       FontWeight="SemiBold"/>
 
-            <TextBlock Text="Логин"/>
-            <TextBox Text="{Binding Login}"
-                     IsReadOnly="True"/>
+    <UserControl.Resources>
+        <conv:ImagePathToBitmapConverter x:Key="ImagePathConverter"/>
+    </UserControl.Resources>
 
-            <TextBlock Text="Роль"/>
-            <TextBox Text="{Binding RoleText}"
-                     IsReadOnly="True"/>
+    <UserControl.Styles>
+        <Style Selector="Border.profile-card">
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="BorderBrush" Value="#25342F"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#101715"/>
+            <Setter Property="Padding" Value="18"/>
+            <Setter Property="BoxShadow" Value="0 18 48 0 #33000000"/>
+        </Style>
 
-            <TextBlock Text="ФИО"/>
-            <TextBox Text="{Binding FullName, Mode=TwoWay}"/>
+        <Style Selector="Border.soft-card">
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="BorderBrush" Value="#22312C"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#0E1513"/>
+            <Setter Property="Padding" Value="16"/>
+        </Style>
 
-            <TextBlock Text="Email"/>
-            <TextBox Text="{Binding Email, Mode=TwoWay}"/>
+        <Style Selector="TextBlock.muted">
+            <Setter Property="Foreground" Value="#99A6A0"/>
+        </Style>
 
-            <TextBlock Text="Телефон"/>
-            <TextBox Text="{Binding Phone, Mode=TwoWay}"/>
+        <Style Selector="Button.profile-action">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="Background" Value="#16211D"/>
+            <Setter Property="BorderBrush" Value="#2A3D35"/>
+            <Setter Property="Foreground" Value="#DCE8DE"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
 
-            <TextBlock Text="{Binding StatusMessage}"
-                       TextWrapping="Wrap"/>
+        <Style Selector="Button.profile-action:pointerover">
+            <Setter Property="Background" Value="#1C2B24"/>
+            <Setter Property="BorderBrush" Value="#406148"/>
+        </Style>
 
-            <Button Content="Сохранить"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    Command="{Binding SaveCommand}"/>
+        <Style Selector="Button.profile-primary">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="18,0"/>
+            <Setter Property="Background" Value="#4C923E"/>
+            <Setter Property="Foreground" Value="#F7FFF4"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
 
-            <Button Content="Выйти"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    Command="{Binding LogoutCommand}"/>
-        </StackPanel>
-    </ScrollViewer>
+        <Style Selector="Button.icon-action">
+            <Setter Property="Width" Value="42"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#74CF61"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="Button.icon-action:pointerover">
+            <Setter Property="Background" Value="#86DE73"/>
+        </Style>
+
+        <Style Selector="Button.profile-primary:pointerover">
+            <Setter Property="Background" Value="#57A546"/>
+        </Style>
+
+        <Style Selector="Button.profile-tab">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#9AA6A0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="Button.profile-tab-active">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Background" Value="#16271D"/>
+            <Setter Property="BorderBrush" Value="#5EA33F"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="Foreground" Value="#E8F6E4"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="TextBox.profile-input">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderBrush" Value="#2A3A34"/>
+            <Setter Property="Background" Value="#151D1B"/>
+            <Setter Property="Foreground" Value="#EDF6EF"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
+        <Style Selector="TextBox.profile-input:pointerover /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="#17211E"/>
+            <Setter Property="BorderBrush" Value="#3A5047"/>
+        </Style>
+
+        <Style Selector="TextBox.profile-input:focus /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="#18231F"/>
+            <Setter Property="BorderBrush" Value="#74CF61"/>
+        </Style>
+
+        <Style Selector="TextBox.profile-input:focus-within /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="#18231F"/>
+            <Setter Property="BorderBrush" Value="#74CF61"/>
+        </Style>
+
+        <Style Selector="ListBox.point-list">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style Selector="ListBox.point-list ListBoxItem">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <Style Selector="ListBox.point-list ListBoxItem:selected">
+            <Setter Property="Background" Value="#183123"/>
+            <Setter Property="Foreground" Value="#F1F7EF"/>
+        </Style>
+
+        <Style Selector="ListBox.point-list ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#183123"/>
+            <Setter Property="BorderBrush" Value="#74CF61"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="18"
+                        MaxWidth="1240"
+                        HorizontalAlignment="Stretch">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Профиль"
+                               Foreground="#F3F7F1"
+                               FontSize="30"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="Управляйте своими данными и отслеживайте активность."
+                               Foreground="#9CA8A1"
+                               FontSize="14"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            Spacing="8">
+                    <Button Classes="profile-tab-active"
+                            Content="Обзор"
+                            IsVisible="{Binding IsOverviewSelected}"
+                            Command="{Binding ShowOverviewCommand}"/>
+                    <Button Classes="profile-tab"
+                            Content="Обзор"
+                            IsVisible="{Binding IsDetailsSelected}"
+                            Command="{Binding ShowOverviewCommand}"/>
+                    <Button Classes="profile-tab-active"
+                            Content="Личные данные"
+                            IsVisible="{Binding IsDetailsSelected}"
+                            Command="{Binding ShowDetailsCommand}"/>
+                    <Button Classes="profile-tab"
+                            Content="Личные данные"
+                            IsVisible="{Binding IsOverviewSelected}"
+                            Command="{Binding ShowDetailsCommand}"/>
+                </StackPanel>
+
+                <Grid IsVisible="{Binding IsOverviewSelected}"
+                      RowDefinitions="Auto,Auto,Auto"
+                      RowSpacing="14">
+                    <Grid Grid.Row="0"
+                          ColumnDefinitions="1.25*,*"
+                          ColumnSpacing="14">
+                        <Border Classes="profile-card">
+                            <Grid ColumnDefinitions="96,*,Auto"
+                                  ColumnSpacing="18">
+                                <Border Width="82"
+                                        Height="82"
+                                        CornerRadius="41"
+                                        ClipToBounds="True"
+                                        BorderBrush="#33423C"
+                                        BorderThickness="1"
+                                        Background="#EEF0F4">
+                                    <Grid>
+                                        <Image Source="{Binding AvatarImagePath, Converter={StaticResource ImagePathConverter}}"
+                                               Stretch="UniformToFill"
+                                               IsVisible="{Binding HasCustomAvatar}"/>
+                                        <Grid IsVisible="{Binding HasNoCustomAvatar}"
+                                              Background="#F2F4F7">
+                                            <Ellipse Width="24"
+                                                     Height="24"
+                                                     Fill="#969AA8"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Top"
+                                                     Margin="0,18,0,0"/>
+                                            <Ellipse Width="68"
+                                                     Height="46"
+                                                     Fill="#969AA8"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Bottom"
+                                                     Margin="0,0,0,-12"/>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+
+                                <StackPanel Grid.Column="1"
+                                            Spacing="7"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding CompactDisplayName}"
+                                               Foreground="#F2F6F0"
+                                               FontSize="24"
+                                               FontWeight="SemiBold"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding Email}"
+                                               Foreground="#A4B0AA"
+                                               FontSize="14"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <StackPanel Orientation="Horizontal"
+                                                Spacing="8">
+                                        <Border Padding="10,4"
+                                                CornerRadius="10"
+                                                Background="#1C321D"
+                                                BorderBrush="#3D6630"
+                                                BorderThickness="1">
+                                            <TextBlock Text="{Binding RoleText}"
+                                                       Foreground="#94E36A"
+                                                       FontSize="12"
+                                                       FontWeight="SemiBold"/>
+                                        </Border>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2"
+                                            Spacing="10"
+                                            MinWidth="150"
+                                            VerticalAlignment="Center">
+                                    <Button Classes="profile-action"
+                                            Content="{Binding RoleActionText}"
+                                            Command="{Binding RoleActionCommand}"
+                                            HorizontalAlignment="Stretch"/>
+                                    <Button Classes="profile-action"
+                                            Content="Выйти из профиля"
+                                            Command="{Binding LogoutCommand}"
+                                            HorizontalAlignment="Stretch"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <ItemsControl Grid.Column="1"
+                                      ItemsSource="{Binding Kpis}"
+                                      IsVisible="{Binding HasKpis}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="2"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:ProfileKpiItemViewModel">
+                                    <Border MinHeight="116"
+                                            Margin="0,0,12,12"
+                                            HorizontalAlignment="Stretch"
+                                            Classes="soft-card">
+                                        <StackPanel Spacing="8">
+                                            <TextBlock Text="{Binding Title}"
+                                                       Foreground="#9DAAA3"
+                                                       FontSize="12"/>
+                                            <TextBlock Text="{Binding Value}"
+                                                       Foreground="#F1F7EF"
+                                                       FontSize="28"
+                                                       FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding Caption}"
+                                                       Foreground="#75847C"
+                                                       FontSize="12"
+                                                       TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Border Grid.Column="1"
+                                Classes="soft-card"
+                                IsVisible="{Binding IsEmptyCustomerStatisticsVisible}">
+                            <StackPanel Spacing="10"
+                                        VerticalAlignment="Center">
+                                <Image Source="/Assets/Icons/bookings.png"
+                                       Width="28"
+                                       Height="28"
+                                       Opacity="0.75"/>
+                                <TextBlock Text="Статистика появится после подключения модуля бронирований."
+                                           Foreground="#DCE7DF"
+                                           FontSize="15"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                                <TextBlock Text="Сейчас профиль не выполняет расчеты по бронированиям и не обращается к несуществующим данным."
+                                           Classes="muted"
+                                           FontSize="13"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Row="1"
+                          ColumnDefinitions="*,*"
+                          ColumnSpacing="14"
+                          IsVisible="{Binding IsEmptyCustomerStatisticsVisible}">
+                        <Border Classes="profile-card"
+                                MinHeight="210">
+                            <StackPanel Spacing="12"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Активность"
+                                           Foreground="#F0F6EF"
+                                           FontSize="17"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="График появится после подключения модуля бронирований."
+                                           Classes="muted"
+                                           FontSize="14"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="1"
+                                Classes="profile-card"
+                                MinHeight="210">
+                            <StackPanel Spacing="12"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Структура активности"
+                                           Foreground="#F0F6EF"
+                                           FontSize="17"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="Диаграмма появится после накопления реальных данных будущего модуля."
+                                           Classes="muted"
+                                           FontSize="14"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Row="2"
+                          ColumnDefinitions="*,*"
+                          ColumnSpacing="14"
+                          IsVisible="{Binding IsEmptyCustomerStatisticsVisible}">
+                        <Border Classes="profile-card"
+                                MinHeight="150">
+                            <StackPanel Spacing="10"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Ваш вклад"
+                                           Foreground="#F0F6EF"
+                                           FontSize="17"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="Ваш вклад появится после первых подтвержденных действий в будущем модуле."
+                                           Classes="muted"
+                                           FontSize="14"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="1"
+                                Classes="profile-card"
+                                MinHeight="150">
+                            <StackPanel Spacing="10"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Недавние бронирования"
+                                           Foreground="#F0F6EF"
+                                           FontSize="17"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="Список будет доступен после разработки отдельного модуля бронирований."
+                                           Classes="muted"
+                                           FontSize="14"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Row="1"
+                          RowDefinitions="Auto,Auto"
+                          RowSpacing="14"
+                          IsVisible="{Binding IsPartnerOverviewVisible}">
+                        <Grid ColumnDefinitions="1.05*,1.2*"
+                              ColumnSpacing="14">
+                            <Border Classes="profile-card">
+                                <StackPanel Spacing="14">
+                                    <TextBlock Text="Мои точки питания"
+                                               Foreground="#F0F6EF"
+                                               FontSize="18"
+                                               FontWeight="SemiBold"/>
+
+                                    <ListBox Classes="point-list"
+                                             ItemsSource="{Binding PartnerFoodPoints}"
+                                             SelectedItem="{Binding SelectedPartnerFoodPoint}"
+                                             IsVisible="{Binding HasPartnerFoodPoints}"
+                                             MaxHeight="320">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:PartnerFoodPointItemViewModel">
+                                                <Border Padding="12"
+                                                        CornerRadius="12"
+                                                        BorderBrush="#22332D"
+                                                        BorderThickness="1"
+                                                        Background="#121C18">
+                                                    <Grid RowDefinitions="Auto,Auto"
+                                                          ColumnDefinitions="*,Auto">
+                                                        <TextBlock Text="{Binding Name}"
+                                                                   Foreground="#F1F7EF"
+                                                                   FontSize="15"
+                                                                   FontWeight="SemiBold"/>
+                                                        <Border Grid.Column="1"
+                                                                Padding="8,3"
+                                                                CornerRadius="8"
+                                                                Background="#1A2B1C"
+                                                                HorizontalAlignment="Right"
+                                                                VerticalAlignment="Top">
+                                                            <TextBlock Text="{Binding StatusText}"
+                                                                       Foreground="#95DD6B"
+                                                                       FontSize="11"/>
+                                                        </Border>
+                                                        <TextBlock Grid.Row="1"
+                                                                   Text="{Binding Address}"
+                                                                   Foreground="#8C9992"
+                                                                   FontSize="12"
+                                                                   TextWrapping="Wrap"
+                                                                   Margin="0,6,0,0"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+
+                                    <TextBlock Text="Вы ещё не добавили ни одной точки питания."
+                                               Classes="muted"
+                                               FontSize="14"
+                                               IsVisible="{Binding HasNoPartnerFoodPoints}"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1"
+                                    Classes="profile-card"
+                                    IsVisible="{Binding HasSelectedPartnerFoodPoint}">
+                                <StackPanel Spacing="15">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <StackPanel Spacing="5">
+                                            <TextBlock Text="{Binding SelectedPartnerFoodPoint.Name}"
+                                                       Foreground="#F1F7EF"
+                                                       FontSize="21"
+                                                       FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding SelectedPartnerFoodPoint.Address}"
+                                                       Classes="muted"
+                                                       FontSize="13"
+                                                       TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                        <Border Grid.Column="1"
+                                                Padding="8,4"
+                                                CornerRadius="10"
+                                                Background="#1A2A20"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Top">
+                                            <TextBlock Text="{Binding SelectedPartnerFoodPoint.StatusText}"
+                                                       Foreground="#98E46D"
+                                                       FontSize="12"
+                                                       FontWeight="SemiBold"/>
+                                        </Border>
+                                    </Grid>
+
+                                    <TextBlock Text="{Binding SelectedPartnerFoodPoint.DescriptionText}"
+                                               Foreground="#B2BEB8"
+                                               FontSize="13"
+                                               LineHeight="20"
+                                               TextWrapping="Wrap"/>
+
+                                    <Grid ColumnDefinitions="*,*,*"
+                                          RowDefinitions="Auto,Auto"
+                                          ColumnSpacing="10"
+                                          RowSpacing="10">
+                                        <Border Classes="soft-card">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding SelectedPartnerFoodPoint.TotalLots}"
+                                                           Foreground="#F1F7EF"
+                                                           FontSize="24"
+                                                           FontWeight="SemiBold"/>
+                                                <TextBlock Text="Лотов всего"
+                                                           Classes="muted"
+                                                           FontSize="12"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Grid.Column="1"
+                                                Classes="soft-card">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding SelectedPartnerFoodPoint.ActiveLots}"
+                                                           Foreground="#F1F7EF"
+                                                           FontSize="24"
+                                                           FontWeight="SemiBold"/>
+                                                <TextBlock Text="Активных"
+                                                           Classes="muted"
+                                                           FontSize="12"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Grid.Column="2"
+                                                Classes="soft-card">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding SelectedPartnerFoodPoint.AvailableSets}"
+                                                           Foreground="#F1F7EF"
+                                                           FontSize="24"
+                                                           FontWeight="SemiBold"/>
+                                                <TextBlock Text="Доступно"
+                                                           Classes="muted"
+                                                           FontSize="12"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Grid.Row="1"
+                                                Grid.ColumnSpan="3"
+                                                Classes="soft-card">
+                                            <Grid ColumnDefinitions="*,*,*,*">
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding SelectedPartnerFoodPoint.SoldOutLots}"
+                                                               Foreground="#DFEBDD"
+                                                               FontSize="18"
+                                                               FontWeight="SemiBold"/>
+                                                    <TextBlock Text="Распродано"
+                                                               Classes="muted"
+                                                               FontSize="12"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1">
+                                                    <TextBlock Text="{Binding SelectedPartnerFoodPoint.ExpiredLots}"
+                                                               Foreground="#DFEBDD"
+                                                               FontSize="18"
+                                                               FontWeight="SemiBold"/>
+                                                    <TextBlock Text="Истекло"
+                                                               Classes="muted"
+                                                               FontSize="12"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="2">
+                                                    <TextBlock Text="{Binding SelectedPartnerFoodPoint.CancelledLots}"
+                                                               Foreground="#DFEBDD"
+                                                               FontSize="18"
+                                                               FontWeight="SemiBold"/>
+                                                    <TextBlock Text="Отменено"
+                                                               Classes="muted"
+                                                               FontSize="12"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="3">
+                                                    <TextBlock Text="{Binding SelectedPartnerFoodPoint.CreatedAtText}"
+                                                               Foreground="#DFEBDD"
+                                                               FontSize="18"
+                                                               FontWeight="SemiBold"/>
+                                                    <TextBlock Text="Создана"
+                                                               Classes="muted"
+                                                               FontSize="12"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <Border Grid.Row="1"
+                                Classes="profile-card">
+                            <StackPanel Spacing="12">
+                                <TextBlock Text="Активность лотов по точкам"
+                                           Foreground="#F0F6EF"
+                                           FontSize="18"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="Здесь используются только реальные лоты и точки питания, без данных бронирований."
+                                           Classes="muted"
+                                           FontSize="13"/>
+                                <ItemsControl ItemsSource="{Binding PartnerFoodPoints}"
+                                              IsVisible="{Binding HasPartnerFoodPoints}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:PartnerFoodPointItemViewModel">
+                                            <Grid ColumnDefinitions="220,*,70"
+                                                  ColumnSpacing="12"
+                                                  Margin="0,6">
+                                                <TextBlock Text="{Binding Name}"
+                                                           Foreground="#DDE9E0"
+                                                           FontSize="13"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           VerticalAlignment="Center"/>
+                                                <ProgressBar Grid.Column="1"
+                                                             Minimum="0"
+                                                             Maximum="100"
+                                                             Value="{Binding ActivityPercentage}"
+                                                             Height="8"
+                                                             Foreground="#75C943"
+                                                             Background="#1B2722"/>
+                                                <TextBlock Grid.Column="2"
+                                                           Text="{Binding ActiveLots}"
+                                                           Foreground="#AFC0B6"
+                                                           FontSize="13"
+                                                           TextAlignment="Right"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Text="Статистика появится после публикации первых лотов."
+                                           Classes="muted"
+                                           FontSize="14"
+                                           IsVisible="{Binding HasNoPartnerFoodPoints}"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Row="1"
+                          RowDefinitions="Auto,Auto"
+                          RowSpacing="14"
+                          IsVisible="{Binding IsAdminOverviewVisible}">
+                        <Border Classes="profile-card">
+                            <StackPanel Spacing="12">
+                                <TextBlock Text="Распределение пользователей по ролям"
+                                           Foreground="#F0F6EF"
+                                           FontSize="18"
+                                           FontWeight="SemiBold"/>
+                                <ItemsControl ItemsSource="{Binding RoleDistribution}"
+                                              IsVisible="{Binding HasRoleDistribution}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:RoleDistributionItemViewModel">
+                                            <Grid ColumnDefinitions="210,*,90"
+                                                  ColumnSpacing="12"
+                                                  Margin="0,7">
+                                                <TextBlock Text="{Binding Title}"
+                                                           Foreground="#DDE9E0"
+                                                           FontSize="13"
+                                                           VerticalAlignment="Center"/>
+                                                <ProgressBar Grid.Column="1"
+                                                             Minimum="0"
+                                                             Maximum="100"
+                                                             Value="{Binding Percentage}"
+                                                             Height="8"
+                                                             Foreground="#75C943"
+                                                             Background="#1B2722"/>
+                                                <TextBlock Grid.Column="2"
+                                                           Text="{Binding Summary}"
+                                                           Foreground="#AFC0B6"
+                                                           FontSize="13"
+                                                           TextAlignment="Right"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Row="1"
+                                Classes="profile-card">
+                            <StackPanel Spacing="10"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Администраторская аналитика"
+                                           Foreground="#F0F6EF"
+                                           FontSize="18"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="Профиль показывает только системные показатели из текущих сущностей: пользователи, роли, точки питания и лоты."
+                                           Classes="muted"
+                                           FontSize="14"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+
+                <Grid IsVisible="{Binding IsDetailsSelected}"
+                      RowDefinitions="Auto,Auto"
+                      RowSpacing="14">
+                    <Border Classes="profile-card"
+                            Width="520"
+                            HorizontalAlignment="Center">
+                        <Grid ColumnDefinitions="132,*,Auto"
+                              ColumnSpacing="18">
+                            <Border Width="124"
+                                    Height="124"
+                                    CornerRadius="62"
+                                    ClipToBounds="True"
+                                    HorizontalAlignment="Center"
+                                    BorderBrush="#33423C"
+                                    BorderThickness="1"
+                                    Background="#EEF0F4">
+                                <Grid>
+                                    <Image Source="{Binding AvatarImagePath, Converter={StaticResource ImagePathConverter}}"
+                                           Stretch="UniformToFill"
+                                           IsVisible="{Binding HasCustomAvatar}"/>
+                                    <Grid IsVisible="{Binding HasNoCustomAvatar}"
+                                          Background="#F2F4F7">
+                                        <Ellipse Width="38"
+                                                 Height="38"
+                                                 Fill="#969AA8"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Top"
+                                                 Margin="0,26,0,0"/>
+                                        <Ellipse Width="104"
+                                                 Height="68"
+                                                 Fill="#969AA8"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Bottom"
+                                                 Margin="0,0,0,-16"/>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                            <StackPanel Grid.Column="1"
+                                        Spacing="6"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="{Binding CompactDisplayName}"
+                                           Foreground="#F1F7EF"
+                                           FontSize="22"
+                                           FontWeight="SemiBold"
+                                           TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="{Binding RoleText}"
+                                           Foreground="#91DC69"
+                                           FontSize="13"/>
+                            </StackPanel>
+                            <Button Grid.Column="2"
+                                    Classes="icon-action"
+                                    Command="{Binding OpenEditModalCommand}"
+                                    VerticalAlignment="Center">
+                                <Image Source="/Assets/Icons/edit.png"
+                                       Width="18"
+                                       Height="18"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Row="1"
+                            Classes="profile-card"
+                            MaxWidth="920"
+                            HorizontalAlignment="Center">
+                        <StackPanel Spacing="18">
+                            <TextBlock Text="Личные данные"
+                                       Foreground="#F0F6EF"
+                                       FontSize="20"
+                                       FontWeight="SemiBold"/>
+
+                            <ItemsControl ItemsSource="{Binding ProfileFields}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:ProfileFieldItemViewModel">
+                                        <Grid ColumnDefinitions="220,*"
+                                              MinWidth="760"
+                                              Margin="0,0,0,14">
+                                            <TextBlock Text="{Binding Label}"
+                                                       Classes="muted"
+                                                       FontSize="13"/>
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding Value}"
+                                                       Foreground="#E7F0EA"
+                                                       FontSize="14"
+                                                       TextWrapping="Wrap"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <TextBlock Text="{Binding StatusMessage}"
+                           Foreground="#8FD75E"
+                           FontSize="13"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Grid IsVisible="{Binding IsEditModalOpen}"
+              Background="#99000000">
+            <Border Width="520"
+                    Padding="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    CornerRadius="18"
+                    BorderBrush="#33443E"
+                    BorderThickness="1"
+                    Background="#111917"
+                    BoxShadow="0 28 80 0 #99000000">
+                <StackPanel Spacing="17">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Редактирование профиля"
+                                       Foreground="#F2F7F0"
+                                       FontSize="22"
+                                       FontWeight="SemiBold"/>
+                            <TextBlock Text="Обновите личные данные и фото профиля."
+                                       Classes="muted"
+                                       FontSize="13"/>
+                        </StackPanel>
+                        <Button Grid.Column="1"
+                                Classes="profile-action"
+                                Content="X"
+                                Width="38"
+                                Padding="0"
+                                Command="{Binding CloseEditModalCommand}"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="116,*"
+                          ColumnSpacing="16">
+                        <Border Width="84"
+                                Height="84"
+                                CornerRadius="42"
+                                ClipToBounds="True"
+                                BorderBrush="#33423C"
+                                BorderThickness="1"
+                                Background="#EEF0F4">
+                            <Grid>
+                                <Image Source="{Binding AvatarImagePath, Converter={StaticResource ImagePathConverter}}"
+                                       Stretch="UniformToFill"
+                                       IsVisible="{Binding HasCustomAvatar}"/>
+                                <Grid IsVisible="{Binding HasNoCustomAvatar}"
+                                      Background="#F2F4F7">
+                                    <Ellipse Width="24"
+                                             Height="24"
+                                             Fill="#969AA8"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Top"
+                                             Margin="0,17,0,0"/>
+                                    <Ellipse Width="66"
+                                             Height="44"
+                                             Fill="#969AA8"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Bottom"
+                                             Margin="0,0,0,-12"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <StackPanel Grid.Column="1"
+                                    Spacing="8"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="Фото профиля"
+                                       Foreground="#E3EEE6"
+                                       FontWeight="SemiBold"/>
+                            <TextBlock Text="PNG, JPG, JPEG, WEBP или BMP."
+                                       Classes="muted"
+                                       FontSize="12"/>
+                            <Button Classes="profile-action"
+                                    Content="Изменить фото"
+                                    HorizontalAlignment="Left"
+                                    Click="ChangeAvatarButton_Click"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Личная информация"
+                                   Foreground="#E3EEE6"
+                                   FontWeight="SemiBold"/>
+                        <TextBox Classes="profile-input"
+                                 PlaceholderText="Имя / ФИО"
+                                 Text="{Binding EditFullName, Mode=TwoWay}"/>
+                        <TextBox Classes="profile-input"
+                                 PlaceholderText="Email"
+                                 Text="{Binding EditEmail, Mode=TwoWay}"/>
+                        <TextBox Classes="profile-input"
+                                 PlaceholderText="Телефон"
+                                 Text="{Binding EditPhone, Mode=TwoWay}"/>
+                    </StackPanel>
+
+                    <Border CornerRadius="12"
+                            Padding="12"
+                            Background="#18281D"
+                            BorderBrush="#3D6D32"
+                            BorderThickness="1"
+                            IsVisible="{Binding HasModalStatusMessage}">
+                        <TextBlock Text="{Binding ModalStatusMessage}"
+                                   Foreground="#9AF276"
+                                   FontSize="13"
+                                   FontWeight="SemiBold"
+                                   TextWrapping="Wrap"/>
+                    </Border>
+
+                    <Grid ColumnDefinitions="*,*"
+                          ColumnSpacing="12">
+                        <Button Classes="profile-action"
+                                Content="Отмена"
+                                Command="{Binding CloseEditModalCommand}"
+                                HorizontalAlignment="Stretch"/>
+                        <Button Grid.Column="1"
+                                Classes="profile-primary"
+                                Content="Сохранить изменения"
+                                Command="{Binding SaveCommand}"
+                                HorizontalAlignment="Stretch"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+    </Grid>
 </UserControl>

@@ -7,5 +7,7 @@ namespace Application.Interfaces
         Task<UserProfileDto?> GetCurrentProfileAsync(CancellationToken cancellationToken = default);
 
         Task<UserProfileDto?> UpdateCurrentProfileAsync(UpdateUserProfileRequest request, CancellationToken cancellationToken = default);
+
+        Task<UserProfileDto?> UpdateCurrentAvatarAsync(UpdateUserAvatarRequest request, CancellationToken cancellationToken = default);
     }
 }
