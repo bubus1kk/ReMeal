@@ -47,8 +47,7 @@ namespace Infrastructure.Persistence.Configurations
                 .HasForeignKey(x => x.FoodPointId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasIndex(x => x.OwnerId)
-                .IsUnique();
+            builder.HasIndex(x => x.OwnerId);
         }
     }
 }

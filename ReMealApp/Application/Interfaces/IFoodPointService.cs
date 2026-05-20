@@ -17,7 +17,7 @@ namespace Application.Interfaces
 
         Task DeleteFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken = default);
 
-        Task<FoodPoint?> GetCurrentPartnerFoodPointAsync(CancellationToken cancellationToken = default);
+        Task<List<FoodPoint>> GetCurrentPartnerFoodPointsAsync(CancellationToken cancellationToken = default);
 
         Task<List<FoodPoint>> GetAllFoodPointsAsync(CancellationToken cancellationToken = default);
 

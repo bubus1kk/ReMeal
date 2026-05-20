@@ -99,11 +99,11 @@ namespace ReMealApp.ViewModels.Shell
             }
         }
 
-        public async void OpenCreateLot()
+        public async void OpenCreateLot(Guid? foodPointId = null)
         {
             try
             {
-                await CreateLot.PrepareCreateAsync();
+                await CreateLot.PrepareCreateAsync(foodPointId);
                 SelectedTabIndex = 4;
             }
             catch (Exception ex)

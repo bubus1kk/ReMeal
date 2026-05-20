@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ReMealApp.ViewModels.Partner"
+             xmlns:ent="using:Domain.Entities"
              x:Class="ReMealApp.Views.Partner.CreateLotView"
              x:DataType="vm:CreateLotViewModel">
 
@@ -20,8 +21,16 @@
 
             <StackPanel Spacing="4">
                 <TextBlock Text="Точка питания" Opacity="0.7" FontSize="12"/>
-                <TextBox Text="{Binding FoodPointName}"
-                         IsReadOnly="True"/>
+                <ComboBox ItemsSource="{Binding FoodPoints}"
+                          SelectedItem="{Binding SelectedFoodPoint}"
+                          IsEnabled="{Binding IsCreateMode}"
+                          HorizontalAlignment="Stretch">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="ent:FoodPoint">
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
             </StackPanel>
 
             <TextBox PlaceholderText="Название лота" Text="{Binding Title}"/>

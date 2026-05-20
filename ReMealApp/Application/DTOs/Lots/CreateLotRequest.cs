@@ -1,6 +1,7 @@
 namespace Application.DTOs.Lots
 {
     public sealed record CreateLotRequest(
+        Guid FoodPointId,
         string Title,
         string Description,
         string Composition,

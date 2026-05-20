@@ -24,14 +24,16 @@ namespace Infrastructure.Repositories
                 "получить точку питания по id");
         }
 
-        public Task<FoodPoint?> GetByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default)
+        public Task<List<FoodPoint>> GetByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default)
         {
             return DataAccessGuard.ExecuteAsync(
                 () => _dbContext.FoodPoints
                     .Include(x => x.Lots)
                     .Include(x => x.Owner)
-                    .FirstOrDefaultAsync(x => x.OwnerId == ownerId, cancellationToken),
-                "получить точку питания партнера");
+                    .Where(x => x.OwnerId == ownerId)
+                    .OrderByDescending(x => x.CreatedAt)
+                    .ToListAsync(cancellationToken),
+                "получить точки питания партнера");
         }
 
         public Task<List<FoodPoint>> GetAllAsync(CancellationToken cancellationToken = default)

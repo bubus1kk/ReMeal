@@ -6,7 +6,7 @@ namespace Application.Interfaces
     {
         Task<FoodPoint?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-        Task<FoodPoint?> GetByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default);
+        Task<List<FoodPoint>> GetByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default);
 
         Task<List<FoodPoint>> GetAllAsync(CancellationToken cancellationToken = default);
 
