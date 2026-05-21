@@ -19,11 +19,11 @@
         </Style>
 
         <Style Selector="Border.control-surface">
-            <Setter Property="Height" Value="58"/>
+            <Setter Property="Height" Value="46"/>
             <Setter Property="Background" Value="#0F1916"/>
             <Setter Property="BorderBrush" Value="#263C33"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="CornerRadius" Value="10"/>
         </Style>
 
         <Style Selector="TextBox.search-box">
@@ -49,13 +49,13 @@
         </Style>
 
         <Style Selector="ComboBox.filter-combo">
-            <Setter Property="Height" Value="58"/>
+            <Setter Property="Height" Value="46"/>
             <Setter Property="Background" Value="#0F1916"/>
             <Setter Property="BorderBrush" Value="#263C33"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Foreground" Value="#E7EEE9"/>
-            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="Padding" Value="12,0"/>
             <Setter Property="FocusAdorner" Value="{x:Null}"/>
         </Style>
 
@@ -77,8 +77,8 @@
         </Style>
 
         <Style Selector="Button.primary-lot-button">
-            <Setter Property="Height" Value="68"/>
-            <Setter Property="Padding" Value="22,0"/>
+            <Setter Property="Height" Value="54"/>
+            <Setter Property="Padding" Value="18,0"/>
             <Setter Property="CornerRadius" Value="12"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="#69CB4B"/>
@@ -97,7 +97,7 @@
         <Style Selector="Button.primary-lot-button:pointerover">
             <Setter Property="Background" Value="#69CB4B"/>
             <Setter Property="Foreground" Value="#F9FFF5"/>
-            <Setter Property="Opacity" Value="0.94"/>
+            <Setter Property="Opacity" Value="0.96"/>
         </Style>
 
         <Style Selector="Button.primary-lot-button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
@@ -106,7 +106,7 @@
 
         <Style Selector="Button.primary-lot-button:pressed">
             <Setter Property="Background" Value="#69CB4B"/>
-            <Setter Property="Opacity" Value="0.9"/>
+            <Setter Property="Opacity" Value="0.92"/>
         </Style>
 
         <Style Selector="Button.primary-lot-button:pressed /template/ ContentPresenter#PART_ContentPresenter">
@@ -114,8 +114,8 @@
         </Style>
 
         <Style Selector="Button.secondary-action">
-            <Setter Property="Height" Value="58"/>
-            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Height" Value="46"/>
+            <Setter Property="Padding" Value="16,0"/>
             <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Background" Value="#111B19"/>
@@ -146,8 +146,8 @@
         </Style>
 
         <Style Selector="Button.danger-action">
-            <Setter Property="Height" Value="58"/>
-            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Height" Value="46"/>
+            <Setter Property="Padding" Value="16,0"/>
             <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Background" Value="#261514"/>
@@ -276,8 +276,8 @@
                       RowDefinitions="Auto,Auto"
                       RowSpacing="12">
                     <Grid Grid.Row="0"
-                          ColumnDefinitions="*,104,156,210,188"
-                          ColumnSpacing="14">
+                          ColumnDefinitions="*,96,150,190,168"
+                          ColumnSpacing="12">
                         <Border Grid.Column="0"
                                 Classes="control-surface"
                                 VerticalAlignment="Center"
@@ -329,7 +329,7 @@
 
                         <Button Grid.Column="4"
                                 Classes="primary-lot-button"
-                                Width="188"
+                                Width="168"
                                 VerticalAlignment="Center"
                                 Command="{Binding CreateNewCommand}">
                             <StackPanel Orientation="Horizontal"
@@ -337,11 +337,11 @@
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
                                 <Image Source="/Assets/Icons/Lots/Tinted/plus-white.png"
-                                       Width="24"
-                                       Height="24"
+                                       Width="20"
+                                       Height="20"
                                        VerticalAlignment="Center"/>
                                 <TextBlock Text="Создать лот"
-                                           FontSize="15"
+                                           FontSize="14"
                                            VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -351,24 +351,24 @@
                                 Orientation="Horizontal"
                                 Spacing="12">
                         <Button Classes="secondary-action"
-                                Width="208"
+                                Width="180"
                                 Command="{Binding EditSelectedCommand}">
                             <StackPanel Orientation="Horizontal"
                                         Spacing="9"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
                                 <Image Source="/Assets/Icons/Lots/Tinted/edit-muted.png"
-                                       Width="24"
-                                       Height="24"
+                                       Width="20"
+                                       Height="20"
                                        VerticalAlignment="Center"/>
                                 <TextBlock Text="Редактировать"
-                                           FontSize="15"
+                                           FontSize="14"
                                            VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
                         <Button Classes="secondary-action"
-                                Width="190"
+                                Width="170"
                                 Command="{Binding DuplicateSelectedCommand}"
                                 ToolTip.Tip="Логика дублирования пока не реализована">
                             <StackPanel Orientation="Horizontal"
@@ -376,28 +376,28 @@
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
                                 <Image Source="/Assets/Icons/Lots/Tinted/duplicate-green.png"
-                                       Width="22"
-                                       Height="22"
+                                       Width="19"
+                                       Height="19"
                                        VerticalAlignment="Center"/>
                                 <TextBlock Text="Дублировать"
-                                           FontSize="15"
+                                           FontSize="14"
                                            VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
                         <Button Classes="danger-action"
-                                Width="250"
+                                Width="220"
                                 Command="{Binding CancelSelectedCommand}">
                             <StackPanel Orientation="Horizontal"
                                         Spacing="9"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
                                 <Image Source="/Assets/Icons/Lots/Tinted/hide-danger.png"
-                                       Width="22"
-                                       Height="22"
+                                       Width="19"
+                                       Height="19"
                                        VerticalAlignment="Center"/>
                                 <TextBlock Text="Снять с публикации"
-                                           FontSize="15"
+                                           FontSize="14"
                                            VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -618,6 +618,7 @@
 
                                                             <StackPanel Grid.Column="2"
                                                                         Spacing="3"
+                                                                        Margin="8,0,0,0"
                                                                         VerticalAlignment="Center">
                                                                 <TextBlock Text="{Binding PickupDateText}"
                                                                            Foreground="#E4ECE7"
@@ -631,24 +632,28 @@
                                                                        Text="{Binding AvailableQuantity}"
                                                                        Foreground="{Binding QuantityBrush}"
                                                                        FontSize="15"
+                                                                       Margin="8,0,0,0"
                                                                        VerticalAlignment="Center"/>
 
                                                             <TextBlock Grid.Column="4"
                                                                        Text="{Binding TotalQuantity}"
                                                                        Foreground="#E4ECE7"
                                                                        FontSize="15"
+                                                                       Margin="8,0,0,0"
                                                                        VerticalAlignment="Center"/>
 
                                                             <TextBlock Grid.Column="5"
                                                                        Text="{Binding PriceText}"
                                                                        Foreground="#F4F7F3"
                                                                        FontSize="15"
+                                                                       Margin="8,0,0,0"
                                                                        VerticalAlignment="Center"/>
 
                                                             <Border Grid.Column="6"
                                                                     Background="{Binding StatusBadgeBackground}"
                                                                     CornerRadius="8"
                                                                     Padding="10,6"
+                                                                    Margin="8,0,0,0"
                                                                     HorizontalAlignment="Left"
                                                                     VerticalAlignment="Center">
                                                                 <StackPanel Orientation="Horizontal" Spacing="7">
@@ -712,10 +717,22 @@
                                                 Spacing="10"
                                                 HorizontalAlignment="Center"
                                                 Margin="0,6,0,0">
-                                        <Button Content="Создать лот"
-                                                Classes="primary-lot-button"
+                                        <Button Classes="primary-lot-button"
                                                 Command="{Binding CreateNewCommand}"
-                                                IsVisible="{Binding !HasAnyLots}"/>
+                                                IsVisible="{Binding !HasAnyLots}">
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center">
+                                                <Image Source="/Assets/Icons/Lots/Tinted/plus-white.png"
+                                                       Width="20"
+                                                       Height="20"
+                                                       VerticalAlignment="Center"/>
+                                                <TextBlock Text="Создать лот"
+                                                           FontSize="14"
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Button>
                                         <Button Content="Сбросить фильтры"
                                                 Classes="secondary-action"
                                                 Command="{Binding ResetFiltersCommand}"

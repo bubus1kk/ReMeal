@@ -67,7 +67,7 @@ namespace ReMealApp.ViewModels.Shell
                 showLogin);
 
             Catalog = new CatalogViewModel(lotService);
-            FoodPoint = new FoodPointViewModel(foodPointService, this);
+            FoodPoint = new FoodPointViewModel(foodPointService, lotService, this);
             PartnerLots = new PartnerLotsViewModel(lotService, foodPointService, this);
             CreateLot = new CreateLotViewModel(foodPointService, lotService, this);
             _currentSectionViewModel = Profile;

@@ -37,8 +37,8 @@
         </Style>
 
         <Style Selector="Button.detail-action">
-            <Setter Property="Height" Value="54"/>
-            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Padding" Value="16,0"/>
             <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Background" Value="#131F1C"/>
@@ -50,8 +50,8 @@
         </Style>
 
         <Style Selector="Button.detail-danger">
-            <Setter Property="Height" Value="54"/>
-            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Padding" Value="16,0"/>
             <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Background" Value="#261514"/>
@@ -312,7 +312,7 @@
 
                                 <Button Grid.Column="4"
                                         Classes="detail-action"
-                                        Width="180"
+                                        Width="164"
                                         Command="{Binding EditCommand}"
                                         IsEnabled="{Binding CanEditLot}">
                                     <StackPanel Orientation="Horizontal"
@@ -320,11 +320,11 @@
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center">
                                         <Image Source="/Assets/Icons/Lots/Tinted/edit-white.png"
-                                               Width="22"
-                                               Height="22"
+                                               Width="20"
+                                               Height="20"
                                                VerticalAlignment="Center"/>
                                         <TextBlock Text="Редактировать"
-                                                   FontSize="15"
+                                                   FontSize="14"
                                                    FontWeight="SemiBold"
                                                    VerticalAlignment="Center"/>
                                     </StackPanel>
@@ -332,7 +332,7 @@
 
                                 <Button Grid.Column="5"
                                         Classes="detail-danger"
-                                        Width="218"
+                                        Width="202"
                                         Command="{Binding CancelCommand}"
                                         IsEnabled="{Binding CanCancelLot}">
                                     <StackPanel Orientation="Horizontal"
@@ -340,11 +340,11 @@
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center">
                                         <Image Source="/Assets/Icons/Lots/Tinted/hide-danger.png"
-                                               Width="22"
-                                               Height="22"
+                                               Width="20"
+                                               Height="20"
                                                VerticalAlignment="Center"/>
                                         <TextBlock Text="Снять с публикации"
-                                                   FontSize="15"
+                                                   FontSize="14"
                                                    FontWeight="SemiBold"
                                                    VerticalAlignment="Center"/>
                                     </StackPanel>
