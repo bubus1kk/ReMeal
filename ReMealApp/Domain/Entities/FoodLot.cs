@@ -16,13 +16,13 @@ namespace Domain.Entities
 
         public int TotalQuantity { get; private set; }
 
-        public int AvailableQuantity { get; private set; }
+        public int AvailableQuantity { get; set; }
 
         public decimal Price { get; private set; }
 
         public DateTime PickupDeadline { get; private set; }
 
-        public LotStatus Status { get; private set; }
+        public LotStatus Status { get; set; }
 
         public DateTime CreatedAt { get; private set; }
 
@@ -33,6 +33,8 @@ namespace Domain.Entities
         public FoodPoint? FoodPoint { get; private set; }
 
         public List<LotComponent> Components { get; private set; } = new();
+
+        public List<Booking> Bookings { get; set; } = new();
 
         public string ComponentsSummary => Components.Count == 0
             ? string.Empty

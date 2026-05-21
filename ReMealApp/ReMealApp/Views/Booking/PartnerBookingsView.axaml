@@ -1,0 +1,96 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ReMealApp.ViewModels.Booking"
+             xmlns:dto="using:Application.DTOs.Booking"
+             x:Class="ReMealApp.Views.Booking.PartnerBookingsView"
+             x:DataType="vm:PartnerBookingsViewModel">
+
+    <Border Classes="card">
+
+        <DockPanel>
+
+            <StackPanel DockPanel.Dock="Top"
+                        Orientation="Horizontal"
+                        Spacing="8"
+                        Margin="0,0,0,12">
+
+                <TextBlock Text="Бронирования клиентов"
+                           Classes="section-title"/>
+
+                <Button Content="Обновить"
+                        Command="{Binding LoadBookingsCommand}"/>
+
+            </StackPanel>
+
+            <TextBlock DockPanel.Dock="Bottom"
+                       Text="{Binding StatusMessage}"
+                       Margin="0,12,0,0"
+                       TextWrapping="Wrap"/>
+
+            <DataGrid ItemsSource="{Binding Bookings}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True">
+
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn Header="Пользователь"
+                                        Binding="{Binding UserName}"
+                                        Width="2*"/>
+
+                    <DataGridTextColumn Header="Набор"
+                                        Binding="{Binding LotTitle}"
+                                        Width="2*"/>
+
+                    <DataGridTextColumn Header="Количество"
+                                        Binding="{Binding Quantity}"
+                                        Width="100"/>
+
+                    <DataGridTextColumn Header="Статус"
+                                        Binding="{Binding Status}"
+                                        Width="120"/>
+
+                    <DataGridTemplateColumn Header="Подтвердить"
+                                            Width="140">
+
+                        <DataGridTemplateColumn.CellTemplate>
+
+                            <DataTemplate x:DataType="dto:BookingDto">
+
+                                <Button
+                                    Content="Выдано"
+                                    Command="{Binding $parent[UserControl].DataContext.ConfirmBookingCommand}"
+                                    CommandParameter="{Binding Id}" />
+
+                            </DataTemplate>
+
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Отклонить"
+                                            Width="140">
+
+                        <DataGridTemplateColumn.CellTemplate>
+
+                            <DataTemplate x:DataType="dto:BookingDto">
+
+                                <Button
+                                    Content="Отклонить"
+                                    Command="{Binding $parent[UserControl].DataContext.RejectBookingCommand}"
+                                    CommandParameter="{Binding Id}" />
+
+                            </DataTemplate>
+
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+        </DockPanel>
+
+    </Border>
+
+</UserControl>
