@@ -17,13 +17,29 @@ namespace Tests.Lots
             database.Auth.SetCurrentUser(partner);
 
             var lot = await database.LotService.CreateLotAsync(
-                new CreateLotRequest(foodPoint.Id, "Lunch set", "Fresh lunch", "Soup, salad", 7, 149.50m, DateTime.UtcNow.AddHours(4)));
+                new CreateLotRequest(
+                    foodPoint.Id,
+                    "Lunch set",
+                    "Fresh lunch",
+                    string.Empty,
+                    7,
+                    149.50m,
+                    DateTime.UtcNow.AddHours(4),
+                    new[]
+                    {
+                        new LotComponentRequest(null, "Soup", 1, "мл", null, null, 0),
+                        new LotComponentRequest(null, "Salad", 2, "шт", "greens", null, 1)
+                    }));
 
             Assert.AreEqual(foodPoint.Id, lot.FoodPointId);
             Assert.AreEqual(7, lot.TotalQuantity);
             Assert.AreEqual(7, lot.AvailableQuantity);
             Assert.AreEqual(149.50m, lot.Price);
             Assert.AreEqual(LotStatus.Active, lot.Status);
+            Assert.AreEqual(2, lot.Components.Count);
+            Assert.AreEqual("Soup — 1 мл", lot.Components[0].DisplayText);
+            Assert.AreEqual("Salad — 2 шт", lot.Components[1].DisplayText);
+            Assert.AreEqual("Soup — 1 мл; Salad — 2 шт", lot.Composition);
         }
 
         [TestMethod]
@@ -94,11 +110,11 @@ namespace Tests.Lots
 
             await AssertEx.ThrowsAsync<ArgumentException>(() =>
                 database.LotService.CreateLotAsync(
-                    new CreateLotRequest(foodPoint.Id, "Lunch", "Description", "", 1, 10, DateTime.UtcNow.AddHours(1))));
+                    new CreateLotRequest(foodPoint.Id, "Lunch", "Description", "Composition", 0, 10, DateTime.UtcNow.AddHours(1))));
 
             await AssertEx.ThrowsAsync<ArgumentException>(() =>
                 database.LotService.CreateLotAsync(
-                    new CreateLotRequest(foodPoint.Id, "Lunch", "Description", "Composition", 0, 10, DateTime.UtcNow.AddHours(1))));
+                    new CreateLotRequest(foodPoint.Id, "Lunch", "Description", "Composition", 1, 0, DateTime.UtcNow.AddHours(1))));
 
             await AssertEx.ThrowsAsync<ArgumentException>(() =>
                 database.LotService.CreateLotAsync(
@@ -215,6 +231,57 @@ namespace Tests.Lots
             Assert.AreEqual(6, updated.TotalQuantity);
             Assert.AreEqual(6, updated.AvailableQuantity);
             Assert.AreEqual(LotStatus.Active, updated.Status);
+        }
+
+        [TestMethod]
+        public async Task UpdateLotAsync_WhenComponentsChange_ReplacesComponentsWithoutDuplicates()
+        {
+            await using var database = await SqliteTestDatabase.CreateAsync();
+            var partner = await database.AddUserAsync(UserRole.FoodPointRepresentative);
+            var foodPoint = await database.AddFoodPointAsync(partner);
+            database.Auth.SetCurrentUser(partner);
+
+            var lot = await database.LotService.CreateLotAsync(
+                new CreateLotRequest(
+                    foodPoint.Id,
+                    "Lunch",
+                    "Description",
+                    string.Empty,
+                    2,
+                    10,
+                    DateTime.UtcNow.AddHours(2),
+                    new[]
+                    {
+                        new LotComponentRequest(null, "Soup", 1, "шт", null, null, 0),
+                        new LotComponentRequest(null, "Dessert", 1, "шт", null, null, 1)
+                    }));
+
+            await database.LotService.UpdateLotAsync(
+                new UpdateLotRequest(
+                    lot.Id,
+                    "Lunch updated",
+                    "Description",
+                    string.Empty,
+                    12,
+                    DateTime.UtcNow.AddHours(3),
+                    new[]
+                    {
+                        new LotComponentRequest(lot.Components[0].Id, "Soup", 2, "шт", "250 ml", "component-image.png", 0),
+                        new LotComponentRequest(null, "Salad", 1, "шт", "greens", null, 1)
+                    }));
+
+            database.DbContext.ChangeTracker.Clear();
+
+            var saved = await database.LotService.GetLotAsync(lot.Id)
+                ?? throw new InvalidOperationException("Лот не найден.");
+
+            Assert.AreEqual(2, saved.Components.Count);
+            CollectionAssert.AreEqual(
+                new[] { "Soup — 2 шт", "Salad — 1 шт" },
+                saved.Components.OrderBy(x => x.SortOrder).Select(x => x.DisplayText).ToArray());
+            Assert.AreEqual("Soup — 2 шт; Salad — 1 шт", saved.Composition);
+            Assert.AreEqual("250 ml", saved.Components.OrderBy(x => x.SortOrder).First().Composition);
+            Assert.AreEqual("component-image.png", saved.Components.OrderBy(x => x.SortOrder).First().ImagePath);
         }
 
         [TestMethod]

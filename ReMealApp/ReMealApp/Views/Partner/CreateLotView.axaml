@@ -2,10 +2,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ReMealApp.ViewModels.Partner"
              xmlns:ent="using:Domain.Entities"
+             xmlns:conv="using:ReMealApp.Converters"
              x:Class="ReMealApp.Views.Partner.CreateLotView"
              x:DataType="vm:CreateLotViewModel">
 
-    <Border Classes="card" MaxWidth="560" HorizontalAlignment="Left">
+    <UserControl.Resources>
+        <conv:ImagePathToBitmapConverter x:Key="ImagePathConverter"/>
+    </UserControl.Resources>
+
+    <Border Classes="card" MaxWidth="680" HorizontalAlignment="Left">
         <StackPanel Spacing="10">
             <TextBlock Text="Создание лота"
                        Classes="section-title"
@@ -38,7 +43,104 @@
                      Text="{Binding Description}"
                      AcceptsReturn="True"
                      Height="72"/>
-            <TextBox PlaceholderText="Состав" Text="{Binding Composition}"/>
+
+            <StackPanel Spacing="6">
+                <TextBlock Text="Фото лота" Opacity="0.7" FontSize="12"/>
+                <Grid ColumnDefinitions="80,Auto,Auto,*">
+                    <Border Grid.Column="0"
+                            Width="72"
+                            Height="72"
+                            BorderBrush="#2B3B35"
+                            BorderThickness="1"
+                            CornerRadius="6">
+                        <Image Source="{Binding ImagePath, Converter={StaticResource ImagePathConverter}}"
+                               Stretch="UniformToFill"/>
+                    </Border>
+                    <Button Grid.Column="1"
+                            Content="Выбрать фото"
+                            Click="SelectLotImage_Click"
+                            Margin="8,0,0,0"
+                            VerticalAlignment="Center"/>
+                    <Button Grid.Column="2"
+                            Content="Удалить фото"
+                            Command="{Binding RemoveLotImageCommand}"
+                            Margin="8,0,0,0"
+                            VerticalAlignment="Center"/>
+                </Grid>
+            </StackPanel>
+
+            <StackPanel Spacing="8">
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock Grid.Column="0"
+                               Text="Компоненты набора"
+                               Opacity="0.7"
+                               FontSize="12"
+                               VerticalAlignment="Center"/>
+                    <Button Grid.Column="1"
+                            Content="+ Добавить компонент"
+                            Command="{Binding AddComponentCommand}"/>
+                </Grid>
+
+                <ItemsControl ItemsSource="{Binding Components}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:LotComponentEditorViewModel">
+                            <Border BorderBrush="#2B3B35"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="8"
+                                    Margin="0,0,0,6">
+                                <StackPanel Spacing="6">
+                                    <Grid ColumnDefinitions="64,*,82,82,Auto,Auto">
+                                        <Border Grid.Column="0"
+                                                Width="56"
+                                                Height="56"
+                                                BorderBrush="#2B3B35"
+                                                BorderThickness="1"
+                                                CornerRadius="6"
+                                                Margin="0,0,6,0">
+                                            <Image Source="{Binding ImagePath, Converter={StaticResource ImagePathConverter}}"
+                                                   Stretch="UniformToFill"/>
+                                        </Border>
+                                        <TextBox Grid.Column="1"
+                                                 PlaceholderText="Название компонента"
+                                                 Text="{Binding Name}"
+                                                 Margin="0,0,6,0"/>
+                                        <NumericUpDown Grid.Column="2"
+                                                       Value="{Binding Quantity}"
+                                                       Minimum="1"
+                                                       Increment="1"
+                                                       FormatString="0"
+                                                       Margin="6,0,6,0"/>
+                                        <ComboBox Grid.Column="3"
+                                                  ItemsSource="{Binding AvailableUnits}"
+                                                  SelectedItem="{Binding Unit}"
+                                                  Margin="6,0,6,0"/>
+                                        <Button Grid.Column="4"
+                                                Content="Фото"
+                                                Click="SelectComponentImage_Click"
+                                                Margin="6,0,6,0"/>
+                                        <Button Grid.Column="5"
+                                                Content="Удалить"
+                                                Command="{Binding RemoveCommand}"
+                                                CommandParameter="{Binding}"/>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <TextBox Grid.Column="0"
+                                                 PlaceholderText="Состав / аллергены"
+                                                 Text="{Binding Composition}"
+                                                 Margin="0,0,6,0"/>
+                                        <Button Grid.Column="1"
+                                                Content="Удалить фото"
+                                                Command="{Binding RemoveImageCommand}"
+                                                CommandParameter="{Binding}"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
 
             <Grid ColumnDefinitions="*,*">
                 <StackPanel Grid.Column="0" Spacing="4" Margin="0,0,6,0">

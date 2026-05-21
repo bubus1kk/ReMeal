@@ -19,6 +19,7 @@ namespace Infrastructure.Repositories
         {
             return DataAccessGuard.ExecuteAsync(
                 () => _dbContext.FoodLots
+                    .Include(x => x.Components)
                     .Include(x => x.FoodPoint)
                     .ThenInclude(x => x!.Owner)
                     .FirstOrDefaultAsync(x => x.Id == id, cancellationToken),
@@ -29,6 +30,7 @@ namespace Infrastructure.Repositories
         {
             return DataAccessGuard.ExecuteAsync(
                 () => _dbContext.FoodLots
+                    .Include(x => x.Components)
                     .Include(x => x.FoodPoint)
                     .ThenInclude(x => x!.Owner)
                     .OrderByDescending(x => x.CreatedAt)
@@ -42,6 +44,7 @@ namespace Infrastructure.Repositories
         {
             return DataAccessGuard.ExecuteAsync(
                 () => _dbContext.FoodLots
+                    .Include(x => x.Components)
                     .Include(x => x.FoodPoint)
                     .ThenInclude(x => x!.Owner)
                     .Where(x => x.FoodPointId == foodPointId)
@@ -74,7 +77,11 @@ namespace Infrastructure.Repositories
         public Task UpdateAsync(FoodLot lot, CancellationToken cancellationToken = default)
         {
             DataAccessGuard.Execute(
-                () => _dbContext.FoodLots.Update(lot),
+                () =>
+                {
+                    if (_dbContext.Entry(lot).State == EntityState.Detached)
+                        _dbContext.FoodLots.Update(lot);
+                },
                 "обновить лот");
 
             return Task.CompletedTask;
@@ -92,7 +99,11 @@ namespace Infrastructure.Repositories
         public Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             return DataAccessGuard.ExecuteAsync(
-                () => _dbContext.SaveChangesAsync(cancellationToken),
+                async () =>
+                {
+                    await _dbContext.SaveChangesAsync(cancellationToken);
+                    _dbContext.ChangeTracker.Clear();
+                },
                 "сохранить изменения лота");
         }
     }

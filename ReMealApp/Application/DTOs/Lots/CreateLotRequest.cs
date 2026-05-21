@@ -7,5 +7,7 @@ namespace Application.DTOs.Lots
         string Composition,
         int TotalQuantity,
         decimal Price,
-        DateTime PickupDeadline);
+        DateTime PickupDeadline,
+        IReadOnlyList<LotComponentRequest>? Components = null,
+        string? ImagePath = null);
 }

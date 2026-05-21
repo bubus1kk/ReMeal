@@ -8,6 +8,7 @@
 
     <UserControl.Resources>
         <conv:LotStatusToTextConverter x:Key="LotStatusConverter"/>
+        <conv:ImagePathToBitmapConverter x:Key="ImagePathConverter"/>
     </UserControl.Resources>
 
     <Border Classes="card">
@@ -33,10 +34,27 @@
                       AutoGenerateColumns="False"
                       GridLinesVisibility="Horizontal">
                 <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Фото" Width="72">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="ent:FoodLot">
+                                <Image Source="{Binding ImagePath, Converter={StaticResource ImagePathConverter}}"
+                                       Width="56"
+                                       Height="56"
+                                       Stretch="UniformToFill"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Header="Набор" Binding="{Binding Title}" Width="*"/>
                     <DataGridTextColumn Header="Точка питания" Binding="{Binding FoodPoint.Name}" Width="*"/>
                     <DataGridTextColumn Header="Адрес" Binding="{Binding FoodPoint.Address}" Width="2*"/>
-                    <DataGridTextColumn Header="Состав" Binding="{Binding Composition}" Width="2*"/>
+                    <DataGridTemplateColumn Header="Состав" Width="2*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="ent:FoodLot">
+                                <TextBlock Text="{Binding Composition}"
+                                           TextWrapping="Wrap"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Header="Доступно" Binding="{Binding AvailableQuantity}" Width="90"/>
                     <DataGridTextColumn Header="Цена" Binding="{Binding Price, StringFormat={}{0:N2}}" Width="90"/>
                     <DataGridTemplateColumn Header="Статус" Width="110">

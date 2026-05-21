@@ -1,0 +1,89 @@
+<mxfile host="Electron">
+  <diagram name="Страница-1" id="3yFtwczuQwqiuX2kiSuc">
+    <mxGraphModel dx="610" dy="595" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-25" edge="1" parent="1" source="lyq8L2IFto1sY1_M8L5I-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="lyq8L2IFto1sY1_M8L5I-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-1" parent="1" style="html=1;whiteSpace=wrap;" value="Партнер" vertex="1">
+          <mxGeometry height="50" width="110" x="270" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-12" edge="1" parent="1" source="lyq8L2IFto1sY1_M8L5I-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="lyq8L2IFto1sY1_M8L5I-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-23" edge="1" parent="1" source="lyq8L2IFto1sY1_M8L5I-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="lyq8L2IFto1sY1_M8L5I-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-2" parent="1" style="html=1;whiteSpace=wrap;" value="Сервис лотов" vertex="1">
+          <mxGeometry height="50" width="110" x="560" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-14" edge="1" parent="1" source="lyq8L2IFto1sY1_M8L5I-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="lyq8L2IFto1sY1_M8L5I-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-15" connectable="0" parent="lyq8L2IFto1sY1_M8L5I-14" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="5. Создать запись в БД" vertex="1">
+          <mxGeometry relative="1" x="0.5015" y="-10" as="geometry">
+            <mxPoint x="38" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-21" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="360" as="sourcePoint" />
+            <mxPoint x="640" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-3" parent="1" style="html=1;whiteSpace=wrap;" value="Модуль доступа к данным" vertex="1">
+          <mxGeometry height="50" width="110" x="560" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-17" edge="1" parent="1" source="lyq8L2IFto1sY1_M8L5I-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="lyq8L2IFto1sY1_M8L5I-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-4" parent="1" style="html=1;whiteSpace=wrap;" value="БД" vertex="1">
+          <mxGeometry height="50" width="110" x="260" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-8" edge="1" parent="1" source="lyq8L2IFto1sY1_M8L5I-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="lyq8L2IFto1sY1_M8L5I-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-26" edge="1" parent="1" source="lyq8L2IFto1sY1_M8L5I-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="lyq8L2IFto1sY1_M8L5I-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-5" parent="1" style="html=1;whiteSpace=wrap;" value="Система" vertex="1">
+          <mxGeometry height="50" width="110" x="560" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-7" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1. Создать лот" vertex="1">
+          <mxGeometry height="30" width="100" x="420" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-9" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="2. Передать данные лота" vertex="1">
+          <mxGeometry height="30" width="90" x="500" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-11" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="3. Проверить данные" vertex="1">
+          <mxGeometry height="30" width="90" x="440" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="4&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;. Сохранить лот&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="110" x="480" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-18" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="6. Запись сохранена" vertex="1">
+          <mxGeometry height="30" width="140" x="400" y="393" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-20" edge="1" parent="1" source="lyq8L2IFto1sY1_M8L5I-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" target="lyq8L2IFto1sY1_M8L5I-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="530" y="267" />
+              <mxPoint x="530" y="230" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-22" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="7. Вернуть сохраненный лот" vertex="1">
+          <mxGeometry height="30" width="110" x="640" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-24" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="8. Вернуть результат создания" vertex="1">
+          <mxGeometry height="30" width="120" x="650" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="lyq8L2IFto1sY1_M8L5I-27" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="9. Показать сообщение об успешном создании" vertex="1">
+          <mxGeometry height="30" width="190" x="380" y="110" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
