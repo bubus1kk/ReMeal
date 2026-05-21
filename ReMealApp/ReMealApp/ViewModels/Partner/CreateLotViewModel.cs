@@ -3,6 +3,7 @@ using Application.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Domain.Entities;
+using ReMealApp.Services;
 using ReMealApp.ViewModels.Shell;
 using System.Collections.ObjectModel;
 
@@ -30,6 +31,12 @@ namespace ReMealApp.ViewModels.Partner
 
         [ObservableProperty]
         private string _composition = string.Empty;
+
+        [ObservableProperty]
+        private string _imagePath = string.Empty;
+
+        [ObservableProperty]
+        private ObservableCollection<LotComponentEditorViewModel> _components = new();
 
         [ObservableProperty]
         private decimal _totalQuantity = 1;
@@ -67,6 +74,8 @@ namespace ReMealApp.ViewModels.Partner
             _lotService = lotService;
             _shell = shell;
         }
+
+        public IReadOnlyList<string> AvailableComponentUnits => LotComponent.AllowedUnits;
 
         public async Task RefreshAsync()
         {
@@ -118,6 +127,10 @@ namespace ReMealApp.ViewModels.Partner
                 Title = entity.Title;
                 Description = entity.Description;
                 Composition = entity.Composition;
+                ImagePath = entity.ImagePath ?? string.Empty;
+                Components = CreateComponentEditors(entity.Components
+                    .OrderBy(x => x.SortOrder)
+                    .ThenBy(x => x.Name));
                 TotalQuantity = entity.TotalQuantity;
                 Price = entity.Price;
                 var localDeadline = new DateTimeOffset(entity.PickupDeadline.ToLocalTime());
@@ -151,6 +164,9 @@ namespace ReMealApp.ViewModels.Partner
             {
                 IsBusy = true;
                 var pickupUtc = BuildPickupDeadlineUtc();
+                var componentRequests = BuildComponentRequests();
+                if (componentRequests is null)
+                    return;
 
                 if (IsEditMode && _editingLotId is Guid lotId)
                 {
@@ -158,9 +174,11 @@ namespace ReMealApp.ViewModels.Partner
                         lotId,
                         Title,
                         Description,
-                        Composition,
+                        BuildLotComposition(componentRequests),
                         Price,
-                        pickupUtc));
+                        pickupUtc,
+                        componentRequests,
+                        ImagePath));
 
                     StatusMessage = "Лот обновлен.";
                 }
@@ -170,10 +188,12 @@ namespace ReMealApp.ViewModels.Partner
                         SelectedFoodPoint.Id,
                         Title,
                         Description,
-                        Composition,
+                        BuildLotComposition(componentRequests),
                         (int)TotalQuantity,
                         Price,
-                        pickupUtc));
+                        pickupUtc,
+                        componentRequests,
+                        ImagePath));
 
                     StatusMessage = "Лот создан.";
                 }
@@ -194,6 +214,36 @@ namespace ReMealApp.ViewModels.Partner
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        private void AddComponent()
+        {
+            Components.Add(CreateComponentEditor());
+        }
+
+        [RelayCommand]
+        private void RemoveComponent(LotComponentEditorViewModel? component)
+        {
+            if (component is null)
+                return;
+
+            Components.Remove(component);
+        }
+
+        [RelayCommand]
+        private void RemoveLotImage()
+        {
+            ImagePath = string.Empty;
+        }
+
+        [RelayCommand]
+        private void RemoveComponentImage(LotComponentEditorViewModel? component)
+        {
+            if (component is null)
+                return;
+
+            component.ImagePath = string.Empty;
         }
 
         [RelayCommand]
@@ -234,6 +284,11 @@ namespace ReMealApp.ViewModels.Partner
             Title = string.Empty;
             Description = string.Empty;
             Composition = string.Empty;
+            ImagePath = string.Empty;
+            Components = new ObservableCollection<LotComponentEditorViewModel>
+            {
+                CreateComponentEditor()
+            };
             TotalQuantity = 1;
             Price = 0;
             PickupDeadline = defaultDeadline;
@@ -246,5 +301,119 @@ namespace ReMealApp.ViewModels.Partner
             var offset = TimeZoneInfo.Local.GetUtcOffset(localDeadline);
             return new DateTimeOffset(localDeadline, offset).UtcDateTime;
         }
+
+        private ObservableCollection<LotComponentEditorViewModel> CreateComponentEditors(
+            IEnumerable<LotComponent> components)
+        {
+            return new ObservableCollection<LotComponentEditorViewModel>(
+                components.Select(x => CreateComponentEditor(x)));
+        }
+
+        private LotComponentEditorViewModel CreateComponentEditor(LotComponent? component = null)
+        {
+            return new LotComponentEditorViewModel
+            {
+                Id = component?.Id,
+                Name = component?.Name ?? string.Empty,
+                Quantity = component?.Quantity ?? 1,
+                Unit = component?.Unit ?? LotComponent.DefaultUnit,
+                Composition = component?.Composition ?? string.Empty,
+                ImagePath = component?.ImagePath ?? string.Empty,
+                RemoveImageCommand = RemoveComponentImageCommand,
+                RemoveCommand = RemoveComponentCommand
+            };
+        }
+
+        public async Task SetLotImageFromSourceAsync(string sourcePath)
+        {
+            ImagePath = await ImageStorageService.SaveImageAsync(sourcePath, "Lots");
+        }
+
+        public async Task SetComponentImageFromSourceAsync(
+            LotComponentEditorViewModel component,
+            string sourcePath)
+        {
+            component.ImagePath = await ImageStorageService.SaveImageAsync(sourcePath, "LotComponents");
+        }
+
+        private IReadOnlyList<LotComponentRequest>? BuildComponentRequests()
+        {
+            var result = new List<LotComponentRequest>();
+
+            for (var index = 0; index < Components.Count; index++)
+            {
+                var component = Components[index];
+                var hasText = !string.IsNullOrWhiteSpace(component.Name) ||
+                    !string.IsNullOrWhiteSpace(component.Composition) ||
+                    !string.IsNullOrWhiteSpace(component.ImagePath);
+
+                if (!hasText)
+                    continue;
+
+                if (string.IsNullOrWhiteSpace(component.Name))
+                {
+                    StatusMessage = "У каждого компонента должно быть название.";
+                    return null;
+                }
+
+                if (component.Quantity <= 0)
+                {
+                    StatusMessage = "Количество компонента должно быть больше нуля.";
+                    return null;
+                }
+
+                if (!AvailableComponentUnits.Contains(component.Unit))
+                {
+                    StatusMessage = "Выберите единицу измерения компонента из списка.";
+                    return null;
+                }
+
+                result.Add(new LotComponentRequest(
+                    component.Id,
+                    component.Name,
+                    (int)component.Quantity,
+                    component.Unit,
+                    component.Composition,
+                    component.ImagePath,
+                    result.Count));
+            }
+
+            return result;
+        }
+
+        private string BuildLotComposition(IReadOnlyList<LotComponentRequest> components)
+        {
+            if (components.Count == 0)
+                return string.Empty;
+
+            return string.Join("; ", components.Select(x => $"{x.Name.Trim()} — {x.Quantity} {x.Unit}"));
+        }
+    }
+
+    public partial class LotComponentEditorViewModel : ObservableObject
+    {
+        public IReadOnlyList<string> AvailableUnits => LotComponent.AllowedUnits;
+
+        [ObservableProperty]
+        private Guid? _id;
+
+        [ObservableProperty]
+        private string _name = string.Empty;
+
+        [ObservableProperty]
+        private decimal _quantity = 1;
+
+        [ObservableProperty]
+        private string _unit = LotComponent.DefaultUnit;
+
+        [ObservableProperty]
+        private string _composition = string.Empty;
+
+        [ObservableProperty]
+        private string _imagePath = string.Empty;
+
+        public IRelayCommand? RemoveImageCommand { get; set; }
+
+        public IRelayCommand? RemoveCommand { get; set; }
     }
 }

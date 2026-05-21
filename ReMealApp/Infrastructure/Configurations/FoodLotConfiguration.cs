@@ -47,6 +47,15 @@ namespace Infrastructure.Persistence.Configurations
             builder.Property(x => x.UpdatedAt)
                 .IsRequired();
 
+            builder.Property(x => x.ImagePath)
+                .HasMaxLength(1024)
+                .IsRequired(false);
+
+            builder.HasMany(x => x.Components)
+                .WithOne(x => x.Lot)
+                .HasForeignKey(x => x.LotId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.HasIndex(x => x.FoodPointId);
             builder.HasIndex(x => x.Status);
             builder.HasIndex(x => x.PickupDeadline);

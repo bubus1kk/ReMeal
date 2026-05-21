@@ -35,10 +35,14 @@ namespace Application.Services
                 foodPoint.Id,
                 request.Title,
                 request.Description,
-                request.Composition,
+                BuildLotComposition(request.Composition, request.Components),
                 request.TotalQuantity,
                 request.Price,
-                request.PickupDeadline);
+                request.PickupDeadline,
+                request.ImagePath);
+
+            if (request.Components is not null)
+                lot.ReplaceComponents(CreateComponents(request.Components));
 
             await _foodLotRepository.AddAsync(lot, cancellationToken);
             await _foodLotRepository.SaveChangesAsync(cancellationToken);
@@ -53,9 +57,13 @@ namespace Application.Services
             lot.Update(
                 request.Title,
                 request.Description,
-                request.Composition,
+                BuildLotComposition(request.Composition, request.Components),
                 request.Price,
-                request.PickupDeadline);
+                request.PickupDeadline,
+                request.ImagePath);
+
+            if (request.Components is not null)
+                lot.ReplaceComponents(CreateComponents(request.Components));
 
             await _foodLotRepository.UpdateAsync(lot, cancellationToken);
             await _foodLotRepository.SaveChangesAsync(cancellationToken);
@@ -187,6 +195,44 @@ namespace Application.Services
                 throw new UnauthorizedAccessException("Управление лотами доступно только партнеру.");
 
             return user;
+        }
+
+        private static List<LotComponent> CreateComponents(IReadOnlyList<LotComponentRequest> requests)
+        {
+            var components = new List<LotComponent>();
+            var sortOrder = 0;
+
+            foreach (var request in requests.OrderBy(x => x.SortOrder))
+            {
+                var hasText = !string.IsNullOrWhiteSpace(request.Name) ||
+                    !string.IsNullOrWhiteSpace(request.Composition) ||
+                    !string.IsNullOrWhiteSpace(request.ImagePath);
+
+                if (!hasText)
+                    continue;
+
+                components.Add(new LotComponent(
+                    request.Id,
+                    request.Name,
+                    request.Quantity,
+                    request.Unit,
+                    request.Composition,
+                    request.ImagePath,
+                    sortOrder));
+                sortOrder++;
+            }
+
+            return components;
+        }
+
+        private static string BuildLotComposition(
+            string composition,
+            IReadOnlyList<LotComponentRequest>? componentRequests)
+        {
+            if (componentRequests is null)
+                return string.IsNullOrWhiteSpace(composition) ? string.Empty : composition.Trim();
+
+            return FoodLot.BuildLotComposition(CreateComponents(componentRequests));
         }
     }
 }

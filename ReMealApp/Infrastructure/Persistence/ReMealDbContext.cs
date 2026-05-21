@@ -17,6 +17,8 @@ namespace Infrastructure.Persistence
 
         public DbSet<FoodLot> FoodLots => Set<FoodLot>();
 
+        public DbSet<LotComponent> LotComponents => Set<LotComponent>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -24,6 +26,7 @@ namespace Infrastructure.Persistence
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new FoodPointConfiguration());
             modelBuilder.ApplyConfiguration(new FoodLotConfiguration());
+            modelBuilder.ApplyConfiguration(new LotComponentConfiguration());
         }
     }
 }

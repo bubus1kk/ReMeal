@@ -28,7 +28,18 @@ namespace Domain.Entities
 
         public DateTime UpdatedAt { get; private set; }
 
+        public string? ImagePath { get; private set; }
+
         public FoodPoint? FoodPoint { get; private set; }
+
+        public List<LotComponent> Components { get; private set; } = new();
+
+        public string ComponentsSummary => Components.Count == 0
+            ? string.Empty
+            : string.Join(Environment.NewLine, Components
+                .OrderBy(x => x.SortOrder)
+                .ThenBy(x => x.Name)
+                .Select(x => x.DisplayText));
 
         private FoodLot()
         {
@@ -41,7 +52,8 @@ namespace Domain.Entities
             string composition,
             int totalQuantity,
             decimal price,
-            DateTime pickupDeadline)
+            DateTime pickupDeadline,
+            string? imagePath = null)
         {
             ValidateCreation(foodPointId, title, composition, totalQuantity, price, pickupDeadline);
 
@@ -54,6 +66,7 @@ namespace Domain.Entities
             AvailableQuantity = totalQuantity;
             Price = price;
             PickupDeadline = pickupDeadline;
+            ImagePath = NormalizeImagePath(imagePath);
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = CreatedAt;
             RefreshStatus();
@@ -64,7 +77,8 @@ namespace Domain.Entities
             string description,
             string composition,
             decimal price,
-            DateTime pickupDeadline)
+            DateTime pickupDeadline,
+            string? imagePath = null)
         {
             if (Status is LotStatus.Cancelled or LotStatus.Expired)
                 throw new InvalidOperationException("Не удается обновить отмененный или истекший лот.");
@@ -72,11 +86,8 @@ namespace Domain.Entities
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Требуется название.", nameof(title));
 
-            if (string.IsNullOrWhiteSpace(composition))
-                throw new ArgumentException("Требуется состав.", nameof(composition));
-
-            if (price < 0)
-                throw new ArgumentException("Цена не может быть отрицательной.", nameof(price));
+            if (price <= 0)
+                throw new ArgumentException("Цена должна быть больше нуля.", nameof(price));
 
             if (pickupDeadline <= DateTime.UtcNow)
                 throw new ArgumentException("Срок получения должен быть в будущем.", nameof(pickupDeadline));
@@ -86,8 +97,59 @@ namespace Domain.Entities
             Composition = composition.Trim();
             Price = price;
             PickupDeadline = pickupDeadline;
+            ImagePath = NormalizeImagePath(imagePath);
             UpdatedAt = DateTime.UtcNow;
             RefreshStatus();
+        }
+
+        public void ReplaceComponents(IEnumerable<LotComponent> components)
+        {
+            var existingById = Components.ToDictionary(x => x.Id);
+            var retainedIds = new HashSet<Guid>();
+            var sortOrder = 0;
+
+            foreach (var component in components
+                .OrderBy(x => x.SortOrder)
+                .ThenBy(x => x.Name))
+            {
+                if (existingById.TryGetValue(component.Id, out var existing))
+                {
+                    existing.Update(
+                        component.Name,
+                        component.Quantity,
+                        component.Unit,
+                        component.Composition,
+                        component.ImagePath,
+                        sortOrder);
+                    retainedIds.Add(existing.Id);
+                }
+                else
+                {
+                    component.AssignToLot(Id, sortOrder);
+                    Components.Add(component);
+                    retainedIds.Add(component.Id);
+                }
+
+                sortOrder++;
+            }
+
+            for (var index = Components.Count - 1; index >= 0; index--)
+            {
+                if (!retainedIds.Contains(Components[index].Id))
+                    Components.RemoveAt(index);
+            }
+
+            UpdatedAt = DateTime.UtcNow;
+            Composition = BuildLotComposition(Components);
+        }
+
+        public static string BuildLotComposition(IEnumerable<LotComponent> components)
+        {
+            return string.Join("; ", components
+                .Where(x => !string.IsNullOrWhiteSpace(x.Name) && x.Quantity > 0)
+                .OrderBy(x => x.SortOrder)
+                .ThenBy(x => x.Name)
+                .Select(x => x.DisplayText));
         }
 
         public void MarkExpired()
@@ -146,14 +208,11 @@ namespace Domain.Entities
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Требуется название.", nameof(title));
 
-            if (string.IsNullOrWhiteSpace(composition))
-                throw new ArgumentException("Требуется состав.", nameof(composition));
-
             if (totalQuantity <= 0)
                 throw new ArgumentException("Количество должно быть больше нуля.", nameof(totalQuantity));
 
-            if (price < 0)
-                throw new ArgumentException("Цена не может быть отрицательной.", nameof(price));
+            if (price <= 0)
+                throw new ArgumentException("Цена должна быть больше нуля.", nameof(price));
 
             if (pickupDeadline <= DateTime.UtcNow)
                 throw new ArgumentException("Срок получения должен быть в будущем.", nameof(pickupDeadline));
@@ -177,6 +236,11 @@ namespace Domain.Entities
             }
 
             Status = LotStatus.Active;
+        }
+
+        private static string? NormalizeImagePath(string? imagePath)
+        {
+            return string.IsNullOrWhiteSpace(imagePath) ? null : imagePath.Trim();
         }
     }
 }
