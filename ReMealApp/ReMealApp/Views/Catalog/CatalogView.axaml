@@ -67,6 +67,16 @@
                     <DataGridTextColumn Header="Получить до"
                                         Binding="{Binding PickupDeadline, StringFormat={}{0:dd.MM.yyyy HH:mm}}"
                                         Width="150"/>
+                    <DataGridTemplateColumn Header="Бронь" Width="120">
+    <DataGridTemplateColumn.CellTemplate>
+        <DataTemplate x:DataType="ent:FoodLot">
+            <Button
+                Content="Забронировать"
+                Command="{Binding $parent[UserControl].DataContext.BookLotCommand}"
+                CommandParameter="{Binding Id}" />
+        </DataTemplate>
+    </DataGridTemplateColumn.CellTemplate>
+</DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>

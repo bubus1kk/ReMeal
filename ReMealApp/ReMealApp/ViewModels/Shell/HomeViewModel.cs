@@ -5,6 +5,7 @@ using Domain.Enums;
 using ReMealApp.ViewModels.Catalog;
 using ReMealApp.ViewModels.Partner;
 using ReMealApp.ViewModels.Profile;
+using ReMealApp.ViewModels.Booking;
 
 namespace ReMealApp.ViewModels.Shell
 {
@@ -19,9 +20,11 @@ namespace ReMealApp.ViewModels.Shell
         public const string ProfileSection = "profile";
         public const string SettingsSection = "settings";
         public const string PartnerLotsSection = "partner-lots";
+        public const string PartnerBookingsSection = "partner-bookings";
         public const string CreateLotSection = "create-lot";
 
         private readonly IAuthService _authService;
+        private readonly IBookingService _bookingService;
         private readonly Action<string> _showLogin;
         private readonly Action _exitApplication;
 
@@ -51,11 +54,13 @@ namespace ReMealApp.ViewModels.Shell
             IUserProfileService userProfileService,
             IFoodPointService foodPointService,
             ILotService lotService,
+            IBookingService bookingService,
             IProfileStatisticsService profileStatisticsService,
             Action<string> showLogin,
             Action exitApplication)
         {
             _authService = authService;
+            _bookingService = bookingService;
             _showLogin = showLogin;
             _exitApplication = exitApplication;
 
@@ -66,10 +71,12 @@ namespace ReMealApp.ViewModels.Shell
                 NavigateToSection,
                 showLogin);
 
-            Catalog = new CatalogViewModel(lotService);
-            FoodPoint = new FoodPointViewModel(foodPointService, lotService, this);
-            PartnerLots = new PartnerLotsViewModel(lotService, foodPointService, this);
+            Catalog = new CatalogViewModel(lotService,bookingService, authService);
+            FoodPoint = new FoodPointViewModel(foodPointService, this);
+            PartnerLots = new PartnerLotsViewModel(lotService, this);
+            PartnerBookings = new PartnerBookingsViewModel(bookingService, authService);
             CreateLot = new CreateLotViewModel(foodPointService, lotService, this);
+            MyBookings = new MyBookingsViewModel(bookingService, authService);
             _currentSectionViewModel = Profile;
         }
 
@@ -81,7 +88,10 @@ namespace ReMealApp.ViewModels.Shell
 
         public PartnerLotsViewModel PartnerLots { get; }
 
+        public PartnerBookingsViewModel PartnerBookings { get; }
         public CreateLotViewModel CreateLot { get; }
+
+        public MyBookingsViewModel MyBookings { get; }
 
         public bool IsHomeSelected => SelectedSectionKey == HomeSection;
 
@@ -147,6 +157,9 @@ namespace ReMealApp.ViewModels.Shell
         private Task ShowBookingsAsync() => NavigateToSectionAsync(BookingsSection);
 
         [RelayCommand]
+        private Task ShowPartnerBookingsAsync() => NavigateToSectionAsync(PartnerBookingsSection);
+
+        [RelayCommand]
         private Task ShowFavoritesAsync() => NavigateToSectionAsync(FavoritesSection);
 
         [RelayCommand]
@@ -168,9 +181,26 @@ namespace ReMealApp.ViewModels.Shell
         }
 
         [RelayCommand]
-        private void Logout()
+        private async Task LogoutAsync()
         {
-            IsApplicationExitConfirmationOpen = true;
+            try
+            {
+                var currentUser = await _authService.GetCurrentUserAsync();
+
+                if (currentUser is not null)
+                {
+                    var remember = _authService.IsCurrentUserRemembered();
+
+                    _authService.Logout(!remember);
+
+                    _showLogin(remember ? currentUser.Login : string.Empty);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (Profile is not null)
+                    Profile.StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
         }
 
         [RelayCommand]
@@ -186,6 +216,12 @@ namespace ReMealApp.ViewModels.Shell
             _exitApplication();
         }
 
+        [RelayCommand]
+        private void OpenApplicationExitDialog()
+        {
+            IsApplicationExitConfirmationOpen = true;
+        }
+
         public async Task RefreshPartnerAsync()
         {
             await FoodPoint.LoadAsync();
@@ -193,7 +229,6 @@ namespace ReMealApp.ViewModels.Shell
             await CreateLot.RefreshAsync();
             await Profile.LoadStatisticsAsync();
         }
-
         public async void OpenLotEditor(Guid lotId)
         {
             try
@@ -257,12 +292,9 @@ namespace ReMealApp.ViewModels.Shell
                         break;
 
                     case BookingsSection:
-                        SetSection(
-                            BookingsSection,
-                            new ModulePlaceholderViewModel(
-                                "Мои брони",
-                                "Модуль бронирований будет подключен отдельно. Здесь подготовлено только место под будущий экран.",
-                                "/Assets/Icons/bookings.png"));
+                        await MyBookings.LoadAsync();
+
+                        SetSection(BookingsSection, MyBookings);
                         break;
 
                     case FavoritesSection:
@@ -272,6 +304,16 @@ namespace ReMealApp.ViewModels.Shell
                                 "Избранное",
                                 "Избранные наборы появятся после добавления соответствующей модели и сервиса.",
                                 "/Assets/Icons/favorites.png"));
+                        break;
+
+                    case PartnerBookingsSection:
+
+                        await PartnerBookings.LoadAsync();
+
+                        SetSection(
+                            PartnerBookingsSection,
+                            PartnerBookings);
+
                         break;
 
                     case FoodPointsSection:

@@ -17,12 +17,14 @@ namespace Infrastructure
             IUserProfileService userProfileService,
             IFoodPointService foodPointService,
             ILotService lotService,
+            IBookingService bookingService,
             IProfileStatisticsService profileStatisticsService)
         {
             AuthService = authService;
             UserProfileService = userProfileService;
             FoodPointService = foodPointService;
             LotService = lotService;
+            BookingService = bookingService;
             ProfileStatisticsService = profileStatisticsService;
         }
 
@@ -34,6 +36,8 @@ namespace Infrastructure
 
         public ILotService LotService { get; }
 
+        public IBookingService BookingService { get; }
+
         public IProfileStatisticsService ProfileStatisticsService { get; }
 
         public static ReMealUserModule CreateDefault()
@@ -41,6 +45,7 @@ namespace Infrastructure
             return DataAccessGuard.Execute(() =>
             {
                 var databasePath = ReMealDatabasePath.GetDefaultPath();
+
                 var options = new DbContextOptionsBuilder<ReMealDbContext>()
                     .UseSqlite($"Data Source={databasePath}")
                     .Options;
@@ -54,30 +59,41 @@ namespace Infrastructure
                 catch (DataAccessException ex) when (ReMealDatabaseRecovery.CanRecover(ex))
                 {
                     dbContext.Dispose();
+
                     ReMealDatabaseRecovery.MoveDatabaseToBackup(databasePath);
 
                     dbContext = new ReMealDbContext(options);
+
                     ReMealDatabaseInitializer.EnsureSchema(dbContext);
                 }
 
                 IUserRepository userRepository = new UserRepository(dbContext);
+
                 IPasswordHasher passwordHasher = new PasswordHasher();
+
                 IRememberedUserStore rememberedUserStore = RememberedUserStore.CreateDefault();
-                IAuthService authService = new AuthService(userRepository, passwordHasher, rememberedUserStore);
-                IUserProfileService userProfileService = new UserProfileService(authService, userRepository);
 
-                IFoodPointRepository foodPointRepository = new FoodPointRepository(dbContext);
-                IFoodLotRepository foodLotRepository = new FoodLotRepository(dbContext);
-                IFoodPointService foodPointService = new FoodPointService(foodPointRepository, authService);
-                ILotService lotService = new LotService(foodPointRepository, foodLotRepository, authService);
-                IProfileStatisticsService profileStatisticsService = new ProfileStatisticsService(
-                    authService,
-                    userRepository,
-                    foodPointRepository,
-                    foodLotRepository);
+                IAuthService authService =new AuthService(userRepository,passwordHasher,rememberedUserStore);
 
-                return new ReMealUserModule(authService, userProfileService, foodPointService, lotService, profileStatisticsService);
-            }, "инициализировать доступ к данным приложения");
+                IUserProfileService userProfileService =new UserProfileService(authService,userRepository);
+
+                IFoodPointRepository foodPointRepository =new FoodPointRepository(dbContext);
+
+                IFoodLotRepository foodLotRepository =new FoodLotRepository(dbContext);
+
+                IFoodPointService foodPointService =new FoodPointService(foodPointRepository,authService);
+
+                ILotService lotService =new LotService(foodPointRepository,foodLotRepository,authService);
+
+                IBookingRepository bookingRepository =new BookingRepository(dbContext);
+
+                IBookingService bookingService =new BookingService(bookingRepository);
+
+                IProfileStatisticsService profileStatisticsService =new ProfileStatisticsService(authService,userRepository,foodPointRepository,foodLotRepository);
+
+                return new ReMealUserModule(authService,userProfileService,foodPointService,lotService,bookingService,profileStatisticsService);
+            },
+            "инициализировать доступ к данным приложения");
         }
     }
 }

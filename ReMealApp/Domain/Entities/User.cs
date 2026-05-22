@@ -21,5 +21,7 @@ namespace Domain.Entities
         public UserRole Role { get; set; } = UserRole.StudentCustomer;
 
         public ICollection<FoodPoint> FoodPoints { get; set; } = new List<FoodPoint>();
+
+        public List<Booking> Bookings { get; set; } = new();
     }
 }

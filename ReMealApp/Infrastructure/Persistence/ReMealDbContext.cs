@@ -1,6 +1,8 @@
 using Domain.Entities;
+using Domain.Entities;
 using Infrastructure.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
+using ReMeal.Infrastructure.Configurations;
 
 namespace Infrastructure.Persistence
 {
@@ -19,6 +21,7 @@ namespace Infrastructure.Persistence
 
         public DbSet<LotComponent> LotComponents => Set<LotComponent>();
 
+        public DbSet<Booking> Bookings => Set<Booking>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -27,6 +30,7 @@ namespace Infrastructure.Persistence
             modelBuilder.ApplyConfiguration(new FoodPointConfiguration());
             modelBuilder.ApplyConfiguration(new FoodLotConfiguration());
             modelBuilder.ApplyConfiguration(new LotComponentConfiguration());
+            modelBuilder.ApplyConfiguration(new BookingConfiguration());
         }
     }
 }

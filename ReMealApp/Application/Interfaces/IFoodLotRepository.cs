@@ -19,5 +19,7 @@ namespace Application.Interfaces
         Task DeleteAsync(FoodLot lot, CancellationToken cancellationToken = default);
 
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
+
+        ////////
     }
 }

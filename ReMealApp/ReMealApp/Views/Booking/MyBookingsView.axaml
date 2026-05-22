@@ -1,0 +1,84 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ReMealApp.ViewModels.Booking"
+             xmlns:dto="using:Application.DTOs.Booking"
+             x:Class="ReMealApp.Views.Booking.MyBookingsView"
+             x:DataType="vm:MyBookingsViewModel">
+
+    <Border Classes="card">
+
+        <DockPanel>
+
+            <StackPanel DockPanel.Dock="Top"
+                        Orientation="Horizontal"
+                        Spacing="8"
+                        Margin="0,0,0,12">
+
+                <TextBlock Text="Мои бронирования"
+                           Classes="section-title"/>
+
+                <Button Content="Обновить"
+                        Command="{Binding LoadBookingsCommand}"/>
+
+            </StackPanel>
+
+            <TextBlock DockPanel.Dock="Bottom"
+                       Text="{Binding StatusMessage}"
+                       Margin="0,12,0,0"
+                       TextWrapping="Wrap"
+                       Opacity="0.8"/>
+
+            <DataGrid ItemsSource="{Binding Bookings}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      GridLinesVisibility="Horizontal">
+
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn Header="Набор"
+                                        Binding="{Binding LotTitle}"
+                                        Width="2*"/>
+
+                    <DataGridTextColumn Header="Пользователь"
+                                        Binding="{Binding UserName}"
+                                        Width="2*"/>
+
+                    <DataGridTextColumn Header="Количество"
+                                        Binding="{Binding Quantity}"
+                                        Width="100"/>
+
+                    <DataGridTextColumn Header="Дата"
+                                        Binding="{Binding BookingDate, StringFormat={}{0:dd.MM.yyyy HH:mm}}"
+                                        Width="170"/>
+
+                    <DataGridTextColumn Header="Статус"
+                                        Binding="{Binding Status}"
+                                        Width="120"/>
+
+                    <DataGridTemplateColumn Header="Действия"
+                                            Width="150">
+
+                        <DataGridTemplateColumn.CellTemplate>
+
+                            <DataTemplate x:DataType="dto:BookingDto">
+
+                                <Button
+                                    Content="Отменить"
+                                    Command="{Binding $parent[UserControl].DataContext.CancelBookingCommand}"
+                                    CommandParameter="{Binding Id}" />
+
+                            </DataTemplate>
+
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+        </DockPanel>
+
+    </Border>
+
+</UserControl>
