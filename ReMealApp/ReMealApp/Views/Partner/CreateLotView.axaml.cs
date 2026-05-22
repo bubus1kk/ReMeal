@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using ReMealApp.ViewModels;
@@ -54,6 +55,61 @@ namespace ReMealApp.Views.Partner
             }
         }
 
+        private void LotImage_DragOver(object? sender, DragEventArgs e)
+        {
+            SetImageDragEffect(e);
+        }
+
+        private async void LotImage_Drop(object? sender, DragEventArgs e)
+        {
+            e.Handled = true;
+
+            if (DataContext is not CreateLotViewModel viewModel)
+                return;
+
+            var path = GetDroppedImagePath(e);
+            if (path is null)
+                return;
+
+            try
+            {
+                await viewModel.SetLotImageFromSourceAsync(path);
+            }
+            catch (Exception ex)
+            {
+                viewModel.StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
+        }
+
+        private void ComponentImage_DragOver(object? sender, DragEventArgs e)
+        {
+            SetImageDragEffect(e);
+        }
+
+        private async void ComponentImage_Drop(object? sender, DragEventArgs e)
+        {
+            e.Handled = true;
+
+            if (DataContext is not CreateLotViewModel viewModel ||
+                sender is not Control { DataContext: LotComponentEditorViewModel component })
+            {
+                return;
+            }
+
+            var path = GetDroppedImagePath(e);
+            if (path is null)
+                return;
+
+            try
+            {
+                await viewModel.SetComponentImageFromSourceAsync(component, path);
+            }
+            catch (Exception ex)
+            {
+                viewModel.StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
+        }
+
         private async Task<string?> PickImagePathAsync()
         {
             var topLevel = TopLevel.GetTopLevel(this);
@@ -73,6 +129,30 @@ namespace ReMealApp.Views.Partner
             });
 
             return files.Count == 0 ? null : files[0].Path.LocalPath;
+        }
+
+        private static void SetImageDragEffect(DragEventArgs e)
+        {
+            e.DragEffects = GetDroppedImagePath(e) is null
+                ? DragDropEffects.None
+                : DragDropEffects.Copy;
+            e.Handled = true;
+        }
+
+        private static string? GetDroppedImagePath(DragEventArgs e)
+        {
+            var file = e.DataTransfer.TryGetFiles()?.OfType<IStorageFile>().FirstOrDefault();
+            var path = file?.Path.LocalPath;
+
+            if (string.IsNullOrWhiteSpace(path))
+                return null;
+
+            var extension = Path.GetExtension(path);
+            return extension.Equals(".jpg", StringComparison.OrdinalIgnoreCase) ||
+                extension.Equals(".jpeg", StringComparison.OrdinalIgnoreCase) ||
+                extension.Equals(".png", StringComparison.OrdinalIgnoreCase)
+                    ? path
+                    : null;
         }
     }
 }

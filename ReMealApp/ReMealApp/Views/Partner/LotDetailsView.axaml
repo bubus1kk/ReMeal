@@ -1,0 +1,552 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ReMealApp.ViewModels.Partner"
+             xmlns:conv="using:ReMealApp.Converters"
+             x:Class="ReMealApp.Views.Partner.LotDetailsView"
+             x:DataType="vm:LotDetailsViewModel">
+
+    <UserControl.Resources>
+        <conv:ImagePathToBitmapConverter x:Key="ImagePathConverter"/>
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector="Border.details-shell">
+            <Setter Property="Background" Value="#0D1413"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="18"/>
+            <Setter Property="Padding" Value="22"/>
+        </Style>
+
+        <Style Selector="Border.details-card">
+            <Setter Property="Background" Value="#111A19"/>
+            <Setter Property="BorderBrush" Value="#26352F"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="18"/>
+        </Style>
+
+        <Style Selector="TextBlock.card-title">
+            <Setter Property="Foreground" Value="#F3F7F2"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style Selector="TextBlock.muted">
+            <Setter Property="Foreground" Value="#A8B1AD"/>
+        </Style>
+
+        <Style Selector="Button.detail-action">
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#131F1C"/>
+            <Setter Property="BorderBrush" Value="#2D4038"/>
+            <Setter Property="Foreground" Value="#F4F7F3"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
+        <Style Selector="Button.detail-danger">
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#261514"/>
+            <Setter Property="BorderBrush" Value="#53302A"/>
+            <Setter Property="Foreground" Value="#FF705F"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
+        <Style Selector="Button.detail-action:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#17241F"/>
+        </Style>
+
+        <Style Selector="Button.detail-danger:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#2B1715"/>
+        </Style>
+
+        <Style Selector="Button.back-button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#9CEB72"/>
+            <Setter Property="Padding" Value="4,2,10,2"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.14"/>
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <Style Selector="Button.back-button:pointerover">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Opacity" Value="0.88"/>
+        </Style>
+
+        <Style Selector="Button.back-button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#101D19"/>
+        </Style>
+
+        <Style Selector="Button.back-button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#101D19"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Border Classes="details-shell">
+        <Grid RowDefinitions="Auto,*" RowSpacing="16">
+            <Button Grid.Row="0"
+                    Classes="back-button"
+                    Command="{Binding BackCommand}">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="8"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="‹"
+                               FontSize="22"
+                               LineHeight="22"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="Назад к лотам"
+                               FontSize="15"
+                               FontWeight="SemiBold"
+                               LineHeight="20"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <Border Grid.Row="1"
+                    Classes="details-card"
+                    IsVisible="{Binding IsNotFound}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="520">
+                <StackPanel Spacing="12"
+                            HorizontalAlignment="Center">
+                    <TextBlock Text="Лот не найден"
+                               Classes="card-title"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Возможно, он был удалён или больше недоступен."
+                               Classes="muted"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"/>
+                    <Button Content="Вернуться к лотам"
+                            Classes="detail-action"
+                            Command="{Binding BackCommand}"
+                            HorizontalAlignment="Center"
+                            Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Grid Grid.Row="1"
+                  IsVisible="{Binding HasLot}"
+                  RowDefinitions="Auto,*"
+                  ColumnDefinitions="*,0.48*"
+                  RowSpacing="16"
+                  ColumnSpacing="16">
+                <Border Grid.Row="0"
+                        Grid.ColumnSpan="2"
+                        Classes="details-card"
+                        Padding="20">
+                    <Grid ColumnDefinitions="360,*" ColumnSpacing="24">
+                        <Border Grid.Column="0"
+                                Height="230"
+                                CornerRadius="12"
+                                ClipToBounds="True"
+                                Background="#17201F"
+                                BorderBrush="#2A3A34"
+                                BorderThickness="1">
+                            <Grid>
+                                <Image Source="{Binding MainImagePath, Converter={StaticResource ImagePathConverter}}"
+                                       Stretch="UniformToFill"
+                                       IsVisible="{Binding HasMainImage}"/>
+                                <StackPanel IsVisible="{Binding !HasMainImage}"
+                                            Spacing="8"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <Image Source="/Assets/Icons/Lots/Tinted/gallery-muted.png"
+                                           Width="30"
+                                           Height="30"
+                                           Opacity="0.75"/>
+                                    <TextBlock Text="Фото не добавлено"
+                                               Foreground="#8F9B96"
+                                               FontSize="13"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <Grid Grid.Column="1"
+                              RowDefinitions="Auto,Auto,Auto,Auto,*,Auto">
+                            <StackPanel Grid.Row="0"
+                                        Orientation="Horizontal"
+                                        Spacing="12">
+                                <TextBlock Text="{Binding Title}"
+                                           Foreground="#F6FAF5"
+                                           FontSize="30"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="Wrap"/>
+                                <Border Background="{Binding StatusBadgeBackground}"
+                                        CornerRadius="9"
+                                        Padding="10,5"
+                                        VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" Spacing="7">
+                                        <Ellipse Width="8"
+                                                 Height="8"
+                                                 Fill="{Binding StatusDotBrush}"
+                                                 VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding StatusText}"
+                                                   Foreground="{Binding StatusBadgeForeground}"
+                                                   FontSize="13"
+                                                   FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="1"
+                                       Text="{Binding DescriptionText}"
+                                       Classes="muted"
+                                       FontSize="15"
+                                       Margin="0,8,0,0"
+                                       TextWrapping="Wrap"
+                                       MaxHeight="44"/>
+
+                            <StackPanel Grid.Row="2"
+                                        Orientation="Horizontal"
+                                        Spacing="8"
+                                        Margin="0,18,0,0">
+                                <Image Source="/Assets/Icons/Lots/Tinted/location-green.png"
+                                       Width="18"
+                                       Height="18"/>
+                                <TextBlock Text="{Binding FoodPointName}"
+                                           Foreground="#DCE5DF"
+                                           FontSize="15"/>
+                                <TextBlock Text="{Binding FoodPointAddress}"
+                                           Classes="muted"
+                                           FontSize="15"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="3"
+                                        Orientation="Horizontal"
+                                        Spacing="8"
+                                        Margin="0,10,0,0">
+                                <Image Source="/Assets/Icons/Lots/Tinted/calendar-muted.png"
+                                       Width="18"
+                                       Height="18"/>
+                                <TextBlock Text="{Binding PickupText}"
+                                           Foreground="#DCE5DF"
+                                           FontSize="15"/>
+                            </StackPanel>
+
+                            <Grid Grid.Row="5"
+                                  ColumnDefinitions="120,120,130,*,Auto,Auto"
+                                  ColumnSpacing="12"
+                                  VerticalAlignment="Bottom">
+                                <Border Classes="details-card"
+                                        Padding="12"
+                                        CornerRadius="10">
+                                    <Grid ColumnDefinitions="24,*" ColumnSpacing="10">
+                                        <Image Source="/Assets/Icons/Lots/Tinted/available-green.png"
+                                               Width="22"
+                                               Height="22"
+                                               VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="Доступно"
+                                                       Classes="muted"
+                                                       FontSize="12"/>
+                                            <TextBlock Text="{Binding AvailableText}"
+                                                       Foreground="#F6FAF5"
+                                                       FontSize="20"
+                                                       FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <Border Grid.Column="1"
+                                        Classes="details-card"
+                                        Padding="12"
+                                        CornerRadius="10">
+                                    <Grid ColumnDefinitions="24,*" ColumnSpacing="10">
+                                        <Image Source="/Assets/Icons/Lots/Tinted/composition-green.png"
+                                               Width="22"
+                                               Height="22"
+                                               VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="Всего"
+                                                       Classes="muted"
+                                                       FontSize="12"/>
+                                            <TextBlock Text="{Binding TotalText}"
+                                                       Foreground="#F6FAF5"
+                                                       FontSize="20"
+                                                       FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <Border Grid.Column="2"
+                                        Classes="details-card"
+                                        Padding="12"
+                                        CornerRadius="10">
+                                    <Grid ColumnDefinitions="24,*" ColumnSpacing="10">
+                                        <Image Source="/Assets/Icons/Lots/Tinted/price-muted.png"
+                                               Width="22"
+                                               Height="22"
+                                               VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="Цена"
+                                                       Classes="muted"
+                                                       FontSize="12"/>
+                                            <TextBlock Text="{Binding PriceText}"
+                                                       Foreground="#F6FAF5"
+                                                       FontSize="20"
+                                                       FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <Button Grid.Column="4"
+                                        Classes="detail-action"
+                                        Width="164"
+                                        Command="{Binding EditCommand}"
+                                        IsEnabled="{Binding CanEditLot}">
+                                    <StackPanel Orientation="Horizontal"
+                                                Spacing="8"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center">
+                                        <Image Source="/Assets/Icons/Lots/Tinted/edit-white.png"
+                                               Width="20"
+                                               Height="20"
+                                               VerticalAlignment="Center"/>
+                                        <TextBlock Text="Редактировать"
+                                                   FontSize="14"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+
+                                <Button Grid.Column="5"
+                                        Classes="detail-danger"
+                                        Width="202"
+                                        Command="{Binding CancelCommand}"
+                                        IsEnabled="{Binding CanCancelLot}">
+                                    <StackPanel Orientation="Horizontal"
+                                                Spacing="8"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center">
+                                        <Image Source="/Assets/Icons/Lots/Tinted/hide-danger.png"
+                                               Width="20"
+                                               Height="20"
+                                               VerticalAlignment="Center"/>
+                                        <TextBlock Text="Снять с публикации"
+                                                   FontSize="14"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <ScrollViewer Grid.Row="1"
+                              Grid.Column="0"
+                              VerticalScrollBarVisibility="Hidden">
+                    <StackPanel Spacing="16">
+                        <Border Classes="details-card">
+                            <StackPanel Spacing="14">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <Image Source="/Assets/Icons/Lots/Tinted/description-green.png"
+                                           Width="22"
+                                           Height="22"/>
+                                    <TextBlock Text="Описание"
+                                               Classes="card-title"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding DescriptionText}"
+                                           Classes="muted"
+                                           FontSize="15"
+                                           LineHeight="22"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Classes="details-card">
+                            <StackPanel Spacing="14">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <Image Source="/Assets/Icons/Lots/Tinted/composition-green.png"
+                                           Width="22"
+                                           Height="22"/>
+                                    <TextBlock Text="Состав набора"
+                                               Classes="card-title"/>
+                                </StackPanel>
+
+                                <Border BorderBrush="#26352F"
+                                        BorderThickness="1"
+                                        CornerRadius="10"
+                                        Background="#0F1916"
+                                        IsVisible="{Binding HasComponents}">
+                                    <Grid RowDefinitions="40,*">
+                                        <Border Grid.Row="0"
+                                                Padding="16,0">
+                                            <Grid ColumnDefinitions="*,170">
+                                                <TextBlock Text="Ингредиент"
+                                                           Classes="muted"
+                                                           FontSize="13"
+                                                           VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="1"
+                                                           Text="Количество"
+                                                           Classes="muted"
+                                                           FontSize="13"
+                                                           VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+
+                                        <ItemsControl Grid.Row="1"
+                                                      ItemsSource="{Binding Components}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:LotComponentDetailsViewModel">
+                                                    <Border BorderBrush="#22312B"
+                                                            BorderThickness="0,1,0,0"
+                                                            Padding="16,0">
+                                                        <Grid ColumnDefinitions="*,170"
+                                                              MinHeight="44">
+                                                            <StackPanel Grid.Column="0"
+                                                                        Orientation="Horizontal"
+                                                                        Spacing="9"
+                                                                        VerticalAlignment="Center">
+                                                                <Ellipse Width="7"
+                                                                         Height="7"
+                                                                         Fill="#78D957"/>
+                                                                <TextBlock Text="{Binding Name}"
+                                                                           Foreground="#F0F5EF"
+                                                                           FontSize="14"
+                                                                           FontWeight="SemiBold"/>
+                                                                <TextBlock Text="{Binding CompositionText}"
+                                                                           Classes="muted"
+                                                                           FontSize="13"
+                                                                           TextTrimming="CharacterEllipsis"
+                                                                           IsVisible="{Binding HasComposition}"/>
+                                                            </StackPanel>
+                                                            <TextBlock Grid.Column="1"
+                                                                       Text="{Binding QuantityText}"
+                                                                       Foreground="#DCE5DF"
+                                                                       FontSize="14"
+                                                                       FontWeight="SemiBold"
+                                                                       VerticalAlignment="Center"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Grid>
+                                </Border>
+
+                                <TextBlock Text="Состав набора не указан."
+                                           Classes="muted"
+                                           IsVisible="{Binding !HasComponents}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Classes="details-card">
+                            <StackPanel Spacing="14">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <Image Source="/Assets/Icons/Lots/Tinted/gallery-green.png"
+                                           Width="22"
+                                           Height="22"/>
+                                    <TextBlock Text="Фотографии"
+                                               Classes="card-title"/>
+                                </StackPanel>
+
+                                <ItemsControl ItemsSource="{Binding Photos}"
+                                              IsVisible="{Binding HasPhotos}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:LotPhotoViewModel">
+                                            <Border Width="150"
+                                                    Height="90"
+                                                    Margin="0,0,12,12"
+                                                    CornerRadius="10"
+                                                    ClipToBounds="True"
+                                                    BorderBrush="#2A3A34"
+                                                    BorderThickness="1">
+                                                <Image Source="{Binding ImagePath, Converter={StaticResource ImagePathConverter}}"
+                                                       Stretch="UniformToFill"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <TextBlock Text="Фотографии не добавлены."
+                                           Classes="muted"
+                                           IsVisible="{Binding !HasPhotos}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <Border Grid.Row="1"
+                        Grid.Column="1"
+                        Classes="details-card"
+                        VerticalAlignment="Stretch">
+                    <Grid RowDefinitions="Auto,*">
+                        <StackPanel Grid.Row="0"
+                                    Orientation="Horizontal"
+                                    Spacing="10">
+                            <Image Source="/Assets/Icons/Lots/Tinted/settings-green.png"
+                                   Width="22"
+                                   Height="22"/>
+                            <TextBlock Text="Параметры лота"
+                                       Classes="card-title"/>
+                        </StackPanel>
+
+                        <ScrollViewer Grid.Row="1"
+                                      Margin="0,18,0,0"
+                                      VerticalScrollBarVisibility="Hidden">
+                            <ItemsControl ItemsSource="{Binding Parameters}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:LotParameterViewModel">
+                                        <Border BorderBrush="#24312C"
+                                                BorderThickness="0,0,0,1"
+                                                Padding="0,13">
+                                            <Grid ColumnDefinitions="28,*,Auto"
+                                                  ColumnSpacing="14">
+                                                <Image Grid.Column="0"
+                                                       Source="{Binding IconPath, Converter={StaticResource ImagePathConverter}}"
+                                                       Width="18"
+                                                       Height="18"
+                                                       VerticalAlignment="Center"
+                                                       Opacity="0.9"/>
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding Name}"
+                                                           Classes="muted"
+                                                           FontSize="14"
+                                                           VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="2"
+                                                           Text="{Binding Value}"
+                                                           Foreground="#D9E2DD"
+                                                           FontSize="14"
+                                                           TextWrapping="Wrap"
+                                                           MaxWidth="260"
+                                                           TextAlignment="Right"
+                                                           VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

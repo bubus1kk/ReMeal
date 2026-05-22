@@ -12,6 +12,28 @@
         <FluentTheme />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
 
+        <Style Selector="CheckBox">
+            <Style.Resources>
+                <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillChecked" Color="#69CB4B"/>
+                <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeChecked" Color="#69CB4B"/>
+                <SolidColorBrush x:Key="CheckBoxCheckGlyphForegroundChecked" Color="#0B120F"/>
+                <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillCheckedPointerOver" Color="#69CB4B"/>
+                <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeCheckedPointerOver" Color="#69CB4B"/>
+                <SolidColorBrush x:Key="CheckBoxCheckGlyphForegroundCheckedPointerOver" Color="#0B120F"/>
+                <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillCheckedPressed" Color="#69CB4B"/>
+                <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeCheckedPressed" Color="#69CB4B"/>
+                <SolidColorBrush x:Key="CheckBoxCheckGlyphForegroundCheckedPressed" Color="#0B120F"/>
+                <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillUnchecked" Color="#0F1916"/>
+                <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeUnchecked" Color="#8A9691"/>
+                <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillUncheckedPointerOver" Color="#13211D"/>
+                <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeUncheckedPointerOver" Color="#69CB4B"/>
+                <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillUncheckedPressed" Color="#13211D"/>
+                <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeUncheckedPressed" Color="#69CB4B"/>
+            </Style.Resources>
+            <Setter Property="Foreground" Value="#D7E3DC"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
         <Style Selector="TextBlock.section-title">
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontWeight" Value="SemiBold"/>

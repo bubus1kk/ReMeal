@@ -17,7 +17,7 @@ namespace ReMealApp.Converters
                 LotStatus.Active => "Активен",
                 LotStatus.SoldOut => "Распродан",
                 LotStatus.Expired => "Просрочен",
-                LotStatus.Cancelled => "Отменен",
+                LotStatus.Cancelled => "Снят с публикации",
                 _ => status.ToString()
             };
         }
