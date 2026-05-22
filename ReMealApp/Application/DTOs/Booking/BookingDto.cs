@@ -26,6 +26,12 @@ public class BookingDto
 
     public BookingStatus Status { get; set; }
 
+    public bool IsIssued { get; set; }
+
+    public bool IsPending { get; set; }
+
+    public bool IsCancelled { get; set; }
+
     public bool CanCancel => Status == BookingStatus.Active;
 
     public bool CanConfirmIssue => Status == BookingStatus.Active;
