@@ -2,6 +2,7 @@ using Application.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Domain.Enums;
+using ReMealApp.ViewModels.Admin;
 using ReMealApp.ViewModels.Booking;
 using ReMealApp.ViewModels.Catalog;
 using ReMealApp.ViewModels.Partner;
@@ -17,6 +18,7 @@ namespace ReMealApp.ViewModels.Shell
         public const string FavoritesSection = "favorites";
         public const string FoodPointsSection = "food-points";
         public const string AnalyticsSection = "analytics";
+        public const string AdminSection = "admin";
         public const string ProfileSection = "profile";
         public const string SettingsSection = "settings";
         public const string PartnerLotsSection = "partner-lots";
@@ -37,10 +39,19 @@ namespace ReMealApp.ViewModels.Shell
         private bool _isPartner;
 
         [ObservableProperty]
+        private bool _isAdmin;
+
+        [ObservableProperty]
         private bool _isCatalogVisible = true;
 
         [ObservableProperty]
+        private bool _isLotsNavigationVisible = true;
+
+        [ObservableProperty]
         private bool _isBookingsVisible = true;
+
+        [ObservableProperty]
+        private bool _isAdminVisible;
 
         [ObservableProperty]
         private bool _isSidebarExpanded = true;
@@ -57,6 +68,29 @@ namespace ReMealApp.ViewModels.Shell
             IFoodPointService foodPointService,
             ILotService lotService,
             IBookingService bookingService,
+            IProfileStatisticsService profileStatisticsService,
+            Action<string> showLogin,
+            Action exitApplication)
+            : this(
+                authService,
+                userProfileService,
+                foodPointService,
+                lotService,
+                bookingService,
+                new DeniedAdminService(),
+                profileStatisticsService,
+                showLogin,
+                exitApplication)
+        {
+        }
+
+        public HomeViewModel(
+            IAuthService authService,
+            IUserProfileService userProfileService,
+            IFoodPointService foodPointService,
+            ILotService lotService,
+            IBookingService bookingService,
+            IAdminService adminService,
             IProfileStatisticsService profileStatisticsService,
             Action<string> showLogin,
             Action exitApplication)
@@ -78,6 +112,7 @@ namespace ReMealApp.ViewModels.Shell
             PartnerBookings = new PartnerBookingsViewModel(bookingService);
             CreateLot = new CreateLotViewModel(foodPointService, lotService, this);
             MyBookings = new MyBookingsViewModel(bookingService);
+            AdminPanel = new AdminPanelViewModel(adminService);
             _currentSectionViewModel = Profile;
         }
 
@@ -95,6 +130,8 @@ namespace ReMealApp.ViewModels.Shell
 
         public MyBookingsViewModel MyBookings { get; }
 
+        public AdminPanelViewModel AdminPanel { get; }
+
         public bool IsHomeSelected => SelectedSectionKey == HomeSection;
 
         public bool IsCatalogSelected => SelectedSectionKey == CatalogSection || SelectedSectionKey == PartnerLotsSection;
@@ -104,6 +141,8 @@ namespace ReMealApp.ViewModels.Shell
         public bool IsFoodPointsSelected => SelectedSectionKey == FoodPointsSection;
 
         public bool IsAnalyticsSelected => SelectedSectionKey == AnalyticsSection;
+
+        public bool IsAdminSelected => SelectedSectionKey == AdminSection;
 
         public bool IsProfileSelected => SelectedSectionKey == ProfileSection;
 
@@ -132,8 +171,11 @@ namespace ReMealApp.ViewModels.Shell
                 var currentUser = await _authService.GetCurrentUserAsync();
                 var role = currentUser?.Role;
                 IsPartner = role == UserRole.FoodPointRepresentative;
-                IsCatalogVisible = role != UserRole.FoodPointRepresentative;
+                IsAdmin = role == UserRole.Administrator;
+                IsCatalogVisible = role == UserRole.StudentCustomer;
+                IsLotsNavigationVisible = role is UserRole.StudentCustomer or UserRole.FoodPointRepresentative;
                 IsBookingsVisible = role is UserRole.StudentCustomer or UserRole.FoodPointRepresentative;
+                IsAdminVisible = IsAdmin;
 
                 if (IsPartner)
                 {
@@ -141,9 +183,13 @@ namespace ReMealApp.ViewModels.Shell
                     await PartnerLots.LoadAsync();
                     await CreateLot.RefreshAsync();
                 }
-                else
+                else if (role == UserRole.StudentCustomer)
                 {
                     await Catalog.LoadAsync();
+                }
+                else if (IsAdmin)
+                {
+                    await AdminPanel.InitializeAsync();
                 }
 
                 await NavigateToSectionAsync(ProfileSection);
@@ -175,6 +221,9 @@ namespace ReMealApp.ViewModels.Shell
 
         [RelayCommand]
         private Task ShowAnalyticsAsync() => NavigateToSectionAsync(AnalyticsSection);
+
+        [RelayCommand]
+        private Task ShowAdminAsync() => NavigateToSectionAsync(AdminSection);
 
         [RelayCommand]
         private Task ShowProfileAsync() => NavigateToSectionAsync(ProfileSection);
@@ -328,6 +377,11 @@ namespace ReMealApp.ViewModels.Shell
                                 "/Assets/Icons/analytics.png"));
                         break;
 
+                    case AdminSection:
+                        await AdminPanel.InitializeAsync();
+                        SetSection(AdminSection, AdminPanel);
+                        break;
+
                     case SettingsSection:
                         SetSection(
                             SettingsSection,
@@ -363,6 +417,7 @@ namespace ReMealApp.ViewModels.Shell
             OnPropertyChanged(nameof(IsBookingsSelected));
             OnPropertyChanged(nameof(IsFoodPointsSelected));
             OnPropertyChanged(nameof(IsAnalyticsSelected));
+            OnPropertyChanged(nameof(IsAdminSelected));
             OnPropertyChanged(nameof(IsProfileSelected));
             OnPropertyChanged(nameof(IsSettingsSelected));
         }
@@ -380,6 +435,14 @@ namespace ReMealApp.ViewModels.Shell
             OnPropertyChanged(nameof(BookingsNavigationText));
             OnPropertyChanged(nameof(FoodPointsNavigationText));
             OnPropertyChanged(nameof(FoodPointsNavigationIconPath));
+        }
+
+        private sealed class DeniedAdminService : IAdminService
+        {
+            public Task EnsureAdministratorAccessAsync(CancellationToken cancellationToken = default)
+            {
+                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+            }
         }
     }
 }

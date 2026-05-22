@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ReMealApp.ViewModels.Admin"
+             x:Class="ReMealApp.Views.Admin.AdminPanelView"
+             x:DataType="vm:AdminPanelViewModel">
+
+    <Border Classes="card">
+        <StackPanel Spacing="16">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Администрирование"
+                               Classes="section-title"/>
+                    <TextBlock Text="Доступно только пользователям с ролью администратора."
+                               Foreground="#AAB9B0"
+                               FontSize="14"/>
+                </StackPanel>
+
+                <Button Grid.Column="1"
+                        Content="Обновить доступ"
+                        Command="{Binding LoadCommand}"/>
+            </Grid>
+
+            <TextBlock Text="{Binding StatusMessage}"
+                       Foreground="#DDE8DF"
+                       FontSize="14"
+                       TextWrapping="Wrap"/>
+
+            <Border IsVisible="{Binding HasAccess}"
+                    Padding="14"
+                    BorderBrush="#2C4238"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Background="#101917">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Подготовлены будущие разделы"
+                               Foreground="#F2F8F1"
+                               FontSize="16"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="Пользователи, точки питания, лоты и бронирования будут подключаться отдельными маленькими этапами."
+                               Foreground="#AAB9B0"
+                               FontSize="14"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Border>
+</UserControl>

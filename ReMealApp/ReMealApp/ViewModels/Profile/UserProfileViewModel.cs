@@ -142,7 +142,7 @@ namespace ReMealApp.ViewModels.Profile
         {
             UserRole.StudentCustomer => "Мои брони",
             UserRole.FoodPointRepresentative => "Управлять точками",
-            UserRole.Administrator => "К аналитике",
+            UserRole.Administrator => "К админке",
             _ => "Открыть раздел"
         };
 
@@ -318,7 +318,7 @@ namespace ReMealApp.ViewModels.Profile
             {
                 UserRole.StudentCustomer => HomeViewModel.BookingsSection,
                 UserRole.FoodPointRepresentative => HomeViewModel.FoodPointsSection,
-                UserRole.Administrator => HomeViewModel.AnalyticsSection,
+                UserRole.Administrator => HomeViewModel.AdminSection,
                 _ => HomeViewModel.ProfileSection
             };
 
