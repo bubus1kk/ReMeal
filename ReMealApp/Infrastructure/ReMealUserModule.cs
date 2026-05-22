@@ -80,7 +80,7 @@ namespace Infrastructure
                 ILotService lotService = new LotService(foodPointRepository, foodLotRepository, authService);
                 IBookingRepository bookingRepository = new BookingRepository(dbContext);
                 IBookingService bookingService = new BookingService(bookingRepository, authService);
-                IAdminService adminService = new AdminService(authService);
+                IAdminService adminService = new AdminService(authService, userRepository);
                 IProfileStatisticsService profileStatisticsService = new ProfileStatisticsService(
                     authService,
                     userRepository,

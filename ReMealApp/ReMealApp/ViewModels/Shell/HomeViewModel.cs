@@ -1,3 +1,4 @@
+using Application.DTOs.Admin;
 using Application.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -440,6 +441,11 @@ namespace ReMealApp.ViewModels.Shell
         private sealed class DeniedAdminService : IAdminService
         {
             public Task EnsureAdministratorAccessAsync(CancellationToken cancellationToken = default)
+            {
+                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+            }
+
+            public Task<List<AdminUserDto>> GetUsersAsync(CancellationToken cancellationToken = default)
             {
                 throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
             }

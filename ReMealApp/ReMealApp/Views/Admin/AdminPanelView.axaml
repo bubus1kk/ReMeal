@@ -10,13 +10,13 @@
                 <StackPanel Spacing="4">
                     <TextBlock Text="Администрирование"
                                Classes="section-title"/>
-                    <TextBlock Text="Доступно только пользователям с ролью администратора."
+                    <TextBlock Text="Пользователи"
                                Foreground="#AAB9B0"
                                FontSize="14"/>
                 </StackPanel>
 
                 <Button Grid.Column="1"
-                        Content="Обновить доступ"
+                        Content="Обновить"
                         Command="{Binding LoadCommand}"/>
             </Grid>
 
@@ -25,23 +25,56 @@
                        FontSize="14"
                        TextWrapping="Wrap"/>
 
-            <Border IsVisible="{Binding HasAccess}"
-                    Padding="14"
-                    BorderBrush="#2C4238"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Background="#101917">
-                <StackPanel Spacing="8">
-                    <TextBlock Text="Подготовлены будущие разделы"
-                               Foreground="#F2F8F1"
-                               FontSize="16"
-                               FontWeight="SemiBold"/>
-                    <TextBlock Text="Пользователи, точки питания, лоты и бронирования будут подключаться отдельными маленькими этапами."
-                               Foreground="#AAB9B0"
-                               FontSize="14"
-                               TextWrapping="Wrap"/>
+            <Grid IsVisible="{Binding HasAccess}"
+                  RowDefinitions="Auto,*"
+                  RowSpacing="12">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="10"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="Роль"
+                               Foreground="#DCE7DD"
+                               FontSize="13"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+                    <ComboBox Width="220"
+                              ItemsSource="{Binding RoleFilters}"
+                              SelectedItem="{Binding SelectedRoleFilter, Mode=TwoWay}"/>
                 </StackPanel>
-            </Border>
+
+                <DataGrid Grid.Row="1"
+                          ItemsSource="{Binding Users}"
+                          IsReadOnly="True"
+                          AutoGenerateColumns="False"
+                          GridLinesVisibility="Horizontal"
+                          IsVisible="{Binding HasUsers}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Логин"
+                                            Binding="{Binding Login}"
+                                            Width="*"/>
+                        <DataGridTextColumn Header="ФИО"
+                                            Binding="{Binding FullName}"
+                                            Width="2*"/>
+                        <DataGridTextColumn Header="Email"
+                                            Binding="{Binding Email}"
+                                            Width="2*"/>
+                        <DataGridTextColumn Header="Телефон"
+                                            Binding="{Binding Phone}"
+                                            Width="*"/>
+                        <DataGridTextColumn Header="Роль"
+                                            Binding="{Binding RoleText}"
+                                            Width="*"/>
+                        <DataGridTextColumn Header="Активность"
+                                            Binding="{Binding ActivityStatusText}"
+                                            Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <TextBlock Grid.Row="1"
+                           Text="По выбранному фильтру пользователей нет."
+                           Foreground="#AAB9B0"
+                           FontSize="14"
+                           IsVisible="{Binding !HasUsers}"/>
+            </Grid>
         </StackPanel>
     </Border>
 </UserControl>

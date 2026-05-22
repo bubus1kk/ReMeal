@@ -1,12 +1,16 @@
+using Application.DTOs.Admin;
 using Application.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Domain.Enums;
+using System.Collections.ObjectModel;
 
 namespace ReMealApp.ViewModels.Admin
 {
     public partial class AdminPanelViewModel : ViewModelBase
     {
         private readonly IAdminService _adminService;
+        private readonly List<AdminUserDto> _allUsers = new();
 
         [ObservableProperty]
         private string _statusMessage = string.Empty;
@@ -17,10 +21,27 @@ namespace ReMealApp.ViewModels.Admin
         [ObservableProperty]
         private bool _isBusy;
 
+        [ObservableProperty]
+        private AdminRoleFilterOption? _selectedRoleFilter;
+
         public AdminPanelViewModel(IAdminService adminService)
         {
             _adminService = adminService;
+            RoleFilters =
+            [
+                new AdminRoleFilterOption(null, "Все роли"),
+                new AdminRoleFilterOption(UserRole.StudentCustomer, "Покупатели"),
+                new AdminRoleFilterOption(UserRole.FoodPointRepresentative, "Представители"),
+                new AdminRoleFilterOption(UserRole.Administrator, "Администраторы")
+            ];
+            _selectedRoleFilter = RoleFilters[0];
         }
+
+        public ObservableCollection<AdminUserRowViewModel> Users { get; } = new();
+
+        public ObservableCollection<AdminRoleFilterOption> RoleFilters { get; }
+
+        public bool HasUsers => Users.Count > 0;
 
         public async Task InitializeAsync()
         {
@@ -36,19 +57,97 @@ namespace ReMealApp.ViewModels.Admin
             try
             {
                 IsBusy = true;
-                await _adminService.EnsureAdministratorAccessAsync();
+                var users = await _adminService.GetUsersAsync();
+                _allUsers.Clear();
+                _allUsers.AddRange(users);
+                ApplyUserFilter();
                 HasAccess = true;
-                StatusMessage = "Доступ администратора подтвержден. Разделы управления будут добавлены следующими этапами.";
+                StatusMessage = users.Count == 0
+                    ? "Пользователи не найдены."
+                    : $"Пользователей: {users.Count}. Активность пользователей в текущей модели не хранится.";
             }
             catch (Exception ex)
             {
                 HasAccess = false;
+                Users.Clear();
+                OnPropertyChanged(nameof(HasUsers));
                 StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
             }
             finally
             {
                 IsBusy = false;
             }
+        }
+
+        partial void OnSelectedRoleFilterChanged(AdminRoleFilterOption? value)
+        {
+            ApplyUserFilter();
+        }
+
+        private void ApplyUserFilter()
+        {
+            if (!HasAccess && _allUsers.Count == 0)
+                return;
+
+            var role = SelectedRoleFilter?.Role;
+            var visibleUsers = role is null
+                ? _allUsers
+                : _allUsers.Where(x => x.Role == role).ToList();
+
+            Users.Clear();
+            foreach (var user in visibleUsers)
+                Users.Add(AdminUserRowViewModel.FromDto(user));
+
+            OnPropertyChanged(nameof(HasUsers));
+        }
+    }
+
+    public sealed class AdminUserRowViewModel
+    {
+        public Guid Id { get; init; }
+
+        public string Login { get; init; } = string.Empty;
+
+        public string FullName { get; init; } = string.Empty;
+
+        public string Email { get; init; } = string.Empty;
+
+        public string Phone { get; init; } = string.Empty;
+
+        public string RoleText { get; init; } = string.Empty;
+
+        public string ActivityStatusText { get; init; } = string.Empty;
+
+        public static AdminUserRowViewModel FromDto(AdminUserDto dto)
+        {
+            return new AdminUserRowViewModel
+            {
+                Id = dto.Id,
+                Login = dto.Login,
+                FullName = dto.FullName,
+                Email = dto.Email,
+                Phone = dto.Phone,
+                RoleText = dto.RoleText,
+                ActivityStatusText = dto.ActivityStatusText
+            };
+        }
+    }
+
+    public sealed class AdminRoleFilterOption
+    {
+        public AdminRoleFilterOption(UserRole? role, string displayName)
+        {
+            Role = role;
+            DisplayName = displayName;
+        }
+
+        public UserRole? Role { get; }
+
+        public string DisplayName { get; }
+
+        public override string ToString()
+        {
+            return DisplayName;
         }
     }
 }
