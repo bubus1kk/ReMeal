@@ -11,7 +11,6 @@ namespace ReMealApp.ViewModels.Catalog
     {
         private readonly ILotService _lotService;
         private readonly IBookingService _bookingService;
-        private readonly IAuthService _authService;
 
         [ObservableProperty]
         private ObservableCollection<FoodLot> _lots = new();
@@ -24,12 +23,10 @@ namespace ReMealApp.ViewModels.Catalog
 
         public CatalogViewModel(
             ILotService lotService,
-            IBookingService bookingService,
-            IAuthService authService)
+            IBookingService bookingService)
         {
             _lotService = lotService;
             _bookingService = bookingService;
-            _authService = authService;
         }
 
         [RelayCommand]
@@ -66,27 +63,13 @@ namespace ReMealApp.ViewModels.Catalog
         {
             try
             {
-                var currentUser = await _authService
-                    .GetCurrentUserAsync();
-
-                if (currentUser == null)
-                    return;
-
-                var success = await _bookingService.BookLotAsync(
-                    currentUser.Id,
+                await _bookingService.BookLotAsync(
                     lotId,
                     1);
 
-                if (success)
-                {
-                    await LoadAsync();
+                await LoadAsync();
 
-                    StatusMessage = "Бронирование создано.";
-                }
-                else
-                {
-                    StatusMessage = "Не удалось забронировать набор.";
-                }
+                StatusMessage = "Бронирование создано.";
             }
             catch (Exception ex)
             {

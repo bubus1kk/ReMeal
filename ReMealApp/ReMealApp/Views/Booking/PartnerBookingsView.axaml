@@ -10,15 +10,52 @@
         <DockPanel>
 
             <StackPanel DockPanel.Dock="Top"
-                        Orientation="Horizontal"
-                        Spacing="8"
+                        Spacing="12"
                         Margin="0,0,0,12">
 
-                <TextBlock Text="Бронирования клиентов"
-                           Classes="section-title"/>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="8">
 
-                <Button Content="Обновить"
-                        Command="{Binding LoadBookingsCommand}"/>
+                    <TextBlock Text="Бронирования клиентов"
+                               Classes="section-title"/>
+
+                    <Button Content="Обновить"
+                            Command="{Binding LoadBookingsCommand}"/>
+
+                </StackPanel>
+
+                <Grid ColumnDefinitions="*,*,*,*"
+                      ColumnSpacing="8">
+
+                    <StackPanel>
+                        <TextBlock Text="Выдачи"/>
+                        <TextBlock Text="{Binding IssuedBookingsCount}"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Порции"/>
+                        <TextBlock Text="{Binding SavedPortions}"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Отходы, кг"/>
+                        <TextBlock Text="{Binding PreventedWasteKg, StringFormat={}{0:N1}}"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3">
+                        <TextBlock Text="Отмены"/>
+                        <TextBlock Text="{Binding CancelledBookingsCount}"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"/>
+                    </StackPanel>
+
+                </Grid>
 
             </StackPanel>
 
@@ -41,12 +78,24 @@
                                         Binding="{Binding LotTitle}"
                                         Width="2*"/>
 
+                    <DataGridTextColumn Header="Точка питания"
+                                        Binding="{Binding FoodPointName}"
+                                        Width="2*"/>
+
                     <DataGridTextColumn Header="Количество"
                                         Binding="{Binding Quantity}"
                                         Width="100"/>
 
+                    <DataGridTextColumn Header="Цена"
+                                        Binding="{Binding PriceAtReservation, StringFormat={}{0:N2}}"
+                                        Width="100"/>
+
+                    <DataGridTextColumn Header="Дата"
+                                        Binding="{Binding ReservedAt, StringFormat={}{0:dd.MM.yyyy HH:mm}}"
+                                        Width="170"/>
+
                     <DataGridTextColumn Header="Статус"
-                                        Binding="{Binding Status}"
+                                        Binding="{Binding StatusText}"
                                         Width="120"/>
 
                     <DataGridTemplateColumn Header="Подтвердить"
@@ -59,25 +108,8 @@
                                 <Button
                                     Content="Выдано"
                                     Command="{Binding $parent[UserControl].DataContext.ConfirmBookingCommand}"
-                                    CommandParameter="{Binding Id}" />
-
-                            </DataTemplate>
-
-                        </DataGridTemplateColumn.CellTemplate>
-
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Header="Отклонить"
-                                            Width="140">
-
-                        <DataGridTemplateColumn.CellTemplate>
-
-                            <DataTemplate x:DataType="dto:BookingDto">
-
-                                <Button
-                                    Content="Отклонить"
-                                    Command="{Binding $parent[UserControl].DataContext.RejectBookingCommand}"
-                                    CommandParameter="{Binding Id}" />
+                                    CommandParameter="{Binding Id}"
+                                    IsVisible="{Binding CanConfirmIssue}" />
 
                             </DataTemplate>
 

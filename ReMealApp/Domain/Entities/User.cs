@@ -22,6 +22,6 @@ namespace Domain.Entities
 
         public ICollection<FoodPoint> FoodPoints { get; set; } = new List<FoodPoint>();
 
-        public List<Booking> Bookings { get; set; } = new();
+        public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
     }
 }

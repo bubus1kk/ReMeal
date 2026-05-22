@@ -1,8 +1,7 @@
-﻿using Application.DTOs.Booking;
+using Application.DTOs.Booking;
 using Application.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Domain.Entities;
 using ReMealApp.ViewModels;
 using System.Collections.ObjectModel;
 
@@ -11,20 +10,19 @@ namespace ReMealApp.ViewModels.Booking;
 public partial class MyBookingsViewModel : ViewModelBase
 {
     private readonly IBookingService _bookingService;
-    private readonly IAuthService _authService;
 
     [ObservableProperty]
-    private ObservableCollection<BookingDto> bookings = new();
+    private ObservableCollection<BookingDto> _bookings = new();
 
     [ObservableProperty]
-    private string statusMessage = string.Empty;
+    private string _statusMessage = string.Empty;
 
-    public MyBookingsViewModel(
-        IBookingService bookingService,
-        IAuthService authService)
+    [ObservableProperty]
+    private bool _isBusy;
+
+    public MyBookingsViewModel(IBookingService bookingService)
     {
         _bookingService = bookingService;
-        _authService = authService;
     }
 
     public async Task LoadAsync()
@@ -35,38 +33,55 @@ public partial class MyBookingsViewModel : ViewModelBase
     [RelayCommand]
     private async Task LoadBookingsAsync()
     {
+        if (IsBusy)
+            return;
+
         try
         {
-            var currentUser = await _authService.GetCurrentUserAsync();
-
-            if (currentUser == null)
-                return;
-
-            var result = await _bookingService
-                .GetUserBookingsAsync(currentUser.Id);
-
+            IsBusy = true;
+            var result = await _bookingService.GetCurrentUserBookingsAsync();
             Bookings = new ObservableCollection<BookingDto>(result);
+            StatusMessage = result.Count == 0
+                ? "У вас пока нет бронирований."
+                : $"Бронирований: {result.Count}";
         }
         catch (Exception ex)
         {
-            StatusMessage = ExceptionMessageFormatter
-                .ToUserMessage(ex);
+            StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
 
     [RelayCommand]
     private async Task CancelBookingAsync(Guid bookingId)
     {
+        if (IsBusy)
+            return;
+
+        var shouldReload = false;
+
         try
         {
+            IsBusy = true;
             await _bookingService.CancelBookingAsync(bookingId);
-
-            await LoadBookingsAsync();
+            shouldReload = true;
         }
         catch (Exception ex)
         {
-            StatusMessage = ExceptionMessageFormatter
-                .ToUserMessage(ex);
+            StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+
+        if (shouldReload)
+        {
+            await LoadBookingsAsync();
+            StatusMessage = "Бронирование отменено.";
         }
     }
 }

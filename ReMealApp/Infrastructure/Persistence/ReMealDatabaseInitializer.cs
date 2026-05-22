@@ -98,6 +98,75 @@ namespace Infrastructure.Persistence
                 DropColumnIfExists(dbContext, "LotComponents", "Details");
 
                 dbContext.Database.ExecuteSqlRaw("""
+                    CREATE TABLE IF NOT EXISTS Bookings (
+                        Id TEXT NOT NULL CONSTRAINT PK_Bookings PRIMARY KEY,
+                        UserId TEXT NOT NULL,
+                        FoodLotId TEXT NOT NULL,
+                        Quantity INTEGER NOT NULL,
+                        PriceAtReservation TEXT NOT NULL,
+                        Status INTEGER NOT NULL,
+                        ReservedAt TEXT NOT NULL,
+                        CancelledAt TEXT NULL,
+                        IssuedAt TEXT NULL,
+                        CONSTRAINT FK_Bookings_Users_UserId FOREIGN KEY (UserId) REFERENCES Users (Id) ON DELETE CASCADE,
+                        CONSTRAINT FK_Bookings_FoodLots_FoodLotId FOREIGN KEY (FoodLotId) REFERENCES FoodLots (Id) ON DELETE CASCADE
+                    );
+                    """);
+
+                EnsureColumn(
+                    dbContext,
+                    "Bookings",
+                    "PriceAtReservation",
+                    "ALTER TABLE Bookings ADD COLUMN PriceAtReservation TEXT NOT NULL DEFAULT '0';");
+
+                EnsureColumn(
+                    dbContext,
+                    "Bookings",
+                    "ReservedAt",
+                    "ALTER TABLE Bookings ADD COLUMN ReservedAt TEXT NOT NULL DEFAULT '0001-01-01T00:00:00.0000000Z';");
+
+                EnsureColumn(
+                    dbContext,
+                    "Bookings",
+                    "CancelledAt",
+                    "ALTER TABLE Bookings ADD COLUMN CancelledAt TEXT NULL;");
+
+                EnsureColumn(
+                    dbContext,
+                    "Bookings",
+                    "IssuedAt",
+                    "ALTER TABLE Bookings ADD COLUMN IssuedAt TEXT NULL;");
+
+                if (ColumnExists(dbContext, "Bookings", "BookingDate"))
+                {
+                    dbContext.Database.ExecuteSqlRaw("""
+                        UPDATE Bookings
+                        SET ReservedAt = BookingDate
+                        WHERE ReservedAt = '0001-01-01T00:00:00.0000000Z'
+                            OR ReservedAt IS NULL;
+                        """);
+                }
+
+                dbContext.Database.ExecuteSqlRaw("""
+                    UPDATE Bookings
+                    SET PriceAtReservation = COALESCE((
+                        SELECT FoodLots.Price
+                        FROM FoodLots
+                        WHERE FoodLots.Id = Bookings.FoodLotId
+                    ), PriceAtReservation)
+                    WHERE PriceAtReservation = '0'
+                        OR PriceAtReservation = 0;
+                    """);
+
+                dbContext.Database.ExecuteSqlRaw("""
+                    UPDATE Bookings
+                    SET
+                        Status = 1,
+                        CancelledAt = COALESCE(CancelledAt, ReservedAt)
+                    WHERE Status = 3;
+                    """);
+
+                dbContext.Database.ExecuteSqlRaw("""
                     INSERT INTO LotComponents (Id, LotId, Name, Quantity, Unit, Composition, ImagePath, SortOrder)
                     SELECT
                         lower(hex(randomblob(4))) || '-' ||
@@ -151,6 +220,10 @@ namespace Infrastructure.Persistence
                 dbContext.Database.ExecuteSqlRaw("CREATE INDEX IF NOT EXISTS IX_FoodLots_Status ON FoodLots (Status);");
                 dbContext.Database.ExecuteSqlRaw("CREATE INDEX IF NOT EXISTS IX_LotComponents_LotId ON LotComponents (LotId);");
                 dbContext.Database.ExecuteSqlRaw("CREATE INDEX IF NOT EXISTS IX_LotComponents_LotId_SortOrder ON LotComponents (LotId, SortOrder);");
+                dbContext.Database.ExecuteSqlRaw("CREATE INDEX IF NOT EXISTS IX_Bookings_UserId ON Bookings (UserId);");
+                dbContext.Database.ExecuteSqlRaw("CREATE INDEX IF NOT EXISTS IX_Bookings_FoodLotId ON Bookings (FoodLotId);");
+                dbContext.Database.ExecuteSqlRaw("CREATE INDEX IF NOT EXISTS IX_Bookings_Status ON Bookings (Status);");
+                dbContext.Database.ExecuteSqlRaw("CREATE INDEX IF NOT EXISTS IX_Bookings_ReservedAt ON Bookings (ReservedAt);");
             }, "подготовить схему базы данных");
         }
 

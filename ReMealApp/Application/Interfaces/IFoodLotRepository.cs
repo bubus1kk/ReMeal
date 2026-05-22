@@ -20,6 +20,5 @@ namespace Application.Interfaces
 
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
 
-        ////////
     }
 }

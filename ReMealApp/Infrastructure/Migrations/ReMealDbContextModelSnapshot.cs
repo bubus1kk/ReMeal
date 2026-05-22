@@ -91,6 +91,36 @@ namespace Infrastructure.Migrations
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
+            modelBuilder.Entity<Booking>(builder =>
+            {
+                builder.ToTable("Bookings");
+                builder.HasKey(x => x.Id);
+                builder.HasIndex(x => x.UserId);
+                builder.HasIndex(x => x.FoodLotId);
+                builder.HasIndex(x => x.Status);
+                builder.HasIndex(x => x.ReservedAt);
+
+                builder.Property(x => x.Id).ValueGeneratedOnAdd();
+                builder.Property(x => x.UserId).IsRequired();
+                builder.Property(x => x.FoodLotId).IsRequired();
+                builder.Property(x => x.Quantity).IsRequired();
+                builder.Property(x => x.PriceAtReservation).HasPrecision(18, 2).IsRequired();
+                builder.Property(x => x.Status).HasConversion<int>().IsRequired();
+                builder.Property(x => x.ReservedAt).IsRequired();
+                builder.Property(x => x.CancelledAt).IsRequired(false);
+                builder.Property(x => x.IssuedAt).IsRequired(false);
+
+                builder.HasOne(x => x.User)
+                    .WithMany(x => x.Bookings)
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                builder.HasOne(x => x.FoodLot)
+                    .WithMany(x => x.Bookings)
+                    .HasForeignKey(x => x.FoodLotId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
             modelBuilder.Entity<LotComponent>(builder =>
             {
                 builder.ToTable("LotComponents", table =>

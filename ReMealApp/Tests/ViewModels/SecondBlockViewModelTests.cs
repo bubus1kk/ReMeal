@@ -1,3 +1,5 @@
+using Application.DTOs.Booking;
+using Application.Interfaces;
 using Application.Services;
 using Domain.Enums;
 using ReMealApp.ViewModels.Catalog;
@@ -41,7 +43,7 @@ namespace Tests.ViewModels
         public async Task CatalogViewModel_LoadAsync_WhenNoLotsAvailable_ShowsEmptyState()
         {
             await using var database = await SqliteTestDatabase.CreateAsync();
-            var viewModel = new CatalogViewModel(database.LotService);
+            var viewModel = new CatalogViewModel(database.LotService, new NoOpBookingService());
 
             await viewModel.LoadAsync();
 
@@ -56,7 +58,7 @@ namespace Tests.ViewModels
             var partner = await database.AddUserAsync(UserRole.FoodPointRepresentative);
             var foodPoint = await database.AddFoodPointAsync(partner, "Catalog cafe");
             var lot = await database.AddLotAsync(foodPoint, "Catalog lot");
-            var viewModel = new CatalogViewModel(database.LotService);
+            var viewModel = new CatalogViewModel(database.LotService, new NoOpBookingService());
 
             await viewModel.LoadAsync();
             var result = viewModel.Lots.Single();
@@ -133,6 +135,7 @@ namespace Tests.ViewModels
                 userProfileService,
                 database.FoodPointService,
                 database.LotService,
+                new NoOpBookingService(),
                 profileStatisticsService,
                 _ => { },
                 () => { });
@@ -143,6 +146,37 @@ namespace Tests.ViewModels
             var localDeadline = localDate.Date + localTime;
             var offset = TimeZoneInfo.Local.GetUtcOffset(localDeadline);
             return new DateTimeOffset(localDeadline, offset).UtcDateTime;
+        }
+
+        private sealed class NoOpBookingService : IBookingService
+        {
+            public Task<BookingDto> BookLotAsync(
+                Guid foodLotId,
+                int quantity,
+                CancellationToken cancellationToken = default)
+            {
+                throw new NotSupportedException("Бронирования не участвуют в этих тестах.");
+            }
+
+            public Task CancelBookingAsync(Guid bookingId, CancellationToken cancellationToken = default)
+            {
+                throw new NotSupportedException("Бронирования не участвуют в этих тестах.");
+            }
+
+            public Task ConfirmBookingAsync(Guid bookingId, CancellationToken cancellationToken = default)
+            {
+                throw new NotSupportedException("Бронирования не участвуют в этих тестах.");
+            }
+
+            public Task<List<BookingDto>> GetCurrentUserBookingsAsync(CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult(new List<BookingDto>());
+            }
+
+            public Task<List<BookingDto>> GetCurrentPartnerBookingsAsync(CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult(new List<BookingDto>());
+            }
         }
     }
 }

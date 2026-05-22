@@ -2,10 +2,10 @@ using Application.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Domain.Enums;
+using ReMealApp.ViewModels.Booking;
 using ReMealApp.ViewModels.Catalog;
 using ReMealApp.ViewModels.Partner;
 using ReMealApp.ViewModels.Profile;
-using ReMealApp.ViewModels.Booking;
 
 namespace ReMealApp.ViewModels.Shell
 {
@@ -24,7 +24,6 @@ namespace ReMealApp.ViewModels.Shell
         public const string CreateLotSection = "create-lot";
 
         private readonly IAuthService _authService;
-        private readonly IBookingService _bookingService;
         private readonly Action<string> _showLogin;
         private readonly Action _exitApplication;
 
@@ -39,6 +38,9 @@ namespace ReMealApp.ViewModels.Shell
 
         [ObservableProperty]
         private bool _isCatalogVisible = true;
+
+        [ObservableProperty]
+        private bool _isBookingsVisible = true;
 
         [ObservableProperty]
         private bool _isSidebarExpanded = true;
@@ -60,7 +62,6 @@ namespace ReMealApp.ViewModels.Shell
             Action exitApplication)
         {
             _authService = authService;
-            _bookingService = bookingService;
             _showLogin = showLogin;
             _exitApplication = exitApplication;
 
@@ -71,12 +72,12 @@ namespace ReMealApp.ViewModels.Shell
                 NavigateToSection,
                 showLogin);
 
-            Catalog = new CatalogViewModel(lotService,bookingService, authService);
-            FoodPoint = new FoodPointViewModel(foodPointService, this);
-            PartnerLots = new PartnerLotsViewModel(lotService, this);
-            PartnerBookings = new PartnerBookingsViewModel(bookingService, authService);
+            Catalog = new CatalogViewModel(lotService, bookingService);
+            FoodPoint = new FoodPointViewModel(foodPointService, lotService, this);
+            PartnerLots = new PartnerLotsViewModel(lotService, foodPointService, this);
+            PartnerBookings = new PartnerBookingsViewModel(bookingService);
             CreateLot = new CreateLotViewModel(foodPointService, lotService, this);
-            MyBookings = new MyBookingsViewModel(bookingService, authService);
+            MyBookings = new MyBookingsViewModel(bookingService);
             _currentSectionViewModel = Profile;
         }
 
@@ -89,6 +90,7 @@ namespace ReMealApp.ViewModels.Shell
         public PartnerLotsViewModel PartnerLots { get; }
 
         public PartnerBookingsViewModel PartnerBookings { get; }
+
         public CreateLotViewModel CreateLot { get; }
 
         public MyBookingsViewModel MyBookings { get; }
@@ -96,6 +98,8 @@ namespace ReMealApp.ViewModels.Shell
         public bool IsHomeSelected => SelectedSectionKey == HomeSection;
 
         public bool IsCatalogSelected => SelectedSectionKey == CatalogSection || SelectedSectionKey == PartnerLotsSection;
+
+        public bool IsBookingsSelected => SelectedSectionKey == BookingsSection || SelectedSectionKey == PartnerBookingsSection;
 
         public bool IsFoodPointsSelected => SelectedSectionKey == FoodPointsSection;
 
@@ -113,6 +117,8 @@ namespace ReMealApp.ViewModels.Shell
 
         public string SidebarToggleText => IsSidebarExpanded ? "<" : ">";
 
+        public string BookingsNavigationText => IsPartner ? "Брони клиентов" : "Мои брони";
+
         public string FoodPointsNavigationText => IsPartner ? "Мои точки" : "Партнёры";
 
         public string FoodPointsNavigationIconPath => IsPartner ? "/Assets/Icons/location.png" : "/Assets/Icons/partners.png";
@@ -124,8 +130,10 @@ namespace ReMealApp.ViewModels.Shell
                 await Profile.LoadAsync();
 
                 var currentUser = await _authService.GetCurrentUserAsync();
-                IsPartner = currentUser?.Role == UserRole.FoodPointRepresentative;
-                IsCatalogVisible = currentUser?.Role != UserRole.FoodPointRepresentative;
+                var role = currentUser?.Role;
+                IsPartner = role == UserRole.FoodPointRepresentative;
+                IsCatalogVisible = role != UserRole.FoodPointRepresentative;
+                IsBookingsVisible = role is UserRole.StudentCustomer or UserRole.FoodPointRepresentative;
 
                 if (IsPartner)
                 {
@@ -154,7 +162,7 @@ namespace ReMealApp.ViewModels.Shell
         private Task ShowCatalogAsync() => NavigateToSectionAsync(CatalogSection);
 
         [RelayCommand]
-        private Task ShowBookingsAsync() => NavigateToSectionAsync(BookingsSection);
+        private Task ShowBookingsAsync() => NavigateToSectionAsync(IsPartner ? PartnerBookingsSection : BookingsSection);
 
         [RelayCommand]
         private Task ShowPartnerBookingsAsync() => NavigateToSectionAsync(PartnerBookingsSection);
@@ -181,26 +189,9 @@ namespace ReMealApp.ViewModels.Shell
         }
 
         [RelayCommand]
-        private async Task LogoutAsync()
+        private void Logout()
         {
-            try
-            {
-                var currentUser = await _authService.GetCurrentUserAsync();
-
-                if (currentUser is not null)
-                {
-                    var remember = _authService.IsCurrentUserRemembered();
-
-                    _authService.Logout(!remember);
-
-                    _showLogin(remember ? currentUser.Login : string.Empty);
-                }
-            }
-            catch (Exception ex)
-            {
-                if (Profile is not null)
-                    Profile.StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
-            }
+            IsApplicationExitConfirmationOpen = true;
         }
 
         [RelayCommand]
@@ -214,12 +205,6 @@ namespace ReMealApp.ViewModels.Shell
         {
             IsApplicationExitConfirmationOpen = false;
             _exitApplication();
-        }
-
-        [RelayCommand]
-        private void OpenApplicationExitDialog()
-        {
-            IsApplicationExitConfirmationOpen = true;
         }
 
         public async Task RefreshPartnerAsync()
@@ -375,6 +360,7 @@ namespace ReMealApp.ViewModels.Shell
         {
             OnPropertyChanged(nameof(IsHomeSelected));
             OnPropertyChanged(nameof(IsCatalogSelected));
+            OnPropertyChanged(nameof(IsBookingsSelected));
             OnPropertyChanged(nameof(IsFoodPointsSelected));
             OnPropertyChanged(nameof(IsAnalyticsSelected));
             OnPropertyChanged(nameof(IsProfileSelected));
@@ -391,6 +377,7 @@ namespace ReMealApp.ViewModels.Shell
 
         partial void OnIsPartnerChanged(bool value)
         {
+            OnPropertyChanged(nameof(BookingsNavigationText));
             OnPropertyChanged(nameof(FoodPointsNavigationText));
             OnPropertyChanged(nameof(FoodPointsNavigationIconPath));
         }

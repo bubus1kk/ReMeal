@@ -1,18 +1,16 @@
-﻿using Application.DTOs.Booking;
+using Application.DTOs.Booking;
 
 namespace Application.Interfaces;
 
 public interface IBookingService
 {
-    Task<bool> BookLotAsync(Guid userId, Guid foodLotId, int quantity);
+    Task<BookingDto> BookLotAsync(Guid foodLotId, int quantity, CancellationToken cancellationToken = default);
 
-    Task<bool> CancelBookingAsync(Guid bookingId);
+    Task CancelBookingAsync(Guid bookingId, CancellationToken cancellationToken = default);
 
-    Task<bool> ConfirmBookingAsync(Guid bookingId);
+    Task ConfirmBookingAsync(Guid bookingId, CancellationToken cancellationToken = default);
 
-    Task<bool> RejectBookingAsync(Guid bookingId);
+    Task<List<BookingDto>> GetCurrentUserBookingsAsync(CancellationToken cancellationToken = default);
 
-    Task<List<BookingDto>> GetUserBookingsAsync(Guid userId);
-
-    Task<List<BookingDto>> GetPartnerBookingsAsync(Guid partnerId);
+    Task<List<BookingDto>> GetCurrentPartnerBookingsAsync(CancellationToken cancellationToken = default);
 }
