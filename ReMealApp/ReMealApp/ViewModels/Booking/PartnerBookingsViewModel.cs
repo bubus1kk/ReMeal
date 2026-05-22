@@ -14,8 +14,10 @@ public partial class PartnerBookingsViewModel : ViewModelBase
 
     private readonly IBookingService _bookingService;
 
+    private List<BookingDto> _allBookings = new();
+
     [ObservableProperty]
-    private ObservableCollection<BookingDto> _bookings = new();
+    private ObservableCollection<BookingDto> _filteredBookings = new();
 
     [ObservableProperty]
     private string _statusMessage = string.Empty;
@@ -34,6 +36,42 @@ public partial class PartnerBookingsViewModel : ViewModelBase
 
     [ObservableProperty]
     private int _cancelledBookingsCount;
+
+    public ObservableCollection<string> FoodPoints { get; set; } = new();
+
+    public ObservableCollection<string> Statuses { get; set; } = new();
+
+    [ObservableProperty]
+    private string? _selectedFoodPoint;
+
+    partial void OnSelectedFoodPointChanged(string? value)
+    {
+        ApplyFilters();
+    }
+
+    [ObservableProperty]
+    private string? _selectedStatus;
+
+    partial void OnSelectedStatusChanged(string? value)
+    {
+        ApplyFilters();
+    }
+
+    [ObservableProperty]
+    private string? _searchText;
+
+    partial void OnSearchTextChanged(string? value)
+    {
+        ApplyFilters();
+    }
+
+    [ObservableProperty]
+    private DateTimeOffset? _selectedDate;
+
+    partial void OnSelectedDateChanged(DateTimeOffset? value)
+    {
+        ApplyFilters();
+    }
 
     public PartnerBookingsViewModel(IBookingService bookingService)
     {
@@ -54,12 +92,25 @@ public partial class PartnerBookingsViewModel : ViewModelBase
         try
         {
             IsBusy = true;
+
             var result = await _bookingService.GetCurrentPartnerBookingsAsync();
-            Bookings = new ObservableCollection<BookingDto>(result);
+
+            foreach (var booking in result)
+            {
+                booking.IsIssued = booking.Status == BookingStatus.Issued;
+                booking.IsPending = booking.Status == BookingStatus.Active;
+                booking.IsCancelled = booking.Status == BookingStatus.Cancelled;
+            }
+
+            _allBookings = result.ToList();
+
+            LoadFilters();
+
+            ApplyFilters();
+
             RecalculateAnalytics(result);
-            StatusMessage = result.Count == 0
-                ? "По вашим лотам пока нет бронирований."
-                : $"Бронирований по вашим лотам: {result.Count}";
+
+            StatusMessage = $"Бронирований: {result.Count}";
         }
         catch (Exception ex)
         {
@@ -69,6 +120,79 @@ public partial class PartnerBookingsViewModel : ViewModelBase
         {
             IsBusy = false;
         }
+    }
+
+    private void LoadFilters()
+    {
+        FoodPoints.Clear();
+        Statuses.Clear();
+
+        FoodPoints.Add("Все точки");
+
+        foreach (var point in _allBookings
+                     .Select(x => x.FoodPointName)
+                     .Distinct()
+                     .OrderBy(x => x))
+        {
+            FoodPoints.Add(point);
+        }
+
+        Statuses.Add("Все статусы");
+
+        foreach (var status in _allBookings
+                     .Select(x => x.StatusText)
+                     .Distinct()
+                     .OrderBy(x => x))
+        {
+            Statuses.Add(status);
+        }
+
+        SelectedFoodPoint = "Все точки";
+        SelectedStatus = "Все статусы";
+    }
+
+    private void ApplyFilters()
+    {
+        IEnumerable<BookingDto> query = _allBookings;
+
+        if (!string.IsNullOrWhiteSpace(SearchText))
+        {
+            query = query.Where(x =>
+                (x.UserName?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false)
+                || (x.LotTitle?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false)
+                || (x.FoodPointName?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false));
+        }
+
+        if (!string.IsNullOrWhiteSpace(SelectedFoodPoint)
+            && SelectedFoodPoint != "Все точки")
+        {
+            query = query.Where(x => x.FoodPointName == SelectedFoodPoint);
+        }
+
+        if (!string.IsNullOrWhiteSpace(SelectedStatus)
+            && SelectedStatus != "Все статусы")
+        {
+            query = query.Where(x => x.StatusText == SelectedStatus);
+        }
+
+        if (SelectedDate.HasValue)
+        {
+            query = query.Where(x =>
+                x.ReservedAt.Date == SelectedDate.Value.Date);
+        }
+
+        FilteredBookings = new ObservableCollection<BookingDto>(query);
+    }
+
+    [RelayCommand]
+    private void ClearFilters()
+    {
+        SearchText = string.Empty;
+        SelectedFoodPoint = "Все точки";
+        SelectedStatus = "Все статусы";
+        SelectedDate = null;
+
+        ApplyFilters();
     }
 
     [RelayCommand]
@@ -77,13 +201,15 @@ public partial class PartnerBookingsViewModel : ViewModelBase
         if (IsBusy)
             return;
 
-        var shouldReload = false;
-
         try
         {
             IsBusy = true;
+
             await _bookingService.ConfirmBookingAsync(bookingId);
-            shouldReload = true;
+
+            await LoadBookingsAsync();
+
+            StatusMessage = "Выдача подтверждена.";
         }
         catch (Exception ex)
         {
@@ -93,21 +219,20 @@ public partial class PartnerBookingsViewModel : ViewModelBase
         {
             IsBusy = false;
         }
-
-        if (shouldReload)
-        {
-            await LoadBookingsAsync();
-            StatusMessage = "Выдача подтверждена.";
-        }
     }
 
     private void RecalculateAnalytics(IReadOnlyCollection<BookingDto> bookings)
     {
         IssuedBookingsCount = bookings.Count(x => x.Status == BookingStatus.Issued);
+
         SavedPortions = bookings
             .Where(x => x.Status == BookingStatus.Issued)
             .Sum(x => x.Quantity);
-        PreventedWasteKg = Math.Round(SavedPortions * WastePreventedKgPerPortion, 1);
-        CancelledBookingsCount = bookings.Count(x => x.Status == BookingStatus.Cancelled);
+
+        PreventedWasteKg =
+            Math.Round(SavedPortions * WastePreventedKgPerPortion, 1);
+
+        CancelledBookingsCount =
+            bookings.Count(x => x.Status == BookingStatus.Cancelled);
     }
 }
