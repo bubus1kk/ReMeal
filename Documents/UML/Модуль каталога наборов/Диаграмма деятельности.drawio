@@ -1,0 +1,103 @@
+<mxfile host="Electron">
+  <diagram name="Страница-1" id="vejRXDEM6jDCZpRNAnAz">
+    <mxGraphModel dx="500" dy="714" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-1" parent="1" style="ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#ff0000;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="500" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-2" edge="1" parent="1" source="AGdHTyh9rW4QDz4i1P2r-1" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="515" y="110" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-6" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Процесс поиска набора" vertex="1">
+          <mxGeometry height="30" width="120" x="590" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Открыть влкадку &quot;Наборы&quot;" vertex="1">
+          <mxGeometry height="40" width="120" x="455" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-8" edge="1" parent="1" source="AGdHTyh9rW4QDz4i1P2r-7" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="515" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Отобразить список карточек наборов" vertex="1">
+          <mxGeometry height="60" width="135" x="447.5" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-10" edge="1" parent="1" source="AGdHTyh9rW4QDz4i1P2r-9" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="515" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Ввести поисковый запрос и нажать кнопку поиска" vertex="1">
+          <mxGeometry height="60" width="145" x="442.5" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-12" edge="1" parent="1" source="AGdHTyh9rW4QDz4i1P2r-11" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="515" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Найти наборы" vertex="1">
+          <mxGeometry height="40" width="120" x="455" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-14" edge="1" parent="1" source="AGdHTyh9rW4QDz4i1P2r-13" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="515" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-15" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Наборы найдены" vertex="1">
+          <mxGeometry height="90" width="130" x="450" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-18" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="514.5" y="600" as="sourcePoint" />
+            <mxPoint x="514.5" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-19" edge="1" parent="1" source="AGdHTyh9rW4QDz4i1P2r-15" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="AGdHTyh9rW4QDz4i1P2r-20" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="620" y="555" as="sourcePoint" />
+            <mxPoint x="660" y="555" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-20" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Показать сообщение &quot;Ничего не найдено&quot;" vertex="1">
+          <mxGeometry height="45" width="140" x="630" y="532.5" as="geometry" />
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-25" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Нет" vertex="1">
+          <mxGeometry height="30" width="60" x="560" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-26" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Да" vertex="1">
+          <mxGeometry height="30" width="60" x="500" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-29" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Фильтры есть" vertex="1">
+          <mxGeometry height="80" width="130" x="450" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-32" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Отобразить найденные наборы" vertex="1">
+          <mxGeometry height="40" width="120" x="455" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-33" edge="1" parent="1" source="AGdHTyh9rW4QDz4i1P2r-32" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="515" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-35" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="514.5" y="840" as="sourcePoint" />
+            <mxPoint x="514.5" y="900" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AGdHTyh9rW4QDz4i1P2r-36" edge="1" parent="1" source="AGdHTyh9rW4QDz4i1P2r-29" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="800" />
+            </Array>
+            <mxPoint x="690" y="750" as="sourcePoint" />
+            <mxPoint x="710" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
