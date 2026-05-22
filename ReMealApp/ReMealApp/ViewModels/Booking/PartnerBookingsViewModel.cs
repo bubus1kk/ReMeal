@@ -1,8 +1,8 @@
-﻿using Application.DTOs.Booking;
+using Application.DTOs.Booking;
 using Application.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Domain.Entities;
+using Domain.Enums;
 using ReMealApp.ViewModels;
 using System.Collections.ObjectModel;
 
@@ -10,21 +10,34 @@ namespace ReMealApp.ViewModels.Booking;
 
 public partial class PartnerBookingsViewModel : ViewModelBase
 {
+    private const decimal WastePreventedKgPerPortion = 0.4m;
+
     private readonly IBookingService _bookingService;
-    private readonly IAuthService _authService;
 
     [ObservableProperty]
-    private ObservableCollection<BookingDto> bookings = new();
+    private ObservableCollection<BookingDto> _bookings = new();
 
     [ObservableProperty]
-    private string statusMessage = string.Empty;
+    private string _statusMessage = string.Empty;
 
-    public PartnerBookingsViewModel(
-        IBookingService bookingService,
-        IAuthService authService)
+    [ObservableProperty]
+    private bool _isBusy;
+
+    [ObservableProperty]
+    private int _issuedBookingsCount;
+
+    [ObservableProperty]
+    private int _savedPortions;
+
+    [ObservableProperty]
+    private decimal _preventedWasteKg;
+
+    [ObservableProperty]
+    private int _cancelledBookingsCount;
+
+    public PartnerBookingsViewModel(IBookingService bookingService)
     {
         _bookingService = bookingService;
-        _authService = authService;
     }
 
     public async Task LoadAsync()
@@ -35,61 +48,66 @@ public partial class PartnerBookingsViewModel : ViewModelBase
     [RelayCommand]
     private async Task LoadBookingsAsync()
     {
+        if (IsBusy)
+            return;
+
         try
         {
-            var currentUser = await _authService
-                .GetCurrentUserAsync();
-
-            if (currentUser == null)
-                return;
-
-            var result = await _bookingService
-                .GetPartnerBookingsAsync(currentUser.Id);
-
+            IsBusy = true;
+            var result = await _bookingService.GetCurrentPartnerBookingsAsync();
             Bookings = new ObservableCollection<BookingDto>(result);
+            RecalculateAnalytics(result);
+            StatusMessage = result.Count == 0
+                ? "По вашим лотам пока нет бронирований."
+                : $"Бронирований по вашим лотам: {result.Count}";
         }
         catch (Exception ex)
         {
-            StatusMessage = ExceptionMessageFormatter
-                .ToUserMessage(ex);
+            StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
 
     [RelayCommand]
     private async Task ConfirmBookingAsync(Guid bookingId)
     {
+        if (IsBusy)
+            return;
+
+        var shouldReload = false;
+
         try
         {
-            await _bookingService
-                .ConfirmBookingAsync(bookingId);
-
-            await LoadBookingsAsync();
-
-            StatusMessage = "Выдача подтверждена.";
+            IsBusy = true;
+            await _bookingService.ConfirmBookingAsync(bookingId);
+            shouldReload = true;
         }
         catch (Exception ex)
         {
-            StatusMessage = ExceptionMessageFormatter
-                .ToUserMessage(ex);
+            StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+
+        if (shouldReload)
+        {
+            await LoadBookingsAsync();
+            StatusMessage = "Выдача подтверждена.";
         }
     }
 
-    [RelayCommand]
-    private async Task RejectBookingAsync(Guid bookingId)
+    private void RecalculateAnalytics(IReadOnlyCollection<BookingDto> bookings)
     {
-        try
-        {
-            await _bookingService
-                .RejectBookingAsync(bookingId);
-
-            await LoadBookingsAsync();
-
-            StatusMessage = "Бронирование отклонено.";
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = ExceptionMessageFormatter
-                .ToUserMessage(ex);
-        }
+        IssuedBookingsCount = bookings.Count(x => x.Status == BookingStatus.Issued);
+        SavedPortions = bookings
+            .Where(x => x.Status == BookingStatus.Issued)
+            .Sum(x => x.Quantity);
+        PreventedWasteKg = Math.Round(SavedPortions * WastePreventedKgPerPortion, 1);
+        CancelledBookingsCount = bookings.Count(x => x.Status == BookingStatus.Cancelled);
     }
 }

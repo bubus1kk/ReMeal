@@ -51,6 +51,18 @@
             <Setter Property="Foreground" Value="#E6F1E9"/>
         </Style>
 
+        <Style Selector="Button.nav-button:pressed">
+            <Setter Property="Background" Value="#18261F"/>
+        </Style>
+
+        <Style Selector="Button.nav-button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#141F1B"/>
+        </Style>
+
+        <Style Selector="Button.nav-button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#18261F"/>
+        </Style>
+
         <Style Selector="TextBlock.nav-label">
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Foreground" Value="#B7C4BD"/>
@@ -168,10 +180,18 @@
 
 
                         <Button Classes="nav-button"
-                                Command="{Binding ShowBookingsCommand}">
+                                Command="{Binding ShowBookingsCommand}"
+                                IsVisible="{Binding IsBookingsVisible}">
 
                             <Grid ColumnDefinitions="4,38,*"
                                   Margin="0,0,8,0">
+
+                                <Border Grid.Column="0"
+                                        Width="4"
+                                        Height="24"
+                                        CornerRadius="3"
+                                        Background="#75C943"
+                                        IsVisible="{Binding IsBookingsSelected}"/>
 
                                 <Image Grid.Column="1"
                                        Classes="nav-icon"
@@ -179,7 +199,47 @@
 
                                 <TextBlock Grid.Column="2"
                                            Classes="nav-label"
-                                           Text="Мои брони"
+                                           Text="{Binding BookingsNavigationText}"
+                                           IsVisible="{Binding IsSidebarExpanded}"
+                                           VerticalAlignment="Center"/>
+
+                            </Grid>
+
+                        </Button>
+
+                        <Button Classes="nav-button"
+                                Command="{Binding ShowFavoritesCommand}">
+
+                            <Grid ColumnDefinitions="4,38,*"
+                                  Margin="0,0,8,0">
+
+                                <Image Grid.Column="1"
+                                       Classes="nav-icon"
+                                       Source="/Assets/Icons/favorites.png"/>
+
+                                <TextBlock Grid.Column="2"
+                                           Classes="nav-label"
+                                           Text="Избранное"
+                                           IsVisible="{Binding IsSidebarExpanded}"
+                                           VerticalAlignment="Center"/>
+
+                            </Grid>
+
+                        </Button>
+
+                        <Button Classes="nav-button"
+                                Focusable="False">
+
+                            <Grid ColumnDefinitions="4,38,*"
+                                  Margin="0,0,8,0">
+
+                                <Image Grid.Column="1"
+                                       Classes="nav-icon"
+                                       Source="/Assets/Icons/message.png"/>
+
+                                <TextBlock Grid.Column="2"
+                                           Classes="nav-label"
+                                           Text="Сообщения"
                                            IsVisible="{Binding IsSidebarExpanded}"
                                            VerticalAlignment="Center"/>
 
@@ -361,6 +421,98 @@
                 VerticalAlignment="Top"
                 Margin="-1,28,0,0"
                 ZIndex="20"/>
+
+        <Grid Grid.ColumnSpan="2"
+              IsVisible="{Binding IsApplicationExitConfirmationOpen}"
+              Background="#99000000">
+            <Border Width="600"
+                    Padding="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    CornerRadius="18"
+                    BorderBrush="#31443A"
+                    BorderThickness="1"
+                    Background="#101917"
+                    BoxShadow="0 24 70 0 #99000000">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Закрыть ReMeal?"
+                               Foreground="#F2F8F1"
+                               FontSize="22"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="Приложение будет закрыто. Текущий аккаунт останется сохранённым согласно настройке входа."
+                               Foreground="#AAB9B0"
+                               FontSize="14"
+                               LineHeight="21"
+                               TextWrapping="Wrap"/>
+                    <Grid ColumnDefinitions="*,*"
+                          ColumnSpacing="12"
+                          Margin="0,8,0,0">
+                        <Button Classes="dialog-button"
+                                Content="Отмена"
+                                Command="{Binding CancelApplicationExitCommand}"
+                                HorizontalAlignment="Stretch"
+                                Background="#14201C"
+                                BorderBrush="#2C4238"
+                                BorderThickness="1"
+                                Foreground="#E7F1EA"/>
+                        <Button Grid.Column="1"
+                                Classes="dialog-button"
+                                Content="Закрыть"
+                                Command="{Binding ConfirmApplicationExitCommand}"
+                                HorizontalAlignment="Stretch"
+                                Background="#4C923E"
+                                BorderThickness="0"
+                                Foreground="#F8FFF4"
+                                FontWeight="SemiBold"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid Grid.ColumnSpan="2"
+              IsVisible="{Binding Profile.IsLogoutConfirmationOpen}"
+              Background="#99000000">
+            <Border Width="600"
+                    Padding="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    CornerRadius="18"
+                    BorderBrush="#31443A"
+                    BorderThickness="1"
+                    Background="#101917"
+                    BoxShadow="0 24 70 0 #99000000">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Выйти из профиля?"
+                               Foreground="#F2F8F1"
+                               FontSize="22"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="Текущая сессия будет завершена, и приложение вернётся на экран входа."
+                               Foreground="#AAB9B0"
+                               FontSize="14"
+                               LineHeight="21"
+                               TextWrapping="Wrap"/>
+                    <Grid ColumnDefinitions="*,*"
+                          ColumnSpacing="12"
+                          Margin="0,8,0,0">
+                        <Button Classes="dialog-button"
+                                Content="Отмена"
+                                Command="{Binding Profile.CancelLogoutCommand}"
+                                Background="#14201C"
+                                BorderBrush="#2C4238"
+                                BorderThickness="1"
+                                Foreground="#E7F1EA"/>
+                        <Button Grid.Column="1"
+                                Classes="dialog-button"
+                                Content="Выйти"
+                                Command="{Binding Profile.ConfirmLogoutCommand}"
+                                Background="#4C923E"
+                                BorderThickness="0"
+                                Foreground="#F8FFF4"
+                                FontWeight="SemiBold"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
 
     </Grid>
 

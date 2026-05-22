@@ -45,7 +45,6 @@ namespace Infrastructure
             return DataAccessGuard.Execute(() =>
             {
                 var databasePath = ReMealDatabasePath.GetDefaultPath();
-
                 var options = new DbContextOptionsBuilder<ReMealDbContext>()
                     .UseSqlite($"Data Source={databasePath}")
                     .Options;
@@ -59,41 +58,38 @@ namespace Infrastructure
                 catch (DataAccessException ex) when (ReMealDatabaseRecovery.CanRecover(ex))
                 {
                     dbContext.Dispose();
-
                     ReMealDatabaseRecovery.MoveDatabaseToBackup(databasePath);
 
                     dbContext = new ReMealDbContext(options);
-
                     ReMealDatabaseInitializer.EnsureSchema(dbContext);
                 }
 
                 IUserRepository userRepository = new UserRepository(dbContext);
-
                 IPasswordHasher passwordHasher = new PasswordHasher();
-
                 IRememberedUserStore rememberedUserStore = RememberedUserStore.CreateDefault();
+                IAuthService authService = new AuthService(userRepository, passwordHasher, rememberedUserStore);
+                IUserProfileService userProfileService = new UserProfileService(authService, userRepository);
 
-                IAuthService authService =new AuthService(userRepository,passwordHasher,rememberedUserStore);
+                IFoodPointRepository foodPointRepository = new FoodPointRepository(dbContext);
+                IFoodLotRepository foodLotRepository = new FoodLotRepository(dbContext);
+                IFoodPointService foodPointService = new FoodPointService(foodPointRepository, authService);
+                ILotService lotService = new LotService(foodPointRepository, foodLotRepository, authService);
+                IBookingRepository bookingRepository = new BookingRepository(dbContext);
+                IBookingService bookingService = new BookingService(bookingRepository, authService);
+                IProfileStatisticsService profileStatisticsService = new ProfileStatisticsService(
+                    authService,
+                    userRepository,
+                    foodPointRepository,
+                    foodLotRepository);
 
-                IUserProfileService userProfileService =new UserProfileService(authService,userRepository);
-
-                IFoodPointRepository foodPointRepository =new FoodPointRepository(dbContext);
-
-                IFoodLotRepository foodLotRepository =new FoodLotRepository(dbContext);
-
-                IFoodPointService foodPointService =new FoodPointService(foodPointRepository,authService);
-
-                ILotService lotService =new LotService(foodPointRepository,foodLotRepository,authService);
-
-                IBookingRepository bookingRepository =new BookingRepository(dbContext);
-
-                IBookingService bookingService =new BookingService(bookingRepository);
-
-                IProfileStatisticsService profileStatisticsService =new ProfileStatisticsService(authService,userRepository,foodPointRepository,foodLotRepository);
-
-                return new ReMealUserModule(authService,userProfileService,foodPointService,lotService,bookingService,profileStatisticsService);
-            },
-            "инициализировать доступ к данным приложения");
+                return new ReMealUserModule(
+                    authService,
+                    userProfileService,
+                    foodPointService,
+                    lotService,
+                    bookingService,
+                    profileStatisticsService);
+            }, "инициализировать доступ к данным приложения");
         }
     }
 }

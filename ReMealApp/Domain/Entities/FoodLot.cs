@@ -16,13 +16,13 @@ namespace Domain.Entities
 
         public int TotalQuantity { get; private set; }
 
-        public int AvailableQuantity { get; set; }
+        public int AvailableQuantity { get; private set; }
 
         public decimal Price { get; private set; }
 
         public DateTime PickupDeadline { get; private set; }
 
-        public LotStatus Status { get; set; }
+        public LotStatus Status { get; private set; }
 
         public DateTime CreatedAt { get; private set; }
 
@@ -34,7 +34,7 @@ namespace Domain.Entities
 
         public List<LotComponent> Components { get; private set; } = new();
 
-        public List<Booking> Bookings { get; set; } = new();
+        public List<Booking> Bookings { get; private set; } = new();
 
         public string ComponentsSummary => Components.Count == 0
             ? string.Empty
@@ -192,6 +192,19 @@ namespace Domain.Entities
 
             AvailableQuantity += amount;
             TotalQuantity += amount;
+            UpdatedAt = DateTime.UtcNow;
+            RefreshStatus();
+        }
+
+        public void ReturnReservedQuantity(int amount)
+        {
+            if (amount <= 0)
+                throw new ArgumentOutOfRangeException(nameof(amount), "Количество должно быть положительным.");
+
+            if (AvailableQuantity + amount > TotalQuantity)
+                throw new InvalidOperationException("Доступное количество не может превышать общее количество лота.");
+
+            AvailableQuantity += amount;
             UpdatedAt = DateTime.UtcNow;
             RefreshStatus();
         }

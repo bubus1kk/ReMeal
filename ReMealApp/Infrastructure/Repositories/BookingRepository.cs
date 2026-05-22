@@ -1,7 +1,7 @@
-﻿using Domain.Entities;
-using Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 using Application.Interfaces;
+using Domain.Entities;
+using Domain.Enums;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
@@ -15,57 +15,114 @@ public class BookingRepository : IBookingRepository
         _context = context;
     }
 
-    public async Task AddAsync(Booking booking)
+    public async Task AddAsync(Booking booking, CancellationToken cancellationToken = default)
     {
-        await _context.Bookings.AddAsync(booking);
-
-        await _context.SaveChangesAsync();
+        await DataAccessGuard.ExecuteAsync(
+            async () => await _context.Bookings.AddAsync(booking, cancellationToken),
+            "добавить бронирование");
     }
 
-    public async Task<Booking?> GetByIdAsync(Guid bookingId)
+    public Task<Booking?> GetByIdWithDetailsAsync(
+        Guid bookingId,
+        CancellationToken cancellationToken = default)
     {
-        return await _context.Bookings
-            .Include(x => x.User)
-            .Include(x => x.FoodLot)
-            .FirstOrDefaultAsync(x => x.Id == bookingId);
+        return DataAccessGuard.ExecuteAsync(
+            () => _context.Bookings
+                .Include(x => x.User)
+                .Include(x => x.FoodLot)
+                    .ThenInclude(x => x!.FoodPoint)
+                .FirstOrDefaultAsync(x => x.Id == bookingId, cancellationToken),
+            "получить бронирование");
     }
 
-    public async Task<List<Booking>> GetUserBookingsAsync(Guid userId)
+    public Task<List<Booking>> GetUserBookingsAsync(
+        Guid userId,
+        CancellationToken cancellationToken = default)
     {
-        return await _context.Bookings
-            .Include(x => x.FoodLot)
-            .Where(x => x.UserId == userId)
-            .ToListAsync();
+        return DataAccessGuard.ExecuteAsync(
+            () => _context.Bookings
+                .Include(x => x.User)
+                .Include(x => x.FoodLot)
+                    .ThenInclude(x => x!.FoodPoint)
+                .Where(x => x.UserId == userId)
+                .OrderByDescending(x => x.ReservedAt)
+                .ToListAsync(cancellationToken),
+            "получить бронирования пользователя");
     }
 
-    public async Task<List<Booking>> GetPartnerBookingsAsync(Guid partnerId)
+    public Task<List<Booking>> GetPartnerBookingsAsync(
+        Guid partnerId,
+        CancellationToken cancellationToken = default)
     {
-        return await _context.Bookings
-            .Include(x => x.User)
-            .Include(x => x.FoodLot)
-                .ThenInclude(x => x.FoodPoint)
-            .Where(x => x.FoodLot.FoodPoint.OwnerId == partnerId)
-            .ToListAsync();
+        return DataAccessGuard.ExecuteAsync(
+            () => _context.Bookings
+                .Include(x => x.User)
+                .Include(x => x.FoodLot)
+                    .ThenInclude(x => x!.FoodPoint)
+                .Where(x => x.FoodLot != null &&
+                    x.FoodLot.FoodPoint != null &&
+                    x.FoodLot.FoodPoint.OwnerId == partnerId)
+                .OrderByDescending(x => x.ReservedAt)
+                .ToListAsync(cancellationToken),
+            "получить бронирования партнера");
     }
 
-    public async Task UpdateAsync(Booking booking)
+    public Task<int> CountActiveUserBookingsAsync(
+        Guid userId,
+        CancellationToken cancellationToken = default)
     {
-        _context.Bookings.Update(booking);
-
-        await _context.SaveChangesAsync();
+        return DataAccessGuard.ExecuteAsync(
+            () => _context.Bookings.CountAsync(
+                x => x.UserId == userId && x.Status == BookingStatus.Active,
+                cancellationToken),
+            "посчитать активные бронирования пользователя");
     }
 
-    public async Task<FoodLot?> GetLotByIdAsync(Guid foodLotId)
+    public Task<FoodLot?> GetLotByIdAsync(
+        Guid foodLotId,
+        CancellationToken cancellationToken = default)
     {
-        return await _context.FoodLots
-            .FirstOrDefaultAsync(x => x.Id == foodLotId);
+        return DataAccessGuard.ExecuteAsync(
+            () => _context.FoodLots
+                .Include(x => x.FoodPoint)
+                .FirstOrDefaultAsync(x => x.Id == foodLotId, cancellationToken),
+            "получить лот для бронирования");
     }
 
-    public async Task UpdateLotAsync(FoodLot lot)
+    public Task UpdateAsync(Booking booking, CancellationToken cancellationToken = default)
     {
-        _context.FoodLots.Update(lot);
+        DataAccessGuard.Execute(
+            () =>
+            {
+                if (_context.Entry(booking).State == EntityState.Detached)
+                    _context.Bookings.Update(booking);
+            },
+            "обновить бронирование");
 
-        await _context.SaveChangesAsync();
+        return Task.CompletedTask;
     }
 
+    public Task UpdateLotAsync(FoodLot lot, CancellationToken cancellationToken = default)
+    {
+        DataAccessGuard.Execute(
+            () =>
+            {
+                if (_context.Entry(lot).State == EntityState.Detached)
+                    _context.FoodLots.Update(lot);
+            },
+            "обновить лот бронирования");
+
+        return Task.CompletedTask;
+    }
+
+    public Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        return DataAccessGuard.ExecuteAsync(
+            async () =>
+            {
+                await _context.SaveChangesAsync(cancellationToken);
+                _context.ChangeTracker.Clear();
+            },
+            "сохранить изменения бронирования");
+    }
 }

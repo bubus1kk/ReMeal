@@ -39,20 +39,28 @@
                                         Binding="{Binding LotTitle}"
                                         Width="2*"/>
 
-                    <DataGridTextColumn Header="Пользователь"
-                                        Binding="{Binding UserName}"
+                    <DataGridTextColumn Header="Точка питания"
+                                        Binding="{Binding FoodPointName}"
                                         Width="2*"/>
 
                     <DataGridTextColumn Header="Количество"
                                         Binding="{Binding Quantity}"
                                         Width="100"/>
 
-                    <DataGridTextColumn Header="Дата"
-                                        Binding="{Binding BookingDate, StringFormat={}{0:dd.MM.yyyy HH:mm}}"
+                    <DataGridTextColumn Header="Цена"
+                                        Binding="{Binding PriceAtReservation, StringFormat={}{0:N2}}"
+                                        Width="100"/>
+
+                    <DataGridTextColumn Header="Итого"
+                                        Binding="{Binding TotalPrice, StringFormat={}{0:N2}}"
+                                        Width="100"/>
+
+                    <DataGridTextColumn Header="Дата брони"
+                                        Binding="{Binding ReservedAt, StringFormat={}{0:dd.MM.yyyy HH:mm}}"
                                         Width="170"/>
 
                     <DataGridTextColumn Header="Статус"
-                                        Binding="{Binding Status}"
+                                        Binding="{Binding StatusText}"
                                         Width="120"/>
 
                     <DataGridTemplateColumn Header="Действия"
@@ -65,7 +73,8 @@
                                 <Button
                                     Content="Отменить"
                                     Command="{Binding $parent[UserControl].DataContext.CancelBookingCommand}"
-                                    CommandParameter="{Binding Id}" />
+                                    CommandParameter="{Binding Id}"
+                                    IsVisible="{Binding CanCancel}" />
 
                             </DataTemplate>
 
