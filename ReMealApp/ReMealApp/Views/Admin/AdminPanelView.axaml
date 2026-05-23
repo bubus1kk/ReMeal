@@ -10,7 +10,7 @@
                 <StackPanel Spacing="4">
                     <TextBlock Text="Администрирование"
                                Classes="section-title"/>
-                    <TextBlock Text="Пользователи"
+                    <TextBlock Text="Пользователи и точки питания"
                                Foreground="#AAB9B0"
                                FontSize="14"/>
                 </StackPanel>
@@ -25,56 +25,118 @@
                        FontSize="14"
                        TextWrapping="Wrap"/>
 
-            <Grid IsVisible="{Binding HasAccess}"
-                  RowDefinitions="Auto,*"
-                  RowSpacing="12">
-                <StackPanel Orientation="Horizontal"
-                            Spacing="10"
-                            VerticalAlignment="Center">
-                    <TextBlock Text="Роль"
-                               Foreground="#DCE7DD"
-                               FontSize="13"
-                               FontWeight="SemiBold"
-                               VerticalAlignment="Center"/>
-                    <ComboBox Width="220"
-                              ItemsSource="{Binding RoleFilters}"
-                              SelectedItem="{Binding SelectedRoleFilter, Mode=TwoWay}"/>
+            <StackPanel IsVisible="{Binding HasAccess}"
+                        Spacing="22">
+                <StackPanel Spacing="12">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Text="Пользователи"
+                                   Foreground="#F2F8F1"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    Spacing="10"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="Роль"
+                                       Foreground="#DCE7DD"
+                                       FontSize="13"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
+                            <ComboBox Width="220"
+                                      ItemsSource="{Binding RoleFilters}"
+                                      SelectedItem="{Binding SelectedRoleFilter, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <DataGrid ItemsSource="{Binding Users}"
+                              IsReadOnly="True"
+                              AutoGenerateColumns="False"
+                              GridLinesVisibility="Horizontal"
+                              IsVisible="{Binding HasUsers}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Логин"
+                                                Binding="{Binding Login}"
+                                                Width="*"/>
+                            <DataGridTextColumn Header="ФИО"
+                                                Binding="{Binding FullName}"
+                                                Width="2*"/>
+                            <DataGridTextColumn Header="Email"
+                                                Binding="{Binding Email}"
+                                                Width="2*"/>
+                            <DataGridTextColumn Header="Телефон"
+                                                Binding="{Binding Phone}"
+                                                Width="*"/>
+                            <DataGridTextColumn Header="Роль"
+                                                Binding="{Binding RoleText}"
+                                                Width="*"/>
+                            <DataGridTextColumn Header="Активность"
+                                                Binding="{Binding ActivityStatusText}"
+                                                Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock Text="По выбранному фильтру пользователей нет."
+                               Foreground="#AAB9B0"
+                               FontSize="14"
+                               IsVisible="{Binding !HasUsers}"/>
                 </StackPanel>
 
-                <DataGrid Grid.Row="1"
-                          ItemsSource="{Binding Users}"
-                          IsReadOnly="True"
-                          AutoGenerateColumns="False"
-                          GridLinesVisibility="Horizontal"
-                          IsVisible="{Binding HasUsers}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Логин"
-                                            Binding="{Binding Login}"
-                                            Width="*"/>
-                        <DataGridTextColumn Header="ФИО"
-                                            Binding="{Binding FullName}"
-                                            Width="2*"/>
-                        <DataGridTextColumn Header="Email"
-                                            Binding="{Binding Email}"
-                                            Width="2*"/>
-                        <DataGridTextColumn Header="Телефон"
-                                            Binding="{Binding Phone}"
-                                            Width="*"/>
-                        <DataGridTextColumn Header="Роль"
-                                            Binding="{Binding RoleText}"
-                                            Width="*"/>
-                        <DataGridTextColumn Header="Активность"
-                                            Binding="{Binding ActivityStatusText}"
-                                            Width="*"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Точки питания"
+                               Foreground="#F2F8F1"
+                               FontSize="16"
+                               FontWeight="SemiBold"/>
 
-                <TextBlock Grid.Row="1"
-                           Text="По выбранному фильтру пользователей нет."
-                           Foreground="#AAB9B0"
-                           FontSize="14"
-                           IsVisible="{Binding !HasUsers}"/>
-            </Grid>
+                    <DataGrid ItemsSource="{Binding FoodPoints}"
+                              IsReadOnly="True"
+                              AutoGenerateColumns="False"
+                              GridLinesVisibility="Horizontal"
+                              IsVisible="{Binding HasFoodPoints}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Название"
+                                                Binding="{Binding Name}"
+                                                Width="*"/>
+                            <DataGridTextColumn Header="Адрес"
+                                                Binding="{Binding Address}"
+                                                Width="2*"/>
+                            <DataGridTextColumn Header="Телефон"
+                                                Binding="{Binding Phone}"
+                                                Width="*"/>
+                            <DataGridTextColumn Header="Владелец"
+                                                Binding="{Binding OwnerText}"
+                                                Width="2*"/>
+                            <DataGridTextColumn Header="Статус"
+                                                Binding="{Binding StatusText}"
+                                                Width="*"/>
+                            <DataGridTemplateColumn Header="Действия"
+                                                    Width="170">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate x:DataType="vm:AdminFoodPointRowViewModel">
+                                        <StackPanel Orientation="Horizontal"
+                                                    Spacing="8">
+                                            <Button Content="Активировать"
+                                                    Command="{Binding $parent[UserControl].DataContext.ActivateFoodPointCommand}"
+                                                    CommandParameter="{Binding Id}"
+                                                    IsVisible="{Binding CanActivate}"/>
+                                            <Button Content="Деактивировать"
+                                                    Command="{Binding $parent[UserControl].DataContext.DeactivateFoodPointCommand}"
+                                                    CommandParameter="{Binding Id}"
+                                                    IsVisible="{Binding CanDeactivate}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock Text="Точки питания не найдены."
+                               Foreground="#AAB9B0"
+                               FontSize="14"
+                               IsVisible="{Binding !HasFoodPoints}"/>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
     </Border>
 </UserControl>

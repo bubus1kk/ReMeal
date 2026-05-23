@@ -10,13 +10,16 @@ namespace Application.Services
     {
         private readonly IAuthService _authService;
         private readonly IUserRepository _userRepository;
+        private readonly IFoodPointRepository _foodPointRepository;
 
         public AdminService(
             IAuthService authService,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IFoodPointRepository foodPointRepository)
         {
             _authService = authService;
             _userRepository = userRepository;
+            _foodPointRepository = foodPointRepository;
         }
 
         public async Task EnsureAdministratorAccessAsync(CancellationToken cancellationToken = default)
@@ -49,6 +52,62 @@ namespace Application.Services
                 Phone = user.Phone,
                 Role = user.Role,
                 IsActive = null
+            };
+        }
+
+        public async Task<List<AdminFoodPointDto>> GetFoodPointsAsync(CancellationToken cancellationToken = default)
+        {
+            await EnsureAdministratorAccessAsync(cancellationToken);
+
+            var foodPoints = await _foodPointRepository.GetAllAsync(cancellationToken);
+            return foodPoints
+                .Select(MapFoodPoint)
+                .ToList();
+        }
+
+        public async Task ActivateFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken = default)
+        {
+            await EnsureAdministratorAccessAsync(cancellationToken);
+
+            var foodPoint = await GetFoodPointOrThrowAsync(foodPointId, cancellationToken);
+            foodPoint.Activate();
+
+            await _foodPointRepository.UpdateAsync(foodPoint, cancellationToken);
+            await _foodPointRepository.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task DeactivateFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken = default)
+        {
+            await EnsureAdministratorAccessAsync(cancellationToken);
+
+            var foodPoint = await GetFoodPointOrThrowAsync(foodPointId, cancellationToken);
+            foodPoint.Deactivate();
+
+            await _foodPointRepository.UpdateAsync(foodPoint, cancellationToken);
+            await _foodPointRepository.SaveChangesAsync(cancellationToken);
+        }
+
+        private async Task<FoodPoint> GetFoodPointOrThrowAsync(Guid foodPointId, CancellationToken cancellationToken)
+        {
+            return await _foodPointRepository.GetByIdAsync(foodPointId, cancellationToken)
+                ?? throw new KeyNotFoundException($"Точка питания '{foodPointId}' не найдена.");
+        }
+
+        private static AdminFoodPointDto MapFoodPoint(FoodPoint foodPoint)
+        {
+            return new AdminFoodPointDto
+            {
+                Id = foodPoint.Id,
+                Name = foodPoint.Name,
+                Address = foodPoint.Address,
+                Phone = foodPoint.Phone,
+                OwnerName = string.IsNullOrWhiteSpace(foodPoint.Owner?.FullName)
+                    ? "Не указан"
+                    : foodPoint.Owner.FullName,
+                OwnerLogin = string.IsNullOrWhiteSpace(foodPoint.Owner?.Login)
+                    ? string.Empty
+                    : foodPoint.Owner.Login,
+                IsActive = foodPoint.IsActive
             };
         }
     }

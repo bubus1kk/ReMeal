@@ -449,6 +449,21 @@ namespace ReMealApp.ViewModels.Shell
             {
                 throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
             }
+
+            public Task<List<AdminFoodPointDto>> GetFoodPointsAsync(CancellationToken cancellationToken = default)
+            {
+                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+            }
+
+            public Task ActivateFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken = default)
+            {
+                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+            }
+
+            public Task DeactivateFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken = default)
+            {
+                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+            }
         }
     }
 }
