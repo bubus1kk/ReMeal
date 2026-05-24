@@ -16,7 +16,7 @@ namespace Application.DTOs.Admin
 
         public UserRole Role { get; init; }
 
-        public bool? IsActive { get; init; }
+        public bool IsActive { get; init; }
 
         public string RoleText => Role switch
         {
@@ -26,11 +26,6 @@ namespace Application.DTOs.Admin
             _ => Role.ToString()
         };
 
-        public string ActivityStatusText => IsActive switch
-        {
-            true => "Активен",
-            false => "Деактивирован",
-            null => "Не хранится"
-        };
+        public string ActivityStatusText => IsActive ? "Активен" : "Деактивирован";
     }
 }

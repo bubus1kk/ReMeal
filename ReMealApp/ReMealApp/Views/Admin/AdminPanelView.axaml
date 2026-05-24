@@ -10,7 +10,7 @@
                 <StackPanel Spacing="4">
                     <TextBlock Text="Администрирование"
                                Classes="section-title"/>
-                    <TextBlock Text="Пользователи и точки питания"
+                    <TextBlock Text="Пользователи, точки питания, лоты и бронирования"
                                Foreground="#AAB9B0"
                                FontSize="14"/>
                 </StackPanel>
@@ -74,6 +74,24 @@
                             <DataGridTextColumn Header="Активность"
                                                 Binding="{Binding ActivityStatusText}"
                                                 Width="*"/>
+                            <DataGridTemplateColumn Header="Действия"
+                                                    Width="170">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate x:DataType="vm:AdminUserRowViewModel">
+                                        <StackPanel Orientation="Horizontal"
+                                                    Spacing="8">
+                                            <Button Content="Активировать"
+                                                    Command="{Binding $parent[UserControl].DataContext.ActivateUserCommand}"
+                                                    CommandParameter="{Binding Id}"
+                                                    IsVisible="{Binding CanActivate}"/>
+                                            <Button Content="Деактивировать"
+                                                    Command="{Binding $parent[UserControl].DataContext.DeactivateUserCommand}"
+                                                    CommandParameter="{Binding Id}"
+                                                    IsVisible="{Binding CanDeactivate}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
 
@@ -135,6 +153,104 @@
                                Foreground="#AAB9B0"
                                FontSize="14"
                                IsVisible="{Binding !HasFoodPoints}"/>
+                </StackPanel>
+
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Лоты"
+                               Foreground="#F2F8F1"
+                               FontSize="16"
+                               FontWeight="SemiBold"/>
+
+                    <DataGrid ItemsSource="{Binding Lots}"
+                              IsReadOnly="True"
+                              AutoGenerateColumns="False"
+                              GridLinesVisibility="Horizontal"
+                              IsVisible="{Binding HasLots}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Название"
+                                                Binding="{Binding Title}"
+                                                Width="2*"/>
+                            <DataGridTextColumn Header="Точка"
+                                                Binding="{Binding FoodPointName}"
+                                                Width="*"/>
+                            <DataGridTextColumn Header="Владелец"
+                                                Binding="{Binding OwnerName}"
+                                                Width="*"/>
+                            <DataGridTextColumn Header="Цена"
+                                                Binding="{Binding Price, StringFormat={}{0:N2}}"
+                                                Width="90"/>
+                            <DataGridTextColumn Header="Количество"
+                                                Binding="{Binding QuantityText}"
+                                                Width="110"/>
+                            <DataGridTextColumn Header="Получить до"
+                                                Binding="{Binding PickupDeadline, StringFormat={}{0:dd.MM.yyyy HH:mm}}"
+                                                Width="150"/>
+                            <DataGridTextColumn Header="Статус"
+                                                Binding="{Binding StatusText}"
+                                                Width="110"/>
+                            <DataGridTemplateColumn Header="Действия"
+                                                    Width="120">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate x:DataType="vm:AdminLotRowViewModel">
+                                        <Button Content="Отменить"
+                                                Command="{Binding $parent[UserControl].DataContext.CancelLotCommand}"
+                                                CommandParameter="{Binding Id}"
+                                                IsVisible="{Binding CanCancel}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock Text="Лоты не найдены."
+                               Foreground="#AAB9B0"
+                               FontSize="14"
+                               IsVisible="{Binding !HasLots}"/>
+                </StackPanel>
+
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Бронирования"
+                               Foreground="#F2F8F1"
+                               FontSize="16"
+                               FontWeight="SemiBold"/>
+
+                    <DataGrid ItemsSource="{Binding Bookings}"
+                              IsReadOnly="True"
+                              AutoGenerateColumns="False"
+                              GridLinesVisibility="Horizontal"
+                              IsVisible="{Binding HasBookings}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Покупатель"
+                                                Binding="{Binding CustomerName}"
+                                                Width="*"/>
+                            <DataGridTextColumn Header="Лот"
+                                                Binding="{Binding LotTitle}"
+                                                Width="2*"/>
+                            <DataGridTextColumn Header="Точка"
+                                                Binding="{Binding FoodPointName}"
+                                                Width="*"/>
+                            <DataGridTextColumn Header="Кол-во"
+                                                Binding="{Binding Quantity}"
+                                                Width="80"/>
+                            <DataGridTextColumn Header="Цена"
+                                                Binding="{Binding PriceAtReservation, StringFormat={}{0:N2}}"
+                                                Width="90"/>
+                            <DataGridTextColumn Header="Итого"
+                                                Binding="{Binding TotalPrice, StringFormat={}{0:N2}}"
+                                                Width="90"/>
+                            <DataGridTextColumn Header="Дата"
+                                                Binding="{Binding ReservedAt, StringFormat={}{0:dd.MM.yyyy HH:mm}}"
+                                                Width="150"/>
+                            <DataGridTextColumn Header="Статус"
+                                                Binding="{Binding StatusText}"
+                                                Width="110"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock Text="Бронирования не найдены."
+                               Foreground="#AAB9B0"
+                               FontSize="14"
+                               IsVisible="{Binding !HasBookings}"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

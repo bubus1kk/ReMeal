@@ -47,6 +47,10 @@ namespace Infrastructure.Persistence.Configurations
                 .HasDefaultValue(UserRole.StudentCustomer)
                 .IsRequired();
 
+            builder.Property(user => user.IsActive)
+                .HasDefaultValue(true)
+                .IsRequired();
+
             builder.HasMany(user => user.FoodPoints)
                 .WithOne(foodPoint => foodPoint.Owner)
                 .HasForeignKey(foodPoint => foodPoint.OwnerId);

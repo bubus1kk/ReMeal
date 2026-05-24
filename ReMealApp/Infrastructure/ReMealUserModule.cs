@@ -83,7 +83,9 @@ namespace Infrastructure
                 IAdminService adminService = new AdminService(
                     authService,
                     userRepository,
-                    foodPointRepository);
+                    foodPointRepository,
+                    foodLotRepository,
+                    bookingRepository);
                 IProfileStatisticsService profileStatisticsService = new ProfileStatisticsService(
                     authService,
                     userRepository,

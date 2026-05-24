@@ -19,7 +19,8 @@ namespace Infrastructure.Persistence
                         Email TEXT NOT NULL,
                         Phone TEXT NOT NULL,
                         AvatarPath TEXT NOT NULL DEFAULT '',
-                        Role TEXT NOT NULL DEFAULT 'StudentCustomer'
+                        Role TEXT NOT NULL DEFAULT 'StudentCustomer',
+                        IsActive INTEGER NOT NULL DEFAULT 1
                     );
                     """);
 
@@ -28,6 +29,12 @@ namespace Infrastructure.Persistence
                     "Users",
                     "AvatarPath",
                     "ALTER TABLE Users ADD COLUMN AvatarPath TEXT NOT NULL DEFAULT '';");
+
+                EnsureColumn(
+                    dbContext,
+                    "Users",
+                    "IsActive",
+                    "ALTER TABLE Users ADD COLUMN IsActive INTEGER NOT NULL DEFAULT 1;");
 
                 dbContext.Database.ExecuteSqlRaw("""
                     CREATE TABLE IF NOT EXISTS FoodPoints (

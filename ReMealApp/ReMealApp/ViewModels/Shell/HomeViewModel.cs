@@ -450,6 +450,16 @@ namespace ReMealApp.ViewModels.Shell
                 throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
             }
 
+            public Task ActivateUserAsync(Guid userId, CancellationToken cancellationToken = default)
+            {
+                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+            }
+
+            public Task DeactivateUserAsync(Guid userId, CancellationToken cancellationToken = default)
+            {
+                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+            }
+
             public Task<List<AdminFoodPointDto>> GetFoodPointsAsync(CancellationToken cancellationToken = default)
             {
                 throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
@@ -461,6 +471,21 @@ namespace ReMealApp.ViewModels.Shell
             }
 
             public Task DeactivateFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken = default)
+            {
+                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+            }
+
+            public Task<List<AdminLotDto>> GetLotsAsync(CancellationToken cancellationToken = default)
+            {
+                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+            }
+
+            public Task CancelLotAsync(Guid lotId, CancellationToken cancellationToken = default)
+            {
+                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+            }
+
+            public Task<List<AdminBookingDto>> GetBookingsAsync(CancellationToken cancellationToken = default)
             {
                 throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
             }
