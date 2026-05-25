@@ -5,5 +5,7 @@ namespace Application.DTOs.FoodPoints
         string Name,
         string Address,
         string Description,
-        string Phone);
+        string Phone,
+        double? Latitude = null,
+        double? Longitude = null);
 }

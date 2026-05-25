@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,14 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ReMealDbContext))]
-    partial class ReMealDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260525124955_AddFoodPointCoordinates")]
+    partial class AddFoodPointCoordinates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
-        {
-            BuildTargetModel(modelBuilder);
-        }
-
-        public static void BuildTargetModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
