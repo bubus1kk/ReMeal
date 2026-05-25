@@ -4,255 +4,1191 @@
              x:Class="ReMealApp.Views.Admin.AdminPanelView"
              x:DataType="vm:AdminPanelViewModel">
 
-    <Border Classes="card">
-        <StackPanel Spacing="16">
-            <Grid ColumnDefinitions="*,Auto">
-                <StackPanel Spacing="4">
-                    <TextBlock Text="Администрирование"
-                               Classes="section-title"/>
-                    <TextBlock Text="Пользователи, точки питания, лоты и бронирования"
-                               Foreground="#AAB9B0"
-                               FontSize="14"/>
-                </StackPanel>
+    <UserControl.Styles>
+        <Style Selector="Border.admin-shell">
+            <Setter Property="Background" Value="#0E1513"/>
+            <Setter Property="BorderBrush" Value="#254035"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Padding" Value="14"/>
+            <Setter Property="BoxShadow" Value="0 24 70 0 #66000000"/>
+        </Style>
 
-                <Button Grid.Column="1"
-                        Content="Обновить"
-                        Command="{Binding LoadCommand}"/>
-            </Grid>
+        <Style Selector="Border.header-icon">
+            <Setter Property="Width" Value="48"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Background" Value="#17251F"/>
+            <Setter Property="BorderBrush" Value="#2B483B"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
 
-            <TextBlock Text="{Binding StatusMessage}"
-                       Foreground="#DDE8DF"
-                       FontSize="14"
-                       TextWrapping="Wrap"/>
+        <Style Selector="TextBlock.page-title">
+            <Setter Property="Foreground" Value="#F4F8F3"/>
+            <Setter Property="FontSize" Value="21"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
 
-            <StackPanel IsVisible="{Binding HasAccess}"
-                        Spacing="22">
-                <StackPanel Spacing="12">
-                    <Grid ColumnDefinitions="*,Auto">
-                        <TextBlock Text="Пользователи"
-                                   Foreground="#F2F8F1"
-                                   FontSize="16"
-                                   FontWeight="SemiBold"
-                                   VerticalAlignment="Center"/>
+        <Style Selector="TextBlock.page-subtitle">
+            <Setter Property="Foreground" Value="#A7B2AD"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
 
-                        <StackPanel Grid.Column="1"
-                                    Orientation="Horizontal"
-                                    Spacing="10"
+        <Style Selector="Button.refresh-button">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Background" Value="#101B17"/>
+            <Setter Property="BorderBrush" Value="#4F8F3B"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#F4FAF0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="Button.refresh-button:pointerover">
+            <Setter Property="Background" Value="#14221D"/>
+            <Setter Property="BorderBrush" Value="#70C957"/>
+        </Style>
+
+        <Style Selector="Button.refresh-button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#14221D"/>
+        </Style>
+
+        <Style Selector="Button.refresh-button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#182B22"/>
+        </Style>
+
+        <Style Selector="Button.refresh-button:disabled">
+            <Setter Property="Opacity" Value="0.65"/>
+        </Style>
+
+        <Style Selector="Border.kpi-card">
+            <Setter Property="Background" Value="#121B19"/>
+            <Setter Property="BorderBrush" Value="#263A33"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="14"/>
+            <Setter Property="MinHeight" Value="86"/>
+        </Style>
+
+        <Style Selector="Border.kpi-icon">
+            <Setter Property="Width" Value="42"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Background" Value="#1A2A22"/>
+        </Style>
+
+        <Style Selector="TextBlock.kpi-title">
+            <Setter Property="Foreground" Value="#C9D5CF"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style Selector="TextBlock.kpi-value">
+            <Setter Property="Foreground" Value="#76D75C"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style Selector="TextBlock.kpi-subtitle">
+            <Setter Property="Foreground" Value="#9EAAA4"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <Style Selector="Border.admin-section">
+            <Setter Property="Background" Value="#121B19"/>
+            <Setter Property="BorderBrush" Value="#273A34"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="12"/>
+        </Style>
+
+        <Style Selector="Border.section-icon">
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="CornerRadius" Value="7"/>
+            <Setter Property="Background" Value="#17271F"/>
+        </Style>
+
+        <Style Selector="TextBlock.section-heading">
+            <Setter Property="Foreground" Value="#F1F7F0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style Selector="TextBox.admin-search">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Background" Value="#0E1715"/>
+            <Setter Property="BorderBrush" Value="#2B3C36"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="7"/>
+            <Setter Property="Foreground" Value="#EFF5EF"/>
+            <Setter Property="Padding" Value="12,0,34,0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
+        <Style Selector="TextBox.admin-search /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="#0E1715"/>
+            <Setter Property="BorderBrush" Value="#2B3C36"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="7"/>
+        </Style>
+
+        <Style Selector="TextBox.admin-search:pointerover /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="#111D19"/>
+            <Setter Property="BorderBrush" Value="#3E574A"/>
+        </Style>
+
+        <Style Selector="TextBox.admin-search:focus /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="#0E1715"/>
+            <Setter Property="BorderBrush" Value="#70C957"/>
+        </Style>
+
+        <Style Selector="ComboBox.admin-combo">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Background" Value="#0E1715"/>
+            <Setter Property="BorderBrush" Value="#2B3C36"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="7"/>
+            <Setter Property="Foreground" Value="#EFF5EF"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
+        <Style Selector="ComboBox.admin-combo:pointerover">
+            <Setter Property="Background" Value="#111D19"/>
+            <Setter Property="BorderBrush" Value="#3E574A"/>
+        </Style>
+
+        <Style Selector="ComboBox.admin-combo:focus">
+            <Setter Property="BorderBrush" Value="#70C957"/>
+        </Style>
+
+        <Style Selector="ComboBoxItem">
+            <Setter Property="Foreground" Value="#EDF4EE"/>
+            <Setter Property="Background" Value="#0E1715"/>
+        </Style>
+
+        <Style Selector="ComboBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#16231E"/>
+        </Style>
+
+        <Style Selector="ComboBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#1D3727"/>
+        </Style>
+
+        <Style Selector="Border.admin-table">
+            <Setter Property="Background" Value="#0E1715"/>
+            <Setter Property="BorderBrush" Value="#24332E"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="ClipToBounds" Value="True"/>
+        </Style>
+
+        <Style Selector="Border.table-header">
+            <Setter Property="Background" Value="#111B19"/>
+            <Setter Property="BorderBrush" Value="#1D2A25"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Height" Value="34"/>
+        </Style>
+
+        <Style Selector="TextBlock.header-cell">
+            <Setter Property="Foreground" Value="#9FAAA5"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+
+        <Style Selector="Border.table-row">
+            <Setter Property="Background" Value="#111A18"/>
+            <Setter Property="BorderBrush" Value="#23312C"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="MinHeight" Value="42"/>
+        </Style>
+
+        <Style Selector="Border.table-row:pointerover">
+            <Setter Property="Background" Value="#15211D"/>
+        </Style>
+
+        <Style Selector="TextBlock.cell">
+            <Setter Property="Foreground" Value="#EDF4EE"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+
+        <Style Selector="TextBlock.cell-muted">
+            <Setter Property="Foreground" Value="#AAB4AF"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+
+        <Style Selector="Border.status-badge">
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="8,3"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#26302C"/>
+            <Setter Property="BorderBrush" Value="#3B4641"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="Border.status-badge.active">
+            <Setter Property="Background" Value="#1D3B22"/>
+            <Setter Property="BorderBrush" Value="#3E7634"/>
+        </Style>
+
+        <Style Selector="Border.status-badge.inactive">
+            <Setter Property="Background" Value="#3A2221"/>
+            <Setter Property="BorderBrush" Value="#70413C"/>
+        </Style>
+
+        <Style Selector="Border.status-badge.warning">
+            <Setter Property="Background" Value="#3A2A13"/>
+            <Setter Property="BorderBrush" Value="#8A651F"/>
+        </Style>
+
+        <Style Selector="Border.status-badge.neutral">
+            <Setter Property="Background" Value="#26302C"/>
+            <Setter Property="BorderBrush" Value="#3B4641"/>
+        </Style>
+
+        <Style Selector="TextBlock.status-text">
+            <Setter Property="Foreground" Value="#D8E1DB"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style Selector="TextBlock.status-text.active">
+            <Setter Property="Foreground" Value="#A8F48D"/>
+        </Style>
+
+        <Style Selector="TextBlock.status-text.inactive">
+            <Setter Property="Foreground" Value="#FF9387"/>
+        </Style>
+
+        <Style Selector="TextBlock.status-text.warning">
+            <Setter Property="Foreground" Value="#FFC865"/>
+        </Style>
+
+        <Style Selector="TextBlock.status-text.neutral">
+            <Setter Property="Foreground" Value="#CED8D2"/>
+        </Style>
+
+        <Style Selector="Button.row-action">
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="MinWidth" Value="104"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Background" Value="#1D2F22"/>
+            <Setter Property="BorderBrush" Value="#3F7433"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#F4FAF0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="Button.row-action:pointerover">
+            <Setter Property="Background" Value="#25402A"/>
+            <Setter Property="BorderBrush" Value="#70C957"/>
+        </Style>
+
+        <Style Selector="Button.row-action:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#25402A"/>
+        </Style>
+
+        <Style Selector="Button.row-action:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#1A2E20"/>
+        </Style>
+
+        <Style Selector="Button.row-action.danger">
+            <Setter Property="Background" Value="#2A1917"/>
+            <Setter Property="BorderBrush" Value="#633A34"/>
+            <Setter Property="Foreground" Value="#FFD5CF"/>
+        </Style>
+
+        <Style Selector="Button.row-action.danger:pointerover">
+            <Setter Property="Background" Value="#3A211D"/>
+            <Setter Property="BorderBrush" Value="#B55346"/>
+        </Style>
+
+        <Style Selector="Button.row-action.danger:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#3A211D"/>
+        </Style>
+
+        <Style Selector="Button.row-action.danger:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#251614"/>
+        </Style>
+
+        <Style Selector="Button.reset-button">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="CornerRadius" Value="7"/>
+            <Setter Property="Background" Value="#13211D"/>
+            <Setter Property="BorderBrush" Value="#355545"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#EFF7ED"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="Button.reset-button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#182B22"/>
+        </Style>
+
+        <Style Selector="Button.pager-button">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="CornerRadius" Value="7"/>
+            <Setter Property="Background" Value="#101A17"/>
+            <Setter Property="BorderBrush" Value="#355545"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#EAF4EA"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="Button.pager-button:pointerover">
+            <Setter Property="Background" Value="#17271F"/>
+            <Setter Property="BorderBrush" Value="#70C957"/>
+        </Style>
+
+        <Style Selector="Button.pager-button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#17271F"/>
+        </Style>
+
+        <Style Selector="Button.pager-button:disabled">
+            <Setter Property="Opacity" Value="0.45"/>
+        </Style>
+
+        <Style Selector="Border.empty-state">
+            <Setter Property="Background" Value="#101917"/>
+            <Setter Property="Padding" Value="24"/>
+            <Setter Property="MinHeight" Value="136"/>
+        </Style>
+
+        <Style Selector="TextBlock.empty-title">
+            <Setter Property="Foreground" Value="#F0F6EF"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="TextBlock.empty-subtitle">
+            <Setter Property="Foreground" Value="#9EAAA4"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <Style Selector="TextBlock.count-text">
+            <Setter Property="Foreground" Value="#98A49E"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <Style Selector="TextBlock.page-text">
+            <Setter Property="Foreground" Value="#C8D4CE"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="TextBlock.status-message">
+            <Setter Property="Foreground" Value="#AAB6B0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Border Classes="admin-shell"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch">
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Hidden">
+            <StackPanel Spacing="12">
+                <Grid ColumnDefinitions="Auto,*,Auto"
+                      ColumnSpacing="12">
+                    <Border Grid.Column="0"
+                            Classes="header-icon">
+                        <Image Source="/Assets/Icons/settings.png"
+                               Width="26"
+                               Height="26"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                    </Border>
+
+                    <StackPanel Grid.Column="1"
+                                Spacing="4"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="Администрирование"
+                                   Classes="page-title"/>
+                        <TextBlock Text="Пользователи, точки питания, лоты и бронирования"
+                                   Classes="page-subtitle"/>
+                    </StackPanel>
+
+                    <Button Grid.Column="2"
+                            Classes="refresh-button"
+                            Command="{Binding LoadCommand}"
+                            IsEnabled="{Binding !IsBusy}"
+                            VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="8"
                                     VerticalAlignment="Center">
-                            <TextBlock Text="Роль"
-                                       Foreground="#DCE7DD"
-                                       FontSize="13"
-                                       FontWeight="SemiBold"
+                            <Image Source="/Assets/Icons/Lots/Tinted/update-icon-light.png"
+                                   Width="16"
+                                   Height="16"
+                                   VerticalAlignment="Center"/>
+                            <TextBlock Text="Обновить"
                                        VerticalAlignment="Center"/>
-                            <ComboBox Width="220"
-                                      ItemsSource="{Binding RoleFilters}"
-                                      SelectedItem="{Binding SelectedRoleFilter, Mode=TwoWay}"/>
                         </StackPanel>
-                    </Grid>
+                    </Button>
+                </Grid>
 
-                    <DataGrid ItemsSource="{Binding Users}"
-                              IsReadOnly="True"
-                              AutoGenerateColumns="False"
-                              GridLinesVisibility="Horizontal"
-                              IsVisible="{Binding HasUsers}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Логин"
-                                                Binding="{Binding Login}"
-                                                Width="*"/>
-                            <DataGridTextColumn Header="ФИО"
-                                                Binding="{Binding FullName}"
-                                                Width="2*"/>
-                            <DataGridTextColumn Header="Email"
-                                                Binding="{Binding Email}"
-                                                Width="2*"/>
-                            <DataGridTextColumn Header="Телефон"
-                                                Binding="{Binding Phone}"
-                                                Width="*"/>
-                            <DataGridTextColumn Header="Роль"
-                                                Binding="{Binding RoleText}"
-                                                Width="*"/>
-                            <DataGridTextColumn Header="Активность"
-                                                Binding="{Binding ActivityStatusText}"
-                                                Width="*"/>
-                            <DataGridTemplateColumn Header="Действия"
-                                                    Width="170">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate x:DataType="vm:AdminUserRowViewModel">
-                                        <StackPanel Orientation="Horizontal"
-                                                    Spacing="8">
-                                            <Button Content="Активировать"
-                                                    Command="{Binding $parent[UserControl].DataContext.ActivateUserCommand}"
-                                                    CommandParameter="{Binding Id}"
-                                                    IsVisible="{Binding CanActivate}"/>
-                                            <Button Content="Деактивировать"
-                                                    Command="{Binding $parent[UserControl].DataContext.DeactivateUserCommand}"
-                                                    CommandParameter="{Binding Id}"
-                                                    IsVisible="{Binding CanDeactivate}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                <Grid ColumnDefinitions="*,*,*,*"
+                      ColumnSpacing="8"
+                      IsVisible="{Binding HasAccess}">
+                    <Border Grid.Column="0"
+                            Classes="kpi-card">
+                        <Grid ColumnDefinitions="Auto,*"
+                              ColumnSpacing="12">
+                            <Border Grid.Column="0"
+                                    Classes="kpi-icon">
+                                <Image Source="/Assets/Icons/profile.png"
+                                       Width="22"
+                                       Height="22"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1"
+                                        Spacing="2"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Пользователей"
+                                           Classes="kpi-title"/>
+                                <TextBlock Text="{Binding UsersKpiValue}"
+                                           Classes="kpi-value"/>
+                                <TextBlock Text="{Binding UsersKpiSubtitle}"
+                                           Classes="kpi-subtitle"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
 
-                    <TextBlock Text="По выбранному фильтру пользователей нет."
-                               Foreground="#AAB9B0"
-                               FontSize="14"
-                               IsVisible="{Binding !HasUsers}"/>
+                    <Border Grid.Column="1"
+                            Classes="kpi-card">
+                        <Grid ColumnDefinitions="Auto,*"
+                              ColumnSpacing="12">
+                            <Border Grid.Column="0"
+                                    Classes="kpi-icon">
+                                <Image Source="/Assets/Icons/location.png"
+                                       Width="22"
+                                       Height="22"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1"
+                                        Spacing="2"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Точек питания"
+                                           Classes="kpi-title"/>
+                                <TextBlock Text="{Binding FoodPointsKpiValue}"
+                                           Classes="kpi-value"/>
+                                <TextBlock Text="{Binding FoodPointsKpiSubtitle}"
+                                           Classes="kpi-subtitle"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Column="2"
+                            Classes="kpi-card">
+                        <Grid ColumnDefinitions="Auto,*"
+                              ColumnSpacing="12">
+                            <Border Grid.Column="0"
+                                    Classes="kpi-icon">
+                                <Image Source="/Assets/Icons/sets.png"
+                                       Width="22"
+                                       Height="22"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1"
+                                        Spacing="2"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Лотов"
+                                           Classes="kpi-title"/>
+                                <TextBlock Text="{Binding LotsKpiValue}"
+                                           Classes="kpi-value"/>
+                                <TextBlock Text="{Binding LotsKpiSubtitle}"
+                                           Classes="kpi-subtitle"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Column="3"
+                            Classes="kpi-card">
+                        <Grid ColumnDefinitions="Auto,*"
+                              ColumnSpacing="12">
+                            <Border Grid.Column="0"
+                                    Classes="kpi-icon">
+                                <Image Source="/Assets/Icons/bookings.png"
+                                       Width="22"
+                                       Height="22"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1"
+                                        Spacing="2"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Бронирований"
+                                           Classes="kpi-title"/>
+                                <TextBlock Text="{Binding BookingsKpiValue}"
+                                           Classes="kpi-value"/>
+                                <TextBlock Text="{Binding BookingsKpiSubtitle}"
+                                           Classes="kpi-subtitle"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <StackPanel IsVisible="{Binding HasAccess}"
+                            Spacing="10">
+                    <Border Classes="admin-section">
+                        <Grid RowDefinitions="Auto,*,Auto"
+                              RowSpacing="10">
+                            <Grid Grid.Row="0"
+                                  ColumnDefinitions="Auto,*,320,150,170"
+                                  ColumnSpacing="10">
+                                <StackPanel Grid.Column="0"
+                                            Orientation="Horizontal"
+                                            Spacing="8"
+                                            VerticalAlignment="Center">
+                                    <Border Classes="section-icon">
+                                        <Image Source="/Assets/Icons/profile.png"
+                                               Width="18"
+                                               Height="18"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                    </Border>
+                                    <TextBlock Text="Пользователи"
+                                               Classes="section-heading"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <Grid Grid.Column="2"
+                                      VerticalAlignment="Center">
+                                    <TextBox Classes="admin-search"
+                                             PlaceholderText="Поиск по логину, ФИО или email"
+                                             Text="{Binding UserSearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Image Source="/Assets/Icons/Lots/Tinted/search-green.png"
+                                           Width="16"
+                                           Height="16"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,10,0"/>
+                                </Grid>
+
+                                <ComboBox Grid.Column="3"
+                                          Classes="admin-combo"
+                                          ItemsSource="{Binding RoleFilters}"
+                                          SelectedItem="{Binding SelectedRoleFilter, Mode=TwoWay}"
+                                          VerticalAlignment="Center"/>
+
+                                <ComboBox Grid.Column="4"
+                                          Classes="admin-combo"
+                                          ItemsSource="{Binding ActivityFilters}"
+                                          SelectedItem="{Binding SelectedUserActivityFilter, Mode=TwoWay}"
+                                          VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Border Grid.Row="1"
+                                    Classes="admin-table">
+                                <Grid RowDefinitions="Auto,*">
+                                    <Border Grid.Row="0"
+                                            Classes="table-header">
+                                        <Grid ColumnDefinitions="1*,1.9*,1.8*,1.2*,1.2*,1.25*,130"
+                                              ColumnSpacing="12">
+                                            <TextBlock Grid.Column="0" Text="Логин" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="1" Text="ФИО" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="2" Text="Email" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="3" Text="Телефон" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="4" Text="Роль" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="5" Text="Активность" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="6" Text="Действия" Classes="header-cell"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <Grid Grid.Row="1">
+                                        <ItemsControl ItemsSource="{Binding Users}"
+                                                      IsVisible="{Binding HasUsers}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:AdminUserRowViewModel">
+                                                    <Border Classes="table-row">
+                                                        <Grid ColumnDefinitions="1*,1.9*,1.8*,1.2*,1.2*,1.25*,130"
+                                                              ColumnSpacing="12">
+                                                            <TextBlock Grid.Column="0" Text="{Binding Login}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding FullName}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="2" Text="{Binding Email}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="3" Text="{Binding Phone}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="4" Text="{Binding RoleText}" Classes="cell"/>
+                                                            <Border Grid.Column="5"
+                                                                    Classes="status-badge"
+                                                                    Classes.active="{Binding IsActive}"
+                                                                    Classes.inactive="{Binding IsInactive}">
+                                                                <TextBlock Text="{Binding ActivityStatusText}"
+                                                                           Classes="status-text"
+                                                                           Classes.active="{Binding IsActive}"
+                                                                           Classes.inactive="{Binding IsInactive}"/>
+                                                            </Border>
+                                                            <Grid Grid.Column="6"
+                                                                  VerticalAlignment="Center">
+                                                                <Button Content="Активировать"
+                                                                        Classes="row-action"
+                                                                        Command="{Binding $parent[UserControl].DataContext.ActivateUserCommand}"
+                                                                        CommandParameter="{Binding Id}"
+                                                                        IsVisible="{Binding CanActivate}"/>
+                                                                <Button Content="Деактивировать"
+                                                                        Classes="row-action danger"
+                                                                        Command="{Binding $parent[UserControl].DataContext.DeactivateUserCommand}"
+                                                                        CommandParameter="{Binding Id}"
+                                                                        IsVisible="{Binding CanDeactivate}"/>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                        <Border Classes="empty-state"
+                                                IsVisible="{Binding IsUsersEmpty}">
+                                            <StackPanel HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Spacing="14"
+                                                        MaxWidth="520">
+                                                <TextBlock Text="{Binding UsersEmptyTitle}"
+                                                           Classes="empty-title"/>
+                                                <TextBlock Text="{Binding UsersEmptySubtitle}"
+                                                           Classes="empty-subtitle"/>
+                                                <Button Content="Сбросить фильтры"
+                                                        Classes="reset-button"
+                                                        Command="{Binding ResetUserFiltersCommand}"
+                                                        IsVisible="{Binding CanResetUserFilters}"
+                                                        HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+
+                            <Grid Grid.Row="2"
+                                  ColumnDefinitions="*,Auto"
+                                  Margin="0,2,0,0">
+                                <TextBlock Text="{Binding UsersCountText}"
+                                           Classes="count-text"
+                                           VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            Spacing="8"
+                                            IsVisible="{Binding HasUsersPagination}">
+                                    <Button Content="‹"
+                                            Classes="pager-button"
+                                            Command="{Binding PreviousUsersPageCommand}"
+                                            IsEnabled="{Binding CanGoToPreviousUsersPage}"/>
+                                    <TextBlock Text="{Binding UsersPage}"
+                                               Classes="page-text"/>
+                                    <TextBlock Text="/"
+                                               Classes="page-text"/>
+                                    <TextBlock Text="{Binding UsersTotalPages}"
+                                               Classes="page-text"/>
+                                    <Button Content="›"
+                                            Classes="pager-button"
+                                            Command="{Binding NextUsersPageCommand}"
+                                            IsEnabled="{Binding CanGoToNextUsersPage}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <Border Classes="admin-section">
+                        <Grid RowDefinitions="Auto,*,Auto"
+                              RowSpacing="10">
+                            <Grid Grid.Row="0"
+                                  ColumnDefinitions="Auto,*,300,170"
+                                  ColumnSpacing="10">
+                                <StackPanel Grid.Column="0"
+                                            Orientation="Horizontal"
+                                            Spacing="8"
+                                            VerticalAlignment="Center">
+                                    <Border Classes="section-icon">
+                                        <Image Source="/Assets/Icons/location.png"
+                                               Width="18"
+                                               Height="18"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                    </Border>
+                                    <TextBlock Text="Точки питания"
+                                               Classes="section-heading"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <Grid Grid.Column="2"
+                                      VerticalAlignment="Center">
+                                    <TextBox Classes="admin-search"
+                                             PlaceholderText="Поиск по названию или адресу"
+                                             Text="{Binding FoodPointSearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Image Source="/Assets/Icons/Lots/Tinted/search-green.png"
+                                           Width="16"
+                                           Height="16"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,10,0"/>
+                                </Grid>
+
+                                <ComboBox Grid.Column="3"
+                                          Classes="admin-combo"
+                                          ItemsSource="{Binding ActivityFilters}"
+                                          SelectedItem="{Binding SelectedFoodPointActivityFilter, Mode=TwoWay}"
+                                          VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Border Grid.Row="1"
+                                    Classes="admin-table">
+                                <Grid RowDefinitions="Auto,*">
+                                    <Border Grid.Row="0"
+                                            Classes="table-header">
+                                        <Grid ColumnDefinitions="1.25*,2*,1.2*,2.4*,1.15*,130"
+                                              ColumnSpacing="12">
+                                            <TextBlock Grid.Column="0" Text="Название" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="1" Text="Адрес" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="2" Text="Телефон" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="3" Text="Владелец" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="4" Text="Статус" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="5" Text="Действия" Classes="header-cell"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <Grid Grid.Row="1">
+                                        <ItemsControl ItemsSource="{Binding FoodPoints}"
+                                                      IsVisible="{Binding HasFoodPoints}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:AdminFoodPointRowViewModel">
+                                                    <Border Classes="table-row">
+                                                        <Grid ColumnDefinitions="1.25*,2*,1.2*,2.4*,1.15*,130"
+                                                              ColumnSpacing="12">
+                                                            <TextBlock Grid.Column="0" Text="{Binding Name}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding Address}" Classes="cell-muted"/>
+                                                            <TextBlock Grid.Column="2" Text="{Binding Phone}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="3" Text="{Binding OwnerText}" Classes="cell"/>
+                                                            <Border Grid.Column="4"
+                                                                    Classes="status-badge"
+                                                                    Classes.active="{Binding IsActive}"
+                                                                    Classes.inactive="{Binding IsInactive}">
+                                                                <TextBlock Text="{Binding StatusText}"
+                                                                           Classes="status-text"
+                                                                           Classes.active="{Binding IsActive}"
+                                                                           Classes.inactive="{Binding IsInactive}"/>
+                                                            </Border>
+                                                            <Grid Grid.Column="5"
+                                                                  VerticalAlignment="Center">
+                                                                <Button Content="Активировать"
+                                                                        Classes="row-action"
+                                                                        Command="{Binding $parent[UserControl].DataContext.ActivateFoodPointCommand}"
+                                                                        CommandParameter="{Binding Id}"
+                                                                        IsVisible="{Binding CanActivate}"/>
+                                                                <Button Content="Деактивировать"
+                                                                        Classes="row-action danger"
+                                                                        Command="{Binding $parent[UserControl].DataContext.DeactivateFoodPointCommand}"
+                                                                        CommandParameter="{Binding Id}"
+                                                                        IsVisible="{Binding CanDeactivate}"/>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                        <Border Classes="empty-state"
+                                                IsVisible="{Binding IsFoodPointsEmpty}">
+                                            <StackPanel HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Spacing="14"
+                                                        MaxWidth="520">
+                                                <TextBlock Text="{Binding FoodPointsEmptyTitle}"
+                                                           Classes="empty-title"/>
+                                                <TextBlock Text="{Binding FoodPointsEmptySubtitle}"
+                                                           Classes="empty-subtitle"/>
+                                                <Button Content="Сбросить фильтры"
+                                                        Classes="reset-button"
+                                                        Command="{Binding ResetFoodPointFiltersCommand}"
+                                                        IsVisible="{Binding CanResetFoodPointFilters}"
+                                                        HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+
+                            <Grid Grid.Row="2"
+                                  ColumnDefinitions="*,Auto"
+                                  Margin="0,2,0,0">
+                                <TextBlock Text="{Binding FoodPointsCountText}"
+                                           Classes="count-text"
+                                           VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            Spacing="8"
+                                            IsVisible="{Binding HasFoodPointsPagination}">
+                                    <Button Content="‹"
+                                            Classes="pager-button"
+                                            Command="{Binding PreviousFoodPointsPageCommand}"
+                                            IsEnabled="{Binding CanGoToPreviousFoodPointsPage}"/>
+                                    <TextBlock Text="{Binding FoodPointsPage}"
+                                               Classes="page-text"/>
+                                    <TextBlock Text="/"
+                                               Classes="page-text"/>
+                                    <TextBlock Text="{Binding FoodPointsTotalPages}"
+                                               Classes="page-text"/>
+                                    <Button Content="›"
+                                            Classes="pager-button"
+                                            Command="{Binding NextFoodPointsPageCommand}"
+                                            IsEnabled="{Binding CanGoToNextFoodPointsPage}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <Border Classes="admin-section">
+                        <Grid RowDefinitions="Auto,*,Auto"
+                              RowSpacing="10">
+                            <Grid Grid.Row="0"
+                                  ColumnDefinitions="Auto,*,300,170"
+                                  ColumnSpacing="10">
+                                <StackPanel Grid.Column="0"
+                                            Orientation="Horizontal"
+                                            Spacing="8"
+                                            VerticalAlignment="Center">
+                                    <Border Classes="section-icon">
+                                        <Image Source="/Assets/Icons/sets.png"
+                                               Width="18"
+                                               Height="18"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                    </Border>
+                                    <TextBlock Text="Лоты"
+                                               Classes="section-heading"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <Grid Grid.Column="2"
+                                      VerticalAlignment="Center">
+                                    <TextBox Classes="admin-search"
+                                             PlaceholderText="Поиск по названию или владельцу"
+                                             Text="{Binding LotSearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Image Source="/Assets/Icons/Lots/Tinted/search-green.png"
+                                           Width="16"
+                                           Height="16"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,10,0"/>
+                                </Grid>
+
+                                <ComboBox Grid.Column="3"
+                                          Classes="admin-combo"
+                                          ItemsSource="{Binding LotStatusFilters}"
+                                          SelectedItem="{Binding SelectedLotStatusFilter, Mode=TwoWay}"
+                                          VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Border Grid.Row="1"
+                                    Classes="admin-table">
+                                <Grid RowDefinitions="Auto,*">
+                                    <Border Grid.Row="0"
+                                            Classes="table-header">
+                                        <Grid ColumnDefinitions="2*,1.35*,1.55*,0.85*,0.9*,1.25*,1*,118"
+                                              ColumnSpacing="12">
+                                            <TextBlock Grid.Column="0" Text="Название" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="1" Text="Точка" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="2" Text="Владелец" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="3" Text="Цена" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="4" Text="Количество" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="5" Text="Получить до" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="6" Text="Статус" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="7" Text="Действия" Classes="header-cell"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <Grid Grid.Row="1">
+                                        <ItemsControl ItemsSource="{Binding Lots}"
+                                                      IsVisible="{Binding HasLots}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:AdminLotRowViewModel">
+                                                    <Border Classes="table-row">
+                                                        <Grid ColumnDefinitions="2*,1.35*,1.55*,0.85*,0.9*,1.25*,1*,118"
+                                                              ColumnSpacing="12">
+                                                            <TextBlock Grid.Column="0" Text="{Binding Title}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding FoodPointName}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="2" Text="{Binding OwnerName}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="3" Text="{Binding PriceText}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="4" Text="{Binding QuantityText}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="5" Text="{Binding PickupDeadlineText}" Classes="cell"/>
+                                                            <Border Grid.Column="6"
+                                                                    Classes="status-badge"
+                                                                    Classes.active="{Binding IsActiveStatus}"
+                                                                    Classes.warning="{Binding IsSoldOutStatus}"
+                                                                    Classes.neutral="{Binding IsExpiredStatus}"
+                                                                    Classes.inactive="{Binding IsCancelledStatus}">
+                                                                <TextBlock Text="{Binding StatusText}"
+                                                                           Classes="status-text"
+                                                                           Classes.active="{Binding IsActiveStatus}"
+                                                                           Classes.warning="{Binding IsSoldOutStatus}"
+                                                                           Classes.neutral="{Binding IsExpiredStatus}"
+                                                                           Classes.inactive="{Binding IsCancelledStatus}"/>
+                                                            </Border>
+                                                            <Grid Grid.Column="7"
+                                                                  VerticalAlignment="Center">
+                                                                <Button Content="Отменить"
+                                                                        Classes="row-action danger"
+                                                                        Command="{Binding $parent[UserControl].DataContext.CancelLotCommand}"
+                                                                        CommandParameter="{Binding Id}"
+                                                                        IsVisible="{Binding CanCancel}"/>
+                                                                <TextBlock Text="-"
+                                                                           Classes="cell-muted"
+                                                                           HorizontalAlignment="Center"
+                                                                           IsVisible="{Binding !CanCancel}"/>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                        <Border Classes="empty-state"
+                                                IsVisible="{Binding IsLotsEmpty}">
+                                            <StackPanel HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Spacing="14"
+                                                        MaxWidth="520">
+                                                <TextBlock Text="{Binding LotsEmptyTitle}"
+                                                           Classes="empty-title"/>
+                                                <TextBlock Text="{Binding LotsEmptySubtitle}"
+                                                           Classes="empty-subtitle"/>
+                                                <Button Content="Сбросить фильтры"
+                                                        Classes="reset-button"
+                                                        Command="{Binding ResetLotFiltersCommand}"
+                                                        IsVisible="{Binding CanResetLotFilters}"
+                                                        HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+
+                            <Grid Grid.Row="2"
+                                  ColumnDefinitions="*,Auto"
+                                  Margin="0,2,0,0">
+                                <TextBlock Text="{Binding LotsCountText}"
+                                           Classes="count-text"
+                                           VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            Spacing="8"
+                                            IsVisible="{Binding HasLotsPagination}">
+                                    <Button Content="‹"
+                                            Classes="pager-button"
+                                            Command="{Binding PreviousLotsPageCommand}"
+                                            IsEnabled="{Binding CanGoToPreviousLotsPage}"/>
+                                    <TextBlock Text="{Binding LotsPage}"
+                                               Classes="page-text"/>
+                                    <TextBlock Text="/"
+                                               Classes="page-text"/>
+                                    <TextBlock Text="{Binding LotsTotalPages}"
+                                               Classes="page-text"/>
+                                    <Button Content="›"
+                                            Classes="pager-button"
+                                            Command="{Binding NextLotsPageCommand}"
+                                            IsEnabled="{Binding CanGoToNextLotsPage}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <Border Classes="admin-section">
+                        <Grid RowDefinitions="Auto,*,Auto"
+                              RowSpacing="10">
+                            <Grid Grid.Row="0"
+                                  ColumnDefinitions="Auto,*,280,170,170"
+                                  ColumnSpacing="10">
+                                <StackPanel Grid.Column="0"
+                                            Orientation="Horizontal"
+                                            Spacing="8"
+                                            VerticalAlignment="Center">
+                                    <Border Classes="section-icon">
+                                        <Image Source="/Assets/Icons/bookings.png"
+                                               Width="18"
+                                               Height="18"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                    </Border>
+                                    <TextBlock Text="Бронирования"
+                                               Classes="section-heading"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <Grid Grid.Column="2"
+                                      VerticalAlignment="Center">
+                                    <TextBox Classes="admin-search"
+                                             PlaceholderText="Поиск по пользователю или лоту"
+                                             Text="{Binding BookingSearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Image Source="/Assets/Icons/Lots/Tinted/search-green.png"
+                                           Width="16"
+                                           Height="16"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,10,0"/>
+                                </Grid>
+
+                                <ComboBox Grid.Column="3"
+                                          Classes="admin-combo"
+                                          ItemsSource="{Binding BookingPeriodFilters}"
+                                          SelectedItem="{Binding SelectedBookingPeriodFilter, Mode=TwoWay}"
+                                          VerticalAlignment="Center"/>
+
+                                <ComboBox Grid.Column="4"
+                                          Classes="admin-combo"
+                                          ItemsSource="{Binding BookingStatusFilters}"
+                                          SelectedItem="{Binding SelectedBookingStatusFilter, Mode=TwoWay}"
+                                          VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Border Grid.Row="1"
+                                    Classes="admin-table">
+                                <Grid RowDefinitions="Auto,*">
+                                    <Border Grid.Row="0"
+                                            Classes="table-header">
+                                        <Grid ColumnDefinitions="1.25*,1.65*,1.55*,1.35*,0.8*,1*,1*,100"
+                                              ColumnSpacing="12">
+                                            <TextBlock Grid.Column="0" Text="Дата" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="1" Text="Лот" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="2" Text="Пользователь" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="3" Text="Точка" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="4" Text="Количество" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="5" Text="Сумма" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="6" Text="Статус" Classes="header-cell"/>
+                                            <TextBlock Grid.Column="7" Text="Действия" Classes="header-cell"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <Grid Grid.Row="1">
+                                        <ItemsControl ItemsSource="{Binding Bookings}"
+                                                      IsVisible="{Binding HasBookings}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:AdminBookingRowViewModel">
+                                                    <Border Classes="table-row">
+                                                        <Grid ColumnDefinitions="1.25*,1.65*,1.55*,1.35*,0.8*,1*,1*,100"
+                                                              ColumnSpacing="12">
+                                                            <TextBlock Grid.Column="0" Text="{Binding ReservedAtText}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding LotTitle}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="2" Text="{Binding CustomerName}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="3" Text="{Binding FoodPointName}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="4" Text="{Binding Quantity}" Classes="cell"/>
+                                                            <TextBlock Grid.Column="5" Text="{Binding TotalPriceText}" Classes="cell"/>
+                                                            <Border Grid.Column="6"
+                                                                    Classes="status-badge"
+                                                                    Classes.active="{Binding IsActiveStatus}"
+                                                                    Classes.warning="{Binding IsCancelledStatus}"
+                                                                    Classes.neutral="{Binding IsIssuedStatus}">
+                                                                <TextBlock Text="{Binding StatusText}"
+                                                                           Classes="status-text"
+                                                                           Classes.active="{Binding IsActiveStatus}"
+                                                                           Classes.warning="{Binding IsCancelledStatus}"
+                                                                           Classes.neutral="{Binding IsIssuedStatus}"/>
+                                                            </Border>
+                                                            <TextBlock Grid.Column="7"
+                                                                       Text="-"
+                                                                       Classes="cell-muted"
+                                                                       HorizontalAlignment="Center"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                        <Border Classes="empty-state"
+                                                IsVisible="{Binding IsBookingsEmpty}">
+                                            <StackPanel HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Spacing="14"
+                                                        MaxWidth="520">
+                                                <TextBlock Text="{Binding BookingsEmptyTitle}"
+                                                           Classes="empty-title"/>
+                                                <TextBlock Text="{Binding BookingsEmptySubtitle}"
+                                                           Classes="empty-subtitle"/>
+                                                <Button Content="Сбросить фильтры"
+                                                        Classes="reset-button"
+                                                        Command="{Binding ResetBookingFiltersCommand}"
+                                                        IsVisible="{Binding CanResetBookingFilters}"
+                                                        HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+
+                            <Grid Grid.Row="2"
+                                  ColumnDefinitions="*,Auto"
+                                  Margin="0,2,0,0">
+                                <TextBlock Text="{Binding BookingsCountText}"
+                                           Classes="count-text"
+                                           VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            Spacing="8"
+                                            IsVisible="{Binding HasBookingsPagination}">
+                                    <Button Content="‹"
+                                            Classes="pager-button"
+                                            Command="{Binding PreviousBookingsPageCommand}"
+                                            IsEnabled="{Binding CanGoToPreviousBookingsPage}"/>
+                                    <TextBlock Text="{Binding BookingsPage}"
+                                               Classes="page-text"/>
+                                    <TextBlock Text="/"
+                                               Classes="page-text"/>
+                                    <TextBlock Text="{Binding BookingsTotalPages}"
+                                               Classes="page-text"/>
+                                    <Button Content="›"
+                                            Classes="pager-button"
+                                            Command="{Binding NextBookingsPageCommand}"
+                                            IsEnabled="{Binding CanGoToNextBookingsPage}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Border>
                 </StackPanel>
 
-                <StackPanel Spacing="12">
-                    <TextBlock Text="Точки питания"
-                               Foreground="#F2F8F1"
-                               FontSize="16"
-                               FontWeight="SemiBold"/>
-
-                    <DataGrid ItemsSource="{Binding FoodPoints}"
-                              IsReadOnly="True"
-                              AutoGenerateColumns="False"
-                              GridLinesVisibility="Horizontal"
-                              IsVisible="{Binding HasFoodPoints}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Название"
-                                                Binding="{Binding Name}"
-                                                Width="*"/>
-                            <DataGridTextColumn Header="Адрес"
-                                                Binding="{Binding Address}"
-                                                Width="2*"/>
-                            <DataGridTextColumn Header="Телефон"
-                                                Binding="{Binding Phone}"
-                                                Width="*"/>
-                            <DataGridTextColumn Header="Владелец"
-                                                Binding="{Binding OwnerText}"
-                                                Width="2*"/>
-                            <DataGridTextColumn Header="Статус"
-                                                Binding="{Binding StatusText}"
-                                                Width="*"/>
-                            <DataGridTemplateColumn Header="Действия"
-                                                    Width="170">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate x:DataType="vm:AdminFoodPointRowViewModel">
-                                        <StackPanel Orientation="Horizontal"
-                                                    Spacing="8">
-                                            <Button Content="Активировать"
-                                                    Command="{Binding $parent[UserControl].DataContext.ActivateFoodPointCommand}"
-                                                    CommandParameter="{Binding Id}"
-                                                    IsVisible="{Binding CanActivate}"/>
-                                            <Button Content="Деактивировать"
-                                                    Command="{Binding $parent[UserControl].DataContext.DeactivateFoodPointCommand}"
-                                                    CommandParameter="{Binding Id}"
-                                                    IsVisible="{Binding CanDeactivate}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-
-                    <TextBlock Text="Точки питания не найдены."
-                               Foreground="#AAB9B0"
-                               FontSize="14"
-                               IsVisible="{Binding !HasFoodPoints}"/>
-                </StackPanel>
-
-                <StackPanel Spacing="12">
-                    <TextBlock Text="Лоты"
-                               Foreground="#F2F8F1"
-                               FontSize="16"
-                               FontWeight="SemiBold"/>
-
-                    <DataGrid ItemsSource="{Binding Lots}"
-                              IsReadOnly="True"
-                              AutoGenerateColumns="False"
-                              GridLinesVisibility="Horizontal"
-                              IsVisible="{Binding HasLots}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Название"
-                                                Binding="{Binding Title}"
-                                                Width="2*"/>
-                            <DataGridTextColumn Header="Точка"
-                                                Binding="{Binding FoodPointName}"
-                                                Width="*"/>
-                            <DataGridTextColumn Header="Владелец"
-                                                Binding="{Binding OwnerName}"
-                                                Width="*"/>
-                            <DataGridTextColumn Header="Цена"
-                                                Binding="{Binding Price, StringFormat={}{0:N2}}"
-                                                Width="90"/>
-                            <DataGridTextColumn Header="Количество"
-                                                Binding="{Binding QuantityText}"
-                                                Width="110"/>
-                            <DataGridTextColumn Header="Получить до"
-                                                Binding="{Binding PickupDeadline, StringFormat={}{0:dd.MM.yyyy HH:mm}}"
-                                                Width="150"/>
-                            <DataGridTextColumn Header="Статус"
-                                                Binding="{Binding StatusText}"
-                                                Width="110"/>
-                            <DataGridTemplateColumn Header="Действия"
-                                                    Width="120">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate x:DataType="vm:AdminLotRowViewModel">
-                                        <Button Content="Отменить"
-                                                Command="{Binding $parent[UserControl].DataContext.CancelLotCommand}"
-                                                CommandParameter="{Binding Id}"
-                                                IsVisible="{Binding CanCancel}"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-
-                    <TextBlock Text="Лоты не найдены."
-                               Foreground="#AAB9B0"
-                               FontSize="14"
-                               IsVisible="{Binding !HasLots}"/>
-                </StackPanel>
-
-                <StackPanel Spacing="12">
-                    <TextBlock Text="Бронирования"
-                               Foreground="#F2F8F1"
-                               FontSize="16"
-                               FontWeight="SemiBold"/>
-
-                    <DataGrid ItemsSource="{Binding Bookings}"
-                              IsReadOnly="True"
-                              AutoGenerateColumns="False"
-                              GridLinesVisibility="Horizontal"
-                              IsVisible="{Binding HasBookings}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Покупатель"
-                                                Binding="{Binding CustomerName}"
-                                                Width="*"/>
-                            <DataGridTextColumn Header="Лот"
-                                                Binding="{Binding LotTitle}"
-                                                Width="2*"/>
-                            <DataGridTextColumn Header="Точка"
-                                                Binding="{Binding FoodPointName}"
-                                                Width="*"/>
-                            <DataGridTextColumn Header="Кол-во"
-                                                Binding="{Binding Quantity}"
-                                                Width="80"/>
-                            <DataGridTextColumn Header="Цена"
-                                                Binding="{Binding PriceAtReservation, StringFormat={}{0:N2}}"
-                                                Width="90"/>
-                            <DataGridTextColumn Header="Итого"
-                                                Binding="{Binding TotalPrice, StringFormat={}{0:N2}}"
-                                                Width="90"/>
-                            <DataGridTextColumn Header="Дата"
-                                                Binding="{Binding ReservedAt, StringFormat={}{0:dd.MM.yyyy HH:mm}}"
-                                                Width="150"/>
-                            <DataGridTextColumn Header="Статус"
-                                                Binding="{Binding StatusText}"
-                                                Width="110"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-
-                    <TextBlock Text="Бронирования не найдены."
-                               Foreground="#AAB9B0"
-                               FontSize="14"
-                               IsVisible="{Binding !HasBookings}"/>
-                </StackPanel>
+                <Border Background="#101917"
+                        BorderBrush="#263A33"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="12"
+                        IsVisible="{Binding HasStatusMessage}">
+                    <TextBlock Text="{Binding StatusMessage}"
+                               Classes="status-message"/>
+                </Border>
             </StackPanel>
-        </StackPanel>
+        </ScrollViewer>
     </Border>
 </UserControl>
