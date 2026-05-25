@@ -39,11 +39,11 @@ namespace Infrastructure.Services
             if (string.IsNullOrWhiteSpace(address))
                 return null;
 
-            await _requestGate.WaitAsync(cancellationToken);
+            await _requestGate.WaitAsync(cancellationToken).ConfigureAwait(false);
 
             try
             {
-                await WaitForRateLimitAsync(cancellationToken);
+                await WaitForRateLimitAsync(cancellationToken).ConfigureAwait(false);
                 _lastRequestAt = DateTimeOffset.UtcNow;
 
                 using var request = new HttpRequestMessage(
@@ -54,16 +54,18 @@ namespace Infrastructure.Services
                 using var response = await _httpClient.SendAsync(
                     request,
                     HttpCompletionOption.ResponseHeadersRead,
-                    cancellationToken);
+                    cancellationToken).ConfigureAwait(false);
 
                 if (!response.IsSuccessStatusCode)
                     return null;
 
-                await using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken);
+                await using var responseStream = await response.Content
+                    .ReadAsStreamAsync(cancellationToken)
+                    .ConfigureAwait(false);
                 var results = await JsonSerializer.DeserializeAsync<List<NominatimSearchResult>>(
                     responseStream,
                     JsonOptions,
-                    cancellationToken);
+                    cancellationToken).ConfigureAwait(false);
 
                 var result = results?.FirstOrDefault();
                 if (result is null ||
@@ -98,7 +100,7 @@ namespace Infrastructure.Services
             if (elapsed >= MinimumRequestInterval)
                 return;
 
-            await Task.Delay(MinimumRequestInterval - elapsed, cancellationToken);
+            await Task.Delay(MinimumRequestInterval - elapsed, cancellationToken).ConfigureAwait(false);
         }
 
         private static Uri BuildSearchUri(string address)

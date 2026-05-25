@@ -14,6 +14,7 @@ namespace ReMealApp.ViewModels
         private readonly IBookingService _bookingService;
         private readonly IAdminService _adminService;
         private readonly IProfileStatisticsService _profileStatisticsService;
+        private readonly IGeocodingService _geocodingService;
         private readonly Action _exitApplication;
 
         [ObservableProperty]
@@ -27,6 +28,7 @@ namespace ReMealApp.ViewModels
             IBookingService bookingService,
             IAdminService adminService,
             IProfileStatisticsService profileStatisticsService,
+            IGeocodingService geocodingService,
             Action exitApplication)
         {
             _authService = authService;
@@ -36,6 +38,7 @@ namespace ReMealApp.ViewModels
             _bookingService = bookingService;
             _adminService = adminService;
             _profileStatisticsService = profileStatisticsService;
+            _geocodingService = geocodingService;
             _exitApplication = exitApplication;
             _currentViewModel = CreateLoginViewModel();
         }
@@ -69,6 +72,7 @@ namespace ReMealApp.ViewModels
                 _bookingService,
                 _adminService,
                 _profileStatisticsService,
+                _geocodingService,
                 ShowLogin,
                 _exitApplication);
 

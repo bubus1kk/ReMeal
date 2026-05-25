@@ -80,6 +80,31 @@ namespace ReMealApp.ViewModels.Shell
                 bookingService,
                 new DeniedAdminService(),
                 profileStatisticsService,
+                new UnavailableGeocodingService(),
+                showLogin,
+                exitApplication)
+        {
+        }
+
+        public HomeViewModel(
+            IAuthService authService,
+            IUserProfileService userProfileService,
+            IFoodPointService foodPointService,
+            ILotService lotService,
+            IBookingService bookingService,
+            IProfileStatisticsService profileStatisticsService,
+            IGeocodingService geocodingService,
+            Action<string> showLogin,
+            Action exitApplication)
+            : this(
+                authService,
+                userProfileService,
+                foodPointService,
+                lotService,
+                bookingService,
+                new DeniedAdminService(),
+                profileStatisticsService,
+                geocodingService,
                 showLogin,
                 exitApplication)
         {
@@ -93,6 +118,7 @@ namespace ReMealApp.ViewModels.Shell
             IBookingService bookingService,
             IAdminService adminService,
             IProfileStatisticsService profileStatisticsService,
+            IGeocodingService geocodingService,
             Action<string> showLogin,
             Action exitApplication)
         {
@@ -108,7 +134,7 @@ namespace ReMealApp.ViewModels.Shell
                 showLogin);
 
             Catalog = new CatalogViewModel(lotService, bookingService);
-            FoodPoint = new FoodPointViewModel(foodPointService, lotService, this);
+            FoodPoint = new FoodPointViewModel(foodPointService, lotService, geocodingService, this);
             PartnerLots = new PartnerLotsViewModel(lotService, foodPointService, this);
             PartnerBookings = new PartnerBookingsViewModel(bookingService);
             CreateLot = new CreateLotViewModel(foodPointService, lotService, this);
@@ -488,6 +514,16 @@ namespace ReMealApp.ViewModels.Shell
             public Task<List<AdminBookingDto>> GetBookingsAsync(CancellationToken cancellationToken = default)
             {
                 throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+            }
+        }
+
+        private sealed class UnavailableGeocodingService : IGeocodingService
+        {
+            public Task<Application.DTOs.Maps.GeocodingResultDto?> GeocodeAddressAsync(
+                string address,
+                CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<Application.DTOs.Maps.GeocodingResultDto?>(null);
             }
         }
     }
