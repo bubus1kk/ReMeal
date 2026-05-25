@@ -152,7 +152,8 @@
 
 
                         <Button Classes="nav-button"
-                                Command="{Binding ShowCatalogCommand}">
+                                Command="{Binding ShowCatalogCommand}"
+                                IsVisible="{Binding IsLotsNavigationVisible}">
 
                             <Grid ColumnDefinitions="4,38,*"
                                   Margin="0,0,8,0">
@@ -268,6 +269,35 @@
                                 <TextBlock Grid.Column="2"
                                            Classes="nav-label"
                                            Text="{Binding FoodPointsNavigationText}"
+                                           IsVisible="{Binding IsSidebarExpanded}"
+                                           VerticalAlignment="Center"/>
+
+                            </Grid>
+
+                        </Button>
+
+
+                        <Button Classes="nav-button"
+                                Command="{Binding ShowAdminCommand}"
+                                IsVisible="{Binding IsAdminVisible}">
+
+                            <Grid ColumnDefinitions="4,38,*"
+                                  Margin="0,0,8,0">
+
+                                <Border Grid.Column="0"
+                                        Width="4"
+                                        Height="24"
+                                        CornerRadius="3"
+                                        Background="#75C943"
+                                        IsVisible="{Binding IsAdminSelected}"/>
+
+                                <Image Grid.Column="1"
+                                       Classes="nav-icon"
+                                       Source="/Assets/Icons/settings.png"/>
+
+                                <TextBlock Grid.Column="2"
+                                           Classes="nav-label"
+                                           Text="Админка"
                                            IsVisible="{Binding IsSidebarExpanded}"
                                            VerticalAlignment="Center"/>
 

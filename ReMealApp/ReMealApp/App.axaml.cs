@@ -34,6 +34,7 @@ namespace ReMealApp
                         userModule.FoodPointService,
                         userModule.LotService,
                         userModule.BookingService,
+                        userModule.AdminService,
                         userModule.ProfileStatisticsService,
                         () => desktop.Shutdown());
 

@@ -18,6 +18,7 @@ namespace Infrastructure
             IFoodPointService foodPointService,
             ILotService lotService,
             IBookingService bookingService,
+            IAdminService adminService,
             IProfileStatisticsService profileStatisticsService)
         {
             AuthService = authService;
@@ -25,6 +26,7 @@ namespace Infrastructure
             FoodPointService = foodPointService;
             LotService = lotService;
             BookingService = bookingService;
+            AdminService = adminService;
             ProfileStatisticsService = profileStatisticsService;
         }
 
@@ -37,6 +39,8 @@ namespace Infrastructure
         public ILotService LotService { get; }
 
         public IBookingService BookingService { get; }
+
+        public IAdminService AdminService { get; }
 
         public IProfileStatisticsService ProfileStatisticsService { get; }
 
@@ -76,6 +80,12 @@ namespace Infrastructure
                 ILotService lotService = new LotService(foodPointRepository, foodLotRepository, authService);
                 IBookingRepository bookingRepository = new BookingRepository(dbContext);
                 IBookingService bookingService = new BookingService(bookingRepository, authService);
+                IAdminService adminService = new AdminService(
+                    authService,
+                    userRepository,
+                    foodPointRepository,
+                    foodLotRepository,
+                    bookingRepository);
                 IProfileStatisticsService profileStatisticsService = new ProfileStatisticsService(
                     authService,
                     userRepository,
@@ -88,6 +98,7 @@ namespace Infrastructure
                     foodPointService,
                     lotService,
                     bookingService,
+                    adminService,
                     profileStatisticsService);
             }, "инициализировать доступ к данным приложения");
         }

@@ -12,6 +12,8 @@ public interface IBookingRepository
 
     Task<List<Booking>> GetPartnerBookingsAsync(Guid partnerId, CancellationToken cancellationToken = default);
 
+    Task<List<Booking>> GetAllAsync(CancellationToken cancellationToken = default);
+
     Task<int> CountActiveUserBookingsAsync(Guid userId, CancellationToken cancellationToken = default);
 
     Task<FoodLot?> GetLotByIdAsync(Guid foodLotId, CancellationToken cancellationToken = default);

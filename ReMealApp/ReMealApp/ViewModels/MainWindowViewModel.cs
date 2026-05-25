@@ -12,6 +12,7 @@ namespace ReMealApp.ViewModels
         private readonly IFoodPointService _foodPointService;
         private readonly ILotService _lotService;
         private readonly IBookingService _bookingService;
+        private readonly IAdminService _adminService;
         private readonly IProfileStatisticsService _profileStatisticsService;
         private readonly Action _exitApplication;
 
@@ -24,6 +25,7 @@ namespace ReMealApp.ViewModels
             IFoodPointService foodPointService,
             ILotService lotService,
             IBookingService bookingService,
+            IAdminService adminService,
             IProfileStatisticsService profileStatisticsService,
             Action exitApplication)
         {
@@ -32,6 +34,7 @@ namespace ReMealApp.ViewModels
             _foodPointService = foodPointService;
             _lotService = lotService;
             _bookingService = bookingService;
+            _adminService = adminService;
             _profileStatisticsService = profileStatisticsService;
             _exitApplication = exitApplication;
             _currentViewModel = CreateLoginViewModel();
@@ -64,6 +67,7 @@ namespace ReMealApp.ViewModels
                 _foodPointService,
                 _lotService,
                 _bookingService,
+                _adminService,
                 _profileStatisticsService,
                 ShowLogin,
                 _exitApplication);

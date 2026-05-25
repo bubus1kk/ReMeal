@@ -41,7 +41,8 @@ namespace Application.Services
                 FullName = request.FullName.Trim(),
                 Email = request.Email.Trim(),
                 Phone = request.Phone.Trim(),
-                Role = request.Role
+                Role = request.Role,
+                IsActive = true
             };
 
             await _userRepository.AddAsync(user, cancellationToken);
@@ -60,6 +61,9 @@ namespace Application.Services
             var user = await _userRepository.GetByLoginAsync(Normalize(request.Login), cancellationToken);
             if (user is null || !_passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
                 return AuthResult.Failure("Неверный логин или пароль.");
+
+            if (!user.IsActive)
+                return AuthResult.Failure("Учетная запись деактивирована. Обратитесь к администратору.");
 
             CurrentUserId = user.Id;
 
@@ -84,6 +88,12 @@ namespace Application.Services
                 return null;
             }
 
+            if (!user.IsActive)
+            {
+                _rememberedUserStore?.ForgetUser();
+                return null;
+            }
+
             CurrentUserId = user.Id;
 
             return MapToProfile(user);
@@ -95,7 +105,10 @@ namespace Application.Services
                 return null;
 
             var user = await _userRepository.GetByIdAsync(CurrentUserId.Value, cancellationToken);
-            return user is null ? null : MapToProfile(user);
+            if (user is null || !user.IsActive)
+                return null;
+
+            return MapToProfile(user);
         }
 
         public bool IsCurrentUserRemembered()
@@ -121,7 +134,8 @@ namespace Application.Services
                 Email = user.Email,
                 Phone = user.Phone,
                 AvatarPath = user.AvatarPath,
-                Role = user.Role
+                Role = user.Role,
+                IsActive = user.IsActive
             };
         }
 

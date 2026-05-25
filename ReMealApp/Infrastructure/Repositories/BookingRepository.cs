@@ -64,7 +64,19 @@ public class BookingRepository : IBookingRepository
                     x.FoodLot.FoodPoint.OwnerId == partnerId)
                 .OrderByDescending(x => x.ReservedAt)
                 .ToListAsync(cancellationToken),
-            "получить бронирования партнера");
+                "получить бронирования партнера");
+    }
+
+    public Task<List<Booking>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return DataAccessGuard.ExecuteAsync(
+            () => _context.Bookings
+                .Include(x => x.User)
+                .Include(x => x.FoodLot)
+                    .ThenInclude(x => x!.FoodPoint)
+                .OrderByDescending(x => x.ReservedAt)
+                .ToListAsync(cancellationToken),
+            "получить список бронирований");
     }
 
     public Task<int> CountActiveUserBookingsAsync(

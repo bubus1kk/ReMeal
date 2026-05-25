@@ -20,6 +20,8 @@ namespace Domain.Entities
 
         public UserRole Role { get; set; } = UserRole.StudentCustomer;
 
+        public bool IsActive { get; set; } = true;
+
         public ICollection<FoodPoint> FoodPoints { get; set; } = new List<FoodPoint>();
 
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
