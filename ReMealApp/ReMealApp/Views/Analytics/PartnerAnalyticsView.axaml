@@ -1,0 +1,311 @@
+﻿<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:ReMealApp.ViewModels.Analytics"
+    xmlns:scottplot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+    x:Class="ReMealApp.Views.Analytics.PartnerAnalyticsView"
+    x:DataType="vm:PartnerAnalyticsViewModel"
+    mc:Ignorable="d">
+
+    <UserControl.Styles>
+
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="#101917"/>
+            <Setter Property="BorderBrush" Value="#1E312B"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="18"/>
+            <Setter Property="Padding" Value="18"/>
+        </Style>
+
+        <Style Selector="TextBlock.title">
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#F4FFF6"/>
+        </Style>
+
+        <Style Selector="TextBlock.subtitle">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#8FA59A"/>
+        </Style>
+
+        <Style Selector="TextBlock.kpi-value">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#75C943"/>
+        </Style>
+
+        <Style Selector="ComboBox.analytics-filter">
+            <Setter Property="Background" Value="#111B18"/>
+            <Setter Property="Foreground" Value="#E8F5EC"/>
+            <Setter Property="BorderBrush" Value="#24362F"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="MinWidth" Value="180"/>
+        </Style>
+
+    </UserControl.Styles>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+        <StackPanel Margin="28" Spacing="24">
+
+
+            <StackPanel Spacing="4">
+
+                <TextBlock
+                    Classes="title"
+                    Text="Аналитика"/>
+
+                <TextBlock
+                    Classes="subtitle"
+                    Text="Статистика по вашим точкам питания и лотам"/>
+
+            </StackPanel>
+
+
+            <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="16">
+
+                <ComboBox
+                    Grid.Column="0"
+                    Classes="analytics-filter"
+                    ItemsSource="{Binding Periods}"
+                    SelectedItem="{Binding SelectedPeriod}"/>
+
+                <ComboBox
+                    Grid.Column="1"
+                    Classes="analytics-filter"
+                    ItemsSource="{Binding FoodPoints}"
+                    SelectedItem="{Binding SelectedFoodPoint}"/>
+
+            </Grid>
+
+
+            <Border
+                Classes="card"
+                IsVisible="{Binding EmptyStateMessage}">
+
+                <TextBlock
+                    Text="{Binding EmptyStateMessage}"
+                    Foreground="#D7E7DB"
+                    FontSize="16"/>
+
+            </Border>
+
+
+            <Grid
+                ColumnDefinitions="*,*,*,*,*"
+                ColumnSpacing="18">
+
+
+                <Border Grid.Column="0" Classes="card">
+
+                    <StackPanel Spacing="8">
+
+                        <TextBlock
+                            Text="Выдано бронирований"
+                            Foreground="#CFE0D5"/>
+
+                        <TextBlock
+                            Classes="kpi-value"
+                            Text="{Binding IssuedBookingsCount}"/>
+
+                    </StackPanel>
+
+                </Border>
+
+
+                <Border Grid.Column="1" Classes="card">
+
+                    <StackPanel Spacing="8">
+
+                        <TextBlock
+                            Text="Спасено порций"
+                            Foreground="#CFE0D5"/>
+
+                        <TextBlock
+                            Classes="kpi-value"
+                            Text="{Binding SavedPortionsCount}"/>
+
+                    </StackPanel>
+
+                </Border>
+
+
+                <Border Grid.Column="2" Classes="card">
+
+                    <StackPanel Spacing="8">
+
+                        <TextBlock
+                            Text="Отменено"
+                            Foreground="#CFE0D5"/>
+
+                        <TextBlock
+                            Classes="kpi-value"
+                            Text="{Binding CancelledBookingsCount}"/>
+
+                    </StackPanel>
+
+                </Border>
+
+
+                <Border Grid.Column="3" Classes="card">
+
+                    <StackPanel Spacing="8">
+
+                        <TextBlock
+                            Text="Активных"
+                            Foreground="#CFE0D5"/>
+
+                        <TextBlock
+                            Classes="kpi-value"
+                            Text="{Binding ActiveBookingsCount}"/>
+
+                    </StackPanel>
+
+                </Border>
+
+
+                <Border Grid.Column="4" Classes="card">
+
+                    <StackPanel Spacing="8">
+
+                        <TextBlock
+                            Text="Предотвращено отходов"
+                            Foreground="#CFE0D5"/>
+
+                        <TextBlock
+                            Classes="kpi-value"
+                            Text="{Binding PreventedWasteKg}"/>
+
+                    </StackPanel>
+
+                </Border>
+
+            </Grid>
+
+
+            <Grid
+                RowDefinitions="Auto,Auto,Auto"
+                ColumnDefinitions="*,*"
+                RowSpacing="18"
+                ColumnSpacing="18">
+
+
+                <Border
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Classes="card">
+
+                    <StackPanel Spacing="14">
+
+                        <TextBlock
+                            Text="Спасённые порции по дням"
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            Foreground="#F4FFF6"/>
+
+                        <scottplot:AvaPlot
+                            Height="320"
+                            x:Name="SavedPortionsChart"/>
+
+                    </StackPanel>
+
+                </Border>
+
+
+                <Border
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Classes="card">
+
+                    <StackPanel Spacing="14">
+
+                        <TextBlock
+                            Text="Статусы бронирований"
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            Foreground="#F4FFF6"/>
+
+                        <scottplot:AvaPlot
+                            Height="320"
+                            x:Name="StatusesChart"/>
+
+                    </StackPanel>
+
+                </Border>
+
+
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Classes="card">
+
+                    <StackPanel Spacing="14">
+
+                        <TextBlock
+                            Text="Топ лоты по выдачам"
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            Foreground="#F4FFF6"/>
+
+                        <scottplot:AvaPlot
+                            Height="320"
+                            x:Name="LotsChart"/>
+
+                    </StackPanel>
+
+                </Border>
+
+
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Classes="card">
+
+                    <StackPanel Spacing="14">
+
+                        <TextBlock
+                            Text="Выдачи по точкам питания"
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            Foreground="#F4FFF6"/>
+
+                        <scottplot:AvaPlot
+                            Height="320"
+                            x:Name="FoodPointsChart"/>
+
+                    </StackPanel>
+
+                </Border>
+
+
+                <Border
+                    Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    Classes="card">
+
+                    <StackPanel Spacing="14">
+
+                        <TextBlock
+                            Text="Предотвращённые отходы"
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            Foreground="#F4FFF6"/>
+
+                        <scottplot:AvaPlot
+                            Height="320"
+                            x:Name="WasteChart"/>
+
+                    </StackPanel>
+
+                </Border>
+
+            </Grid>
+
+        </StackPanel>
+
+    </ScrollViewer>
+
+</UserControl>
