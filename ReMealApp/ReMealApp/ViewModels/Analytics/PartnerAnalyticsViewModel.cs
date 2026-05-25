@@ -1,8 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using Application.DTOs.Analytics;
 using Application.Interfaces;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using ScottPlot;
 using ScottPlot.Avalonia;
 
 namespace ReMealApp.ViewModels.Analytics;
@@ -19,6 +21,8 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
     private AvaPlot? _topLotsPlot;
     private AvaPlot? _foodPointsPlot;
     private AvaPlot? _preventedWastePlot;
+
+    private bool _isInitialized;
 
     public ObservableCollection<FoodPointFilterItem> FoodPoints { get; } = new();
 
@@ -54,6 +58,17 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
     [ObservableProperty]
     private double _preventedWasteKg;
 
+    [RelayCommand]
+    private async Task ReloadAsync()
+    {
+        await LoadAsync();
+    }
+
+    public async Task InitializeAsync()
+    {
+        await LoadAsync();
+    }
+
     public PartnerAnalyticsViewModel(
         IPartnerAnalyticsService analyticsService,
         IFoodPointService foodPointService)
@@ -76,13 +91,49 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
         _topLotsPlot = topLotsPlot;
         _foodPointsPlot = foodPointsPlot;
         _preventedWastePlot = preventedWastePlot;
+
+        ApplyDarkTheme(_savedPortionsPlot);
+        ApplyDarkTheme(_bookingStatusesPlot);
+        ApplyDarkTheme(_topLotsPlot);
+        ApplyDarkTheme(_foodPointsPlot);
+        ApplyDarkTheme(_preventedWastePlot);
+
+        _isInitialized = true;
+    }
+
+    private static void ApplyDarkTheme(AvaPlot? plot)
+    {
+        if (plot is null)
+            return;
+
+        plot.Plot.FigureBackground.Color =
+            ScottPlot.Colors.Transparent;
+
+        plot.Plot.DataBackground.Color =
+            ScottPlot.Color.FromHex("#1E1E1E");
+
+        plot.Plot.Axes.Color(
+            ScottPlot.Color.FromHex("#D0D0D0"));
+
+        plot.Refresh();
     }
 
     private void InitializePeriods()
     {
-        Periods.Add(new AnalyticsPeriodItem("7 дней", AnalyticsPeriod.Last7Days));
-        Periods.Add(new AnalyticsPeriodItem("30 дней", AnalyticsPeriod.Last30Days));
-        Periods.Add(new AnalyticsPeriodItem("Все время", AnalyticsPeriod.AllTime));
+        Periods.Add(
+            new AnalyticsPeriodItem(
+                "7 дней",
+                AnalyticsPeriod.Last7Days));
+
+        Periods.Add(
+            new AnalyticsPeriodItem(
+                "30 дней",
+                AnalyticsPeriod.Last30Days));
+
+        Periods.Add(
+            new AnalyticsPeriodItem(
+                "Все время",
+                AnalyticsPeriod.AllTime));
 
         SelectedPeriod = Periods.FirstOrDefault();
     }
@@ -90,9 +141,13 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
     [RelayCommand]
     public async Task LoadAsync()
     {
+        if (IsLoading)
+            return;
+
         try
         {
             IsLoading = true;
+
             ErrorMessage = null;
             EmptyStateMessage = null;
 
@@ -101,22 +156,27 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
             if (SelectedPeriod is null)
                 return;
 
-            _dashboard = await _analyticsService.GetDashboardAsync(
-                SelectedPeriod.Value,
-                SelectedFoodPoint?.FoodPointId);
+            _dashboard =
+                await _analyticsService.GetDashboardAsync(
+                    SelectedPeriod.Value,
+                    SelectedFoodPoint?.FoodPointId);
 
             ApplyDashboard(_dashboard);
 
-            BuildCharts(_dashboard);
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                BuildCharts(_dashboard);
+            });
 
             if (!HasAnyData(_dashboard))
             {
-                EmptyStateMessage = "Недостаточно данных для отображения аналитики.";
+                EmptyStateMessage =
+                    "Недостаточно данных для отображения аналитики.";
             }
         }
         catch (Exception ex)
         {
-            ErrorMessage = ex.Message;
+            ErrorMessage = ex.ToString();
         }
         finally
         {
@@ -124,15 +184,20 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
         }
     }
 
-    partial void OnSelectedPeriodChanged(AnalyticsPeriodItem? value)
+    partial void OnSelectedPeriodChanged(
+        AnalyticsPeriodItem? value)
     {
-        if (value is not null)
-            _ = LoadAsync();
     }
 
-    partial void OnSelectedFoodPointChanged(FoodPointFilterItem? value)
+    partial void OnSelectedFoodPointChanged(
+        FoodPointFilterItem? value)
     {
-        _ = LoadAsync();
+    }
+
+    [RelayCommand]
+    public async Task RefreshAsync()
+    {
+        await LoadAsync();
     }
 
     private async Task LoadFoodPointsAsync()
@@ -140,39 +205,61 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
         if (FoodPoints.Count > 0)
             return;
 
-        var foodPoints = await _foodPointService.GetCurrentPartnerFoodPointsAsync();
+        var foodPoints =
+            await _foodPointService
+                .GetCurrentPartnerFoodPointsAsync();
 
         FoodPoints.Clear();
 
-        FoodPoints.Add(new FoodPointFilterItem
-        {
-            FoodPointId = null,
-            Name = "Все точки"
-        });
+        FoodPoints.Add(
+            new FoodPointFilterItem
+            {
+                FoodPointId = null,
+                Name = "Все точки"
+            });
 
         foreach (var point in foodPoints)
         {
-            FoodPoints.Add(new FoodPointFilterItem
-            {
-                FoodPointId = point.Id,
-                Name = point.Name
-            });
+            FoodPoints.Add(
+                new FoodPointFilterItem
+                {
+                    FoodPointId = point.Id,
+                    Name = point.Name
+                });
         }
 
-        SelectedFoodPoint ??= FoodPoints.FirstOrDefault();
+        if (SelectedFoodPoint is null)
+        {
+            SelectedFoodPoint =
+                FoodPoints.FirstOrDefault();
+        }
     }
 
-    private void ApplyDashboard(PartnerAnalyticsDashboardDto dashboard)
+    private void ApplyDashboard(
+        PartnerAnalyticsDashboardDto dashboard)
     {
-        IssuedBookingsCount = dashboard.IssuedBookingsCount;
-        SavedPortionsCount = dashboard.SavedPortionsCount;
-        CancelledBookingsCount = dashboard.CancelledBookingsCount;
-        ActiveBookingsCount = dashboard.ActiveBookingsCount;
-        PreventedWasteKg = dashboard.PreventedWasteKg;
+        IssuedBookingsCount =
+            dashboard.IssuedBookingsCount;
+
+        SavedPortionsCount =
+            dashboard.SavedPortionsCount;
+
+        CancelledBookingsCount =
+            dashboard.CancelledBookingsCount;
+
+        ActiveBookingsCount =
+            dashboard.ActiveBookingsCount;
+
+        PreventedWasteKg =
+            dashboard.PreventedWasteKg;
     }
 
-    private void BuildCharts(PartnerAnalyticsDashboardDto dashboard)
+    private void BuildCharts(
+        PartnerAnalyticsDashboardDto dashboard)
     {
+        if (!_isInitialized)
+            return;
+
         BuildSavedPortionsChart(dashboard);
         BuildStatusesChart(dashboard);
         BuildTopLotsChart(dashboard);
@@ -180,33 +267,31 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
         BuildWasteChart(dashboard);
     }
 
-    private void BuildSavedPortionsChart(PartnerAnalyticsDashboardDto dashboard)
+    private void BuildSavedPortionsChart(
+        PartnerAnalyticsDashboardDto dashboard)
     {
         if (_savedPortionsPlot is null)
             return;
 
         _savedPortionsPlot.Plot.Clear();
 
-        var values = dashboard.SavedPortionsByDay
+        double[] values = dashboard.SavedPortionsByDay
             .Select(x => (double)x.Value)
             .ToArray();
 
-        var labels = dashboard.SavedPortionsByDay
-            .Select(x => x.Date.ToString("dd.MM"))
-            .ToArray();
+        if (values.Length == 0)
+        {
+            _savedPortionsPlot.Refresh();
+            return;
+        }
 
         _savedPortionsPlot.Plot.Add.Signal(values);
-
-        _savedPortionsPlot.Plot.Axes.Bottom.TickGenerator =
-            new ScottPlot.TickGenerators.NumericManual(
-                Enumerable.Range(0, labels.Length)
-                    .Select(i => new ScottPlot.Tick(i, labels[i]))
-                    .ToArray());
 
         _savedPortionsPlot.Refresh();
     }
 
-    private void BuildStatusesChart(PartnerAnalyticsDashboardDto dashboard)
+    private void BuildStatusesChart(
+        PartnerAnalyticsDashboardDto dashboard)
     {
         if (_bookingStatusesPlot is null)
             return;
@@ -217,23 +302,26 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
             .Select(x => (double)x.Count)
             .ToArray();
 
-        string[] labels = dashboard.BookingStatusDistribution
-            .Select(x => $"{x.StatusName} ({x.Count})")
-            .ToArray();
-
-        var pie = _bookingStatusesPlot.Plot.Add.Pie(values);
-
-        for (int i = 0; i < pie.Slices.Count; i++)
+        if (values.Length == 0)
         {
-            pie.Slices[i].Label = labels[i];
+            _bookingStatusesPlot.Refresh();
+            return;
         }
 
-        _bookingStatusesPlot.Plot.Legend.IsVisible = true;
+        try
+        {
+            _bookingStatusesPlot.Plot.Add.Pie(values);
+        }
+        catch
+        {
+            return;
+        }
 
         _bookingStatusesPlot.Refresh();
     }
 
-    private void BuildTopLotsChart(PartnerAnalyticsDashboardDto dashboard)
+    private void BuildTopLotsChart(
+        PartnerAnalyticsDashboardDto dashboard)
     {
         if (_topLotsPlot is null)
             return;
@@ -244,22 +332,19 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
             .Select(x => (double)x.IssuedQuantity)
             .ToArray();
 
-        string[] labels = dashboard.TopLotsByIssuedQuantity
-            .Select(x => x.LotTitle)
-            .ToArray();
+        if (values.Length == 0)
+        {
+            _topLotsPlot.Refresh();
+            return;
+        }
 
         _topLotsPlot.Plot.Add.Bars(values);
-
-        _topLotsPlot.Plot.Axes.Bottom.TickGenerator =
-            new ScottPlot.TickGenerators.NumericManual(
-                Enumerable.Range(0, labels.Length)
-                    .Select(i => new ScottPlot.Tick(i, labels[i]))
-                    .ToArray());
 
         _topLotsPlot.Refresh();
     }
 
-    private void BuildFoodPointsChart(PartnerAnalyticsDashboardDto dashboard)
+    private void BuildFoodPointsChart(
+        PartnerAnalyticsDashboardDto dashboard)
     {
         if (_foodPointsPlot is null)
             return;
@@ -270,22 +355,19 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
             .Select(x => (double)x.IssuedQuantity)
             .ToArray();
 
-        string[] labels = dashboard.IssuedByFoodPoint
-            .Select(x => x.FoodPointName)
-            .ToArray();
+        if (values.Length == 0)
+        {
+            _foodPointsPlot.Refresh();
+            return;
+        }
 
         _foodPointsPlot.Plot.Add.Bars(values);
-
-        _foodPointsPlot.Plot.Axes.Bottom.TickGenerator =
-            new ScottPlot.TickGenerators.NumericManual(
-                Enumerable.Range(0, labels.Length)
-                    .Select(i => new ScottPlot.Tick(i, labels[i]))
-                    .ToArray());
 
         _foodPointsPlot.Refresh();
     }
 
-    private void BuildWasteChart(PartnerAnalyticsDashboardDto dashboard)
+    private void BuildWasteChart(
+        PartnerAnalyticsDashboardDto dashboard)
     {
         if (_preventedWastePlot is null)
             return;
@@ -296,22 +378,19 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
             .Select(x => x.Value)
             .ToArray();
 
-        string[] labels = dashboard.PreventedWasteByDay
-            .Select(x => x.Date.ToString("dd.MM"))
-            .ToArray();
+        if (values.Length == 0)
+        {
+            _preventedWastePlot.Refresh();
+            return;
+        }
 
         _preventedWastePlot.Plot.Add.Signal(values);
-
-        _preventedWastePlot.Plot.Axes.Bottom.TickGenerator =
-            new ScottPlot.TickGenerators.NumericManual(
-                Enumerable.Range(0, labels.Length)
-                    .Select(i => new ScottPlot.Tick(i, labels[i]))
-                    .ToArray());
 
         _preventedWastePlot.Refresh();
     }
 
-    private static bool HasAnyData(PartnerAnalyticsDashboardDto dashboard)
+    private static bool HasAnyData(
+        PartnerAnalyticsDashboardDto dashboard)
     {
         return dashboard.IssuedBookingsCount > 0 ||
                dashboard.SavedPortionsCount > 0 ||
@@ -322,7 +401,9 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
 
 public sealed class AnalyticsPeriodItem
 {
-    public AnalyticsPeriodItem(string title, AnalyticsPeriod value)
+    public AnalyticsPeriodItem(
+        string title,
+        AnalyticsPeriod value)
     {
         Title = title;
         Value = value;
@@ -332,7 +413,10 @@ public sealed class AnalyticsPeriodItem
 
     public AnalyticsPeriod Value { get; }
 
-    public override string ToString() => Title;
+    public override string ToString()
+    {
+        return Title;
+    }
 }
 
 public sealed class FoodPointFilterItem
@@ -341,5 +425,8 @@ public sealed class FoodPointFilterItem
 
     public string Name { get; set; } = string.Empty;
 
-    public override string ToString() => Name;
+    public override string ToString()
+    {
+        return Name;
+    }
 }

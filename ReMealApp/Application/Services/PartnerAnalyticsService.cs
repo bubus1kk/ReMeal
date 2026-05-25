@@ -2,6 +2,7 @@
 using Application.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Repositories;
 
 namespace Application.Services
 {
@@ -13,6 +14,7 @@ namespace Application.Services
         private readonly IBookingRepository _bookingRepository;
 
         public PartnerAnalyticsService(
+            IFoodLotRepository foodLotRepository,
             IAuthService authService,
             IBookingRepository bookingRepository)
         {
@@ -25,17 +27,26 @@ namespace Application.Services
             Guid? foodPointId = null,
             CancellationToken cancellationToken = default)
         {
-            var currentUser = await _authService.GetCurrentUserAsync(cancellationToken)
-                ?? throw new UnauthorizedAccessException("Пользователь не авторизован.");
+            var currentUser =
+                await _authService.GetCurrentUserAsync(cancellationToken)
+                ?? throw new UnauthorizedAccessException(
+                    "Пользователь не авторизован.");
 
             if (currentUser.Role != UserRole.FoodPointRepresentative)
-                throw new UnauthorizedAccessException("Аналитика доступна только партнеру.");
+            {
+                throw new UnauthorizedAccessException(
+                    "Аналитика доступна только партнеру.");
+            }
 
-            var bookings = await _bookingRepository.GetPartnerBookingsAsync(
-                currentUser.Id,
-                cancellationToken);
+            var bookings =
+                await _bookingRepository.GetPartnerBookingsAsync(
+                    currentUser.Id,
+                    cancellationToken);
 
-            bookings = ApplyFilters(bookings, period, foodPointId);
+            bookings = ApplyFilters(
+                bookings,
+                period,
+                foodPointId);
 
             var issuedBookings = bookings
                 .Where(x => x.Status == BookingStatus.Issued)
@@ -49,7 +60,8 @@ namespace Application.Services
                 .Where(x => x.Status == BookingStatus.Active)
                 .ToList();
 
-            var savedPortions = issuedBookings.Sum(x => x.Quantity);
+            var savedPortions =
+                issuedBookings.Sum(x => x.Quantity);
 
             return new PartnerAnalyticsDashboardDto
             {
@@ -65,20 +77,20 @@ namespace Application.Services
                     savedPortions * WastePerPortionKg,
                     2),
 
-                SavedPortionsByDay = BuildSavedPortionsByDay(
-                    issuedBookings),
+                SavedPortionsByDay =
+                    BuildSavedPortionsByDay(issuedBookings),
 
-                BookingStatusDistribution = BuildBookingStatusDistribution(
-                    bookings),
+                BookingStatusDistribution =
+                    BuildBookingStatusDistribution(bookings),
 
-                TopLotsByIssuedQuantity = BuildTopLotsByIssuedQuantity(
-                    issuedBookings),
+                TopLotsByIssuedQuantity =
+                    BuildTopLotsByIssuedQuantity(issuedBookings),
 
-                IssuedByFoodPoint = BuildIssuedByFoodPoint(
-                    issuedBookings),
+                IssuedByFoodPoint =
+                    BuildIssuedByFoodPoint(issuedBookings),
 
-                PreventedWasteByDay = BuildPreventedWasteByDay(
-                    issuedBookings)
+                PreventedWasteByDay =
+                    BuildPreventedWasteByDay(issuedBookings)
             };
         }
 
