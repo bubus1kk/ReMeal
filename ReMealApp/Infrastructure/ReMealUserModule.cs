@@ -6,6 +6,7 @@ using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Repositories;
 using Infrastructure.Security;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
@@ -19,7 +20,8 @@ namespace Infrastructure
             ILotService lotService,
             IBookingService bookingService,
             IAdminService adminService,
-            IProfileStatisticsService profileStatisticsService)
+            IProfileStatisticsService profileStatisticsService,
+            IGeocodingService geocodingService)
         {
             AuthService = authService;
             UserProfileService = userProfileService;
@@ -28,6 +30,7 @@ namespace Infrastructure
             BookingService = bookingService;
             AdminService = adminService;
             ProfileStatisticsService = profileStatisticsService;
+            GeocodingService = geocodingService;
         }
 
         public IAuthService AuthService { get; }
@@ -43,6 +46,8 @@ namespace Infrastructure
         public IAdminService AdminService { get; }
 
         public IProfileStatisticsService ProfileStatisticsService { get; }
+
+        public IGeocodingService GeocodingService { get; }
 
         public static ReMealUserModule CreateDefault()
         {
@@ -91,6 +96,7 @@ namespace Infrastructure
                     userRepository,
                     foodPointRepository,
                     foodLotRepository);
+                IGeocodingService geocodingService = new NominatimGeocodingService(new HttpClient());
 
                 return new ReMealUserModule(
                     authService,
@@ -99,7 +105,8 @@ namespace Infrastructure
                     lotService,
                     bookingService,
                     adminService,
-                    profileStatisticsService);
+                    profileStatisticsService,
+                    geocodingService);
             }, "инициализировать доступ к данным приложения");
         }
     }
