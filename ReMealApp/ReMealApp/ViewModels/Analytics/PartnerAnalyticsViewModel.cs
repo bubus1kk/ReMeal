@@ -14,19 +14,19 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
     private readonly IPartnerAnalyticsService _analyticsService;
     private readonly IFoodPointService _foodPointService;
 
-    private PartnerAnalyticsDashboardDto? _dashboard;
-
     private AvaPlot? _savedPortionsPlot;
     private AvaPlot? _bookingStatusesPlot;
     private AvaPlot? _topLotsPlot;
     private AvaPlot? _foodPointsPlot;
     private AvaPlot? _preventedWastePlot;
 
-    private bool _isInitialized;
+    private bool _plotsAttached;
 
-    public ObservableCollection<FoodPointFilterItem> FoodPoints { get; } = new();
+    public ObservableCollection<FoodPointFilterItem> FoodPoints { get; } =
+        new();
 
-    public ObservableCollection<AnalyticsPeriodItem> Periods { get; } = new();
+    public ObservableCollection<AnalyticsPeriodItem> Periods { get; } =
+        new();
 
     [ObservableProperty]
     private AnalyticsPeriodItem? _selectedPeriod;
@@ -58,17 +58,6 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
     [ObservableProperty]
     private double _preventedWasteKg;
 
-    [RelayCommand]
-    private async Task ReloadAsync()
-    {
-        await LoadAsync();
-    }
-
-    public async Task InitializeAsync()
-    {
-        await LoadAsync();
-    }
-
     public PartnerAnalyticsViewModel(
         IPartnerAnalyticsService analyticsService,
         IFoodPointService foodPointService)
@@ -98,7 +87,7 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
         ApplyDarkTheme(_foodPointsPlot);
         ApplyDarkTheme(_preventedWastePlot);
 
-        _isInitialized = true;
+        _plotsAttached = true;
     }
 
     private static void ApplyDarkTheme(AvaPlot? plot)
@@ -107,10 +96,10 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
             return;
 
         plot.Plot.FigureBackground.Color =
-            ScottPlot.Colors.Transparent;
+            ScottPlot.Color.FromHex("#101917");
 
         plot.Plot.DataBackground.Color =
-            ScottPlot.Color.FromHex("#1E1E1E");
+            ScottPlot.Color.FromHex("#101917");
 
         plot.Plot.Axes.Color(
             ScottPlot.Color.FromHex("#D0D0D0"));
@@ -156,19 +145,22 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
             if (SelectedPeriod is null)
                 return;
 
-            _dashboard =
+            var dashboard =
                 await _analyticsService.GetDashboardAsync(
                     SelectedPeriod.Value,
                     SelectedFoodPoint?.FoodPointId);
 
-            ApplyDashboard(_dashboard);
+            ApplyDashboard(dashboard);
 
-            await Dispatcher.UIThread.InvokeAsync(() =>
+            if (_plotsAttached)
             {
-                BuildCharts(_dashboard);
-            });
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    BuildCharts(dashboard);
+                });
+            }
 
-            if (!HasAnyData(_dashboard))
+            if (!HasAnyData(dashboard))
             {
                 EmptyStateMessage =
                     "Недостаточно данных для отображения аналитики.";
@@ -176,7 +168,7 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            ErrorMessage = ex.ToString();
+            ErrorMessage = ex.Message;
         }
         finally
         {
@@ -184,20 +176,31 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
+    public async Task RefreshAsync()
+    {
+        await LoadAsync();
+    }
+
     partial void OnSelectedPeriodChanged(
         AnalyticsPeriodItem? value)
     {
+        if (value is null)
+            return;
+
+        if (!_plotsAttached)
+            return;
+
+        _ = LoadAsync();
     }
 
     partial void OnSelectedFoodPointChanged(
         FoodPointFilterItem? value)
     {
-    }
+        if (!_plotsAttached)
+            return;
 
-    [RelayCommand]
-    public async Task RefreshAsync()
-    {
-        await LoadAsync();
+        _ = LoadAsync();
     }
 
     private async Task LoadFoodPointsAsync()
@@ -257,9 +260,6 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
     private void BuildCharts(
         PartnerAnalyticsDashboardDto dashboard)
     {
-        if (!_isInitialized)
-            return;
-
         BuildSavedPortionsChart(dashboard);
         BuildStatusesChart(dashboard);
         BuildTopLotsChart(dashboard);
@@ -275,9 +275,10 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
 
         _savedPortionsPlot.Plot.Clear();
 
-        double[] values = dashboard.SavedPortionsByDay
-            .Select(x => (double)x.Value)
-            .ToArray();
+        double[] values =
+            dashboard.SavedPortionsByDay
+                .Select(x => (double)x.Value)
+                .ToArray();
 
         if (values.Length == 0)
         {
@@ -298,9 +299,10 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
 
         _bookingStatusesPlot.Plot.Clear();
 
-        double[] values = dashboard.BookingStatusDistribution
-            .Select(x => (double)x.Count)
-            .ToArray();
+        double[] values =
+            dashboard.BookingStatusDistribution
+                .Select(x => (double)x.Count)
+                .ToArray();
 
         if (values.Length == 0)
         {
@@ -308,14 +310,7 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
             return;
         }
 
-        try
-        {
-            _bookingStatusesPlot.Plot.Add.Pie(values);
-        }
-        catch
-        {
-            return;
-        }
+        _bookingStatusesPlot.Plot.Add.Bars(values);
 
         _bookingStatusesPlot.Refresh();
     }
@@ -328,9 +323,10 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
 
         _topLotsPlot.Plot.Clear();
 
-        double[] values = dashboard.TopLotsByIssuedQuantity
-            .Select(x => (double)x.IssuedQuantity)
-            .ToArray();
+        double[] values =
+            dashboard.TopLotsByIssuedQuantity
+                .Select(x => (double)x.IssuedQuantity)
+                .ToArray();
 
         if (values.Length == 0)
         {
@@ -351,9 +347,10 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
 
         _foodPointsPlot.Plot.Clear();
 
-        double[] values = dashboard.IssuedByFoodPoint
-            .Select(x => (double)x.IssuedQuantity)
-            .ToArray();
+        double[] values =
+            dashboard.IssuedByFoodPoint
+                .Select(x => (double)x.IssuedQuantity)
+                .ToArray();
 
         if (values.Length == 0)
         {
@@ -374,9 +371,10 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
 
         _preventedWastePlot.Plot.Clear();
 
-        double[] values = dashboard.PreventedWasteByDay
-            .Select(x => x.Value)
-            .ToArray();
+        double[] values =
+            dashboard.PreventedWasteByDay
+                .Select(x => x.Value)
+                .ToArray();
 
         if (values.Length == 0)
         {
@@ -423,7 +421,8 @@ public sealed class FoodPointFilterItem
 {
     public Guid? FoodPointId { get; set; }
 
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } =
+        string.Empty;
 
     public override string ToString()
     {
