@@ -37,6 +37,7 @@ namespace ReMealApp
                         userModule.AdminService,
                         userModule.ProfileStatisticsService,
                         userModule.GeocodingService,
+                        userModule.MapService,
                         () => desktop.Shutdown());
 
                     desktop.MainWindow = new MainWindow

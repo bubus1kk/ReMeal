@@ -1092,8 +1092,8 @@
                 Background="#CC000000"
                 IsVisible="False"
                 ZIndex="50">
-            <Border Width="900"
-                    Height="640"
+            <Border Width="1160"
+                    Height="780"
                     Background="#08110F"
                     BorderBrush="#26352F"
                     BorderThickness="1"

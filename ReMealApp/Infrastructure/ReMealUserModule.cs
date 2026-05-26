@@ -21,7 +21,8 @@ namespace Infrastructure
             IBookingService bookingService,
             IAdminService adminService,
             IProfileStatisticsService profileStatisticsService,
-            IGeocodingService geocodingService)
+            IGeocodingService geocodingService,
+            IMapService mapService)
         {
             AuthService = authService;
             UserProfileService = userProfileService;
@@ -31,6 +32,7 @@ namespace Infrastructure
             AdminService = adminService;
             ProfileStatisticsService = profileStatisticsService;
             GeocodingService = geocodingService;
+            MapService = mapService;
         }
 
         public IAuthService AuthService { get; }
@@ -48,6 +50,8 @@ namespace Infrastructure
         public IProfileStatisticsService ProfileStatisticsService { get; }
 
         public IGeocodingService GeocodingService { get; }
+
+        public IMapService MapService { get; }
 
         public static ReMealUserModule CreateDefault()
         {
@@ -97,6 +101,7 @@ namespace Infrastructure
                     foodPointRepository,
                     foodLotRepository);
                 IGeocodingService geocodingService = new NominatimGeocodingService(new HttpClient());
+                IMapService mapService = new MapService(lotService, geocodingService);
 
                 return new ReMealUserModule(
                     authService,
@@ -106,7 +111,8 @@ namespace Infrastructure
                     bookingService,
                     adminService,
                     profileStatisticsService,
-                    geocodingService);
+                    geocodingService,
+                    mapService);
             }, "инициализировать доступ к данным приложения");
         }
     }

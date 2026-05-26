@@ -5,34 +5,37 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using System.Globalization;
+using ReMealApp.ViewModels.Maps;
 using System.Net.Http.Headers;
 
 namespace ReMealApp.Views.Maps
 {
-    public partial class MapPointPickerControl : UserControl
+    public partial class OsmFoodPointMapControl : UserControl
     {
-        private const int Zoom = 16;
-        private const int MinZoom = 13;
+        private const int DefaultZoom = 14;
+        private const int MinZoom = 11;
         private const int MaxZoom = 18;
         private const int TileSize = 256;
         private const int TileBuffer = 1;
         private const int VisibleTileBuffer = 0;
         private const int MaxConcurrentTileRequests = 6;
-        private const int ZoomDebounceMilliseconds = 120;
+        private const int ZoomDebounceMilliseconds = 140;
         private const double WebMercatorMaxLatitude = 85.05112878;
+        private const double DefaultViewportWidth = 900;
+        private const double DefaultViewportHeight = 520;
+
         private static readonly HttpClient TileHttpClient = CreateTileHttpClient();
         private static readonly SemaphoreSlim TileRequestGate = new(MaxConcurrentTileRequests, MaxConcurrentTileRequests);
         private static readonly object TileCacheLock = new();
         private static readonly Dictionary<TileCacheKey, Bitmap> TileBitmapCache = new();
 
-        private readonly Ellipse _marker;
-        private int _zoom = Zoom;
-        private double _selectedLatitude;
-        private double _selectedLongitude;
+        private readonly Dictionary<TileKey, TileVisual> _tileVisuals = new();
+        private readonly Dictionary<Guid, Control> _markerVisuals = new();
+        private IReadOnlyList<MapFoodPointItemViewModel> _foodPoints = Array.Empty<MapFoodPointItemViewModel>();
+        private MapFoodPointItemViewModel? _selectedFoodPoint;
+        private int _zoom = DefaultZoom;
         private double _topLeftPixelX;
         private double _topLeftPixelY;
-        private readonly Dictionary<TileKey, TileVisual> _tileVisuals = new();
         private bool _isPointerPressed;
         private bool _isDragging;
         private Point _dragStartPosition;
@@ -41,33 +44,43 @@ namespace ReMealApp.Views.Maps
         private int _tileLoadVersion;
         private CancellationTokenSource? _zoomDebounceCancellation;
 
-        public MapPointPickerControl()
+        public OsmFoodPointMapControl()
         {
             InitializeComponent();
-
-            _marker = new Ellipse
-            {
-                Width = 18,
-                Height = 18,
-                Fill = SolidColorBrush.Parse("#69CB4B"),
-                Stroke = SolidColorBrush.Parse("#F8FFF4"),
-                StrokeThickness = 3,
-                IsHitTestVisible = false
-            };
         }
 
-        public event EventHandler<CoordinatesDto>? CoordinatesApplied;
+        public event EventHandler<MapFoodPointItemViewModel>? FoodPointSelected;
 
-        public event EventHandler? Cancelled;
+        private double ViewportWidth => Math.Max(1, TileCanvas.Bounds.Width > 0
+            ? TileCanvas.Bounds.Width
+            : DefaultViewportWidth);
 
-        public async Task LoadLocationAsync(double latitude, double longitude)
+        private double ViewportHeight => Math.Max(1, TileCanvas.Bounds.Height > 0
+            ? TileCanvas.Bounds.Height
+            : DefaultViewportHeight);
+
+        public async Task SetFoodPointsAsync(
+            IReadOnlyList<MapFoodPointItemViewModel> foodPoints,
+            MapFoodPointItemViewModel? selectedFoodPoint)
         {
-            _zoom = Zoom;
-            _selectedLatitude = latitude;
-            _selectedLongitude = longitude;
-            CenterViewportOnSelectedCoordinates();
-            UpdateCoordinatesText();
+            _foodPoints = foodPoints;
+            _selectedFoodPoint = selectedFoodPoint ?? foodPoints.FirstOrDefault();
+            _zoom = DefaultZoom;
+            CenterViewportOnFoodPoints();
             await LoadVisibleThenBufferedTilesAsync(resetTiles: true);
+        }
+
+        public async Task SelectFoodPointAsync(MapFoodPointItemViewModel? foodPoint)
+        {
+            _selectedFoodPoint = foodPoint;
+
+            if (foodPoint is not null)
+            {
+                CenterViewportOnCoordinates(foodPoint.Coordinates);
+                await LoadVisibleThenBufferedTilesAsync(resetTiles: false);
+            }
+
+            UpdateMarkers();
         }
 
         private async Task LoadVisibleThenBufferedTilesAsync(bool resetTiles)
@@ -85,11 +98,14 @@ namespace ReMealApp.Views.Maps
             var loadVersion = ++_tileLoadVersion;
             var viewportTopLeftPixelX = _topLeftPixelX;
             var viewportTopLeftPixelY = _topLeftPixelY;
+            var viewportWidth = ViewportWidth;
+            var viewportHeight = ViewportHeight;
 
             if (resetTiles)
             {
                 TileCanvas.Children.Clear();
                 _tileVisuals.Clear();
+                _markerVisuals.Clear();
             }
 
             MapStatusText.Text = _tileVisuals.Count == 0 ? "Загрузка карты..." : string.Empty;
@@ -97,8 +113,8 @@ namespace ReMealApp.Views.Maps
 
             var firstTileX = (int)Math.Floor(viewportTopLeftPixelX / TileSize) - tileBuffer;
             var firstTileY = (int)Math.Floor(viewportTopLeftPixelY / TileSize) - tileBuffer;
-            var lastTileX = (int)Math.Floor((viewportTopLeftPixelX + TileCanvas.Width) / TileSize) + tileBuffer;
-            var lastTileY = (int)Math.Floor((viewportTopLeftPixelY + TileCanvas.Height) / TileSize) + tileBuffer;
+            var lastTileX = (int)Math.Floor((viewportTopLeftPixelX + viewportWidth) / TileSize) + tileBuffer;
+            var lastTileY = (int)Math.Floor((viewportTopLeftPixelY + viewportHeight) / TileSize) + tileBuffer;
             var requiredTiles = new HashSet<TileKey>();
             var tileLoadTasks = new List<Task<(TileKey Key, TileVisual? Visual)>>();
 
@@ -141,10 +157,9 @@ namespace ReMealApp.Views.Maps
             }
 
             UpdateTilePositions();
-            BringMarkerToFront();
-            MoveMarkerToSelectedCoordinates();
-            MapStatusText.IsVisible = availableTiles == 0;
-            MapStatusText.Text = availableTiles == 0
+            UpdateMarkers();
+            MapStatusText.IsVisible = availableTiles == 0 && _foodPoints.Count > 0;
+            MapStatusText.Text = availableTiles == 0 && _foodPoints.Count > 0
                 ? "Не удалось загрузить карту. Проверьте подключение к интернету."
                 : string.Empty;
         }
@@ -234,13 +249,8 @@ namespace ReMealApp.Views.Maps
         private void TileCanvas_PointerPressed(object? sender, PointerPressedEventArgs e)
         {
             var position = e.GetPosition(TileCanvas);
-            if (position.X < 0 ||
-                position.Y < 0 ||
-                position.X > TileCanvas.Width ||
-                position.Y > TileCanvas.Height)
-            {
+            if (!IsInsideViewport(position))
                 return;
-            }
 
             _isPointerPressed = true;
             _isDragging = false;
@@ -269,7 +279,7 @@ namespace ReMealApp.Views.Maps
             _topLeftPixelX = _dragStartTopLeftPixelX - deltaX;
             _topLeftPixelY = _dragStartTopLeftPixelY - deltaY;
             UpdateTilePositions();
-            MoveMarkerToSelectedCoordinates();
+            UpdateMarkers();
             e.Handled = true;
         }
 
@@ -285,15 +295,12 @@ namespace ReMealApp.Views.Maps
             {
                 _isDragging = false;
                 await LoadVisibleThenBufferedTilesAsync(resetTiles: false);
-                e.Handled = true;
-                return;
             }
 
-            SelectCoordinatesAt(e.GetPosition(TileCanvas));
             e.Handled = true;
         }
 
-        private async void TileCanvas_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+        private void TileCanvas_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
         {
             var zoomDelta = e.Delta.Y > 0 ? 1 : -1;
             var newZoom = Math.Clamp(_zoom + zoomDelta, MinZoom, MaxZoom);
@@ -301,13 +308,8 @@ namespace ReMealApp.Views.Maps
                 return;
 
             var position = e.GetPosition(TileCanvas);
-            if (position.X < 0 ||
-                position.Y < 0 ||
-                position.X > TileCanvas.Width ||
-                position.Y > TileCanvas.Height)
-            {
-                position = new Point(TileCanvas.Width / 2, TileCanvas.Height / 2);
-            }
+            if (!IsInsideViewport(position))
+                position = new Point(ViewportWidth / 2, ViewportHeight / 2);
 
             var anchor = ToLatitudeLongitude(
                 _topLeftPixelX + position.X,
@@ -319,6 +321,8 @@ namespace ReMealApp.Views.Maps
             _topLeftPixelX = anchorPixel.X - position.X;
             _topLeftPixelY = anchorPixel.Y - position.Y;
             _tileLoadVersion++;
+            UpdateTilePositions();
+            UpdateMarkers();
 
             e.Handled = true;
             _zoomDebounceCancellation?.Cancel();
@@ -338,25 +342,30 @@ namespace ReMealApp.Views.Maps
             }
         }
 
-        private void SelectCoordinatesAt(Point position)
+        private void CenterViewportOnFoodPoints()
         {
-            if (position.X < 0 ||
-                position.Y < 0 ||
-                position.X > TileCanvas.Width ||
-                position.Y > TileCanvas.Height)
+            if (_selectedFoodPoint is not null)
             {
+                CenterViewportOnCoordinates(_selectedFoodPoint.Coordinates);
                 return;
             }
 
-            var geo = ToLatitudeLongitude(
-                _topLeftPixelX + position.X,
-                _topLeftPixelY + position.Y,
-                _zoom);
+            if (_foodPoints.Count == 0)
+            {
+                CenterViewportOnCoordinates(new CoordinatesDto(55.7558, 37.6173));
+                return;
+            }
 
-            _selectedLatitude = geo.Latitude;
-            _selectedLongitude = geo.Longitude;
-            UpdateCoordinatesText();
-            MoveMarkerToSelectedCoordinates();
+            var latitude = _foodPoints.Average(x => x.Coordinates.Latitude);
+            var longitude = _foodPoints.Average(x => x.Coordinates.Longitude);
+            CenterViewportOnCoordinates(new CoordinatesDto(latitude, longitude));
+        }
+
+        private void CenterViewportOnCoordinates(CoordinatesDto coordinates)
+        {
+            var centerPixel = ToGlobalPixel(coordinates.Latitude, coordinates.Longitude, _zoom);
+            _topLeftPixelX = centerPixel.X - ViewportWidth / 2;
+            _topLeftPixelY = centerPixel.Y - ViewportHeight / 2;
         }
 
         private void UpdateTilePositions()
@@ -368,33 +377,67 @@ namespace ReMealApp.Views.Maps
             }
         }
 
-        private void BringMarkerToFront()
+        private void UpdateMarkers()
         {
-            if (TileCanvas.Children.Contains(_marker))
-                TileCanvas.Children.Remove(_marker);
+            foreach (var marker in _markerVisuals.Values)
+            {
+                TileCanvas.Children.Remove(marker);
+            }
 
-            TileCanvas.Children.Add(_marker);
+            _markerVisuals.Clear();
+
+            foreach (var foodPoint in _foodPoints)
+            {
+                var marker = CreateMarker(foodPoint);
+                var pixel = ToGlobalPixel(
+                    foodPoint.Coordinates.Latitude,
+                    foodPoint.Coordinates.Longitude,
+                    _zoom);
+
+                Canvas.SetLeft(marker, pixel.X - _topLeftPixelX - marker.Width / 2);
+                Canvas.SetTop(marker, pixel.Y - _topLeftPixelY - marker.Height / 2);
+                _markerVisuals[foodPoint.Id] = marker;
+                TileCanvas.Children.Add(marker);
+            }
         }
 
-        private void CenterViewportOnSelectedCoordinates()
+        private Control CreateMarker(MapFoodPointItemViewModel foodPoint)
         {
-            var centerPixel = ToGlobalPixel(_selectedLatitude, _selectedLongitude, _zoom);
-            _topLeftPixelX = centerPixel.X - TileCanvas.Width / 2;
-            _topLeftPixelY = centerPixel.Y - TileCanvas.Height / 2;
+            var isSelected = _selectedFoodPoint?.Id == foodPoint.Id;
+            var marker = new Ellipse
+            {
+                Width = isSelected ? 24 : 18,
+                Height = isSelected ? 24 : 18,
+                Fill = SolidColorBrush.Parse(isSelected ? "#69CB4B" : "#DDF7D7"),
+                Stroke = SolidColorBrush.Parse("#0B120F"),
+                StrokeThickness = isSelected ? 4 : 3,
+                Cursor = new Cursor(StandardCursorType.Hand),
+                Tag = foodPoint
+            };
+
+            ToolTip.SetTip(marker, $"{foodPoint.Name}\n{foodPoint.Address}");
+            marker.PointerPressed += Marker_PointerPressed;
+
+            return marker;
         }
 
-        private void MoveMarkerToSelectedCoordinates()
+        private void Marker_PointerPressed(object? sender, PointerPressedEventArgs e)
         {
-            var pixel = ToGlobalPixel(_selectedLatitude, _selectedLongitude, _zoom);
-            Canvas.SetLeft(_marker, pixel.X - _topLeftPixelX - _marker.Width / 2);
-            Canvas.SetTop(_marker, pixel.Y - _topLeftPixelY - _marker.Height / 2);
+            if (sender is not Control { Tag: MapFoodPointItemViewModel foodPoint })
+                return;
+
+            _selectedFoodPoint = foodPoint;
+            UpdateMarkers();
+            FoodPointSelected?.Invoke(this, foodPoint);
+            e.Handled = true;
         }
 
-        private void UpdateCoordinatesText()
+        private bool IsInsideViewport(Point position)
         {
-            CoordinatesText.Text = string.Create(
-                CultureInfo.InvariantCulture,
-                $"Latitude: {_selectedLatitude:F6}; Longitude: {_selectedLongitude:F6}");
+            return position.X >= 0 &&
+                position.Y >= 0 &&
+                position.X <= ViewportWidth &&
+                position.Y <= ViewportHeight;
         }
 
         private static (double X, double Y) ToGlobalPixel(double latitude, double longitude, int zoom)
@@ -436,18 +479,6 @@ namespace ReMealApp.Views.Maps
                 new ProductInfoHeaderValue("(educational Avalonia desktop application)"));
 
             return httpClient;
-        }
-
-        private void Apply_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-        {
-            CoordinatesApplied?.Invoke(
-                this,
-                new CoordinatesDto(_selectedLatitude, _selectedLongitude));
-        }
-
-        private void Cancel_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-        {
-            Cancelled?.Invoke(this, EventArgs.Empty);
         }
 
         private sealed record TileCacheKey(int Zoom, int TileX, int TileY);

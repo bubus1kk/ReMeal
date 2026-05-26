@@ -6,6 +6,7 @@ using Domain.Enums;
 using ReMealApp.ViewModels.Admin;
 using ReMealApp.ViewModels.Booking;
 using ReMealApp.ViewModels.Catalog;
+using ReMealApp.ViewModels.Maps;
 using ReMealApp.ViewModels.Partner;
 using ReMealApp.ViewModels.Profile;
 
@@ -81,6 +82,7 @@ namespace ReMealApp.ViewModels.Shell
                 new DeniedAdminService(),
                 profileStatisticsService,
                 new UnavailableGeocodingService(),
+                new UnavailableMapService(),
                 showLogin,
                 exitApplication)
         {
@@ -105,6 +107,7 @@ namespace ReMealApp.ViewModels.Shell
                 new DeniedAdminService(),
                 profileStatisticsService,
                 geocodingService,
+                new UnavailableMapService(),
                 showLogin,
                 exitApplication)
         {
@@ -119,6 +122,7 @@ namespace ReMealApp.ViewModels.Shell
             IAdminService adminService,
             IProfileStatisticsService profileStatisticsService,
             IGeocodingService geocodingService,
+            IMapService mapService,
             Action<string> showLogin,
             Action exitApplication)
         {
@@ -134,6 +138,7 @@ namespace ReMealApp.ViewModels.Shell
                 showLogin);
 
             Catalog = new CatalogViewModel(lotService, bookingService);
+            Map = new MapViewModel(mapService);
             FoodPoint = new FoodPointViewModel(foodPointService, lotService, geocodingService, this);
             PartnerLots = new PartnerLotsViewModel(lotService, foodPointService, this);
             PartnerBookings = new PartnerBookingsViewModel(bookingService);
@@ -146,6 +151,8 @@ namespace ReMealApp.ViewModels.Shell
         public UserProfileViewModel Profile { get; }
 
         public CatalogViewModel Catalog { get; }
+
+        public MapViewModel Map { get; }
 
         public FoodPointViewModel FoodPoint { get; }
 
@@ -185,9 +192,9 @@ namespace ReMealApp.ViewModels.Shell
 
         public string BookingsNavigationText => IsPartner ? "Брони клиентов" : "Мои брони";
 
-        public string FoodPointsNavigationText => IsPartner ? "Мои точки" : "Партнёры";
+        public string FoodPointsNavigationText => IsPartner ? "Мои точки" : "Карта";
 
-        public string FoodPointsNavigationIconPath => IsPartner ? "/Assets/Icons/location.png" : "/Assets/Icons/partners.png";
+        public string FoodPointsNavigationIconPath => "/Assets/Icons/location.png";
 
         public async Task InitializeAsync()
         {
@@ -385,12 +392,8 @@ namespace ReMealApp.ViewModels.Shell
                         }
                         else
                         {
-                            SetSection(
-                                FoodPointsSection,
-                                new ModulePlaceholderViewModel(
-                                    "Партнеры",
-                                    "Раздел партнеров пока не имеет отдельного пользовательского экрана.",
-                                    "/Assets/Icons/partners.png"));
+                            await Map.LoadAsync();
+                            SetSection(FoodPointsSection, Map);
                         }
 
                         break;
@@ -524,6 +527,32 @@ namespace ReMealApp.ViewModels.Shell
                 CancellationToken cancellationToken = default)
             {
                 return Task.FromResult<Application.DTOs.Maps.GeocodingResultDto?>(null);
+            }
+        }
+
+        private sealed class UnavailableMapService : IMapService
+        {
+            public Task<IReadOnlyList<Application.DTOs.Maps.MapFoodPointDto>> GetFoodPointsForMapAsync(
+                CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<IReadOnlyList<Application.DTOs.Maps.MapFoodPointDto>>(
+                    Array.Empty<Application.DTOs.Maps.MapFoodPointDto>());
+            }
+
+            public Task<IReadOnlyList<Application.DTOs.Maps.NearestFoodPointDto>> FindNearestFoodPointsAsync(
+                string address,
+                int maxResults = 5,
+                CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<IReadOnlyList<Application.DTOs.Maps.NearestFoodPointDto>>(
+                    Array.Empty<Application.DTOs.Maps.NearestFoodPointDto>());
+            }
+
+            public double CalculateDistanceKm(
+                Application.DTOs.Maps.CoordinatesDto first,
+                Application.DTOs.Maps.CoordinatesDto second)
+            {
+                return 0;
             }
         }
     }

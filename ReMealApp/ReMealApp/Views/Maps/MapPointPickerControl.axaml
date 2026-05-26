@@ -68,15 +68,16 @@
                 ClipToBounds="True">
             <Grid>
                 <Canvas x:Name="TileCanvas"
-                        Width="768"
-                        Height="420"
+                        Width="1024"
+                        Height="540"
                         Background="#07100E"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         ClipToBounds="True"
                         PointerPressed="TileCanvas_PointerPressed"
                         PointerMoved="TileCanvas_PointerMoved"
-                        PointerReleased="TileCanvas_PointerReleased"/>
+                        PointerReleased="TileCanvas_PointerReleased"
+                        PointerWheelChanged="TileCanvas_PointerWheelChanged"/>
 
                 <TextBlock x:Name="MapStatusText"
                            Text="Загрузка карты..."
