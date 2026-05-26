@@ -49,19 +49,36 @@
 
         <StackPanel Margin="28" Spacing="24">
 
-            <StackPanel Spacing="4">
 
-                <TextBlock
-                    Classes="title"
-                    Text="Аналитика"/>
+            <Grid ColumnDefinitions="*,Auto">
 
-                <TextBlock
-                    Classes="subtitle"
-                    Text="Статистика по вашим точкам питания и лотам"/>
+                <StackPanel Spacing="4">
 
-            </StackPanel>
+                    <TextBlock
+                        Classes="title"
+                        Text="Аналитика"/>
 
-            <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="16">
+                    <TextBlock
+                        Classes="subtitle"
+                        Text="Статистика по вашим точкам питания и лотам"/>
+
+                </StackPanel>
+
+                <Button
+                    Grid.Column="1"
+                    Content="Обновить"
+                    Command="{Binding RefreshCommand}"
+                    Background="#75C943"
+                    Foreground="Black"
+                    FontWeight="Bold"
+                    Padding="18,10"/>
+
+            </Grid>
+
+
+            <Grid
+                ColumnDefinitions="Auto,Auto,*"
+                ColumnSpacing="16">
 
                 <ComboBox
                     Grid.Column="0"
@@ -76,6 +93,54 @@
                     SelectedItem="{Binding SelectedFoodPoint}"/>
 
             </Grid>
+
+
+            <Border
+                Classes="card"
+                IsVisible="{Binding IsLoading}">
+
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="10">
+
+                    <ProgressBar
+                        Width="260"
+                        IsIndeterminate="True"/>
+
+                    <TextBlock
+                        Text="Загрузка аналитики..."
+                        Foreground="#D7E7DB"
+                        FontSize="14"
+                        HorizontalAlignment="Center"/>
+
+                </StackPanel>
+
+            </Border>
+
+
+            <Border
+                Classes="card"
+                Background="#2A1515"
+                BorderBrush="#5C2D2D"
+                IsVisible="{Binding ErrorMessage}">
+
+                <StackPanel Spacing="10">
+
+                    <TextBlock
+                        Text="Ошибка загрузки"
+                        Foreground="#FF8A8A"
+                        FontSize="18"
+                        FontWeight="Bold"/>
+
+                    <TextBlock
+                        Text="{Binding ErrorMessage}"
+                        Foreground="#FFD5D5"
+                        TextWrapping="Wrap"/>
+
+                </StackPanel>
+
+            </Border>
 
             <Border
                 Classes="card"
@@ -92,7 +157,9 @@
                 ColumnDefinitions="*,*,*,*,*"
                 ColumnSpacing="18">
 
-                <Border Grid.Column="0" Classes="card">
+                <Border
+                    Grid.Column="0"
+                    Classes="card">
 
                     <StackPanel Spacing="8">
 
@@ -108,7 +175,9 @@
 
                 </Border>
 
-                <Border Grid.Column="1" Classes="card">
+                <Border
+                    Grid.Column="1"
+                    Classes="card">
 
                     <StackPanel Spacing="8">
 
@@ -124,7 +193,9 @@
 
                 </Border>
 
-                <Border Grid.Column="2" Classes="card">
+                <Border
+                    Grid.Column="2"
+                    Classes="card">
 
                     <StackPanel Spacing="8">
 
@@ -140,7 +211,9 @@
 
                 </Border>
 
-                <Border Grid.Column="3" Classes="card">
+                <Border
+                    Grid.Column="3"
+                    Classes="card">
 
                     <StackPanel Spacing="8">
 
@@ -156,7 +229,9 @@
 
                 </Border>
 
-                <Border Grid.Column="4" Classes="card">
+                <Border
+                    Grid.Column="4"
+                    Classes="card">
 
                     <StackPanel Spacing="8">
 
@@ -174,6 +249,7 @@
 
             </Grid>
 
+
             <Grid
                 RowDefinitions="Auto,Auto,Auto"
                 ColumnDefinitions="*,*"
@@ -185,15 +261,74 @@
                     Grid.Column="0"
                     Classes="card">
 
-                    <Grid Height="320">
+                    <StackPanel Spacing="16">
 
                         <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Text="График временно отключён"
-                            Foreground="#7E9388"/>
+                            Text="Спасённые порции по дням"
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            Foreground="#F4FFF6"/>
 
-                    </Grid>
+                        <Grid
+                            Height="320"
+                            RowDefinitions="*,Auto">
+
+                            <ItemsControl
+                                Grid.Row="0"
+                                ItemsSource="{Binding SavedPortionsChartItems}">
+
+                                <ItemsControl.ItemsPanel>
+
+                                    <ItemsPanelTemplate>
+
+                                        <StackPanel
+                                            Orientation="Horizontal"
+                                            Spacing="12"
+                                            VerticalAlignment="Bottom"
+                                            HorizontalAlignment="Center"/>
+
+                                    </ItemsPanelTemplate>
+
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+
+                                    <DataTemplate>
+
+                                        <StackPanel
+                                            VerticalAlignment="Bottom"
+                                            Spacing="8">
+
+                                            <TextBlock
+                                                Text="{Binding Value}"
+                                                HorizontalAlignment="Center"
+                                                Foreground="#D7E7DB"
+                                                FontSize="12"/>
+
+                                            <Border
+                                                Width="36"
+                                                Height="{Binding Height}"
+                                                Background="#75C943"
+                                                CornerRadius="8,8,0,0"
+                                                VerticalAlignment="Bottom"/>
+
+                                            <TextBlock
+                                                Text="{Binding Label}"
+                                                HorizontalAlignment="Center"
+                                                FontSize="11"
+                                                Foreground="#8FA59A"/>
+
+                                        </StackPanel>
+
+                                    </DataTemplate>
+
+                                </ItemsControl.ItemTemplate>
+
+                            </ItemsControl>
+
+                        </Grid>
+
+                    </StackPanel>
 
                 </Border>
 
@@ -202,32 +337,133 @@
                     Grid.Column="1"
                     Classes="card">
 
-                    <Grid Height="320">
+                    <StackPanel Spacing="16">
 
                         <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Text="График временно отключён"
-                            Foreground="#7E9388"/>
+                            Text="Статусы бронирований"
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            Foreground="#F4FFF6"/>
 
-                    </Grid>
+                        <Grid
+                            Height="320"
+                            RowDefinitions="*,Auto">
+
+                            <ItemsControl
+                                Grid.Row="0"
+                                ItemsSource="{Binding BookingStatusesChartItems}">
+
+                                <ItemsControl.ItemsPanel>
+
+                                    <ItemsPanelTemplate>
+
+                                        <StackPanel
+                                            Orientation="Horizontal"
+                                            Spacing="18"
+                                            VerticalAlignment="Bottom"
+                                            HorizontalAlignment="Center"/>
+
+                                    </ItemsPanelTemplate>
+
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+
+                                    <DataTemplate>
+
+                                        <StackPanel
+                                            VerticalAlignment="Bottom"
+                                            Spacing="8">
+
+                                            <TextBlock
+                                                Text="{Binding Value}"
+                                                HorizontalAlignment="Center"
+                                                Foreground="#D7E7DB"
+                                                FontSize="12"/>
+
+                                            <Border
+                                                Width="44"
+                                                Height="{Binding Height}"
+                                                Background="#4FA3FF"
+                                                CornerRadius="8,8,0,0"
+                                                VerticalAlignment="Bottom"/>
+
+                                            <TextBlock
+                                                Text="{Binding Label}"
+                                                Width="70"
+                                                TextAlignment="Center"
+                                                TextWrapping="Wrap"
+                                                FontSize="11"
+                                                Foreground="#8FA59A"/>
+
+                                        </StackPanel>
+
+                                    </DataTemplate>
+
+                                </ItemsControl.ItemTemplate>
+
+                            </ItemsControl>
+
+                        </Grid>
+
+                    </StackPanel>
 
                 </Border>
+
 
                 <Border
                     Grid.Row="1"
                     Grid.Column="0"
                     Classes="card">
 
-                    <Grid Height="320">
+                    <StackPanel Spacing="16">
 
                         <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Text="График временно отключён"
-                            Foreground="#7E9388"/>
+                            Text="Топ популярных лотов"
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            Foreground="#F4FFF6"/>
 
-                    </Grid>
+                        <ItemsControl
+                            ItemsSource="{Binding TopLotsChartItems}">
+
+                            <ItemsControl.ItemTemplate>
+
+                                <DataTemplate>
+
+                                    <StackPanel Spacing="6">
+
+                                        <DockPanel>
+
+                                            <TextBlock
+                                                DockPanel.Dock="Left"
+                                                Text="{Binding Label}"
+                                                Foreground="#D7E7DB"
+                                                FontSize="13"/>
+
+                                            <TextBlock
+                                                DockPanel.Dock="Right"
+                                                Text="{Binding Value}"
+                                                Foreground="#75C943"
+                                                FontWeight="Bold"/>
+
+                                        </DockPanel>
+
+                                        <Border
+                                            Height="18"
+                                            Width="{Binding Width}"
+                                            Background="#75C943"
+                                            CornerRadius="8"/>
+
+                                    </StackPanel>
+
+                                </DataTemplate>
+
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+
+                    </StackPanel>
 
                 </Border>
 
@@ -236,17 +472,57 @@
                     Grid.Column="1"
                     Classes="card">
 
-                    <Grid Height="320">
+                    <StackPanel Spacing="16">
 
                         <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Text="График временно отключён"
-                            Foreground="#7E9388"/>
+                            Text="Эффективность точек питания"
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            Foreground="#F4FFF6"/>
 
-                    </Grid>
+                        <ItemsControl
+                            ItemsSource="{Binding FoodPointsChartItems}">
+
+                            <ItemsControl.ItemTemplate>
+
+                                <DataTemplate>
+
+                                    <StackPanel Spacing="6">
+
+                                        <DockPanel>
+
+                                            <TextBlock
+                                                DockPanel.Dock="Left"
+                                                Text="{Binding Label}"
+                                                Foreground="#D7E7DB"
+                                                FontSize="13"/>
+
+                                            <TextBlock
+                                                DockPanel.Dock="Right"
+                                                Text="{Binding Value}"
+                                                Foreground="#4FA3FF"
+                                                FontWeight="Bold"/>
+
+                                        </DockPanel>
+
+                                        <Border
+                                            Height="18"
+                                            Width="{Binding Width}"
+                                            Background="#4FA3FF"
+                                            CornerRadius="8"/>
+
+                                    </StackPanel>
+
+                                </DataTemplate>
+
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+
+                    </StackPanel>
 
                 </Border>
+
 
                 <Border
                     Grid.Row="2"
@@ -255,11 +531,27 @@
 
                     <Grid Height="320">
 
-                        <TextBlock
+                        <StackPanel
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Text="График временно отключён"
-                            Foreground="#7E9388"/>
+                            Spacing="12">
+
+                            <TextBlock
+                                Text="Скоро здесь появится расширенная аналитика"
+                                FontSize="20"
+                                FontWeight="SemiBold"
+                                Foreground="#F4FFF6"
+                                HorizontalAlignment="Center"/>
+
+                            <TextBlock
+                                Text="Прогнозы, динамика отходов, эффективность лотов и сравнение точек питания"
+                                Width="520"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap"
+                                FontSize="14"
+                                Foreground="#8FA59A"/>
+
+                        </StackPanel>
 
                     </Grid>
 
