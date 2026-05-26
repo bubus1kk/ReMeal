@@ -24,8 +24,6 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.1" />
-    <PackageReference Include="ScottPlot" Version="5.1.58" />
-    <PackageReference Include="ScottPlot.Avalonia" Version="5.1.58" />
   </ItemGroup>
 
   <ItemGroup>

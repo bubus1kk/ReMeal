@@ -1,11 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using Application.DTOs.Analytics;
 using Application.Interfaces;
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ScottPlot;
-using ScottPlot.Avalonia;
 
 namespace ReMealApp.ViewModels.Analytics;
 
@@ -13,14 +10,6 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
 {
     private readonly IPartnerAnalyticsService _analyticsService;
     private readonly IFoodPointService _foodPointService;
-
-    private AvaPlot? _savedPortionsPlot;
-    private AvaPlot? _bookingStatusesPlot;
-    private AvaPlot? _topLotsPlot;
-    private AvaPlot? _foodPointsPlot;
-    private AvaPlot? _preventedWastePlot;
-
-    private bool _plotsAttached;
 
     public ObservableCollection<FoodPointFilterItem> FoodPoints { get; } =
         new();
@@ -68,45 +57,6 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
         InitializePeriods();
     }
 
-    public void AttachPlots(
-        AvaPlot savedPortionsPlot,
-        AvaPlot bookingStatusesPlot,
-        AvaPlot topLotsPlot,
-        AvaPlot foodPointsPlot,
-        AvaPlot preventedWastePlot)
-    {
-        _savedPortionsPlot = savedPortionsPlot;
-        _bookingStatusesPlot = bookingStatusesPlot;
-        _topLotsPlot = topLotsPlot;
-        _foodPointsPlot = foodPointsPlot;
-        _preventedWastePlot = preventedWastePlot;
-
-        ApplyDarkTheme(_savedPortionsPlot);
-        ApplyDarkTheme(_bookingStatusesPlot);
-        ApplyDarkTheme(_topLotsPlot);
-        ApplyDarkTheme(_foodPointsPlot);
-        ApplyDarkTheme(_preventedWastePlot);
-
-        _plotsAttached = true;
-    }
-
-    private static void ApplyDarkTheme(AvaPlot? plot)
-    {
-        if (plot is null)
-            return;
-
-        plot.Plot.FigureBackground.Color =
-            ScottPlot.Color.FromHex("#101917");
-
-        plot.Plot.DataBackground.Color =
-            ScottPlot.Color.FromHex("#101917");
-
-        plot.Plot.Axes.Color(
-            ScottPlot.Color.FromHex("#D0D0D0"));
-
-        plot.Refresh();
-    }
-
     private void InitializePeriods()
     {
         Periods.Add(
@@ -152,14 +102,6 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
 
             ApplyDashboard(dashboard);
 
-            if (_plotsAttached)
-            {
-                await Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    BuildCharts(dashboard);
-                });
-            }
-
             if (!HasAnyData(dashboard))
             {
                 EmptyStateMessage =
@@ -188,18 +130,12 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
         if (value is null)
             return;
 
-        if (!_plotsAttached)
-            return;
-
         _ = LoadAsync();
     }
 
     partial void OnSelectedFoodPointChanged(
         FoodPointFilterItem? value)
     {
-        if (!_plotsAttached)
-            return;
-
         _ = LoadAsync();
     }
 
@@ -255,136 +191,6 @@ public partial class PartnerAnalyticsViewModel : ViewModelBase
 
         PreventedWasteKg =
             dashboard.PreventedWasteKg;
-    }
-
-    private void BuildCharts(
-        PartnerAnalyticsDashboardDto dashboard)
-    {
-        BuildSavedPortionsChart(dashboard);
-        BuildStatusesChart(dashboard);
-        BuildTopLotsChart(dashboard);
-        BuildFoodPointsChart(dashboard);
-        BuildWasteChart(dashboard);
-    }
-
-    private void BuildSavedPortionsChart(
-        PartnerAnalyticsDashboardDto dashboard)
-    {
-        if (_savedPortionsPlot is null)
-            return;
-
-        _savedPortionsPlot.Plot.Clear();
-
-        double[] values =
-            dashboard.SavedPortionsByDay
-                .Select(x => (double)x.Value)
-                .ToArray();
-
-        if (values.Length == 0)
-        {
-            _savedPortionsPlot.Refresh();
-            return;
-        }
-
-        _savedPortionsPlot.Plot.Add.Signal(values);
-
-        _savedPortionsPlot.Refresh();
-    }
-
-    private void BuildStatusesChart(
-        PartnerAnalyticsDashboardDto dashboard)
-    {
-        if (_bookingStatusesPlot is null)
-            return;
-
-        _bookingStatusesPlot.Plot.Clear();
-
-        double[] values =
-            dashboard.BookingStatusDistribution
-                .Select(x => (double)x.Count)
-                .ToArray();
-
-        if (values.Length == 0)
-        {
-            _bookingStatusesPlot.Refresh();
-            return;
-        }
-
-        _bookingStatusesPlot.Plot.Add.Bars(values);
-
-        _bookingStatusesPlot.Refresh();
-    }
-
-    private void BuildTopLotsChart(
-        PartnerAnalyticsDashboardDto dashboard)
-    {
-        if (_topLotsPlot is null)
-            return;
-
-        _topLotsPlot.Plot.Clear();
-
-        double[] values =
-            dashboard.TopLotsByIssuedQuantity
-                .Select(x => (double)x.IssuedQuantity)
-                .ToArray();
-
-        if (values.Length == 0)
-        {
-            _topLotsPlot.Refresh();
-            return;
-        }
-
-        _topLotsPlot.Plot.Add.Bars(values);
-
-        _topLotsPlot.Refresh();
-    }
-
-    private void BuildFoodPointsChart(
-        PartnerAnalyticsDashboardDto dashboard)
-    {
-        if (_foodPointsPlot is null)
-            return;
-
-        _foodPointsPlot.Plot.Clear();
-
-        double[] values =
-            dashboard.IssuedByFoodPoint
-                .Select(x => (double)x.IssuedQuantity)
-                .ToArray();
-
-        if (values.Length == 0)
-        {
-            _foodPointsPlot.Refresh();
-            return;
-        }
-
-        _foodPointsPlot.Plot.Add.Bars(values);
-
-        _foodPointsPlot.Refresh();
-    }
-
-    private void BuildWasteChart(
-        PartnerAnalyticsDashboardDto dashboard)
-    {
-        if (_preventedWastePlot is null)
-            return;
-
-        _preventedWastePlot.Plot.Clear();
-
-        double[] values =
-            dashboard.PreventedWasteByDay
-                .Select(x => x.Value)
-                .ToArray();
-
-        if (values.Length == 0)
-        {
-            _preventedWastePlot.Refresh();
-            return;
-        }
-
-        _preventedWastePlot.Plot.Add.Signal(values);
-
-        _preventedWastePlot.Refresh();
     }
 
     private static bool HasAnyData(

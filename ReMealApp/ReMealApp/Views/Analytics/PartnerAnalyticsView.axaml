@@ -4,7 +4,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:ReMealApp.ViewModels.Analytics"
-    xmlns:scottplot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
     x:Class="ReMealApp.Views.Analytics.PartnerAnalyticsView"
     x:DataType="vm:PartnerAnalyticsViewModel"
     mc:Ignorable="d">
@@ -41,7 +40,6 @@
             <Setter Property="Foreground" Value="#E8F5EC"/>
             <Setter Property="BorderBrush" Value="#24362F"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="MinWidth" Value="180"/>
         </Style>
 
@@ -50,7 +48,6 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
 
         <StackPanel Margin="28" Spacing="24">
-
 
             <StackPanel Spacing="4">
 
@@ -63,7 +60,6 @@
                     Text="Статистика по вашим точкам питания и лотам"/>
 
             </StackPanel>
-
 
             <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="16">
 
@@ -81,7 +77,6 @@
 
             </Grid>
 
-
             <Border
                 Classes="card"
                 IsVisible="{Binding EmptyStateMessage}">
@@ -93,11 +88,9 @@
 
             </Border>
 
-
             <Grid
                 ColumnDefinitions="*,*,*,*,*"
                 ColumnSpacing="18">
-
 
                 <Border Grid.Column="0" Classes="card">
 
@@ -115,7 +108,6 @@
 
                 </Border>
 
-
                 <Border Grid.Column="1" Classes="card">
 
                     <StackPanel Spacing="8">
@@ -131,7 +123,6 @@
                     </StackPanel>
 
                 </Border>
-
 
                 <Border Grid.Column="2" Classes="card">
 
@@ -149,7 +140,6 @@
 
                 </Border>
 
-
                 <Border Grid.Column="3" Classes="card">
 
                     <StackPanel Spacing="8">
@@ -165,7 +155,6 @@
                     </StackPanel>
 
                 </Border>
-
 
                 <Border Grid.Column="4" Classes="card">
 
@@ -185,120 +174,94 @@
 
             </Grid>
 
-
             <Grid
                 RowDefinitions="Auto,Auto,Auto"
                 ColumnDefinitions="*,*"
                 RowSpacing="18"
                 ColumnSpacing="18">
 
-
                 <Border
                     Grid.Row="0"
                     Grid.Column="0"
                     Classes="card">
 
-                    <StackPanel Spacing="14">
+                    <Grid Height="320">
 
                         <TextBlock
-                            Text="Спасённые порции по дням"
-                            FontSize="18"
-                            FontWeight="SemiBold"
-                            Foreground="#F4FFF6"/>
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="График временно отключён"
+                            Foreground="#7E9388"/>
 
-                        <scottplot:AvaPlot
-                            Height="320"
-                            x:Name="SavedPortionsChart"/>
-
-                    </StackPanel>
+                    </Grid>
 
                 </Border>
-
 
                 <Border
                     Grid.Row="0"
                     Grid.Column="1"
                     Classes="card">
 
-                    <StackPanel Spacing="14">
+                    <Grid Height="320">
 
                         <TextBlock
-                            Text="Статусы бронирований"
-                            FontSize="18"
-                            FontWeight="SemiBold"
-                            Foreground="#F4FFF6"/>
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="График временно отключён"
+                            Foreground="#7E9388"/>
 
-                        <scottplot:AvaPlot
-                            Height="320"
-                            x:Name="StatusesChart"/>
-
-                    </StackPanel>
+                    </Grid>
 
                 </Border>
-
 
                 <Border
                     Grid.Row="1"
                     Grid.Column="0"
                     Classes="card">
 
-                    <StackPanel Spacing="14">
+                    <Grid Height="320">
 
                         <TextBlock
-                            Text="Топ лоты по выдачам"
-                            FontSize="18"
-                            FontWeight="SemiBold"
-                            Foreground="#F4FFF6"/>
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="График временно отключён"
+                            Foreground="#7E9388"/>
 
-                        <scottplot:AvaPlot
-                            Height="320"
-                            x:Name="LotsChart"/>
-
-                    </StackPanel>
+                    </Grid>
 
                 </Border>
-
 
                 <Border
                     Grid.Row="1"
                     Grid.Column="1"
                     Classes="card">
 
-                    <StackPanel Spacing="14">
+                    <Grid Height="320">
 
                         <TextBlock
-                            Text="Выдачи по точкам питания"
-                            FontSize="18"
-                            FontWeight="SemiBold"
-                            Foreground="#F4FFF6"/>
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="График временно отключён"
+                            Foreground="#7E9388"/>
 
-                        <scottplot:AvaPlot
-                            Height="320"
-                            x:Name="FoodPointsChart"/>
-
-                    </StackPanel>
+                    </Grid>
 
                 </Border>
-
 
                 <Border
                     Grid.Row="2"
                     Grid.ColumnSpan="2"
                     Classes="card">
 
-                    <StackPanel Spacing="14">
+                    <Grid Height="320">
 
                         <TextBlock
-                            Text="Предотвращённые отходы"
-                            FontSize="18"
-                            FontWeight="SemiBold"
-                            Foreground="#F4FFF6"/>
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="График временно отключён"
+                            Foreground="#7E9388"/>
 
-                        <scottplot:AvaPlot
-                            Height="320"
-                            x:Name="WasteChart"/>
-
-                    </StackPanel>
+                    </Grid>
 
                 </Border>
 
