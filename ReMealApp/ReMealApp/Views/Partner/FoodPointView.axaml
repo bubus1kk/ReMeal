@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ReMealApp.ViewModels.Partner"
+             xmlns:maps="using:ReMealApp.Views.Maps"
              x:Class="ReMealApp.Views.Partner.FoodPointView"
              x:DataType="vm:FoodPointViewModel">
 
@@ -801,12 +802,21 @@
                                                            Text="{Binding ReadAddressText}"
                                                            Classes="field-value"
                                                            IsVisible="{Binding !IsEditing}"/>
-                                                <TextBox Grid.Column="1"
-                                                         Classes="form-input"
-                                                         PlaceholderText="Адрес"
-                                                         Text="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                         MaxLength="500"
-                                                         IsVisible="{Binding IsEditing}"/>
+                                                <Grid Grid.Column="1"
+                                                      ColumnDefinitions="*,Auto"
+                                                      ColumnSpacing="10"
+                                                      IsVisible="{Binding IsEditing}">
+                                                    <TextBox Classes="form-input"
+                                                             PlaceholderText="Адрес"
+                                                             Text="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             MaxLength="500"/>
+                                                    <Button Grid.Column="1"
+                                                            Classes="secondary-action"
+                                                            MinWidth="138"
+                                                            Click="FindAddressOnMap_Click">
+                                                        <TextBlock Text="Найти на карте"/>
+                                                    </Button>
+                                                </Grid>
                                             </Grid>
 
                                             <Grid Grid.Row="2"
@@ -861,6 +871,41 @@
                                                            Classes="field-value"/>
                                             </Grid>
                                         </Grid>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Classes="food-card"
+                                        IsVisible="{Binding IsEditing}">
+                                    <StackPanel Spacing="12">
+                                        <Grid ColumnDefinitions="*,Auto"
+                                              ColumnSpacing="12">
+                                            <StackPanel Spacing="4">
+                                                <TextBlock Text="Расположение на карте"
+                                                           Classes="card-title"/>
+                                                <TextBlock Text="{Binding CoordinatesStatusText}"
+                                                           Classes="muted"
+                                                           FontSize="13"/>
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="1"
+                                                       Text="© OpenStreetMap contributors"
+                                                       Classes="muted"
+                                                       FontSize="12"
+                                                       VerticalAlignment="Top"/>
+                                        </Grid>
+
+                                        <Border Background="#0B1210"
+                                                BorderBrush="#26352F"
+                                                BorderThickness="1"
+                                                CornerRadius="10"
+                                                Padding="18"
+                                                MinHeight="96">
+                                            <TextBlock Text="{Binding CoordinatesTechnicalText}"
+                                                       Classes="muted"
+                                                       TextWrapping="Wrap"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+
                                     </StackPanel>
                                 </Border>
 
@@ -1042,5 +1087,22 @@
                 </Border>
             </StackPanel>
         </ScrollViewer>
+
+        <Border x:Name="MapPickerOverlay"
+                Background="#CC000000"
+                IsVisible="False"
+                ZIndex="50">
+            <Border Width="1160"
+                    Height="780"
+                    Background="#08110F"
+                    BorderBrush="#26352F"
+                    BorderThickness="1"
+                    CornerRadius="14"
+                    ClipToBounds="True"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                <maps:MapPointPickerControl x:Name="InlineMapPicker"/>
+            </Border>
+        </Border>
     </Grid>
 </UserControl>

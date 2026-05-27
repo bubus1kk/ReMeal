@@ -28,7 +28,9 @@ namespace Application.Services
                 request.Address,
                 request.Description,
                 request.Phone,
-                partner.Id);
+                partner.Id,
+                request.Latitude,
+                request.Longitude);
 
             await _foodPointRepository.AddAsync(foodPoint, cancellationToken);
             await _foodPointRepository.SaveChangesAsync(cancellationToken);
@@ -40,7 +42,13 @@ namespace Application.Services
             CancellationToken cancellationToken = default)
         {
             var foodPoint = await GetOwnedFoodPointAsync(request.Id, cancellationToken);
-            foodPoint.UpdateInformation(request.Name, request.Address, request.Description, request.Phone);
+            foodPoint.UpdateInformation(
+                request.Name,
+                request.Address,
+                request.Description,
+                request.Phone,
+                request.Latitude,
+                request.Longitude);
             await _foodPointRepository.UpdateAsync(foodPoint, cancellationToken);
             await _foodPointRepository.SaveChangesAsync(cancellationToken);
             return foodPoint;

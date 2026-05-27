@@ -7,6 +7,7 @@ using ReMealApp.ViewModels.Admin;
 using ReMealApp.ViewModels.Analytics;
 using ReMealApp.ViewModels.Booking;
 using ReMealApp.ViewModels.Catalog;
+using ReMealApp.ViewModels.Maps;
 using ReMealApp.ViewModels.Partner;
 using ReMealApp.ViewModels.Profile;
 
@@ -85,6 +86,33 @@ namespace ReMealApp.ViewModels.Shell
                 bookingService,
                 new DeniedAdminService(),
                 profileStatisticsService,
+                new UnavailableGeocodingService(),
+                new UnavailableMapService(),
+                showLogin,
+                exitApplication)
+        {
+        }
+
+        public HomeViewModel(
+            IAuthService authService,
+            IUserProfileService userProfileService,
+            IFoodPointService foodPointService,
+            ILotService lotService,
+            IBookingService bookingService,
+            IProfileStatisticsService profileStatisticsService,
+            IGeocodingService geocodingService,
+            Action<string> showLogin,
+            Action exitApplication)
+            : this(
+                authService,
+                userProfileService,
+                foodPointService,
+                lotService,
+                bookingService,
+                new DeniedAdminService(),
+                profileStatisticsService,
+                geocodingService,
+                new UnavailableMapService(),
                 partnerAnalyticsService,
                 showLogin,
                 exitApplication)
@@ -99,6 +127,8 @@ namespace ReMealApp.ViewModels.Shell
             IBookingService bookingService,
             IAdminService adminService,
             IProfileStatisticsService profileStatisticsService,
+            IGeocodingService geocodingService,
+            IMapService mapService,
             IPartnerAnalyticsService partnerAnalyticsService,
             Action<string> showLogin,
             Action exitApplication)
@@ -119,6 +149,13 @@ namespace ReMealApp.ViewModels.Shell
                 showLogin);
 
             Catalog = new CatalogViewModel(lotService, bookingService);
+            Map = new MapViewModel(mapService);
+            FoodPoint = new FoodPointViewModel(foodPointService, lotService, geocodingService, this);
+            PartnerLots = new PartnerLotsViewModel(lotService, foodPointService, this);
+            PartnerBookings = new PartnerBookingsViewModel(bookingService);
+            CreateLot = new CreateLotViewModel(foodPointService, lotService, this);
+            MyBookings = new MyBookingsViewModel(bookingService);
+            AdminPanel = new AdminPanelViewModel(adminService);
 
             FoodPoint = new FoodPointViewModel(
                 foodPointService,
@@ -154,6 +191,8 @@ namespace ReMealApp.ViewModels.Shell
         public UserProfileViewModel Profile { get; }
 
         public CatalogViewModel Catalog { get; }
+
+        public MapViewModel Map { get; }
 
         public FoodPointViewModel FoodPoint { get; }
 
@@ -205,6 +244,9 @@ namespace ReMealApp.ViewModels.Shell
         public string BookingsNavigationText =>
             IsPartner ? "Брони клиентов" : "Мои брони";
 
+        public string FoodPointsNavigationText => IsPartner ? "Мои точки" : "Карта";
+
+        public string FoodPointsNavigationIconPath => "/Assets/Icons/location.png";
         public string FoodPointsNavigationText =>
             IsPartner ? "Мои точки" : "Партнёры";
 
@@ -453,6 +495,8 @@ namespace ReMealApp.ViewModels.Shell
                         }
                         else
                         {
+                            await Map.LoadAsync();
+                            SetSection(FoodPointsSection, Map);
                             SetSection(
                                 FoodPointsSection,
                                 new ModulePlaceholderViewModel(
@@ -622,6 +666,42 @@ namespace ReMealApp.ViewModels.Shell
             {
                 throw new UnauthorizedAccessException(
                     "Административный модуль доступен только администратору.");
+            }
+        }
+
+        private sealed class UnavailableGeocodingService : IGeocodingService
+        {
+            public Task<Application.DTOs.Maps.GeocodingResultDto?> GeocodeAddressAsync(
+                string address,
+                CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<Application.DTOs.Maps.GeocodingResultDto?>(null);
+            }
+        }
+
+        private sealed class UnavailableMapService : IMapService
+        {
+            public Task<IReadOnlyList<Application.DTOs.Maps.MapFoodPointDto>> GetFoodPointsForMapAsync(
+                CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<IReadOnlyList<Application.DTOs.Maps.MapFoodPointDto>>(
+                    Array.Empty<Application.DTOs.Maps.MapFoodPointDto>());
+            }
+
+            public Task<IReadOnlyList<Application.DTOs.Maps.NearestFoodPointDto>> FindNearestFoodPointsAsync(
+                string address,
+                int maxResults = 5,
+                CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<IReadOnlyList<Application.DTOs.Maps.NearestFoodPointDto>>(
+                    Array.Empty<Application.DTOs.Maps.NearestFoodPointDto>());
+            }
+
+            public double CalculateDistanceKm(
+                Application.DTOs.Maps.CoordinatesDto first,
+                Application.DTOs.Maps.CoordinatesDto second)
+            {
+                return 0;
             }
         }
     }

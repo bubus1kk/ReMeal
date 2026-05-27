@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="ReMealApp.Views.Maps.OsmFoodPointMapControl"
+             Background="#07100E">
+    <Grid ClipToBounds="True"
+          Background="#07100E">
+        <Canvas x:Name="TileCanvas"
+                Background="#07100E"
+                ClipToBounds="True"
+                PointerPressed="TileCanvas_PointerPressed"
+                PointerMoved="TileCanvas_PointerMoved"
+                PointerReleased="TileCanvas_PointerReleased"
+                PointerWheelChanged="TileCanvas_PointerWheelChanged"/>
+
+        <TextBlock x:Name="MapStatusText"
+                   Text="Загрузка карты..."
+                   Foreground="#CBD7D0"
+                   FontSize="14"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   IsHitTestVisible="False"/>
+    </Grid>
+</UserControl>

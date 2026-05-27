@@ -43,12 +43,26 @@ namespace Infrastructure.Persistence
                         Address TEXT NOT NULL,
                         Description TEXT NOT NULL,
                         Phone TEXT NOT NULL,
+                        Latitude REAL NULL,
+                        Longitude REAL NULL,
                         OwnerId TEXT NOT NULL,
                         CreatedAt TEXT NOT NULL,
                         IsActive INTEGER NOT NULL,
                         CONSTRAINT FK_FoodPoints_Users_OwnerId FOREIGN KEY (OwnerId) REFERENCES Users (Id) ON DELETE CASCADE
                     );
                     """);
+
+                EnsureColumn(
+                    dbContext,
+                    "FoodPoints",
+                    "Latitude",
+                    "ALTER TABLE FoodPoints ADD COLUMN Latitude REAL NULL;");
+
+                EnsureColumn(
+                    dbContext,
+                    "FoodPoints",
+                    "Longitude",
+                    "ALTER TABLE FoodPoints ADD COLUMN Longitude REAL NULL;");
 
                 dbContext.Database.ExecuteSqlRaw("""
                     CREATE TABLE IF NOT EXISTS FoodLots (
