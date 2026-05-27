@@ -96,7 +96,7 @@
             <Grid ColumnDefinitions="*,Auto,Auto"
                   ColumnSpacing="12">
                 <TextBlock Grid.Column="0"
-                           Text="Клик по карте уточняет координаты."
+                           Text="Клик по карте уточняет координаты и адрес."
                            Classes="muted"
                            VerticalAlignment="Center"/>
                 <Button Grid.Column="1"

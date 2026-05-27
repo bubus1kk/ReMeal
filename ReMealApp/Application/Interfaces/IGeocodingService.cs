@@ -7,5 +7,9 @@ namespace Application.Interfaces
         Task<GeocodingResultDto?> GeocodeAddressAsync(
             string address,
             CancellationToken cancellationToken = default);
+
+        Task<GeocodingResultDto?> ReverseGeocodeAsync(
+            CoordinatesDto coordinates,
+            CancellationToken cancellationToken = default);
     }
 }

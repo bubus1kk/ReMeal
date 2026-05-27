@@ -394,6 +394,57 @@ namespace ReMealApp.ViewModels.Partner
             StatusMessage = "Координаты выбраны.";
         }
 
+        public async Task SetSelectedCoordinatesFromMapAsync(
+            double latitude,
+            double longitude,
+            CancellationToken cancellationToken = default)
+        {
+            if (latitude is < -90 or > 90 || longitude is < -180 or > 180)
+            {
+                StatusMessage = "Не удалось выбрать координаты на карте.";
+                return;
+            }
+
+            UpdateCoordinates(latitude, longitude);
+            Address = FormatCoordinatesAddress(latitude, longitude);
+
+            try
+            {
+                IsBusy = true;
+                StatusMessage = "Определяем адрес выбранной точки...";
+
+                using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                timeout.CancelAfter(TimeSpan.FromSeconds(8));
+                var result = await _geocodingService.ReverseGeocodeAsync(
+                    new Application.DTOs.Maps.CoordinatesDto(latitude, longitude),
+                    timeout.Token);
+
+                if (result is null || string.IsNullOrWhiteSpace(result.DisplayName))
+                {
+                    StatusMessage = "Адрес не найден, в поле адреса записаны координаты.";
+                    return;
+                }
+
+                Address = NormalizeMapAddress(result.DisplayName);
+                StatusMessage = "Адрес и координаты выбраны по карте.";
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+            }
+            catch (OperationCanceledException)
+            {
+                StatusMessage = "Координаты выбраны, но определение адреса заняло слишком много времени.";
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
         [RelayCommand]
         private async Task DeactivateAsync()
         {
@@ -677,6 +728,21 @@ namespace ReMealApp.ViewModels.Partner
             OnPropertyChanged(nameof(HasSelectedCoordinates));
             OnPropertyChanged(nameof(CoordinatesStatusText));
             OnPropertyChanged(nameof(CoordinatesTechnicalText));
+        }
+
+        private static string NormalizeMapAddress(string address)
+        {
+            var normalized = address.Trim();
+            return normalized.Length <= 500
+                ? normalized
+                : normalized[..500];
+        }
+
+        private static string FormatCoordinatesAddress(double latitude, double longitude)
+        {
+            return string.Create(
+                CultureInfo.InvariantCulture,
+                $"Координаты: {latitude:F6}, {longitude:F6}");
         }
     }
 

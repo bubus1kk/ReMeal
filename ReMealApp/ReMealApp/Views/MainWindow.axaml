@@ -10,6 +10,7 @@
         Height="768"
         MinWidth="1180"
         MinHeight="720"
+        WindowState="Maximized"
         Title="ReMeal"
         Icon="/Assets/Brand/app-icon-taskbar.png">
 

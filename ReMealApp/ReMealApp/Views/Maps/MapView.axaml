@@ -301,6 +301,12 @@
                         <TextBlock Text="{Binding SelectedFoodPoint.AvailableLotsDisplayText}"
                                    Foreground="#9FE58D"
                                    FontSize="14"/>
+                        <Button Classes="primary-action"
+                                Command="{Binding OpenSelectedFoodPointLotsCommand}"
+                                HorizontalAlignment="Stretch"
+                                Margin="0,6,0,0">
+                            <TextBlock Text="Открыть лоты"/>
+                        </Button>
                     </StackPanel>
                 </Border>
             </Grid>

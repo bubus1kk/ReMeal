@@ -11,6 +11,7 @@ namespace ReMealApp.ViewModels.Maps
     public partial class MapViewModel : ViewModelBase
     {
         private readonly IMapService _mapService;
+        private readonly Action<Guid>? _openLotsForFoodPoint;
 
         [ObservableProperty]
         private ObservableCollection<MapFoodPointItemViewModel> _foodPoints = new();
@@ -36,9 +37,12 @@ namespace ReMealApp.ViewModels.Maps
         [ObservableProperty]
         private bool _isBusy;
 
-        public MapViewModel(IMapService mapService)
+        public MapViewModel(
+            IMapService mapService,
+            Action<Guid>? openLotsForFoodPoint = null)
         {
             _mapService = mapService;
+            _openLotsForFoodPoint = openLotsForFoodPoint;
         }
 
         public bool HasFoodPoints => FoodPoints.Count > 0;
@@ -174,7 +178,16 @@ namespace ReMealApp.ViewModels.Maps
                 return;
 
             ShowOnMap(foodPoint);
-            StatusMessage = "Переход к лотам выбранной точки будет добавлен на следующем этапе.";
+            OpenLotsForFoodPoint(foodPoint.Id);
+        }
+
+        [RelayCommand]
+        public void OpenSelectedFoodPointLots()
+        {
+            if (SelectedFoodPoint is null)
+                return;
+
+            OpenLotsForFoodPoint(SelectedFoodPoint.Id);
         }
 
         partial void OnFoodPointsChanged(ObservableCollection<MapFoodPointItemViewModel> value)
@@ -217,6 +230,17 @@ namespace ReMealApp.ViewModels.Maps
             OnPropertyChanged(nameof(HasNoNearestFoodPoints));
             OnPropertyChanged(nameof(IsInitialPointListVisible));
             OnPropertyChanged(nameof(CanSearchNearest));
+        }
+
+        private void OpenLotsForFoodPoint(Guid foodPointId)
+        {
+            if (_openLotsForFoodPoint is null)
+            {
+                StatusMessage = "Переход к лотам выбранной точки недоступен.";
+                return;
+            }
+
+            _openLotsForFoodPoint(foodPointId);
         }
     }
 

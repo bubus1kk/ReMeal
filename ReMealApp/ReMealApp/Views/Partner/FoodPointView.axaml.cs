@@ -7,11 +7,14 @@ namespace ReMealApp.Views.Partner
 {
     public partial class FoodPointView : UserControl
     {
+        private CancellationTokenSource? _mapAddressLookupCancellation;
+
         public FoodPointView()
         {
             InitializeComponent();
 
             InlineMapPicker.CoordinatesApplied += InlineMapPicker_CoordinatesApplied;
+            InlineMapPicker.CoordinatesSelected += InlineMapPicker_CoordinatesSelected;
             InlineMapPicker.Cancelled += InlineMapPicker_Cancelled;
         }
 
@@ -42,15 +45,39 @@ namespace ReMealApp.Views.Partner
 
         private async Task ShowInlineMapPickerAsync(double latitude, double longitude)
         {
+            CancelPendingMapAddressLookup();
             MapPickerOverlay.IsVisible = true;
             await InlineMapPicker.LoadLocationAsync(latitude, longitude);
         }
 
-        private void InlineMapPicker_CoordinatesApplied(object? sender, CoordinatesDto coordinates)
+        private async void InlineMapPicker_CoordinatesSelected(object? sender, CoordinatesDto coordinates)
         {
+            CancelPendingMapAddressLookup();
+            _mapAddressLookupCancellation = new CancellationTokenSource();
+            var cancellationToken = _mapAddressLookupCancellation.Token;
+
+            try
+            {
+                if (DataContext is FoodPointViewModel viewModel)
+                {
+                    await viewModel.SetSelectedCoordinatesFromMapAsync(
+                        coordinates.Latitude,
+                        coordinates.Longitude,
+                        cancellationToken);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+            }
+        }
+
+        private async void InlineMapPicker_CoordinatesApplied(object? sender, CoordinatesDto coordinates)
+        {
+            CancelPendingMapAddressLookup();
+
             if (DataContext is FoodPointViewModel viewModel)
             {
-                viewModel.SetSelectedCoordinates(
+                await viewModel.SetSelectedCoordinatesFromMapAsync(
                     coordinates.Latitude,
                     coordinates.Longitude);
             }
@@ -60,7 +87,15 @@ namespace ReMealApp.Views.Partner
 
         private void InlineMapPicker_Cancelled(object? sender, EventArgs e)
         {
+            CancelPendingMapAddressLookup();
             MapPickerOverlay.IsVisible = false;
+        }
+
+        private void CancelPendingMapAddressLookup()
+        {
+            _mapAddressLookupCancellation?.Cancel();
+            _mapAddressLookupCancellation?.Dispose();
+            _mapAddressLookupCancellation = null;
         }
 
         private async void FoodPointRow_Click(object? sender, RoutedEventArgs e)

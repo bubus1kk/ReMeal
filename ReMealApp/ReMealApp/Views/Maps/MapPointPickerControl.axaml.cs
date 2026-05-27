@@ -58,6 +58,8 @@ namespace ReMealApp.Views.Maps
 
         public event EventHandler<CoordinatesDto>? CoordinatesApplied;
 
+        public event EventHandler<CoordinatesDto>? CoordinatesSelected;
+
         public event EventHandler? Cancelled;
 
         public async Task LoadLocationAsync(double latitude, double longitude)
@@ -357,6 +359,7 @@ namespace ReMealApp.Views.Maps
             _selectedLongitude = geo.Longitude;
             UpdateCoordinatesText();
             MoveMarkerToSelectedCoordinates();
+            CoordinatesSelected?.Invoke(this, geo);
         }
 
         private void UpdateTilePositions()
