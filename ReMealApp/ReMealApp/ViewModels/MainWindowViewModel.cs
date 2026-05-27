@@ -14,6 +14,7 @@ namespace ReMealApp.ViewModels
         private readonly IBookingService _bookingService;
         private readonly IAdminService _adminService;
         private readonly IProfileStatisticsService _profileStatisticsService;
+        private readonly IPartnerAnalyticsService _partnerAnalyticsService;
         private readonly Action _exitApplication;
 
         [ObservableProperty]
@@ -27,6 +28,7 @@ namespace ReMealApp.ViewModels
             IBookingService bookingService,
             IAdminService adminService,
             IProfileStatisticsService profileStatisticsService,
+            IPartnerAnalyticsService partnerAnalyticsService,
             Action exitApplication)
         {
             _authService = authService;
@@ -36,7 +38,9 @@ namespace ReMealApp.ViewModels
             _bookingService = bookingService;
             _adminService = adminService;
             _profileStatisticsService = profileStatisticsService;
+            _partnerAnalyticsService = partnerAnalyticsService;
             _exitApplication = exitApplication;
+
             _currentViewModel = CreateLoginViewModel();
         }
 
@@ -45,18 +49,27 @@ namespace ReMealApp.ViewModels
             try
             {
                 var rememberedUser = await _authService.TryRestoreRememberedUserAsync();
+
                 if (rememberedUser is not null)
                     await ShowHomeAsync();
             }
             catch (Exception ex)
             {
-                CurrentViewModel = CreateLoginViewModel(ExceptionMessageFormatter.ToUserMessage(ex));
+                CurrentViewModel =
+                    CreateLoginViewModel(
+                        ExceptionMessageFormatter.ToUserMessage(ex));
             }
         }
 
-        private LoginViewModel CreateLoginViewModel(string initialErrorMessage = "", string initialLogin = "")
+        private LoginViewModel CreateLoginViewModel(
+            string initialErrorMessage = "",
+            string initialLogin = "")
         {
-            return new LoginViewModel(_authService, ShowHomeAsync, initialErrorMessage, initialLogin);
+            return new LoginViewModel(
+                _authService,
+                ShowHomeAsync,
+                initialErrorMessage,
+                initialLogin);
         }
 
         private async Task ShowHomeAsync()
@@ -69,16 +82,19 @@ namespace ReMealApp.ViewModels
                 _bookingService,
                 _adminService,
                 _profileStatisticsService,
+                _partnerAnalyticsService,
                 ShowLogin,
                 _exitApplication);
 
             await homeViewModel.InitializeAsync();
+
             CurrentViewModel = homeViewModel;
         }
 
         private void ShowLogin(string initialLogin = "")
         {
-            CurrentViewModel = CreateLoginViewModel(initialLogin: initialLogin);
+            CurrentViewModel =
+                CreateLoginViewModel(initialLogin: initialLogin);
         }
     }
 }
