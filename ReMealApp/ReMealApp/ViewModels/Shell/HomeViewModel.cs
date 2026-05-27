@@ -1,4 +1,5 @@
 using Application.DTOs.Admin;
+using Application.DTOs.Analytics;
 using Application.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -75,6 +76,31 @@ namespace ReMealApp.ViewModels.Shell
             ILotService lotService,
             IBookingService bookingService,
             IProfileStatisticsService profileStatisticsService,
+            Action<string> showLogin,
+            Action exitApplication)
+            : this(
+                authService,
+                userProfileService,
+                foodPointService,
+                lotService,
+                bookingService,
+                new DeniedAdminService(),
+                profileStatisticsService,
+                new UnavailableGeocodingService(),
+                new UnavailableMapService(),
+                new UnavailablePartnerAnalyticsService(),
+                showLogin,
+                exitApplication)
+        {
+        }
+
+        public HomeViewModel(
+            IAuthService authService,
+            IUserProfileService userProfileService,
+            IFoodPointService foodPointService,
+            ILotService lotService,
+            IBookingService bookingService,
+            IProfileStatisticsService profileStatisticsService,
             IPartnerAnalyticsService partnerAnalyticsService,
             Action<string> showLogin,
             Action exitApplication)
@@ -88,6 +114,7 @@ namespace ReMealApp.ViewModels.Shell
                 profileStatisticsService,
                 new UnavailableGeocodingService(),
                 new UnavailableMapService(),
+                partnerAnalyticsService,
                 showLogin,
                 exitApplication)
         {
@@ -112,6 +139,33 @@ namespace ReMealApp.ViewModels.Shell
                 new DeniedAdminService(),
                 profileStatisticsService,
                 geocodingService,
+                new UnavailableMapService(),
+                new UnavailablePartnerAnalyticsService(),
+                showLogin,
+                exitApplication)
+        {
+        }
+
+        public HomeViewModel(
+            IAuthService authService,
+            IUserProfileService userProfileService,
+            IFoodPointService foodPointService,
+            ILotService lotService,
+            IBookingService bookingService,
+            IAdminService adminService,
+            IProfileStatisticsService profileStatisticsService,
+            IPartnerAnalyticsService partnerAnalyticsService,
+            Action<string> showLogin,
+            Action exitApplication)
+            : this(
+                authService,
+                userProfileService,
+                foodPointService,
+                lotService,
+                bookingService,
+                adminService,
+                profileStatisticsService,
+                new UnavailableGeocodingService(),
                 new UnavailableMapService(),
                 partnerAnalyticsService,
                 showLogin,
@@ -156,30 +210,6 @@ namespace ReMealApp.ViewModels.Shell
             CreateLot = new CreateLotViewModel(foodPointService, lotService, this);
             MyBookings = new MyBookingsViewModel(bookingService);
             AdminPanel = new AdminPanelViewModel(adminService);
-
-            FoodPoint = new FoodPointViewModel(
-                foodPointService,
-                lotService,
-                this);
-
-            PartnerLots = new PartnerLotsViewModel(
-                lotService,
-                foodPointService,
-                this);
-
-            PartnerBookings = new PartnerBookingsViewModel(
-                bookingService);
-
-            CreateLot = new CreateLotViewModel(
-                foodPointService,
-                lotService,
-                this);
-
-            MyBookings = new MyBookingsViewModel(
-                bookingService);
-
-            AdminPanel = new AdminPanelViewModel(
-                adminService);
 
             Analytics = new PartnerAnalyticsViewModel(
                 _partnerAnalyticsService,
@@ -244,16 +274,10 @@ namespace ReMealApp.ViewModels.Shell
         public string BookingsNavigationText =>
             IsPartner ? "Брони клиентов" : "Мои брони";
 
-        public string FoodPointsNavigationText => IsPartner ? "Мои точки" : "Карта";
+        public string FoodPointsNavigationText =>
+            IsPartner ? "Мои точки" : "Карта";
 
         public string FoodPointsNavigationIconPath => "/Assets/Icons/location.png";
-        public string FoodPointsNavigationText =>
-            IsPartner ? "Мои точки" : "Партнёры";
-
-        public string FoodPointsNavigationIconPath =>
-            IsPartner
-                ? "/Assets/Icons/location.png"
-                : "/Assets/Icons/partners.png";
 
         public async Task InitializeAsync()
         {
@@ -497,12 +521,6 @@ namespace ReMealApp.ViewModels.Shell
                         {
                             await Map.LoadAsync();
                             SetSection(FoodPointsSection, Map);
-                            SetSection(
-                                FoodPointsSection,
-                                new ModulePlaceholderViewModel(
-                                    "Партнеры",
-                                    "Раздел партнеров пока не реализован.",
-                                    "/Assets/Icons/partners.png"));
                         }
 
                         break;
@@ -702,6 +720,19 @@ namespace ReMealApp.ViewModels.Shell
                 Application.DTOs.Maps.CoordinatesDto second)
             {
                 return 0;
+            }
+        }
+
+        private sealed class UnavailablePartnerAnalyticsService : IPartnerAnalyticsService
+        {
+            public Task<PartnerAnalyticsDashboardDto> GetDashboardAsync(
+                AnalyticsPeriod period,
+                Guid? foodPointId = null,
+                CancellationToken cancellationToken = default)
+            {
+                return Task.FromException<PartnerAnalyticsDashboardDto>(
+                    new InvalidOperationException(
+                        "Сервис аналитики не зарегистрирован."));
             }
         }
     }

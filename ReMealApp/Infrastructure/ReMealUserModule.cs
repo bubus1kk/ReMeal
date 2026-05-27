@@ -22,7 +22,7 @@ namespace Infrastructure
             IAdminService adminService,
             IProfileStatisticsService profileStatisticsService,
             IGeocodingService geocodingService,
-            IMapService mapService)
+            IMapService mapService,
             IPartnerAnalyticsService partnerAnalyticsService)
         {
             AuthService = authService;
@@ -54,6 +54,7 @@ namespace Infrastructure
         public IGeocodingService GeocodingService { get; }
 
         public IMapService MapService { get; }
+
         public IPartnerAnalyticsService PartnerAnalyticsService { get; }
 
         public static ReMealUserModule CreateDefault()
@@ -109,66 +110,6 @@ namespace Infrastructure
                     foodLotRepository);
                 IGeocodingService geocodingService = new NominatimGeocodingService(new HttpClient());
                 IMapService mapService = new MapService(lotService, geocodingService);
-                IUserRepository userRepository =
-                    new UserRepository(dbContext);
-
-                IPasswordHasher passwordHasher =
-                    new PasswordHasher();
-
-                IRememberedUserStore rememberedUserStore =
-                    RememberedUserStore.CreateDefault();
-
-                IAuthService authService =
-                    new AuthService(
-                        userRepository,
-                        passwordHasher,
-                        rememberedUserStore);
-
-                IUserProfileService userProfileService =
-                    new UserProfileService(
-                        authService,
-                        userRepository);
-
-                IFoodPointRepository foodPointRepository =
-                    new FoodPointRepository(dbContext);
-
-                IFoodLotRepository foodLotRepository =
-                    new FoodLotRepository(dbContext);
-
-                IBookingRepository bookingRepository =
-                    new BookingRepository(dbContext);
-
-                IFoodPointService foodPointService =
-                    new FoodPointService(
-                        foodPointRepository,
-                        authService);
-
-                ILotService lotService =
-                    new LotService(
-                        foodPointRepository,
-                        foodLotRepository,
-                        authService);
-
-                IBookingService bookingService =
-                    new BookingService(
-                        bookingRepository,
-                        authService);
-
-                IAdminService adminService =
-                    new AdminService(
-                        authService,
-                        userRepository,
-                        foodPointRepository,
-                        foodLotRepository,
-                        bookingRepository);
-
-                IProfileStatisticsService profileStatisticsService =
-                    new ProfileStatisticsService(
-                        authService,
-                        userRepository,
-                        foodPointRepository,
-                        foodLotRepository);
-
                 IPartnerAnalyticsService partnerAnalyticsService =
                     new PartnerAnalyticsService(
                         foodLotRepository,
@@ -184,11 +125,9 @@ namespace Infrastructure
                     adminService,
                     profileStatisticsService,
                     geocodingService,
-                    mapService);
-            }, "инициализировать доступ к данным приложения");
+                    mapService,
                     partnerAnalyticsService);
-            },
-            "инициализировать доступ к данным приложения");
+            }, "инициализировать доступ к данным приложения");
         }
     }
 }
