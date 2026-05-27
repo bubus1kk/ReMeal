@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Domain.Enums;
 using ReMealApp.ViewModels.Admin;
+using ReMealApp.ViewModels.Analytics;
 using ReMealApp.ViewModels.Booking;
 using ReMealApp.ViewModels.Catalog;
 using ReMealApp.ViewModels.Maps;
@@ -30,6 +31,9 @@ namespace ReMealApp.ViewModels.Shell
         private readonly IAuthService _authService;
         private readonly Action<string> _showLogin;
         private readonly Action _exitApplication;
+        private readonly IBookingService _bookingService;
+        private readonly IAdminService _adminService;
+        private readonly IPartnerAnalyticsService _partnerAnalyticsService;
 
         [ObservableProperty]
         private ViewModelBase _currentSectionViewModel;
@@ -71,6 +75,7 @@ namespace ReMealApp.ViewModels.Shell
             ILotService lotService,
             IBookingService bookingService,
             IProfileStatisticsService profileStatisticsService,
+            IPartnerAnalyticsService partnerAnalyticsService,
             Action<string> showLogin,
             Action exitApplication)
             : this(
@@ -108,6 +113,7 @@ namespace ReMealApp.ViewModels.Shell
                 profileStatisticsService,
                 geocodingService,
                 new UnavailableMapService(),
+                partnerAnalyticsService,
                 showLogin,
                 exitApplication)
         {
@@ -123,12 +129,17 @@ namespace ReMealApp.ViewModels.Shell
             IProfileStatisticsService profileStatisticsService,
             IGeocodingService geocodingService,
             IMapService mapService,
+            IPartnerAnalyticsService partnerAnalyticsService,
             Action<string> showLogin,
             Action exitApplication)
         {
             _authService = authService;
             _showLogin = showLogin;
             _exitApplication = exitApplication;
+
+            _bookingService = bookingService;
+            _adminService = adminService;
+            _partnerAnalyticsService = partnerAnalyticsService;
 
             Profile = new UserProfileViewModel(
                 userProfileService,
@@ -145,6 +156,35 @@ namespace ReMealApp.ViewModels.Shell
             CreateLot = new CreateLotViewModel(foodPointService, lotService, this);
             MyBookings = new MyBookingsViewModel(bookingService);
             AdminPanel = new AdminPanelViewModel(adminService);
+
+            FoodPoint = new FoodPointViewModel(
+                foodPointService,
+                lotService,
+                this);
+
+            PartnerLots = new PartnerLotsViewModel(
+                lotService,
+                foodPointService,
+                this);
+
+            PartnerBookings = new PartnerBookingsViewModel(
+                bookingService);
+
+            CreateLot = new CreateLotViewModel(
+                foodPointService,
+                lotService,
+                this);
+
+            MyBookings = new MyBookingsViewModel(
+                bookingService);
+
+            AdminPanel = new AdminPanelViewModel(
+                adminService);
+
+            Analytics = new PartnerAnalyticsViewModel(
+                _partnerAnalyticsService,
+                foodPointService);
+
             _currentSectionViewModel = Profile;
         }
 
@@ -166,21 +206,32 @@ namespace ReMealApp.ViewModels.Shell
 
         public AdminPanelViewModel AdminPanel { get; }
 
+        public PartnerAnalyticsViewModel Analytics { get; }
+
         public bool IsHomeSelected => SelectedSectionKey == HomeSection;
 
-        public bool IsCatalogSelected => SelectedSectionKey == CatalogSection || SelectedSectionKey == PartnerLotsSection;
+        public bool IsCatalogSelected =>
+            SelectedSectionKey == CatalogSection ||
+            SelectedSectionKey == PartnerLotsSection;
 
-        public bool IsBookingsSelected => SelectedSectionKey == BookingsSection || SelectedSectionKey == PartnerBookingsSection;
+        public bool IsBookingsSelected =>
+            SelectedSectionKey == BookingsSection ||
+            SelectedSectionKey == PartnerBookingsSection;
 
-        public bool IsFoodPointsSelected => SelectedSectionKey == FoodPointsSection;
+        public bool IsFoodPointsSelected =>
+            SelectedSectionKey == FoodPointsSection;
 
-        public bool IsAnalyticsSelected => SelectedSectionKey == AnalyticsSection;
+        public bool IsAnalyticsSelected =>
+            SelectedSectionKey == AnalyticsSection;
 
-        public bool IsAdminSelected => SelectedSectionKey == AdminSection;
+        public bool IsAdminSelected =>
+            SelectedSectionKey == AdminSection;
 
-        public bool IsProfileSelected => SelectedSectionKey == ProfileSection;
+        public bool IsProfileSelected =>
+            SelectedSectionKey == ProfileSection;
 
-        public bool IsSettingsSelected => SelectedSectionKey == SettingsSection;
+        public bool IsSettingsSelected =>
+            SelectedSectionKey == SettingsSection;
 
         public double SidebarWidth => IsSidebarExpanded ? 196 : 72;
 
@@ -190,11 +241,19 @@ namespace ReMealApp.ViewModels.Shell
 
         public string SidebarToggleText => IsSidebarExpanded ? "<" : ">";
 
-        public string BookingsNavigationText => IsPartner ? "Брони клиентов" : "Мои брони";
+        public string BookingsNavigationText =>
+            IsPartner ? "Брони клиентов" : "Мои брони";
 
         public string FoodPointsNavigationText => IsPartner ? "Мои точки" : "Карта";
 
         public string FoodPointsNavigationIconPath => "/Assets/Icons/location.png";
+        public string FoodPointsNavigationText =>
+            IsPartner ? "Мои точки" : "Партнёры";
+
+        public string FoodPointsNavigationIconPath =>
+            IsPartner
+                ? "/Assets/Icons/location.png"
+                : "/Assets/Icons/partners.png";
 
         public async Task InitializeAsync()
         {
@@ -203,12 +262,20 @@ namespace ReMealApp.ViewModels.Shell
                 await Profile.LoadAsync();
 
                 var currentUser = await _authService.GetCurrentUserAsync();
+
                 var role = currentUser?.Role;
+
                 IsPartner = role == UserRole.FoodPointRepresentative;
                 IsAdmin = role == UserRole.Administrator;
+
                 IsCatalogVisible = role == UserRole.StudentCustomer;
-                IsLotsNavigationVisible = role is UserRole.StudentCustomer or UserRole.FoodPointRepresentative;
-                IsBookingsVisible = role is UserRole.StudentCustomer or UserRole.FoodPointRepresentative;
+
+                IsLotsNavigationVisible =
+                    role is UserRole.StudentCustomer or UserRole.FoodPointRepresentative;
+
+                IsBookingsVisible =
+                    role is UserRole.StudentCustomer or UserRole.FoodPointRepresentative;
+
                 IsAdminVisible = IsAdmin;
 
                 if (IsPartner)
@@ -230,40 +297,55 @@ namespace ReMealApp.ViewModels.Shell
             }
             catch (Exception ex)
             {
-                Profile.StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+                Profile.StatusMessage =
+                    ExceptionMessageFormatter.ToUserMessage(ex);
+
                 CurrentSectionViewModel = Profile;
             }
         }
 
         [RelayCommand]
-        private Task ShowHomeAsync() => NavigateToSectionAsync(HomeSection);
+        private Task ShowHomeAsync() =>
+            NavigateToSectionAsync(HomeSection);
 
         [RelayCommand]
-        private Task ShowCatalogAsync() => NavigateToSectionAsync(CatalogSection);
+        private Task ShowCatalogAsync() =>
+            NavigateToSectionAsync(CatalogSection);
 
         [RelayCommand]
-        private Task ShowBookingsAsync() => NavigateToSectionAsync(IsPartner ? PartnerBookingsSection : BookingsSection);
+        private Task ShowBookingsAsync() =>
+            NavigateToSectionAsync(
+                IsPartner
+                    ? PartnerBookingsSection
+                    : BookingsSection);
 
         [RelayCommand]
-        private Task ShowPartnerBookingsAsync() => NavigateToSectionAsync(PartnerBookingsSection);
+        private Task ShowPartnerBookingsAsync() =>
+            NavigateToSectionAsync(PartnerBookingsSection);
 
         [RelayCommand]
-        private Task ShowFavoritesAsync() => NavigateToSectionAsync(FavoritesSection);
+        private Task ShowFavoritesAsync() =>
+            NavigateToSectionAsync(FavoritesSection);
 
         [RelayCommand]
-        private Task ShowFoodPointsAsync() => NavigateToSectionAsync(FoodPointsSection);
+        private Task ShowFoodPointsAsync() =>
+            NavigateToSectionAsync(FoodPointsSection);
 
         [RelayCommand]
-        private Task ShowAnalyticsAsync() => NavigateToSectionAsync(AnalyticsSection);
+        private Task ShowAnalyticsAsync() =>
+            NavigateToSectionAsync(AnalyticsSection);
 
         [RelayCommand]
-        private Task ShowAdminAsync() => NavigateToSectionAsync(AdminSection);
+        private Task ShowAdminAsync() =>
+            NavigateToSectionAsync(AdminSection);
 
         [RelayCommand]
-        private Task ShowProfileAsync() => NavigateToSectionAsync(ProfileSection);
+        private Task ShowProfileAsync() =>
+            NavigateToSectionAsync(ProfileSection);
 
         [RelayCommand]
-        private Task ShowSettingsAsync() => NavigateToSectionAsync(SettingsSection);
+        private Task ShowSettingsAsync() =>
+            NavigateToSectionAsync(SettingsSection);
 
         [RelayCommand]
         private void ToggleSidebar()
@@ -297,16 +379,19 @@ namespace ReMealApp.ViewModels.Shell
             await CreateLot.RefreshAsync();
             await Profile.LoadStatisticsAsync();
         }
+
         public async void OpenLotEditor(Guid lotId)
         {
             try
             {
                 await CreateLot.LoadForEditAsync(lotId);
+
                 SetSection(CreateLotSection, CreateLot);
             }
             catch (Exception ex)
             {
-                Profile.StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+                Profile.StatusMessage =
+                    ExceptionMessageFormatter.ToUserMessage(ex);
             }
         }
 
@@ -315,11 +400,13 @@ namespace ReMealApp.ViewModels.Shell
             try
             {
                 await CreateLot.PrepareCreateAsync(foodPointId);
+
                 SetSection(CreateLotSection, CreateLot);
             }
             catch (Exception ex)
             {
-                Profile.StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+                Profile.StatusMessage =
+                    ExceptionMessageFormatter.ToUserMessage(ex);
             }
         }
 
@@ -340,38 +427,50 @@ namespace ReMealApp.ViewModels.Shell
                 switch (sectionKey)
                 {
                     case HomeSection:
+
                         SetSection(
                             HomeSection,
                             new ModulePlaceholderViewModel(
                                 "Главная",
-                                "Основной экран будет развиваться отдельно. Сейчас доступные рабочие разделы открываются из боковой навигации.",
+                                "Основной экран будет развиваться отдельно.",
                                 "/Assets/Icons/home.png"));
+
                         break;
 
                     case CatalogSection when IsCatalogVisible:
+
                         await Catalog.LoadAsync();
+
                         SetSection(CatalogSection, Catalog);
+
                         break;
 
                     case CatalogSection:
                     case PartnerLotsSection:
+
                         await PartnerLots.LoadAsync();
+
                         SetSection(PartnerLotsSection, PartnerLots);
+
                         break;
 
                     case BookingsSection:
+
                         await MyBookings.LoadAsync();
 
                         SetSection(BookingsSection, MyBookings);
+
                         break;
 
                     case FavoritesSection:
+
                         SetSection(
                             FavoritesSection,
                             new ModulePlaceholderViewModel(
                                 "Избранное",
-                                "Избранные наборы появятся после добавления соответствующей модели и сервиса.",
+                                "Раздел избранного пока в разработке.",
                                 "/Assets/Icons/favorites.png"));
+
                         break;
 
                     case PartnerBookingsSection:
@@ -385,56 +484,81 @@ namespace ReMealApp.ViewModels.Shell
                         break;
 
                     case FoodPointsSection:
+
                         if (IsPartner)
                         {
                             await FoodPoint.LoadAsync();
-                            SetSection(FoodPointsSection, FoodPoint);
+
+                            SetSection(
+                                FoodPointsSection,
+                                FoodPoint);
                         }
                         else
                         {
                             await Map.LoadAsync();
                             SetSection(FoodPointsSection, Map);
+                            SetSection(
+                                FoodPointsSection,
+                                new ModulePlaceholderViewModel(
+                                    "Партнеры",
+                                    "Раздел партнеров пока не реализован.",
+                                    "/Assets/Icons/partners.png"));
                         }
 
                         break;
 
                     case AnalyticsSection:
+
+                        await Analytics.LoadAsync();
+
                         SetSection(
                             AnalyticsSection,
-                            new ModulePlaceholderViewModel(
-                                "Аналитика",
-                                "Расширенная аналитика будет добавлена отдельным модулем. В профиле отображаются только показатели, которые уже можно посчитать по текущей базе.",
-                                "/Assets/Icons/analytics.png"));
+                            Analytics);
+
                         break;
 
                     case AdminSection:
+
                         await AdminPanel.InitializeAsync();
-                        SetSection(AdminSection, AdminPanel);
+
+                        SetSection(
+                            AdminSection,
+                            AdminPanel);
+
                         break;
 
                     case SettingsSection:
+
                         SetSection(
                             SettingsSection,
                             new ModulePlaceholderViewModel(
                                 "Настройки",
-                                "Настройки профиля сейчас доступны через модальное окно редактирования.",
+                                "Раздел настроек пока в разработке.",
                                 "/Assets/Icons/settings.png"));
+
                         break;
 
                     default:
+
                         await Profile.LoadAsync();
+
                         SetSection(ProfileSection, Profile);
+
                         break;
                 }
             }
             catch (Exception ex)
             {
-                Profile.StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+                Profile.StatusMessage =
+                    ExceptionMessageFormatter.ToUserMessage(ex);
+
                 SetSection(ProfileSection, Profile);
             }
         }
 
-        private void SetSection(string sectionKey, ViewModelBase viewModel)
+        private void SetSection(
+            string sectionKey,
+            ViewModelBase viewModel)
         {
             SelectedSectionKey = sectionKey;
             CurrentSectionViewModel = viewModel;
@@ -469,54 +593,79 @@ namespace ReMealApp.ViewModels.Shell
 
         private sealed class DeniedAdminService : IAdminService
         {
-            public Task EnsureAdministratorAccessAsync(CancellationToken cancellationToken = default)
+            public Task EnsureAdministratorAccessAsync(
+                CancellationToken cancellationToken = default)
             {
-                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+                throw new UnauthorizedAccessException(
+                    "Административный модуль доступен только администратору.");
             }
 
-            public Task<List<AdminUserDto>> GetUsersAsync(CancellationToken cancellationToken = default)
+            public Task<List<AdminUserDto>> GetUsersAsync(
+                CancellationToken cancellationToken = default)
             {
-                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+                throw new UnauthorizedAccessException(
+                    "Административный модуль доступен только администратору.");
             }
 
-            public Task ActivateUserAsync(Guid userId, CancellationToken cancellationToken = default)
+            public Task ActivateUserAsync(
+                Guid userId,
+                CancellationToken cancellationToken = default)
             {
-                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+                throw new UnauthorizedAccessException(
+                    "Административный модуль доступен только администратору.");
             }
 
-            public Task DeactivateUserAsync(Guid userId, CancellationToken cancellationToken = default)
+            public Task DeactivateUserAsync(
+                Guid userId,
+                CancellationToken cancellationToken = default)
             {
-                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+                throw new UnauthorizedAccessException(
+                    "Административный модуль доступен только администратору.");
             }
 
-            public Task<List<AdminFoodPointDto>> GetFoodPointsAsync(CancellationToken cancellationToken = default)
+            public Task<List<AdminFoodPointDto>> GetFoodPointsAsync(
+                CancellationToken cancellationToken = default)
             {
-                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+                throw new UnauthorizedAccessException(
+                    "Административный модуль доступен только администратору.");
             }
 
-            public Task ActivateFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken = default)
+            public Task ActivateFoodPointAsync(
+                Guid foodPointId,
+                CancellationToken cancellationToken = default)
             {
-                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+                throw new UnauthorizedAccessException(
+                    "Административный модуль доступен только администратору.");
             }
 
-            public Task DeactivateFoodPointAsync(Guid foodPointId, CancellationToken cancellationToken = default)
+            public Task DeactivateFoodPointAsync(
+                Guid foodPointId,
+                CancellationToken cancellationToken = default)
             {
-                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+                throw new UnauthorizedAccessException(
+                    "Административный модуль доступен только администратору.");
             }
 
-            public Task<List<AdminLotDto>> GetLotsAsync(CancellationToken cancellationToken = default)
+            public Task<List<AdminLotDto>> GetLotsAsync(
+                CancellationToken cancellationToken = default)
             {
-                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+                throw new UnauthorizedAccessException(
+                    "Административный модуль доступен только администратору.");
             }
 
-            public Task CancelLotAsync(Guid lotId, CancellationToken cancellationToken = default)
+            public Task CancelLotAsync(
+                Guid lotId,
+                CancellationToken cancellationToken = default)
             {
-                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+                throw new UnauthorizedAccessException(
+                    "Административный модуль доступен только администратору.");
             }
 
-            public Task<List<AdminBookingDto>> GetBookingsAsync(CancellationToken cancellationToken = default)
+            public Task<List<AdminBookingDto>> GetBookingsAsync(
+                CancellationToken cancellationToken = default)
             {
-                throw new UnauthorizedAccessException("Административный модуль доступен только администратору.");
+                throw new UnauthorizedAccessException(
+                    "Административный модуль доступен только администратору.");
             }
         }
 

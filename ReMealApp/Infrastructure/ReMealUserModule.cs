@@ -23,6 +23,7 @@ namespace Infrastructure
             IProfileStatisticsService profileStatisticsService,
             IGeocodingService geocodingService,
             IMapService mapService)
+            IPartnerAnalyticsService partnerAnalyticsService)
         {
             AuthService = authService;
             UserProfileService = userProfileService;
@@ -33,6 +34,7 @@ namespace Infrastructure
             ProfileStatisticsService = profileStatisticsService;
             GeocodingService = geocodingService;
             MapService = mapService;
+            PartnerAnalyticsService = partnerAnalyticsService;
         }
 
         public IAuthService AuthService { get; }
@@ -52,12 +54,14 @@ namespace Infrastructure
         public IGeocodingService GeocodingService { get; }
 
         public IMapService MapService { get; }
+        public IPartnerAnalyticsService PartnerAnalyticsService { get; }
 
         public static ReMealUserModule CreateDefault()
         {
             return DataAccessGuard.Execute(() =>
             {
                 var databasePath = ReMealDatabasePath.GetDefaultPath();
+
                 var options = new DbContextOptionsBuilder<ReMealDbContext>()
                     .UseSqlite($"Data Source={databasePath}")
                     .Options;
@@ -68,12 +72,15 @@ namespace Infrastructure
                 {
                     ReMealDatabaseInitializer.EnsureSchema(dbContext);
                 }
-                catch (DataAccessException ex) when (ReMealDatabaseRecovery.CanRecover(ex))
+                catch (DataAccessException ex)
+                    when (ReMealDatabaseRecovery.CanRecover(ex))
                 {
                     dbContext.Dispose();
+
                     ReMealDatabaseRecovery.MoveDatabaseToBackup(databasePath);
 
                     dbContext = new ReMealDbContext(options);
+
                     ReMealDatabaseInitializer.EnsureSchema(dbContext);
                 }
 
@@ -102,6 +109,71 @@ namespace Infrastructure
                     foodLotRepository);
                 IGeocodingService geocodingService = new NominatimGeocodingService(new HttpClient());
                 IMapService mapService = new MapService(lotService, geocodingService);
+                IUserRepository userRepository =
+                    new UserRepository(dbContext);
+
+                IPasswordHasher passwordHasher =
+                    new PasswordHasher();
+
+                IRememberedUserStore rememberedUserStore =
+                    RememberedUserStore.CreateDefault();
+
+                IAuthService authService =
+                    new AuthService(
+                        userRepository,
+                        passwordHasher,
+                        rememberedUserStore);
+
+                IUserProfileService userProfileService =
+                    new UserProfileService(
+                        authService,
+                        userRepository);
+
+                IFoodPointRepository foodPointRepository =
+                    new FoodPointRepository(dbContext);
+
+                IFoodLotRepository foodLotRepository =
+                    new FoodLotRepository(dbContext);
+
+                IBookingRepository bookingRepository =
+                    new BookingRepository(dbContext);
+
+                IFoodPointService foodPointService =
+                    new FoodPointService(
+                        foodPointRepository,
+                        authService);
+
+                ILotService lotService =
+                    new LotService(
+                        foodPointRepository,
+                        foodLotRepository,
+                        authService);
+
+                IBookingService bookingService =
+                    new BookingService(
+                        bookingRepository,
+                        authService);
+
+                IAdminService adminService =
+                    new AdminService(
+                        authService,
+                        userRepository,
+                        foodPointRepository,
+                        foodLotRepository,
+                        bookingRepository);
+
+                IProfileStatisticsService profileStatisticsService =
+                    new ProfileStatisticsService(
+                        authService,
+                        userRepository,
+                        foodPointRepository,
+                        foodLotRepository);
+
+                IPartnerAnalyticsService partnerAnalyticsService =
+                    new PartnerAnalyticsService(
+                        foodLotRepository,
+                        authService,
+                        bookingRepository);
 
                 return new ReMealUserModule(
                     authService,
@@ -114,6 +186,9 @@ namespace Infrastructure
                     geocodingService,
                     mapService);
             }, "инициализировать доступ к данным приложения");
+                    partnerAnalyticsService);
+            },
+            "инициализировать доступ к данным приложения");
         }
     }
 }
