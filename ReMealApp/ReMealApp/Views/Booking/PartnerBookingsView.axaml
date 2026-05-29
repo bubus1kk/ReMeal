@@ -1,128 +1,692 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ReMealApp.ViewModels.Booking"
              xmlns:dto="using:Application.DTOs.Booking"
              x:Class="ReMealApp.Views.Booking.PartnerBookingsView"
              x:DataType="vm:PartnerBookingsViewModel">
 
-    <Border Classes="card">
+    <UserControl.Styles>
 
-        <DockPanel>
+        <Style Selector="Border.main-card">
+            <Setter Property="Background" Value="#0A1110"/>
+            <Setter Property="BorderBrush" Value="#1C2A26"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="22"/>
+            <Setter Property="Padding" Value="26"/>
+        </Style>
 
-            <StackPanel DockPanel.Dock="Top"
-                        Spacing="12"
-                        Margin="0,0,0,12">
+        <Style Selector="Border.stats-card">
+            <Setter Property="Background" Value="#111917"/>
+            <Setter Property="BorderBrush" Value="#23332E"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="18"/>
+            <Setter Property="Padding" Value="22"/>
+            <Setter Property="MinHeight" Value="132"/>
+        </Style>
 
-                <StackPanel Orientation="Horizontal"
-                            Spacing="8">
+        <Style Selector="Border.stats-icon">
+            <Setter Property="Width" Value="54"/>
+            <Setter Property="Height" Value="54"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="Border.icon-green">
+            <Setter Property="Background" Value="#162B1D"/>
+            <Setter Property="BorderBrush" Value="#4C923E"/>
+        </Style>
+
+        <Style Selector="Border.icon-purple">
+            <Setter Property="Background" Value="#21182F"/>
+            <Setter Property="BorderBrush" Value="#7A5AF8"/>
+        </Style>
+
+        <Style Selector="Border.icon-red">
+            <Setter Property="Background" Value="#30181C"/>
+            <Setter Property="BorderBrush" Value="#D94F70"/>
+        </Style>
+
+        <Style Selector="Border.filter-card">
+            <Setter Property="Background" Value="#101817"/>
+            <Setter Property="BorderBrush" Value="#22322D"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="18"/>
+            <Setter Property="Padding" Value="18"/>
+        </Style>
+
+        <Style Selector="Border.list-card">
+            <Setter Property="Background" Value="#0B1412"/>
+            <Setter Property="BorderBrush" Value="#22322D"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="18"/>
+            <Setter Property="Padding" Value="8"/>
+        </Style>
+
+        <Style Selector="Border.booking-row">
+            <Setter Property="Background" Value="#0F1715"/>
+            <Setter Property="BorderBrush" Value="#1D2A26"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="14"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+
+        <Style Selector="Border.booking-row:pointerover">
+            <Setter Property="Background" Value="#121D1A"/>
+            <Setter Property="BorderBrush" Value="#2B3D36"/>
+        </Style>
+
+        <Style Selector="Border.avatar">
+            <Setter Property="Width" Value="46"/>
+            <Setter Property="Height" Value="46"/>
+            <Setter Property="CornerRadius" Value="23"/>
+            <Setter Property="Background" Value="#17311D"/>
+            <Setter Property="BorderBrush" Value="#264A2C"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="TextBox.filter-input">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#0D1513"/>
+            <Setter Property="BorderBrush" Value="#2A3934"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#EDF6EF"/>
+        </Style>
+
+        <Style Selector="TextBox.filter-input:pointerover /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="#101A17"/>
+            <Setter Property="BorderBrush" Value="#314840"/>
+        </Style>
+
+        <Style Selector="TextBox.filter-input:focus /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="#101A17"/>
+            <Setter Property="BorderBrush" Value="#5AAE4A"/>
+        </Style>
+
+        <Style Selector="ComboBox.filter-combo">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Background" Value="#0D1513"/>
+            <Setter Property="BorderBrush" Value="#2A3934"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#EDF6EF"/>
+        </Style>
+
+        <Style Selector="ComboBox.filter-combo:pointerover">
+            <Setter Property="Background" Value="#101A17"/>
+            <Setter Property="BorderBrush" Value="#314840"/>
+        </Style>
+
+        <Style Selector="DatePicker.filter-date">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Background" Value="#0D1513"/>
+            <Setter Property="BorderBrush" Value="#2A3934"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Foreground" Value="#EDF6EF"/>
+        </Style>
+
+        <Style Selector="Button.refresh-btn">
+            <Setter Property="Background" Value="#17211E"/>
+            <Setter Property="Foreground" Value="#DDE9E1"/>
+            <Setter Property="BorderBrush" Value="#2B3B35"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="18,10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style Selector="Button.refresh-btn:pointerover">
+            <Setter Property="Background" Value="#1D2925"/>
+            <Setter Property="BorderBrush" Value="#4C923E"/>
+        </Style>
+
+        <Style Selector="Button.clear-btn">
+            <Setter Property="Background" Value="#17211E"/>
+            <Setter Property="Foreground" Value="#DDE9E1"/>
+            <Setter Property="BorderBrush" Value="#2B3B35"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="18,10"/>
+        </Style>
+
+        <Style Selector="Button.clear-btn:pointerover">
+            <Setter Property="Background" Value="#1D2925"/>
+        </Style>
+
+        <Style Selector="Button.confirm-btn">
+            <Setter Property="Background" Value="#142318"/>
+            <Setter Property="Foreground" Value="#8AE65E"/>
+            <Setter Property="BorderBrush" Value="#4C923E"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style Selector="Button.confirm-btn:pointerover">
+            <Setter Property="Background" Value="#19301F"/>
+            <Setter Property="BorderBrush" Value="#75C943"/>
+        </Style>
+
+        <Style Selector="Border.status-issued">
+            <Setter Property="Background" Value="#17341F"/>
+            <Setter Property="BorderBrush" Value="#2D7A3F"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="12,7"/>
+        </Style>
+
+        <Style Selector="Border.status-pending">
+            <Setter Property="Background" Value="#332510"/>
+            <Setter Property="BorderBrush" Value="#A86A12"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="12,7"/>
+        </Style>
+
+        <Style Selector="Border.status-cancelled">
+            <Setter Property="Background" Value="#30181C"/>
+            <Setter Property="BorderBrush" Value="#A54658"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="12,7"/>
+        </Style>
+
+    </UserControl.Styles>
+
+    <Grid Margin="18">
+
+        <Border Classes="main-card"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+
+            <Grid RowDefinitions="Auto,Auto,Auto,*"
+                  RowSpacing="22">
+
+                <Grid ColumnDefinitions="Auto,Auto,*"
+                      ColumnSpacing="16">
 
                     <TextBlock Text="Бронирования клиентов"
-                               Classes="section-title"/>
+                               FontSize="30"
+                               FontWeight="Bold"
+                               Foreground="#F4F8F5"
+                               VerticalAlignment="Center"/>
 
-                    <Button Content="Обновить"
-                            Command="{Binding LoadBookingsCommand}"/>
-
-                </StackPanel>
-
-                <Grid ColumnDefinitions="*,*,*,*"
-                      ColumnSpacing="8">
-
-                    <StackPanel>
-                        <TextBlock Text="Выдачи"/>
-                        <TextBlock Text="{Binding IssuedBookingsCount}"
-                                   FontSize="20"
-                                   FontWeight="SemiBold"/>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="1">
-                        <TextBlock Text="Порции"/>
-                        <TextBlock Text="{Binding SavedPortions}"
-                                   FontSize="20"
-                                   FontWeight="SemiBold"/>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="2">
-                        <TextBlock Text="Отходы, кг"/>
-                        <TextBlock Text="{Binding PreventedWasteKg, StringFormat={}{0:N1}}"
-                                   FontSize="20"
-                                   FontWeight="SemiBold"/>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="3">
-                        <TextBlock Text="Отмены"/>
-                        <TextBlock Text="{Binding CancelledBookingsCount}"
-                                   FontSize="20"
-                                   FontWeight="SemiBold"/>
-                    </StackPanel>
+                    <Button Grid.Column="1"
+                            Classes="refresh-btn"
+                            Content="Обновить"
+                            Command="{Binding LoadBookingsCommand}"
+                            IsEnabled="{Binding !IsBusy}"
+                            VerticalAlignment="Center"/>
 
                 </Grid>
 
-            </StackPanel>
+                <Grid Grid.Row="1"
+                      ColumnDefinitions="*,*,*,*"
+                      ColumnSpacing="18">
 
-            <TextBlock DockPanel.Dock="Bottom"
-                       Text="{Binding StatusMessage}"
-                       Margin="0,12,0,0"
-                       TextWrapping="Wrap"/>
+                    <Border Classes="stats-card">
 
-            <DataGrid ItemsSource="{Binding Bookings}"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True">
+                        <Grid ColumnDefinitions="68,*">
 
-                <DataGrid.Columns>
+                            <Border Classes="stats-icon icon-green">
+                                <Image Source="/Assets/Icons/Booking/check-green.png"
+                                       Width="24"
+                                       Height="24"
+                                       Stretch="Uniform"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            </Border>
 
-                    <DataGridTextColumn Header="Пользователь"
-                                        Binding="{Binding UserName}"
-                                        Width="2*"/>
+                            <StackPanel Grid.Column="1"
+                                        Spacing="5"
+                                        VerticalAlignment="Center">
 
-                    <DataGridTextColumn Header="Набор"
-                                        Binding="{Binding LotTitle}"
-                                        Width="2*"/>
+                                <TextBlock Text="Выдачи"
+                                           Foreground="#B8C5BF"
+                                           FontSize="14"/>
 
-                    <DataGridTextColumn Header="Точка питания"
-                                        Binding="{Binding FoodPointName}"
-                                        Width="2*"/>
+                                <TextBlock Text="{Binding IssuedBookingsCount}"
+                                           FontSize="30"
+                                           FontWeight="Bold"
+                                           Foreground="#F4F8F5"/>
 
-                    <DataGridTextColumn Header="Количество"
-                                        Binding="{Binding Quantity}"
-                                        Width="100"/>
+                                <TextBlock Text="За выбранный период"
+                                           Foreground="#87968F"
+                                           FontSize="12"/>
 
-                    <DataGridTextColumn Header="Цена"
-                                        Binding="{Binding PriceAtReservation, StringFormat={}{0:N2}}"
-                                        Width="100"/>
+                            </StackPanel>
 
-                    <DataGridTextColumn Header="Дата"
-                                        Binding="{Binding ReservedAt, StringFormat={}{0:dd.MM.yyyy HH:mm}}"
-                                        Width="170"/>
+                        </Grid>
 
-                    <DataGridTextColumn Header="Статус"
-                                        Binding="{Binding StatusText}"
-                                        Width="120"/>
+                    </Border>
 
-                    <DataGridTemplateColumn Header="Подтвердить"
-                                            Width="140">
+                    <Border Grid.Column="1"
+                            Classes="stats-card">
 
-                        <DataGridTemplateColumn.CellTemplate>
+                        <Grid ColumnDefinitions="68,*">
 
-                            <DataTemplate x:DataType="dto:BookingDto">
+                            <Border Classes="stats-icon icon-green">
+                                <Image Source="/Assets/Icons/Booking/portions-green.png"
+                                       Width="25"
+                                       Height="25"
+                                       Stretch="Uniform"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            </Border>
 
-                                <Button
-                                    Content="Выдано"
-                                    Command="{Binding $parent[UserControl].DataContext.ConfirmBookingCommand}"
-                                    CommandParameter="{Binding Id}"
-                                    IsVisible="{Binding CanConfirmIssue}" />
+                            <StackPanel Grid.Column="1"
+                                        Spacing="5"
+                                        VerticalAlignment="Center">
 
-                            </DataTemplate>
+                                <TextBlock Text="Порции"
+                                           Foreground="#B8C5BF"
+                                           FontSize="14"/>
 
-                        </DataGridTemplateColumn.CellTemplate>
+                                <TextBlock Text="{Binding SavedPortions}"
+                                           FontSize="30"
+                                           FontWeight="Bold"
+                                           Foreground="#F4F8F5"/>
 
-                    </DataGridTemplateColumn>
+                                <TextBlock Text="За выбранный период"
+                                           Foreground="#87968F"
+                                           FontSize="12"/>
 
-                </DataGrid.Columns>
+                            </StackPanel>
 
-            </DataGrid>
+                        </Grid>
 
-        </DockPanel>
+                    </Border>
 
-    </Border>
+                    <Border Grid.Column="2"
+                            Classes="stats-card">
+
+                        <Grid ColumnDefinitions="68,*">
+
+                            <Border Classes="stats-icon icon-purple">
+                                <Image Source="/Assets/Icons/Booking/wastes-purple.png"
+                                       Width="27"
+                                       Height="27"
+                                       Stretch="Uniform"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            </Border>
+
+                            <StackPanel Grid.Column="1"
+                                        Spacing="5"
+                                        VerticalAlignment="Center">
+
+                                <TextBlock Text="Отходы, кг"
+                                           Foreground="#B8C5BF"
+                                           FontSize="14"/>
+
+                                <TextBlock Text="{Binding PreventedWasteDisplay}"
+                                           FontSize="30"
+                                           FontWeight="Bold"
+                                           Foreground="#F4F8F5"/>
+
+                                <TextBlock Text="За выбранный период"
+                                           Foreground="#87968F"
+                                           FontSize="12"/>
+
+                            </StackPanel>
+
+                        </Grid>
+
+                    </Border>
+
+                    <Border Grid.Column="3"
+                            Classes="stats-card">
+
+                        <Grid ColumnDefinitions="68,*">
+
+                            <Border Classes="stats-icon icon-red">
+                                <Image Source="/Assets/Icons/Booking/cancel-red.png"
+                                       Width="22"
+                                       Height="22"
+                                       Stretch="Uniform"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            </Border>
+
+                            <StackPanel Grid.Column="1"
+                                        Spacing="5"
+                                        VerticalAlignment="Center">
+
+                                <TextBlock Text="Отмены"
+                                           Foreground="#B8C5BF"
+                                           FontSize="14"/>
+
+                                <TextBlock Text="{Binding CancelledBookingsCount}"
+                                           FontSize="30"
+                                           FontWeight="Bold"
+                                           Foreground="#F4F8F5"/>
+
+                                <TextBlock Text="За выбранный период"
+                                           Foreground="#87968F"
+                                           FontSize="12"/>
+
+                            </StackPanel>
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+                <Border Grid.Row="2"
+                        Classes="filter-card">
+
+                    <Grid ColumnDefinitions="1.45*,*,*,1.1*"
+                          ColumnSpacing="22">
+
+                        <TextBox Classes="filter-input"
+                                 Text="{Binding SearchText}"
+                                 PlaceholderText="Поиск по пользователю, набору или точке"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Bottom"/>
+
+                        <StackPanel Grid.Column="1"
+                                    Spacing="6">
+
+                            <TextBlock Text="Точка питания"
+                                       Foreground="#B3BDB8"/>
+
+                            <ComboBox Classes="filter-combo"
+                                      ItemsSource="{Binding FoodPoints}"
+                                      SelectedItem="{Binding SelectedFoodPoint}"
+                                      IsEnabled="{Binding IsFoodPointFilterEnabled}"
+                                      HorizontalAlignment="Stretch"/>
+
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2"
+                                    Spacing="6">
+
+                            <TextBlock Text="Статус"
+                                       Foreground="#B3BDB8"/>
+
+                            <ComboBox Classes="filter-combo"
+                                      ItemsSource="{Binding Statuses}"
+                                      SelectedItem="{Binding SelectedStatus}"
+                                      IsEnabled="{Binding IsStatusFilterEnabled}"
+                                      HorizontalAlignment="Stretch"/>
+
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="3"
+                                    Spacing="6">
+
+                            <TextBlock Text="Период"
+                                       Foreground="#B3BDB8"/>
+
+                            <DatePicker Classes="filter-date"
+                                        SelectedDate="{Binding SelectedDate}"
+                                        HorizontalAlignment="Stretch"/>
+
+                        </StackPanel>
+
+                    </Grid>
+
+                </Border>
+
+                <Border Grid.Row="3"
+                        Classes="list-card">
+
+                    <Grid RowDefinitions="Auto,*">
+
+                        <Grid ColumnDefinitions="1.8*,1.6*,1.75*,0.85*,1*,1.05*,1*,1.15*"
+                              ColumnSpacing="12"
+                              Margin="10,8,10,12">
+
+                            <TextBlock Text="Пользователь"
+                                       Foreground="#9EAAA4"/>
+
+                            <TextBlock Grid.Column="1"
+                                       Text="Набор"
+                                       Foreground="#9EAAA4"/>
+
+                            <TextBlock Grid.Column="2"
+                                       Text="Точка питания"
+                                       Foreground="#9EAAA4"/>
+
+                            <TextBlock Grid.Column="3"
+                                       Text="Количество"
+                                       Foreground="#9EAAA4"
+                                       HorizontalAlignment="Center"/>
+
+                            <TextBlock Grid.Column="4"
+                                       Text="Цена"
+                                       Foreground="#9EAAA4"/>
+
+                            <TextBlock Grid.Column="5"
+                                       Text="Дата"
+                                       Foreground="#9EAAA4"/>
+
+                            <TextBlock Grid.Column="6"
+                                       Text="Статус"
+                                       Foreground="#9EAAA4"/>
+
+                            <TextBlock Grid.Column="7"
+                                       Text="Подтвердить"
+                                       Foreground="#9EAAA4"/>
+
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+
+                            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                          HorizontalScrollBarVisibility="Disabled">
+
+                                <ItemsControl ItemsSource="{Binding FilteredBookings}"
+                                              IsVisible="{Binding HasFilteredBookings}">
+
+                                    <ItemsControl.ItemTemplate>
+
+                                        <DataTemplate x:DataType="dto:BookingDto">
+
+                                            <Border Classes="booking-row">
+
+                                                <Grid ColumnDefinitions="1.8*,1.6*,1.75*,0.85*,1*,1.05*,1*,1.15*"
+                                                      ColumnSpacing="12"
+                                                      VerticalAlignment="Center">
+
+                                                    <Grid ColumnDefinitions="52,*">
+
+                                                        <Border Classes="avatar">
+                                                            <TextBlock Text="{Binding UserInitials}"
+                                                                       Foreground="#DDE9E1"
+                                                                       FontSize="16"
+                                                                       FontWeight="SemiBold"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"/>
+                                                        </Border>
+
+                                                        <StackPanel Grid.Column="1"
+                                                                    Spacing="3"
+                                                                    VerticalAlignment="Center">
+
+                                                            <TextBlock Text="{Binding DisplayUserName}"
+                                                                       Foreground="#F4F8F5"
+                                                                       FontSize="14"
+                                                                       TextTrimming="CharacterEllipsis"/>
+
+                                                            <TextBlock Text="{Binding DisplayUserEmail}"
+                                                                       Foreground="#889790"
+                                                                       FontSize="12"
+                                                                       TextTrimming="CharacterEllipsis"/>
+
+                                                        </StackPanel>
+
+                                                    </Grid>
+
+                                                    <TextBlock Grid.Column="1"
+                                                               Text="{Binding DisplayLotTitle}"
+                                                               Foreground="#F4F8F5"
+                                                               FontSize="14"
+                                                               VerticalAlignment="Center"
+                                                               TextTrimming="CharacterEllipsis"/>
+
+                                                    <StackPanel Grid.Column="2"
+                                                                Spacing="3"
+                                                                VerticalAlignment="Center">
+
+                                                        <TextBlock Text="{Binding DisplayFoodPointName}"
+                                                                   Foreground="#F4F8F5"
+                                                                   FontSize="14"
+                                                                   TextTrimming="CharacterEllipsis"/>
+
+                                                        <TextBlock Text="{Binding DisplayFoodPointAddress}"
+                                                                   Foreground="#889790"
+                                                                   FontSize="12"
+                                                                   TextTrimming="CharacterEllipsis"/>
+
+                                                    </StackPanel>
+
+                                                    <TextBlock Grid.Column="3"
+                                                               Text="{Binding DisplayQuantity}"
+                                                               Foreground="#F4F8F5"
+                                                               FontSize="14"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"/>
+
+                                                    <TextBlock Grid.Column="4"
+                                                               Text="{Binding DisplayTotalPrice}"
+                                                               Foreground="#F4F8F5"
+                                                               FontSize="14"
+                                                               VerticalAlignment="Center"/>
+
+                                                    <StackPanel Grid.Column="5"
+                                                                Spacing="3"
+                                                                VerticalAlignment="Center">
+
+                                                        <TextBlock Text="{Binding DisplayReservedDate}"
+                                                                   Foreground="#DCE7E1"
+                                                                   FontSize="13"/>
+
+                                                        <TextBlock Text="{Binding DisplayReservedTime}"
+                                                                   Foreground="#889790"
+                                                                   FontSize="12"/>
+
+                                                    </StackPanel>
+
+                                                    <Grid Grid.Column="6"
+                                                          VerticalAlignment="Center">
+
+                                                        <Border Classes="status-issued"
+                                                                HorizontalAlignment="Left"
+                                                                IsVisible="{Binding IsIssued}">
+
+                                                            <TextBlock Text="• Выдана"
+                                                                       Foreground="#7DFF72"
+                                                                       FontWeight="SemiBold"
+                                                                       FontSize="13"/>
+
+                                                        </Border>
+
+                                                        <Border Classes="status-pending"
+                                                                HorizontalAlignment="Left"
+                                                                IsVisible="{Binding IsPending}">
+
+                                                            <TextBlock Text="• Активна"
+                                                                       Foreground="#FFC14D"
+                                                                       FontWeight="SemiBold"
+                                                                       FontSize="13"/>
+
+                                                        </Border>
+
+                                                        <Border Classes="status-cancelled"
+                                                                HorizontalAlignment="Left"
+                                                                IsVisible="{Binding IsCancelled}">
+
+                                                            <TextBlock Text="• Отменена"
+                                                                       Foreground="#FF7C92"
+                                                                       FontWeight="SemiBold"
+                                                                       FontSize="13"/>
+
+                                                        </Border>
+
+                                                    </Grid>
+
+                                                    <Grid Grid.Column="7"
+                                                          VerticalAlignment="Center">
+
+                                                        <Button Classes="confirm-btn"
+                                                                Content="Подтвердить"
+                                                                Command="{Binding $parent[UserControl].DataContext.ConfirmBookingCommand}"
+                                                                CommandParameter="{Binding Id}"
+                                                                IsVisible="{Binding CanConfirmIssue}"/>
+
+                                                        <TextBlock Text="—"
+                                                                   IsVisible="{Binding CannotConfirmIssue}"
+                                                                   Foreground="#889790"
+                                                                   FontSize="18"
+                                                                   HorizontalAlignment="Center"/>
+
+                                                    </Grid>
+
+                                                </Grid>
+
+                                            </Border>
+
+                                        </DataTemplate>
+
+                                    </ItemsControl.ItemTemplate>
+
+                                </ItemsControl>
+
+                            </ScrollViewer>
+
+                            <StackPanel IsVisible="{Binding IsEmptyBookingsState}"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Spacing="8">
+
+                                <TextBlock Text="Бронирований пока нет"
+                                           Foreground="#F4F8F5"
+                                           FontSize="18"
+                                           FontWeight="SemiBold"
+                                           HorizontalAlignment="Center"/>
+
+                                <TextBlock Text="Здесь появятся бронирования клиентов по вашим лотам."
+                                           Foreground="#87968F"
+                                           FontSize="14"
+                                           HorizontalAlignment="Center"/>
+
+                            </StackPanel>
+
+                            <StackPanel IsVisible="{Binding IsEmptyFilterState}"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Spacing="10">
+
+                                <TextBlock Text="Ничего не найдено"
+                                           Foreground="#F4F8F5"
+                                           FontSize="18"
+                                           FontWeight="SemiBold"
+                                           HorizontalAlignment="Center"/>
+
+                                <TextBlock Text="Измените поисковый запрос или сбросьте фильтры."
+                                           Foreground="#87968F"
+                                           FontSize="14"
+                                           HorizontalAlignment="Center"/>
+
+                            </StackPanel>
+
+                        </Grid>
+
+                    </Grid>
+
+                </Border>
+
+            </Grid>
+
+        </Border>
+
+    </Grid>
 
 </UserControl>

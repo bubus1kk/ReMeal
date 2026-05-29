@@ -307,7 +307,8 @@
 
 
                         <Button Classes="nav-button"
-                                Command="{Binding ShowAnalyticsCommand}">
+                                Command="{Binding ShowAnalyticsCommand}"
+                                IsVisible="{Binding IsPartner}">
 
                             <Grid ColumnDefinitions="4,38,*"
                                   Margin="0,0,8,0">

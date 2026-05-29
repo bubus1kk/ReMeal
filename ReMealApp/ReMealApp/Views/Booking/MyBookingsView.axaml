@@ -1,92 +1,249 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:ReMealApp.ViewModels.Booking"
              xmlns:dto="using:Application.DTOs.Booking"
              x:Class="ReMealApp.Views.Booking.MyBookingsView"
              x:DataType="vm:MyBookingsViewModel">
 
-    <Border Classes="card">
+    <UserControl.Styles>
 
-        <DockPanel>
+        <Style Selector="Border.main-card">
+            <Setter Property="Background" Value="#101715"/>
+            <Setter Property="BorderBrush" Value="#25342F"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="18"/>
+            <Setter Property="Padding" Value="20"/>
+        </Style>
 
-            <StackPanel DockPanel.Dock="Top"
-                        Orientation="Horizontal"
-                        Spacing="8"
-                        Margin="0,0,0,12">
+        <Style Selector="Border.status-card">
+            <Setter Property="Background" Value="#0E1513"/>
+            <Setter Property="BorderBrush" Value="#22322D"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Padding" Value="14"/>
+        </Style>
 
-                <TextBlock Text="Мои бронирования"
-                           Classes="section-title"/>
+        <Style Selector="Button.refresh-btn">
+            <Setter Property="Background" Value="#4C923E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="18,10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
 
-                <Button Content="Обновить"
-                        Command="{Binding LoadBookingsCommand}"/>
+        <Style Selector="Button.cancel-btn">
+            <Setter Property="Background" Value="#341B1F"/>
+            <Setter Property="Foreground" Value="#FFB8C4"/>
+            <Setter Property="BorderBrush" Value="#A54658"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
 
-            </StackPanel>
+        <Style Selector="Border.status-issued">
+            <Setter Property="Background" Value="#18311F"/>
+            <Setter Property="BorderBrush" Value="#2D5E38"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="MinWidth" Value="120"/>
+        </Style>
 
-            <TextBlock DockPanel.Dock="Bottom"
-                       Text="{Binding StatusMessage}"
-                       Margin="0,12,0,0"
-                       TextWrapping="Wrap"
-                       Opacity="0.8"/>
+        <Style Selector="Border.status-pending">
+            <Setter Property="Background" Value="#3A2810"/>
+            <Setter Property="BorderBrush" Value="#A86A12"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="MinWidth" Value="120"/>
+        </Style>
 
-            <DataGrid ItemsSource="{Binding Bookings}"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      GridLinesVisibility="Horizontal">
+        <Style Selector="Border.status-cancelled">
+            <Setter Property="Background" Value="#341B1F"/>
+            <Setter Property="BorderBrush" Value="#A54658"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="MinWidth" Value="120"/>
+        </Style>
 
-                <DataGrid.Columns>
+    </UserControl.Styles>
 
-                    <DataGridTextColumn Header="Набор"
-                                        Binding="{Binding LotTitle}"
-                                        Width="2*"/>
+    <Border Classes="main-card"
+            Margin="18">
 
-                    <DataGridTextColumn Header="Точка питания"
-                                        Binding="{Binding FoodPointName}"
-                                        Width="2*"/>
+        <StackPanel Spacing="18">
 
-                    <DataGridTextColumn Header="Количество"
-                                        Binding="{Binding Quantity}"
-                                        Width="100"/>
+            <Grid ColumnDefinitions="*,Auto">
 
-                    <DataGridTextColumn Header="Цена"
-                                        Binding="{Binding PriceAtReservation, StringFormat={}{0:N2}}"
-                                        Width="100"/>
+                <StackPanel Spacing="4">
 
-                    <DataGridTextColumn Header="Итого"
-                                        Binding="{Binding TotalPrice, StringFormat={}{0:N2}}"
-                                        Width="100"/>
+                    <TextBlock Text="Мои брони"
+                               FontSize="30"
+                               FontWeight="SemiBold"
+                               Foreground="#F3F7F1"/>
 
-                    <DataGridTextColumn Header="Дата брони"
-                                        Binding="{Binding ReservedAt, StringFormat={}{0:dd.MM.yyyy HH:mm}}"
-                                        Width="170"/>
+                    <TextBlock Text="Ваши активные, отменённые и выданные бронирования"
+                               FontSize="14"
+                               Foreground="#92A39B"/>
 
-                    <DataGridTextColumn Header="Статус"
-                                        Binding="{Binding StatusText}"
-                                        Width="120"/>
+                </StackPanel>
 
-                    <DataGridTemplateColumn Header="Действия"
-                                            Width="150">
+                <Button Grid.Column="1"
+                        Classes="refresh-btn"
+                        Content="Обновить"
+                        Command="{Binding LoadBookingsCommand}"
+                        IsEnabled="{Binding !IsBusy}"
+                        VerticalAlignment="Top"/>
 
-                        <DataGridTemplateColumn.CellTemplate>
+            </Grid>
 
-                            <DataTemplate x:DataType="dto:BookingDto">
+            <Border Classes="status-card"
+                    IsVisible="{Binding HasStatusMessage}">
 
-                                <Button
-                                    Content="Отменить"
-                                    Command="{Binding $parent[UserControl].DataContext.CancelBookingCommand}"
-                                    CommandParameter="{Binding Id}"
-                                    IsVisible="{Binding CanCancel}" />
+                <TextBlock Text="{Binding StatusMessage}"
+                           Foreground="#BFD0C7"
+                           TextWrapping="Wrap"/>
 
-                            </DataTemplate>
+            </Border>
 
-                        </DataGridTemplateColumn.CellTemplate>
+            <ProgressBar IsIndeterminate="True"
+                         IsVisible="{Binding IsBusy}"
+                         Height="4"/>
 
-                    </DataGridTemplateColumn>
+            <Border Background="#0B1412"
+                    BorderBrush="#22322D"
+                    BorderThickness="1"
+                    CornerRadius="18"
+                    Padding="10"
+                    IsVisible="{Binding HasBookings}">
 
-                </DataGrid.Columns>
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              MaxHeight="620">
 
-            </DataGrid>
+                    <DataGrid ItemsSource="{Binding Bookings}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              Background="Transparent"
+                              BorderThickness="0"
+                              HeadersVisibility="Column"
+                              GridLinesVisibility="Horizontal"
+                              RowHeight="72">
 
-        </DockPanel>
+                        <DataGrid.Columns>
+
+                            <DataGridTextColumn Header="Набор"
+                                                Binding="{Binding LotTitle}"
+                                                Width="1.7*"/>
+
+                            <DataGridTextColumn Header="Точка питания"
+                                                Binding="{Binding FoodPointName}"
+                                                Width="1.7*"/>
+
+                            <DataGridTextColumn Header="Кол-во"
+                                                Binding="{Binding Quantity}"
+                                                Width="90"/>
+
+                            <DataGridTextColumn Header="Сумма"
+                                                Binding="{Binding TotalPrice}"
+                                                Width="110"/>
+
+                            <DataGridTextColumn Header="Дата брони"
+                                                Binding="{Binding ReservedAt}"
+                                                Width="210"/>
+
+                            <DataGridTemplateColumn Header="Статус"
+                                                    Width="170">
+
+                                <DataGridTemplateColumn.CellTemplate>
+
+                                    <DataTemplate x:DataType="dto:BookingDto">
+
+                                        <Grid VerticalAlignment="Center">
+
+                                            <Border Classes="status-issued"
+                                                    HorizontalAlignment="Center"
+                                                    IsVisible="{Binding IsIssued}">
+
+                                                <TextBlock Text="Выдана"
+                                                           Foreground="#7DFF72"
+                                                           FontWeight="SemiBold"
+                                                           HorizontalAlignment="Center"/>
+
+                                            </Border>
+
+                                            <Border Classes="status-pending"
+                                                    HorizontalAlignment="Center"
+                                                    IsVisible="{Binding IsPending}">
+
+                                                <TextBlock Text="Активна"
+                                                           Foreground="#FFC14D"
+                                                           FontWeight="SemiBold"
+                                                           HorizontalAlignment="Center"/>
+
+                                            </Border>
+
+                                            <Border Classes="status-cancelled"
+                                                    HorizontalAlignment="Center"
+                                                    IsVisible="{Binding IsCancelled}">
+
+                                                <TextBlock Text="Отменена"
+                                                           Foreground="#FF7C92"
+                                                           FontWeight="SemiBold"
+                                                           HorizontalAlignment="Center"/>
+
+                                            </Border>
+
+                                        </Grid>
+
+                                    </DataTemplate>
+
+                                </DataGridTemplateColumn.CellTemplate>
+
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Действие"
+                                                    Width="150">
+
+                                <DataGridTemplateColumn.CellTemplate>
+
+                                    <DataTemplate x:DataType="dto:BookingDto">
+
+                                        <Button Content="Отменить"
+                                                Classes="cancel-btn"
+                                                Command="{Binding $parent[UserControl].DataContext.CancelBookingCommand}"
+                                                CommandParameter="{Binding Id}"
+                                                IsVisible="{Binding CanCancel}"/>
+
+                                    </DataTemplate>
+
+                                </DataGridTemplateColumn.CellTemplate>
+
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                </ScrollViewer>
+
+            </Border>
+
+            <Border Classes="status-card"
+                    IsVisible="{Binding IsEmptyState}">
+
+                <TextBlock Text="У вас пока нет бронирований."
+                           Foreground="#92A39B"
+                           FontSize="16"
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center"/>
+
+            </Border>
+
+        </StackPanel>
 
     </Border>
 
