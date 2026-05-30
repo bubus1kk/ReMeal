@@ -1,0 +1,204 @@
+<mxfile host="Electron">
+  <diagram name="Страница-1" id="uL2mcitFuwueI5ikn-ph">
+    <mxGraphModel dx="1478" dy="774" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-1" parent="1" style="ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#ff0000;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="80" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-2" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-1" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="95" y="110" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-3" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Карта не открыта" vertex="1">
+          <mxGeometry height="90" width="160" x="15" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-4" parent="dU9D5zBf4dRsdWmpmtPM-3" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/отобразить экран карты&lt;div&gt;do/ожидание действия пользователя&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="160" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-5" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-3" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="95" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-6" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Загрузка точке питания" vertex="1">
+          <mxGeometry height="90" width="160" x="20" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-7" parent="dU9D5zBf4dRsdWmpmtPM-6" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/запросить список точек на карте&lt;div&gt;do/отображать индикатор загрузки&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="160" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-8" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-6" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="dU9D5zBf4dRsdWmpmtPM-10" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="100" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-9" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="пользователь открыл карту" vertex="1">
+          <mxGeometry height="30" width="160" x="100" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-10" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Отображение точек на карте" vertex="1">
+          <mxGeometry height="100" width="160" x="20" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-11" parent="dU9D5zBf4dRsdWmpmtPM-10" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/отобразить маркеры точек на карте&lt;div&gt;do/ожидание выбора точки&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="160" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-12" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-10" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="100" y="560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Точки загружены" vertex="1">
+          <mxGeometry height="30" width="60" x="100" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-16" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Загрузка информации о точке" vertex="1">
+          <mxGeometry height="110" width="160" x="20" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-17" parent="dU9D5zBf4dRsdWmpmtPM-16" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/запросить информацию о точке и о ее лотах&lt;div&gt;do/отображения индикатора загрузки&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="160" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-18" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-16" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="100" y="720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-19" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Пользователь выбрал точку" vertex="1">
+          <mxGeometry height="30" width="60" x="115" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-20" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Информация получена" vertex="1">
+          <mxGeometry height="30" width="60" x="100" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-21" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Просмотр информации о точке" vertex="1">
+          <mxGeometry height="130" width="160" x="20" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-22" parent="dU9D5zBf4dRsdWmpmtPM-21" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/отобразить информацию о точке и ее лотах&lt;div&gt;do/ожидание действий пользователя&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="160" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-28" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="dU9D5zBf4dRsdWmpmtPM-7">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-180" y="295" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-24" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Ошибка загрузки" vertex="1">
+          <mxGeometry height="115" width="160" x="-260" y="465" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-25" parent="dU9D5zBf4dRsdWmpmtPM-24" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/ показать сообщение об ошибке&lt;div&gt;do/ ожидание повторной попытки&lt;/div&gt;" vertex="1">
+          <mxGeometry height="85" width="160" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-27" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="dU9D5zBf4dRsdWmpmtPM-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-29" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Ошибка загрузки" vertex="1">
+          <mxGeometry height="30" width="60" x="-170" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-30" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" target="dU9D5zBf4dRsdWmpmtPM-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-31" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="повторить попытку" vertex="1">
+          <mxGeometry height="30" width="60" x="-200" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-32" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" target="dU9D5zBf4dRsdWmpmtPM-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="310" y="800" />
+              <mxPoint x="310" y="155" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-33" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Пользователь закрыл карту с точкой" vertex="1">
+          <mxGeometry height="30" width="60" x="330" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-35" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Построение маршрута" vertex="1">
+          <mxGeometry height="80" width="160" x="-230" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-36" parent="dU9D5zBf4dRsdWmpmtPM-35" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/построить маршрут&lt;div&gt;do/отобразить маршрут на карте&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-37" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-35" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-150" y="1080" />
+              <mxPoint x="130" y="1080" />
+            </Array>
+            <mxPoint x="130" y="1139" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-38" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Дополнительные действия" vertex="1">
+          <mxGeometry height="90" width="160" x="50" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-39" parent="dU9D5zBf4dRsdWmpmtPM-38" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/применить выбранное действие&lt;div&gt;do/обновить карту и список точек&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="160" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-40" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-38" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="1139" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-41" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Обновление информации" vertex="1">
+          <mxGeometry height="120" width="160" x="320" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-42" parent="dU9D5zBf4dRsdWmpmtPM-41" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/запросить актуальные данные о точке&lt;div&gt;do/обновить информацию на экране&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="160" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-43" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-41" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="400" y="1080" />
+              <mxPoint x="130" y="1080" />
+            </Array>
+            <mxPoint x="130" y="1139" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-44" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="dU9D5zBf4dRsdWmpmtPM-35">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="100" y="880" />
+              <mxPoint x="-150" y="880" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-45" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="dU9D5zBf4dRsdWmpmtPM-38">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="100" y="880" />
+              <mxPoint x="130" y="880" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-46" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="dU9D5zBf4dRsdWmpmtPM-41">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="100" y="880" />
+              <mxPoint x="400" y="880" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-50" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Завершение работы с картой" vertex="1">
+          <mxGeometry height="90" width="160" x="50" y="1140" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-51" parent="dU9D5zBf4dRsdWmpmtPM-50" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/завершить работу&lt;div&gt;do/ожидание следующего открытия карты&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="160" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-52" edge="1" parent="1" source="dU9D5zBf4dRsdWmpmtPM-50" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="1260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-53" parent="1" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#ff0000;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="115" y="1260" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-54" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Перейсти к фильтрации" vertex="1">
+          <mxGeometry height="30" width="100" x="120" y="880" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-55" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Обновить данные" vertex="1">
+          <mxGeometry height="30" width="60" x="400" y="870" as="geometry" />
+        </mxCell>
+        <mxCell id="dU9D5zBf4dRsdWmpmtPM-56" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Построить маршрут" vertex="1">
+          <mxGeometry height="30" width="60" x="-210" y="870" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
