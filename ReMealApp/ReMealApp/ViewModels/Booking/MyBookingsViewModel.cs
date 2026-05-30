@@ -20,6 +20,12 @@ public partial class MyBookingsViewModel : ViewModelBase
     [ObservableProperty]
     private bool _isBusy;
 
+    public bool HasBookings => Bookings.Count > 0;
+
+    public bool IsEmptyState => !IsBusy && !HasBookings;
+
+    public bool HasStatusMessage => !string.IsNullOrWhiteSpace(StatusMessage);
+
     public MyBookingsViewModel(IBookingService bookingService)
     {
         _bookingService = bookingService;
@@ -53,6 +59,27 @@ public partial class MyBookingsViewModel : ViewModelBase
         {
             IsBusy = false;
         }
+    }
+
+    partial void OnBookingsChanged(ObservableCollection<BookingDto> value)
+    {
+        NotifyBookingStateChanged();
+    }
+
+    partial void OnIsBusyChanged(bool value)
+    {
+        NotifyBookingStateChanged();
+    }
+
+    partial void OnStatusMessageChanged(string value)
+    {
+        OnPropertyChanged(nameof(HasStatusMessage));
+    }
+
+    private void NotifyBookingStateChanged()
+    {
+        OnPropertyChanged(nameof(HasBookings));
+        OnPropertyChanged(nameof(IsEmptyState));
     }
 
     [RelayCommand]

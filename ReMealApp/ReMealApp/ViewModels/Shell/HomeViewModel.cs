@@ -203,7 +203,7 @@ namespace ReMealApp.ViewModels.Shell
                 showLogin);
 
             Catalog = new CatalogViewModel(lotService, bookingService);
-            Map = new MapViewModel(mapService);
+            Map = new MapViewModel(mapService, OpenCatalogForFoodPoint);
             FoodPoint = new FoodPointViewModel(foodPointService, lotService, geocodingService, this);
             PartnerLots = new PartnerLotsViewModel(lotService, foodPointService, this);
             PartnerBookings = new PartnerBookingsViewModel(bookingService);
@@ -310,7 +310,7 @@ namespace ReMealApp.ViewModels.Shell
                 }
                 else if (role == UserRole.StudentCustomer)
                 {
-                    await Catalog.LoadAsync();
+                    await Catalog.LoadAllAsync();
                 }
                 else if (IsAdmin)
                 {
@@ -439,6 +439,19 @@ namespace ReMealApp.ViewModels.Shell
             return NavigateToSectionAsync(PartnerLotsSection);
         }
 
+        private async void OpenCatalogForFoodPoint(Guid foodPointId)
+        {
+            try
+            {
+                await Catalog.LoadForFoodPointAsync(foodPointId);
+                SetSection(CatalogSection, Catalog);
+            }
+            catch (Exception ex)
+            {
+                Map.StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
+        }
+
         private void NavigateToSection(string sectionKey)
         {
             _ = NavigateToSectionAsync(sectionKey);
@@ -462,9 +475,7 @@ namespace ReMealApp.ViewModels.Shell
                         break;
 
                     case CatalogSection when IsCatalogVisible:
-
-                        await Catalog.LoadAsync();
-
+                        await Catalog.LoadAllAsync();
                         SetSection(CatalogSection, Catalog);
 
                         break;
@@ -525,13 +536,26 @@ namespace ReMealApp.ViewModels.Shell
 
                         break;
 
-                    case AnalyticsSection:
+                    case AnalyticsSection when IsPartner:
 
                         await Analytics.LoadAsync();
 
                         SetSection(
                             AnalyticsSection,
                             Analytics);
+
+                        break;
+
+                    case AnalyticsSection:
+
+                        Profile.StatusMessage =
+                            "Аналитика доступна только партнеру.";
+
+                        await Profile.LoadAsync();
+
+                        SetSection(
+                            ProfileSection,
+                            Profile);
 
                         break;
 
@@ -691,6 +715,13 @@ namespace ReMealApp.ViewModels.Shell
         {
             public Task<Application.DTOs.Maps.GeocodingResultDto?> GeocodeAddressAsync(
                 string address,
+                CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<Application.DTOs.Maps.GeocodingResultDto?>(null);
+            }
+
+            public Task<Application.DTOs.Maps.GeocodingResultDto?> ReverseGeocodeAsync(
+                Application.DTOs.Maps.CoordinatesDto coordinates,
                 CancellationToken cancellationToken = default)
             {
                 return Task.FromResult<Application.DTOs.Maps.GeocodingResultDto?>(null);

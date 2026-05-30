@@ -2,7 +2,6 @@
 using Application.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
-using Domain.Repositories;
 
 namespace Application.Services
 {
@@ -14,7 +13,6 @@ namespace Application.Services
         private readonly IBookingRepository _bookingRepository;
 
         public PartnerAnalyticsService(
-            IFoodLotRepository foodLotRepository,
             IAuthService authService,
             IBookingRepository bookingRepository)
         {
@@ -43,21 +41,27 @@ namespace Application.Services
                     currentUser.Id,
                     cancellationToken);
 
-            bookings = ApplyFilters(
+            bookings = ApplyFoodPointFilter(
                 bookings,
-                period,
                 foodPointId);
 
             var issuedBookings = bookings
                 .Where(x => x.Status == BookingStatus.Issued)
+                .Where(x => IsInPeriod(x.IssuedAt, period))
                 .ToList();
 
             var cancelledBookings = bookings
                 .Where(x => x.Status == BookingStatus.Cancelled)
+                .Where(x => IsInPeriod(x.CancelledAt ?? x.ReservedAt, period))
                 .ToList();
 
             var activeBookings = bookings
                 .Where(x => x.Status == BookingStatus.Active)
+                .Where(x => IsInPeriod(x.ReservedAt, period))
+                .ToList();
+
+            var periodBookings = bookings
+                .Where(x => IsBookingInPeriod(x, period))
                 .ToList();
 
             var savedPortions =
@@ -78,10 +82,12 @@ namespace Application.Services
                     2),
 
                 SavedPortionsByDay =
-                    BuildSavedPortionsByDay(issuedBookings),
+                    BuildSavedPortionsByDay(
+                        issuedBookings,
+                        period),
 
                 BookingStatusDistribution =
-                    BuildBookingStatusDistribution(bookings),
+                    BuildBookingStatusDistribution(periodBookings),
 
                 TopLotsByIssuedQuantity =
                     BuildTopLotsByIssuedQuantity(issuedBookings),
@@ -90,13 +96,14 @@ namespace Application.Services
                     BuildIssuedByFoodPoint(issuedBookings),
 
                 PreventedWasteByDay =
-                    BuildPreventedWasteByDay(issuedBookings)
+                    BuildPreventedWasteByDay(
+                        issuedBookings,
+                        period)
             };
         }
 
-        private static List<Booking> ApplyFilters(
+        private static List<Booking> ApplyFoodPointFilter(
             List<Booking> bookings,
-            AnalyticsPeriod period,
             Guid? foodPointId)
         {
             var query = bookings.AsEnumerable();
@@ -107,15 +114,38 @@ namespace Application.Services
                     x.FoodLot?.FoodPointId == foodPointId.Value);
             }
 
+            return query.ToList();
+        }
+
+        private static bool IsBookingInPeriod(
+            Booking booking,
+            AnalyticsPeriod period)
+        {
+            var date = booking.Status switch
+            {
+                BookingStatus.Issued => booking.IssuedAt,
+                BookingStatus.Cancelled => booking.CancelledAt ?? booking.ReservedAt,
+                BookingStatus.Active => booking.ReservedAt,
+                _ => booking.ReservedAt
+            };
+
+            return IsInPeriod(date, period);
+        }
+
+        private static bool IsInPeriod(
+            DateTime? date,
+            AnalyticsPeriod period)
+        {
+            if (period == AnalyticsPeriod.AllTime)
+                return true;
+
+            if (!date.HasValue)
+                return false;
+
             var fromDate = GetPeriodStartDate(period);
 
-            if (fromDate.HasValue)
-            {
-                query = query.Where(x =>
-                    x.ReservedAt >= fromDate.Value);
-            }
-
-            return query.ToList();
+            return !fromDate.HasValue ||
+                date.Value.Date >= fromDate.Value;
         }
 
         private static DateTime? GetPeriodStartDate(
@@ -124,39 +154,51 @@ namespace Application.Services
             return period switch
             {
                 AnalyticsPeriod.Last7Days =>
-                    DateTime.UtcNow.Date.AddDays(-7),
+                    DateTime.UtcNow.Date.AddDays(-6),
 
                 AnalyticsPeriod.Last30Days =>
-                    DateTime.UtcNow.Date.AddDays(-30),
+                    DateTime.UtcNow.Date.AddDays(-29),
+
+                AnalyticsPeriod.Last90Days =>
+                    DateTime.UtcNow.Date.AddDays(-89),
 
                 _ => null
             };
         }
 
         private static List<DateChartPointDto> BuildSavedPortionsByDay(
-            List<Booking> issuedBookings)
+            List<Booking> issuedBookings,
+            AnalyticsPeriod period)
         {
-            return issuedBookings
-                .Where(x => x.IssuedAt.HasValue)
-                .GroupBy(x => x.IssuedAt!.Value.Date)
-                .OrderBy(x => x.Key)
-                .Select(x => new DateChartPointDto
-                {
-                    Date = x.Key,
-                    Value = x.Sum(b => b.Quantity)
-                })
-                .ToList();
+            if (issuedBookings.Count == 0)
+                return new List<DateChartPointDto>();
+
+            var valuesByDate =
+                issuedBookings
+                    .Where(x => x.IssuedAt.HasValue)
+                    .GroupBy(x => x.IssuedAt!.Value.Date)
+                    .ToDictionary(
+                        x => x.Key,
+                        x => (double)x.Sum(b => b.Quantity));
+
+            return BuildDateSeries(
+                valuesByDate,
+                period);
         }
 
         private static List<StatusChartPointDto> BuildBookingStatusDistribution(
             List<Booking> bookings)
         {
-            return bookings
-                .GroupBy(x => x.Status)
-                .Select(x => new StatusChartPointDto
+            var counts =
+                bookings
+                    .GroupBy(x => x.Status)
+                    .ToDictionary(x => x.Key, x => x.Count());
+
+            return Enum.GetValues<BookingStatus>()
+                .Select(status => new StatusChartPointDto
                 {
-                    StatusName = GetStatusName(x.Key),
-                    Count = x.Count()
+                    StatusName = GetStatusName(status),
+                    Count = counts.GetValueOrDefault(status)
                 })
                 .OrderByDescending(x => x.Count)
                 .ToList();
@@ -196,19 +238,76 @@ namespace Application.Services
         }
 
         private static List<DateChartPointDto> BuildPreventedWasteByDay(
-            List<Booking> issuedBookings)
+            List<Booking> issuedBookings,
+            AnalyticsPeriod period)
         {
-            return issuedBookings
-                .Where(x => x.IssuedAt.HasValue)
-                .GroupBy(x => x.IssuedAt!.Value.Date)
-                .OrderBy(x => x.Key)
-                .Select(x => new DateChartPointDto
+            if (issuedBookings.Count == 0)
+                return new List<DateChartPointDto>();
+
+            var valuesByDate =
+                issuedBookings
+                    .Where(x => x.IssuedAt.HasValue)
+                    .GroupBy(x => x.IssuedAt!.Value.Date)
+                    .ToDictionary(
+                        x => x.Key,
+                        x => Math.Round(
+                            x.Sum(b => b.Quantity) * WastePerPortionKg,
+                            2));
+
+            return BuildDateSeries(
+                valuesByDate,
+                period);
+        }
+
+        private static List<DateChartPointDto> BuildDateSeries(
+            IReadOnlyDictionary<DateTime, double> valuesByDate,
+            AnalyticsPeriod period)
+        {
+            if (valuesByDate.Count == 0)
+                return new List<DateChartPointDto>();
+
+            var dates =
+                GetChartDates(
+                    valuesByDate.Keys,
+                    period);
+
+            return dates
+                .Select(date => new DateChartPointDto
                 {
-                    Date = x.Key,
-                    Value = Math.Round(
-                        x.Sum(b => b.Quantity) * WastePerPortionKg,
-                        2)
+                    Date = date,
+                    Value = valuesByDate.GetValueOrDefault(date)
                 })
+                .ToList();
+        }
+
+        private static List<DateTime> GetChartDates(
+            IEnumerable<DateTime> valueDates,
+            AnalyticsPeriod period)
+        {
+            if (period == AnalyticsPeriod.AllTime)
+            {
+                return valueDates
+                    .Select(x => x.Date)
+                    .Distinct()
+                    .OrderBy(x => x)
+                    .ToList();
+            }
+
+            var startDate =
+                GetPeriodStartDate(period) ??
+                DateTime.UtcNow.Date;
+
+            var today =
+                DateTime.UtcNow.Date;
+
+            var daysCount =
+                Math.Max(
+                    1,
+                    (today - startDate).Days + 1);
+
+            return Enumerable
+                .Range(0, daysCount)
+                .Select(offset => startDate.AddDays(offset))
                 .ToList();
         }
 

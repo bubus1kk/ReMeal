@@ -112,7 +112,6 @@ namespace Infrastructure
                 IMapService mapService = new MapService(lotService, geocodingService);
                 IPartnerAnalyticsService partnerAnalyticsService =
                     new PartnerAnalyticsService(
-                        foodLotRepository,
                         authService,
                         bookingRepository);
 

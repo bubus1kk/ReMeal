@@ -167,14 +167,20 @@ public class BookingService : IBookingService
         {
             Id = booking.Id,
             UserName = booking.User?.FullName ?? string.Empty,
+            UserLogin = booking.User?.Login ?? string.Empty,
+            UserEmail = booking.User?.Email ?? string.Empty,
             LotTitle = booking.FoodLot?.Title ?? string.Empty,
             FoodPointName = booking.FoodLot?.FoodPoint?.Name ?? string.Empty,
+            FoodPointAddress = booking.FoodLot?.FoodPoint?.Address ?? string.Empty,
             Quantity = booking.Quantity,
             PriceAtReservation = booking.PriceAtReservation,
             ReservedAt = booking.ReservedAt,
             CancelledAt = booking.CancelledAt,
             IssuedAt = booking.IssuedAt,
-            Status = booking.Status
+            Status = booking.Status,
+            IsIssued = booking.Status == BookingStatus.Issued,
+            IsPending = booking.Status == BookingStatus.Active,
+            IsCancelled = booking.Status == BookingStatus.Cancelled
         };
     }
 }
