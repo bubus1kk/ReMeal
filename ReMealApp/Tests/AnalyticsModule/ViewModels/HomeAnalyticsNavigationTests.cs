@@ -9,6 +9,12 @@ namespace Tests.AnalyticsModule.ViewModels;
 [TestClass]
 public sealed class HomeAnalyticsNavigationTests
 {
+    [ClassInitialize]
+    public static void ClassInitialize(TestContext context)
+    {
+        AvaloniaTestApplication.EnsureInitialized();
+    }
+
     [TestMethod]
     public async Task ShowAnalyticsCommand_LoadsAnalyticsDashboardAndSelectsAnalyticsSection()
     {
@@ -25,6 +31,7 @@ public sealed class HomeAnalyticsNavigationTests
 
         var home = CreateHomeViewModel(database);
 
+        await home.InitializeAsync();
         await home.ShowAnalyticsCommand.ExecuteAsync(null);
 
         Assert.AreEqual(HomeViewModel.AnalyticsSection, home.SelectedSectionKey);

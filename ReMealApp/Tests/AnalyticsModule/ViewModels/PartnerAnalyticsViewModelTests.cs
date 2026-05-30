@@ -3,19 +3,26 @@ using Application.DTOs.FoodPoints;
 using Application.Interfaces;
 using Domain.Entities;
 using ReMealApp.ViewModels.Analytics;
+using Tests.TestSupport;
 
 namespace Tests.AnalyticsModule.ViewModels;
 
 [TestClass]
 public sealed class PartnerAnalyticsViewModelTests
 {
+    [ClassInitialize]
+    public static void ClassInitialize(TestContext context)
+    {
+        AvaloniaTestApplication.EnsureInitialized();
+    }
+
     [TestMethod]
     public void Constructor_InitializesAvailablePeriodsWithoutLoadingData()
     {
         var (viewModel, analyticsService, _) = CreateViewModel();
 
         CollectionAssert.AreEqual(
-            new[] { "7 дней", "30 дней", "Все время" },
+            new[] { "7 дней", "30 дней", "90 дней", "Всё время" },
             viewModel.Periods.Select(x => x.Title).ToArray());
         Assert.AreEqual(AnalyticsPeriod.Last7Days, viewModel.SelectedPeriod?.Value);
         Assert.IsEmpty(analyticsService.Calls);
@@ -34,7 +41,7 @@ public sealed class PartnerAnalyticsViewModelTests
         await viewModel.LoadAsync();
 
         Assert.IsFalse(viewModel.IsLoading);
-        Assert.IsNull(viewModel.ErrorMessage);
+        Assert.IsNull(viewModel.ErrorMessage, viewModel.ErrorMessage);
         Assert.IsNull(viewModel.EmptyStateMessage);
         Assert.HasCount(3, viewModel.FoodPoints);
         Assert.AreEqual("Все точки", viewModel.SelectedFoodPoint?.Name);
@@ -54,35 +61,38 @@ public sealed class PartnerAnalyticsViewModelTests
         Assert.HasCount(2, viewModel.SavedPortionsChartItems);
         Assert.AreEqual("20.05", viewModel.SavedPortionsChartItems[0].Label);
         Assert.AreEqual(2d, viewModel.SavedPortionsChartItems[0].Value);
-        Assert.AreEqual(55d, viewModel.SavedPortionsChartItems[0].Height, 0.001d);
-        Assert.AreEqual(220d, viewModel.SavedPortionsChartItems[1].Height);
+        Assert.AreEqual(42d, viewModel.SavedPortionsChartItems[0].Height, 0.001d);
+        Assert.AreEqual(168d, viewModel.SavedPortionsChartItems[1].Height);
 
         Assert.HasCount(3, viewModel.BookingStatusesChartItems);
         Assert.AreEqual("Выданные", viewModel.BookingStatusesChartItems[0].Label);
-        Assert.AreEqual(220d, viewModel.BookingStatusesChartItems[0].Height);
+        Assert.AreEqual(168d, viewModel.BookingStatusesChartItems[0].Height);
 
         Assert.HasCount(2, viewModel.TopLotsChartItems);
         Assert.AreEqual("Dinner box", viewModel.TopLotsChartItems[0].Label);
-        Assert.AreEqual(320d, viewModel.TopLotsChartItems[0].Width);
-        Assert.AreEqual(80d, viewModel.TopLotsChartItems[1].Width);
+        Assert.AreEqual(390d, viewModel.TopLotsChartItems[0].Width);
+        Assert.AreEqual(97.5d, viewModel.TopLotsChartItems[1].Width);
 
         Assert.HasCount(2, viewModel.FoodPointsChartItems);
         Assert.AreEqual("North cafe", viewModel.FoodPointsChartItems[0].Label);
-        Assert.AreEqual(320d, viewModel.FoodPointsChartItems[0].Width);
-        Assert.AreEqual(192d, viewModel.FoodPointsChartItems[1].Width);
+        Assert.AreEqual(390d, viewModel.FoodPointsChartItems[0].Width);
+        Assert.AreEqual(234d, viewModel.FoodPointsChartItems[1].Width);
     }
 
     [TestMethod]
     public async Task LoadAsync_WhenDashboardIsEmpty_ShowsEmptyStateAndClearsPreviousCharts()
     {
-        var (viewModel, analyticsService, _) = CreateViewModel();
+        var (viewModel, analyticsService, foodPointService) = CreateViewModel();
+        foodPointService.FoodPoints.Add(CreateFoodPoint("North cafe"));
         analyticsService.Dashboards.Enqueue(CreateFilledDashboard());
         analyticsService.Dashboards.Enqueue(new PartnerAnalyticsDashboardDto());
 
         await viewModel.LoadAsync();
         await viewModel.RefreshAsync();
 
-        Assert.AreEqual("Недостаточно данных для отображения аналитики.", viewModel.EmptyStateMessage);
+        Assert.AreEqual(
+            "Недостаточно данных для аналитики. Статистика появится после первых бронирований.",
+            viewModel.EmptyStateMessage);
         Assert.AreEqual(0, viewModel.IssuedBookingsCount);
         Assert.AreEqual(0, viewModel.SavedPortionsCount);
         Assert.AreEqual(0d, viewModel.CompletionRate);
@@ -98,7 +108,8 @@ public sealed class PartnerAnalyticsViewModelTests
     [TestMethod]
     public async Task LoadAsync_WhenDashboardContainsZeroChartValues_UsesMinimumBarSizes()
     {
-        var (viewModel, analyticsService, _) = CreateViewModel();
+        var (viewModel, analyticsService, foodPointService) = CreateViewModel();
+        foodPointService.FoodPoints.Add(CreateFoodPoint("North cafe"));
         analyticsService.Dashboards.Enqueue(new PartnerAnalyticsDashboardDto
         {
             SavedPortionsByDay =
@@ -137,10 +148,10 @@ public sealed class PartnerAnalyticsViewModelTests
 
         await viewModel.LoadAsync();
 
-        Assert.AreEqual(12d, viewModel.SavedPortionsChartItems.Single().Height);
-        Assert.AreEqual(12d, viewModel.BookingStatusesChartItems.Single().Height);
-        Assert.AreEqual(20d, viewModel.TopLotsChartItems.Single().Width);
-        Assert.AreEqual(20d, viewModel.FoodPointsChartItems.Single().Width);
+        Assert.IsEmpty(viewModel.SavedPortionsChartItems);
+        Assert.IsEmpty(viewModel.BookingStatusesChartItems);
+        Assert.AreEqual(0d, viewModel.TopLotsChartItems.Single().Width);
+        Assert.AreEqual(0d, viewModel.FoodPointsChartItems.Single().Width);
     }
 
     [TestMethod]
@@ -160,7 +171,8 @@ public sealed class PartnerAnalyticsViewModelTests
     [TestMethod]
     public async Task LoadAsync_WhenServiceThrows_ShowsErrorAndStopsLoading()
     {
-        var (viewModel, analyticsService, _) = CreateViewModel();
+        var (viewModel, analyticsService, foodPointService) = CreateViewModel();
+        foodPointService.FoodPoints.Add(CreateFoodPoint("North cafe"));
         analyticsService.Exception = new InvalidOperationException("service down");
 
         await viewModel.LoadAsync();
@@ -172,7 +184,8 @@ public sealed class PartnerAnalyticsViewModelTests
     [TestMethod]
     public async Task LoadAsync_WhenAlreadyLoading_IgnoresSecondRequest()
     {
-        var (viewModel, analyticsService, _) = CreateViewModel();
+        var (viewModel, analyticsService, foodPointService) = CreateViewModel();
+        foodPointService.FoodPoints.Add(CreateFoodPoint("North cafe"));
         analyticsService.WaitBeforeReturning =
             new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -197,7 +210,7 @@ public sealed class PartnerAnalyticsViewModelTests
         await viewModel.LoadAsync();
         await viewModel.RefreshAsync();
 
-        Assert.AreEqual(1, foodPointService.LoadCount);
+        Assert.AreEqual(2, foodPointService.LoadCount);
         Assert.HasCount(2, analyticsService.Calls);
     }
 
@@ -225,7 +238,8 @@ public sealed class PartnerAnalyticsViewModelTests
     [TestMethod]
     public async Task SelectedPeriodChanged_AfterInitialLoad_ReloadsDashboardWithPeriod()
     {
-        var (viewModel, analyticsService, _) = CreateViewModel();
+        var (viewModel, analyticsService, foodPointService) = CreateViewModel();
+        foodPointService.FoodPoints.Add(CreateFoodPoint("North cafe"));
         analyticsService.Dashboards.Enqueue(new PartnerAnalyticsDashboardDto());
         analyticsService.Dashboards.Enqueue(new PartnerAnalyticsDashboardDto());
 

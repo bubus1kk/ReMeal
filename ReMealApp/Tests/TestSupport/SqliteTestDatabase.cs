@@ -27,7 +27,6 @@ namespace Tests.TestSupport
             LotService = new LotService(FoodPointRepository, FoodLotRepository, Auth);
             BookingService = new BookingService(BookingRepository, Auth);
             PartnerAnalyticsService = new PartnerAnalyticsService(
-                FoodLotRepository,
                 Auth,
                 BookingRepository);
         }

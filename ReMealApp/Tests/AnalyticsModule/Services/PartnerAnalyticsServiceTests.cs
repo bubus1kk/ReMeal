@@ -44,7 +44,10 @@ public sealed class PartnerAnalyticsServiceTests
         Assert.AreEqual(0, dashboard.ActiveBookingsCount);
         Assert.AreEqual(0d, dashboard.PreventedWasteKg);
         Assert.IsEmpty(dashboard.SavedPortionsByDay);
-        Assert.IsEmpty(dashboard.BookingStatusDistribution);
+        Assert.HasCount(3, dashboard.BookingStatusDistribution);
+        AssertStatusCount(dashboard, "Выданные", 0);
+        AssertStatusCount(dashboard, "Отмененные", 0);
+        AssertStatusCount(dashboard, "Активные", 0);
         Assert.IsEmpty(dashboard.TopLotsByIssuedQuantity);
         Assert.IsEmpty(dashboard.IssuedByFoodPoint);
         Assert.IsEmpty(dashboard.PreventedWasteByDay);
