@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using Application.DTOs.Analytics;
 using Application.Interfaces;
 using Avalonia;
@@ -20,6 +20,8 @@ public partial class PartnerAnalyticsViewModel
     private const double PieChartSize = 220;
     private const double PieChartOuterRadius = 104;
     private const double PieChartInnerRadius = 58;
+    private const double VerticalChartMaxHeight = 168;
+    private const double ProgressMaxWidth = 390;
 
     private static readonly string[] PieChartPalette =
     {
@@ -32,6 +34,9 @@ public partial class PartnerAnalyticsViewModel
 
     private bool
         _isInitialized;
+
+    private bool
+        _isUpdatingFilters;
 
     public ObservableCollection<FoodPointFilterItem>
         FoodPoints
@@ -76,6 +81,10 @@ public partial class PartnerAnalyticsViewModel
     [ObservableProperty]
     private bool
         _isLoading;
+
+    [ObservableProperty]
+    private bool
+        _hasNoFoodPoints;
 
     [ObservableProperty]
     private string?
@@ -127,40 +136,89 @@ public partial class PartnerAnalyticsViewModel
     public bool HasEmptyStateMessage =>
         !string.IsNullOrWhiteSpace(EmptyStateMessage);
 
+    public bool IsFoodPointFilterEnabled =>
+        !HasNoFoodPoints &&
+        FoodPoints.Any(x => x.FoodPointId.HasValue);
+
+    public bool HasAnalyticsContent =>
+        !IsLoading &&
+        !HasNoFoodPoints &&
+        !HasErrorMessage;
+
     public bool HasSavedPortionsChartData =>
         SavedPortionsChartItems.Count > 0;
 
     public bool HasNoSavedPortionsChartData =>
-        !IsLoading && !HasSavedPortionsChartData;
+        !IsLoading &&
+        !HasNoFoodPoints &&
+        !HasSavedPortionsChartData;
 
     public bool HasBookingStatusesChartData =>
         BookingStatusPieSlices.Count > 0;
 
     public bool HasNoBookingStatusesChartData =>
-        !IsLoading && !HasBookingStatusesChartData;
+        !IsLoading &&
+        !HasNoFoodPoints &&
+        !HasBookingStatusesChartData;
 
     public bool HasTopLotsChartData =>
         TopLotsChartItems.Count > 0;
 
     public bool HasNoTopLotsChartData =>
-        !IsLoading && !HasTopLotsChartData;
+        !IsLoading &&
+        !HasNoFoodPoints &&
+        !HasTopLotsChartData;
 
     public bool HasFoodPointsChartData =>
         FoodPointsChartItems.Count > 0;
 
     public bool HasNoFoodPointsChartData =>
-        !IsLoading && !HasFoodPointsChartData;
+        !IsLoading &&
+        !HasNoFoodPoints &&
+        !HasFoodPointsChartData;
 
     public bool HasPreventedWasteChartData =>
         PreventedWasteChartItems.Count > 0;
 
     public bool HasNoPreventedWasteChartData =>
-        !IsLoading && !HasPreventedWasteChartData;
+        !IsLoading &&
+        !HasNoFoodPoints &&
+        !HasPreventedWasteChartData;
 
     public int TotalBookingsCount =>
         IssuedBookingsCount +
         CancelledBookingsCount +
         ActiveBookingsCount;
+
+    public string IssuedBookingsDisplay =>
+        IssuedBookingsCount.ToString("N0");
+
+    public string SavedPortionsDisplay =>
+        SavedPortionsCount.ToString("N0");
+
+    public string CancelledBookingsDisplay =>
+        CancelledBookingsCount.ToString("N0");
+
+    public string ActiveBookingsDisplay =>
+        ActiveBookingsCount.ToString("N0");
+
+    public string PreventedWasteDisplay =>
+        $"{PreventedWasteKg:0.##} кг";
+
+    public string IssuedBookingsCaption =>
+        "За выбранный период";
+
+    public string SavedPortionsCaption =>
+        "По выданным бронированиям";
+
+    public string CancelledBookingsCaption =>
+        "За выбранный период";
+
+    public string ActiveBookingsCaption =>
+        "Активные бронирования";
+
+    public string PreventedWasteCaption =>
+        "0,35 кг за порцию";
 
     public PartnerAnalyticsViewModel(
         IPartnerAnalyticsService analyticsService,
@@ -189,7 +247,12 @@ public partial class PartnerAnalyticsViewModel
 
         Periods.Add(
             new AnalyticsPeriodItem(
-                "Все время",
+                "90 дней",
+                AnalyticsPeriod.Last90Days));
+
+        Periods.Add(
+            new AnalyticsPeriodItem(
+                "Всё время",
                 AnalyticsPeriod.AllTime));
 
         SelectedPeriod =
@@ -207,10 +270,20 @@ public partial class PartnerAnalyticsViewModel
             IsLoading = true;
 
             ErrorMessage = null;
-
             EmptyStateMessage = null;
 
             await LoadFoodPointsAsync();
+
+            if (HasNoFoodPoints)
+            {
+                ClearDashboard();
+
+                EmptyStateMessage =
+                    "У вас пока нет точек питания. Аналитика появится после создания точки и публикации лотов.";
+
+                _isInitialized = true;
+                return;
+            }
 
             if (SelectedPeriod is null)
                 return;
@@ -227,19 +300,22 @@ public partial class PartnerAnalyticsViewModel
             if (!HasAnyData(dashboard))
             {
                 EmptyStateMessage =
-                    "Недостаточно данных для отображения аналитики.";
+                    "Недостаточно данных для аналитики. Статистика появится после первых бронирований.";
             }
 
             _isInitialized = true;
         }
         catch (Exception ex)
         {
+            ClearDashboard();
+
             ErrorMessage =
                 $"Ошибка загрузки аналитики: {ex.Message}";
         }
         finally
         {
             IsLoading = false;
+            NotifyAnalyticsStateProperties();
         }
     }
 
@@ -252,8 +328,11 @@ public partial class PartnerAnalyticsViewModel
     partial void OnSelectedPeriodChanged(
         AnalyticsPeriodItem? value)
     {
-        if (!_isInitialized)
+        if (!_isInitialized ||
+            _isUpdatingFilters)
+        {
             return;
+        }
 
         if (value is null)
             return;
@@ -264,44 +343,76 @@ public partial class PartnerAnalyticsViewModel
     partial void OnSelectedFoodPointChanged(
         FoodPointFilterItem? value)
     {
-        if (!_isInitialized)
+        if (!_isInitialized ||
+            _isUpdatingFilters)
+        {
             return;
+        }
 
         _ = LoadAsync();
     }
 
     private async Task LoadFoodPointsAsync()
     {
-        if (FoodPoints.Count > 0)
-            return;
+        var selectedFoodPointId =
+            SelectedFoodPoint?.FoodPointId;
 
         var foodPoints =
             await _foodPointService
                 .GetCurrentPartnerFoodPointsAsync();
 
-        FoodPoints.Clear();
+        _isUpdatingFilters = true;
 
-        FoodPoints.Add(
-            new FoodPointFilterItem
-            {
-                FoodPointId = null,
-                Name = "Все точки"
-            });
-
-        foreach (var point in foodPoints)
+        try
         {
+            FoodPoints.Clear();
+
+            if (foodPoints.Count == 0)
+            {
+                HasNoFoodPoints = true;
+
+                FoodPoints.Add(
+                    new FoodPointFilterItem
+                    {
+                        FoodPointId = null,
+                        Name = "Нет точек питания"
+                    });
+
+                SelectedFoodPoint =
+                    FoodPoints.FirstOrDefault();
+
+                return;
+            }
+
+            HasNoFoodPoints = false;
+
             FoodPoints.Add(
                 new FoodPointFilterItem
                 {
-                    FoodPointId = point.Id,
-                    Name = point.Name
+                    FoodPointId = null,
+                    Name = "Все точки"
                 });
-        }
 
-        if (SelectedFoodPoint is null)
-        {
+            foreach (var point in foodPoints
+                .OrderBy(x => x.Name))
+            {
+                FoodPoints.Add(
+                    new FoodPointFilterItem
+                    {
+                        FoodPointId = point.Id,
+                        Name = point.Name
+                    });
+            }
+
             SelectedFoodPoint =
+                FoodPoints.FirstOrDefault(x =>
+                    x.FoodPointId == selectedFoodPointId) ??
                 FoodPoints.FirstOrDefault();
+        }
+        finally
+        {
+            _isUpdatingFilters = false;
+            OnPropertyChanged(nameof(IsFoodPointFilterEnabled));
         }
     }
 
@@ -343,6 +454,28 @@ public partial class PartnerAnalyticsViewModel
         NotifyAnalyticsStateProperties();
     }
 
+    private void ClearDashboard()
+    {
+        IssuedBookingsCount = 0;
+        SavedPortionsCount = 0;
+        CancelledBookingsCount = 0;
+        ActiveBookingsCount = 0;
+        PreventedWasteKg = 0;
+        CompletionRate = 0;
+        CancellationRate = 0;
+        MostPopularLot = "-";
+        BestFoodPoint = "-";
+
+        SavedPortionsChartItems.Clear();
+        BookingStatusesChartItems.Clear();
+        TopLotsChartItems.Clear();
+        FoodPointsChartItems.Clear();
+        PreventedWasteChartItems.Clear();
+        BookingStatusPieSlices.Clear();
+
+        NotifyAnalyticsStateProperties();
+    }
+
     private void CalculateAdditionalMetrics()
     {
         var totalBookings =
@@ -379,39 +512,25 @@ public partial class PartnerAnalyticsViewModel
             dashboard.SavedPortionsByDay
                 .ToList();
 
-        if (items.Count == 0)
+        if (items.Count == 0 ||
+            items.All(x => x.Value <= 0))
+        {
             return;
+        }
 
         var maxValue =
-            items.Max(x => x.Value);
-
-        if (maxValue <= 0)
-            maxValue = 1;
+            Math.Max(
+                1,
+                items.Max(x => x.Value));
 
         foreach (var item in items)
         {
-            var calculatedHeight =
-                item.Value /
-                maxValue * 220;
-
-            if (calculatedHeight < 12)
-            {
-                calculatedHeight = 12;
-            }
-
             SavedPortionsChartItems.Add(
-                new AnalyticsBarItem
-                {
-                    Label =
-                        item.Date
-                            .ToString("dd.MM"),
-
-                    Value =
-                        item.Value,
-
-                    Height =
-                        calculatedHeight
-                });
+                AnalyticsBarItem.CreateVertical(
+                    item.Date.ToString("dd.MM"),
+                    item.Value,
+                    maxValue,
+                    VerticalChartMaxHeight));
         }
     }
 
@@ -444,27 +563,12 @@ public partial class PartnerAnalyticsViewModel
         {
             var item = items[index];
 
-            var calculatedHeight =
-                item.Count /
-                (double)maxValue * 220;
-
-            if (calculatedHeight < 12)
-            {
-                calculatedHeight = 12;
-            }
-
             BookingStatusesChartItems.Add(
-                new AnalyticsBarItem
-                {
-                    Label =
-                        item.StatusName,
-
-                    Value =
-                        item.Count,
-
-                    Height =
-                        calculatedHeight
-                });
+                AnalyticsBarItem.CreateVertical(
+                    item.StatusName,
+                    item.Count,
+                    maxValue,
+                    VerticalChartMaxHeight));
 
             var sweepAngle =
                 item.Count /
@@ -526,29 +630,17 @@ public partial class PartnerAnalyticsViewModel
         MostPopularLot =
             items.First().LotTitle;
 
-        foreach (var item in items)
+        for (var index = 0; index < items.Count; index++)
         {
-            var calculatedWidth =
-                item.IssuedQuantity /
-                (double)maxValue * 320;
-
-            if (calculatedWidth < 20)
-            {
-                calculatedWidth = 20;
-            }
+            var item = items[index];
 
             TopLotsChartItems.Add(
-                new AnalyticsBarItem
-                {
-                    Label =
-                        item.LotTitle,
-
-                    Value =
-                        item.IssuedQuantity,
-
-                    Width =
-                        calculatedWidth
-                });
+                AnalyticsBarItem.CreateProgress(
+                    index + 1,
+                    item.LotTitle,
+                    item.IssuedQuantity,
+                    maxValue,
+                    ProgressMaxWidth));
         }
     }
 
@@ -577,29 +669,17 @@ public partial class PartnerAnalyticsViewModel
         BestFoodPoint =
             items.First().FoodPointName;
 
-        foreach (var item in items)
+        for (var index = 0; index < items.Count; index++)
         {
-            var calculatedWidth =
-                item.IssuedQuantity /
-                (double)maxValue * 320;
-
-            if (calculatedWidth < 20)
-            {
-                calculatedWidth = 20;
-            }
+            var item = items[index];
 
             FoodPointsChartItems.Add(
-                new AnalyticsBarItem
-                {
-                    Label =
-                        item.FoodPointName,
-
-                    Value =
-                        item.IssuedQuantity,
-
-                    Width =
-                        calculatedWidth
-                });
+                AnalyticsBarItem.CreateProgress(
+                    index + 1,
+                    item.FoodPointName,
+                    item.IssuedQuantity,
+                    maxValue,
+                    ProgressMaxWidth));
         }
     }
 
@@ -612,39 +692,25 @@ public partial class PartnerAnalyticsViewModel
             dashboard.PreventedWasteByDay
                 .ToList();
 
-        if (items.Count == 0)
+        if (items.Count == 0 ||
+            items.All(x => x.Value <= 0))
+        {
             return;
+        }
 
         var maxValue =
-            items.Max(x => x.Value);
-
-        if (maxValue <= 0)
-            maxValue = 1;
+            Math.Max(
+                1,
+                items.Max(x => x.Value));
 
         foreach (var item in items)
         {
-            var calculatedHeight =
-                item.Value /
-                maxValue * 220;
-
-            if (calculatedHeight < 12)
-            {
-                calculatedHeight = 12;
-            }
-
             PreventedWasteChartItems.Add(
-                new AnalyticsBarItem
-                {
-                    Label =
-                        item.Date
-                            .ToString("dd.MM"),
-
-                    Value =
-                        item.Value,
-
-                    Height =
-                        calculatedHeight
-                });
+                AnalyticsBarItem.CreateVertical(
+                    item.Date.ToString("dd.MM"),
+                    item.Value,
+                    maxValue,
+                    VerticalChartMaxHeight));
         }
     }
 
@@ -753,6 +819,8 @@ public partial class PartnerAnalyticsViewModel
 
     private void NotifyAnalyticsStateProperties()
     {
+        OnPropertyChanged(nameof(IsFoodPointFilterEnabled));
+        OnPropertyChanged(nameof(HasAnalyticsContent));
         OnPropertyChanged(nameof(HasSavedPortionsChartData));
         OnPropertyChanged(nameof(HasNoSavedPortionsChartData));
         OnPropertyChanged(nameof(HasBookingStatusesChartData));
@@ -766,9 +834,43 @@ public partial class PartnerAnalyticsViewModel
         OnPropertyChanged(nameof(TotalBookingsCount));
     }
 
+    partial void OnIssuedBookingsCountChanged(int value)
+    {
+        OnPropertyChanged(nameof(IssuedBookingsDisplay));
+        OnPropertyChanged(nameof(TotalBookingsCount));
+    }
+
+    partial void OnSavedPortionsCountChanged(int value)
+    {
+        OnPropertyChanged(nameof(SavedPortionsDisplay));
+    }
+
+    partial void OnCancelledBookingsCountChanged(int value)
+    {
+        OnPropertyChanged(nameof(CancelledBookingsDisplay));
+        OnPropertyChanged(nameof(TotalBookingsCount));
+    }
+
+    partial void OnActiveBookingsCountChanged(int value)
+    {
+        OnPropertyChanged(nameof(ActiveBookingsDisplay));
+        OnPropertyChanged(nameof(TotalBookingsCount));
+    }
+
+    partial void OnPreventedWasteKgChanged(double value)
+    {
+        OnPropertyChanged(nameof(PreventedWasteDisplay));
+    }
+
+    partial void OnHasNoFoodPointsChanged(bool value)
+    {
+        NotifyAnalyticsStateProperties();
+    }
+
     partial void OnErrorMessageChanged(string? value)
     {
         OnPropertyChanged(nameof(HasErrorMessage));
+        OnPropertyChanged(nameof(HasAnalyticsContent));
     }
 
     partial void OnEmptyStateMessageChanged(string? value)
@@ -820,6 +922,9 @@ public sealed class FoodPointFilterItem
 
 public sealed class AnalyticsBarItem
 {
+    public int Rank
+    { get; set; }
+
     public string Label
     { get; set; } = string.Empty;
 
@@ -832,10 +937,59 @@ public sealed class AnalyticsBarItem
     public double Width
     { get; set; }
 
+    public string RankText =>
+        Rank > 0
+            ? Rank.ToString()
+            : string.Empty;
+
     public string DisplayValue =>
         Math.Abs(Value % 1) < 0.001
             ? Value.ToString("0")
             : Value.ToString("0.##");
+
+    public static AnalyticsBarItem CreateVertical(
+        string label,
+        double value,
+        double maxValue,
+        double maxHeight)
+    {
+        var height =
+            value <= 0
+                ? 0
+                : Math.Max(
+                    10,
+                    value / maxValue * maxHeight);
+
+        return new AnalyticsBarItem
+        {
+            Label = label,
+            Value = value,
+            Height = height
+        };
+    }
+
+    public static AnalyticsBarItem CreateProgress(
+        int rank,
+        string label,
+        double value,
+        double maxValue,
+        double maxWidth)
+    {
+        var width =
+            value <= 0
+                ? 0
+                : Math.Max(
+                    14,
+                    value / maxValue * maxWidth);
+
+        return new AnalyticsBarItem
+        {
+            Rank = rank,
+            Label = label,
+            Value = value,
+            Width = width
+        };
+    }
 }
 
 public sealed class AnalyticsPieSliceItem

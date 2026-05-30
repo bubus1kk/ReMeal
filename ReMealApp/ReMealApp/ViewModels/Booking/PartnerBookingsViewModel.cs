@@ -10,7 +10,7 @@ namespace ReMealApp.ViewModels.Booking;
 
 public partial class PartnerBookingsViewModel : ViewModelBase
 {
-    private const decimal WastePreventedKgPerPortion = 0.4m;
+    private const decimal WastePreventedKgPerPortion = 0.35m;
 
     private readonly IBookingService _bookingService;
 
@@ -62,7 +62,7 @@ public partial class PartnerBookingsViewModel : ViewModelBase
         $"Бронирований по вашим лотам: {FilteredBookings.Count}";
 
     public string PreventedWasteDisplay =>
-        PreventedWasteKg.ToString("0.#");
+        PreventedWasteKg.ToString("0.##");
 
     [ObservableProperty]
     private string? _selectedFoodPoint;
@@ -290,7 +290,7 @@ public partial class PartnerBookingsViewModel : ViewModelBase
             .Sum(x => x.Quantity);
 
         PreventedWasteKg =
-            Math.Round(SavedPortions * WastePreventedKgPerPortion, 1);
+            Math.Round(SavedPortions * WastePreventedKgPerPortion, 2);
 
         CancelledBookingsCount =
             bookings.Count(x => x.Status == BookingStatus.Cancelled);

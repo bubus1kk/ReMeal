@@ -4,6 +4,7 @@
     {
         Last7Days = 0,
         Last30Days = 1,
-        AllTime = 2
+        Last90Days = 2,
+        AllTime = 3
     }
 }
