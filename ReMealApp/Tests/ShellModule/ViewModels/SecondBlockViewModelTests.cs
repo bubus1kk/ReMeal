@@ -137,6 +137,7 @@ namespace Tests.ViewModels
                 database.LotService,
                 new NoOpBookingService(),
                 profileStatisticsService,
+                database.PartnerAnalyticsService,
                 _ => { },
                 () => { });
         }
