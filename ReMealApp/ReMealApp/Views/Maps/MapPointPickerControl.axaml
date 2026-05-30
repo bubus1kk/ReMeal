@@ -1,0 +1,117 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="ReMealApp.Views.Maps.MapPointPickerControl"
+             Background="#08110F">
+
+    <UserControl.Styles>
+        <Style Selector="TextBlock.title">
+            <Setter Property="Foreground" Value="#F5FAF4"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style Selector="TextBlock.muted">
+            <Setter Property="Foreground" Value="#A8B1AD"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+
+        <Style Selector="Button.primary-action">
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="Padding" Value="18,0"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#69CB4B"/>
+            <Setter Property="Foreground" Value="#F8FFF4"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style Selector="Button.secondary-action">
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="Padding" Value="18,0"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#111B18"/>
+            <Setter Property="BorderBrush" Value="#34483E"/>
+            <Setter Property="Foreground" Value="#E6EFE9"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto,*,Auto"
+          Background="#08110F">
+        <Border Grid.Row="0"
+                Background="#0D1413"
+                BorderBrush="#26352F"
+                BorderThickness="0,0,0,1"
+                Padding="20,16">
+            <Grid ColumnDefinitions="*,Auto"
+                  ColumnSpacing="16">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Положение точки питания"
+                               Classes="title"/>
+                    <TextBlock x:Name="CoordinatesText"
+                               Classes="muted"/>
+                </StackPanel>
+
+                <TextBlock Grid.Column="1"
+                           Text="© OpenStreetMap contributors"
+                           Classes="muted"
+                           VerticalAlignment="Top"/>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1"
+                Margin="20"
+                Background="#0B1210"
+                BorderBrush="#26352F"
+                BorderThickness="1"
+                CornerRadius="10"
+                ClipToBounds="True">
+            <Grid>
+                <Canvas x:Name="TileCanvas"
+                        Width="1024"
+                        Height="540"
+                        Background="#07100E"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        ClipToBounds="True"
+                        PointerPressed="TileCanvas_PointerPressed"
+                        PointerMoved="TileCanvas_PointerMoved"
+                        PointerReleased="TileCanvas_PointerReleased"
+                        PointerWheelChanged="TileCanvas_PointerWheelChanged"/>
+
+                <TextBlock x:Name="MapStatusText"
+                           Text="Загрузка карты..."
+                           Classes="muted"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           IsHitTestVisible="False"/>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2"
+                Background="#0D1413"
+                BorderBrush="#26352F"
+                BorderThickness="0,1,0,0"
+                Padding="20,14">
+            <Grid ColumnDefinitions="*,Auto,Auto"
+                  ColumnSpacing="12">
+                <TextBlock Grid.Column="0"
+                           Text="Клик по карте уточняет координаты и адрес."
+                           Classes="muted"
+                           VerticalAlignment="Center"/>
+                <Button Grid.Column="1"
+                        Classes="secondary-action"
+                        MinWidth="132"
+                        Click="Cancel_Click">
+                    <TextBlock Text="Отмена"/>
+                </Button>
+                <Button Grid.Column="2"
+                        Classes="primary-action"
+                        MinWidth="156"
+                        Click="Apply_Click">
+                    <TextBlock Text="Применить"/>
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

@@ -14,8 +14,10 @@ namespace ReMealApp.ViewModels.Partner
     {
         private readonly IFoodPointService _foodPointService;
         private readonly ILotService _lotService;
+        private readonly IGeocodingService _geocodingService;
         private readonly HomeViewModel _shell;
         private readonly List<FoodPointListItemViewModel> _allFoodPoints = new();
+        private bool _isUpdatingCoordinates;
 
         [ObservableProperty]
         private ObservableCollection<FoodPointListItemViewModel> _foodPoints = new();
@@ -48,6 +50,12 @@ namespace ReMealApp.ViewModels.Partner
         private string _phone = string.Empty;
 
         [ObservableProperty]
+        private double? _latitude;
+
+        [ObservableProperty]
+        private double? _longitude;
+
+        [ObservableProperty]
         private string _statusMessage = string.Empty;
 
         [ObservableProperty]
@@ -68,10 +76,12 @@ namespace ReMealApp.ViewModels.Partner
         public FoodPointViewModel(
             IFoodPointService foodPointService,
             ILotService lotService,
+            IGeocodingService geocodingService,
             HomeViewModel shell)
         {
             _foodPointService = foodPointService;
             _lotService = lotService;
+            _geocodingService = geocodingService;
             _shell = shell;
 
             StatusFilters = new ObservableCollection<FoodPointStatusFilterOption>
@@ -108,6 +118,14 @@ namespace ReMealApp.ViewModels.Partner
         public bool CanSave => !IsBusy && (IsCreateMode || IsEditing);
 
         public bool HasStatusMessage => !string.IsNullOrWhiteSpace(StatusMessage);
+
+        public bool HasSelectedCoordinates => Latitude.HasValue && Longitude.HasValue;
+
+        public string CoordinatesStatusText => HasSelectedCoordinates ? "Координаты выбраны" : "Координаты не выбраны";
+
+        public string CoordinatesTechnicalText => HasSelectedCoordinates
+            ? $"Latitude: {Latitude!.Value:F6}; Longitude: {Longitude!.Value:F6}"
+            : "Нажмите «Найти на карте», чтобы определить координаты по адресу.";
 
         public bool IsInactiveDetail => HasCurrentFoodPoint && CurrentDetails?.IsActive == false;
 
@@ -283,7 +301,9 @@ namespace ReMealApp.ViewModels.Partner
                         Name,
                         Address,
                         Description,
-                        Phone));
+                        Phone,
+                        Latitude,
+                        Longitude));
 
                     StatusMessage = "Точка питания создана.";
                 }
@@ -294,7 +314,9 @@ namespace ReMealApp.ViewModels.Partner
                         Name,
                         Address,
                         Description,
-                        Phone));
+                        Phone,
+                        Latitude,
+                        Longitude));
 
                     StatusMessage = "Точка питания обновлена.";
                 }
@@ -305,6 +327,113 @@ namespace ReMealApp.ViewModels.Partner
                 IsEditing = false;
                 await ShowDetailsCoreAsync(reloaded);
                 await _shell.RefreshPartnerAsync();
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        [RelayCommand]
+        private async Task FindAddressOnMapAsync()
+        {
+            if (IsBusy)
+                return;
+
+            if (string.IsNullOrWhiteSpace(Address))
+            {
+                StatusMessage = "Введите адрес точки питания.";
+                return;
+            }
+
+            try
+            {
+                IsBusy = true;
+                StatusMessage = "Ищем адрес на карте...";
+
+                using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(8));
+                var result = await _geocodingService.GeocodeAddressAsync(Address, timeout.Token);
+                if (result is null)
+                {
+                    StatusMessage = "Адрес не найден.";
+                    return;
+                }
+
+                SetSelectedCoordinates(
+                    result.Coordinates.Latitude,
+                    result.Coordinates.Longitude);
+                StatusMessage = "Координаты найдены по адресу.";
+            }
+            catch (OperationCanceledException)
+            {
+                StatusMessage = "Не удалось найти адрес: запрос занял слишком много времени.";
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        public void SetSelectedCoordinates(double latitude, double longitude)
+        {
+            if (latitude is < -90 or > 90 || longitude is < -180 or > 180)
+            {
+                StatusMessage = "Не удалось выбрать координаты на карте.";
+                return;
+            }
+
+            UpdateCoordinates(latitude, longitude);
+            StatusMessage = "Координаты выбраны.";
+        }
+
+        public async Task SetSelectedCoordinatesFromMapAsync(
+            double latitude,
+            double longitude,
+            CancellationToken cancellationToken = default)
+        {
+            if (latitude is < -90 or > 90 || longitude is < -180 or > 180)
+            {
+                StatusMessage = "Не удалось выбрать координаты на карте.";
+                return;
+            }
+
+            UpdateCoordinates(latitude, longitude);
+            Address = FormatCoordinatesAddress(latitude, longitude);
+
+            try
+            {
+                IsBusy = true;
+                StatusMessage = "Определяем адрес выбранной точки...";
+
+                using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                timeout.CancelAfter(TimeSpan.FromSeconds(8));
+                var result = await _geocodingService.ReverseGeocodeAsync(
+                    new Application.DTOs.Maps.CoordinatesDto(latitude, longitude),
+                    timeout.Token);
+
+                if (result is null || string.IsNullOrWhiteSpace(result.DisplayName))
+                {
+                    StatusMessage = "Адрес не найден, в поле адреса записаны координаты.";
+                    return;
+                }
+
+                Address = NormalizeMapAddress(result.DisplayName);
+                StatusMessage = "Адрес и координаты выбраны по карте.";
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+            }
+            catch (OperationCanceledException)
+            {
+                StatusMessage = "Координаты выбраны, но определение адреса заняло слишком много времени.";
             }
             catch (Exception ex)
             {
@@ -493,6 +622,7 @@ namespace ReMealApp.ViewModels.Partner
             Address = foodPoint.Address;
             Description = foodPoint.Description;
             Phone = foodPoint.Phone;
+            UpdateCoordinates(foodPoint.Latitude, foodPoint.Longitude);
         }
 
         private void ClearFormFields()
@@ -501,6 +631,7 @@ namespace ReMealApp.ViewModels.Partner
             Address = string.Empty;
             Description = string.Empty;
             Phone = string.Empty;
+            UpdateCoordinates(null, null);
         }
 
         private void RefreshScreenState()
@@ -517,6 +648,9 @@ namespace ReMealApp.ViewModels.Partner
             OnPropertyChanged(nameof(CanDeactivateCurrent));
             OnPropertyChanged(nameof(CanDeleteCurrent));
             OnPropertyChanged(nameof(CanSave));
+            OnPropertyChanged(nameof(HasSelectedCoordinates));
+            OnPropertyChanged(nameof(CoordinatesStatusText));
+            OnPropertyChanged(nameof(CoordinatesTechnicalText));
             OnPropertyChanged(nameof(IsInactiveDetail));
             OnPropertyChanged(nameof(EmptyTitle));
             OnPropertyChanged(nameof(EmptySubtitle));
@@ -557,6 +691,59 @@ namespace ReMealApp.ViewModels.Partner
         partial void OnHasVisibleFoodPointsChanged(bool value) => RefreshScreenState();
 
         partial void OnStatusMessageChanged(string value) => OnPropertyChanged(nameof(HasStatusMessage));
+
+        partial void OnLatitudeChanged(double? value)
+        {
+            if (!_isUpdatingCoordinates)
+                RefreshCoordinateState();
+        }
+
+        partial void OnLongitudeChanged(double? value)
+        {
+            if (!_isUpdatingCoordinates)
+                RefreshCoordinateState();
+        }
+
+        private void UpdateCoordinates(double? latitude, double? longitude)
+        {
+            if (Latitude == latitude && Longitude == longitude)
+                return;
+
+            _isUpdatingCoordinates = true;
+            try
+            {
+                Latitude = latitude;
+                Longitude = longitude;
+            }
+            finally
+            {
+                _isUpdatingCoordinates = false;
+            }
+
+            RefreshCoordinateState();
+        }
+
+        private void RefreshCoordinateState()
+        {
+            OnPropertyChanged(nameof(HasSelectedCoordinates));
+            OnPropertyChanged(nameof(CoordinatesStatusText));
+            OnPropertyChanged(nameof(CoordinatesTechnicalText));
+        }
+
+        private static string NormalizeMapAddress(string address)
+        {
+            var normalized = address.Trim();
+            return normalized.Length <= 500
+                ? normalized
+                : normalized[..500];
+        }
+
+        private static string FormatCoordinatesAddress(double latitude, double longitude)
+        {
+            return string.Create(
+                CultureInfo.InvariantCulture,
+                $"Координаты: {latitude:F6}, {longitude:F6}");
+        }
     }
 
     public sealed class FoodPointListItemViewModel

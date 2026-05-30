@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,75 +10,227 @@
 
     <UserControl.Styles>
 
-        <Style Selector="Border.card">
+        <Style Selector="Border.analytics-card">
             <Setter Property="Background" Value="#101917"/>
-            <Setter Property="BorderBrush" Value="#1E312B"/>
+            <Setter Property="BorderBrush" Value="#243B33"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="18"/>
+            <Setter Property="CornerRadius" Value="12"/>
             <Setter Property="Padding" Value="18"/>
+            <Setter Property="BoxShadow" Value="0 18 46 0 #33000000"/>
         </Style>
 
-        <Style Selector="TextBlock.title">
-            <Setter Property="FontSize" Value="28"/>
+        <Style Selector="Border.kpi-card">
+            <Setter Property="Background" Value="#101917"/>
+            <Setter Property="BorderBrush" Value="#2D4B39"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="18"/>
+            <Setter Property="MinHeight" Value="128"/>
+        </Style>
+
+        <Style Selector="Border.icon-box">
+            <Setter Property="Width" Value="48"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Background" Value="#18261D"/>
+            <Setter Property="BorderBrush" Value="#355B36"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="Border.icon-box.neutral">
+            <Setter Property="Background" Value="#1B2422"/>
+            <Setter Property="BorderBrush" Value="#394842"/>
+        </Style>
+
+        <Style Selector="Border.icon-box.orange">
+            <Setter Property="Background" Value="#2C2111"/>
+            <Setter Property="BorderBrush" Value="#805719"/>
+        </Style>
+
+        <Style Selector="TextBlock.page-title">
+            <Setter Property="FontSize" Value="30"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="#F4FFF6"/>
+            <Setter Property="LetterSpacing" Value="0"/>
         </Style>
 
-        <Style Selector="TextBlock.subtitle">
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Foreground" Value="#8FA59A"/>
+        <Style Selector="TextBlock.page-subtitle">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#9AA9A1"/>
+        </Style>
+
+        <Style Selector="TextBlock.card-title">
+            <Setter Property="FontSize" Value="19"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#F4FFF6"/>
+            <Setter Property="LetterSpacing" Value="0"/>
+        </Style>
+
+        <Style Selector="TextBlock.card-caption">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#8DA096"/>
+        </Style>
+
+        <Style Selector="TextBlock.kpi-title">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#D4E3DA"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
 
         <Style Selector="TextBlock.kpi-value">
-            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontSize" Value="34"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="#75C943"/>
+            <Setter Property="LetterSpacing" Value="0"/>
+        </Style>
+
+        <Style Selector="TextBlock.kpi-caption">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#95A79D"/>
+        </Style>
+
+        <Style Selector="TextBlock.empty-text">
+            <Setter Property="Foreground" Value="#9BADA3"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
 
         <Style Selector="ComboBox.analytics-filter">
-            <Setter Property="Background" Value="#111B18"/>
-            <Setter Property="Foreground" Value="#E8F5EC"/>
-            <Setter Property="BorderBrush" Value="#24362F"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="MinWidth" Value="220"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="Background" Value="#101817"/>
+            <Setter Property="Foreground" Value="#EAF5EE"/>
+            <Setter Property="BorderBrush" Value="#263A33"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="MinWidth" Value="180"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
+        <Style Selector="ComboBox.analytics-filter:pointerover">
+            <Setter Property="Background" Value="#121E1A"/>
+            <Setter Property="BorderBrush" Value="#3A5A47"/>
+        </Style>
+
+        <Style Selector="ComboBox.analytics-filter:focus">
+            <Setter Property="BorderBrush" Value="#75C943"/>
+        </Style>
+
+        <Style Selector="ComboBox.analytics-filter:disabled">
+            <Setter Property="Opacity" Value="0.7"/>
+        </Style>
+
+        <Style Selector="Button.refresh-button">
+            <Setter Property="Height" Value="46"/>
+            <Setter Property="Padding" Value="18,0"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Background" Value="#75C943"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#07100D"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
+        <Style Selector="Button.refresh-button:pointerover">
+            <Setter Property="Background" Value="#82D84E"/>
+        </Style>
+
+        <Style Selector="Button.refresh-button:pressed">
+            <Setter Property="Background" Value="#64B83A"/>
+        </Style>
+
+        <Style Selector="Button.refresh-button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#82D84E"/>
+        </Style>
+
+        <Style Selector="Button.refresh-button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#64B83A"/>
+        </Style>
+
+        <Style Selector="Border.chart-line">
+            <Setter Property="Height" Value="1"/>
+            <Setter Property="Background" Value="#244038"/>
+            <Setter Property="Opacity" Value="0.55"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+
+        <Style Selector="Border.progress-track">
+            <Setter Property="Height" Value="9"/>
+            <Setter Property="Width" Value="390"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Background" Value="#22312D"/>
+        </Style>
+
+        <Style Selector="Border.progress-fill">
+            <Setter Property="Height" Value="9"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Background" Value="#75C943"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <Style Selector="Border.progress-fill.blue">
+            <Setter Property="Background" Value="#4FA3FF"/>
         </Style>
 
     </UserControl.Styles>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <ScrollViewer
+        VerticalScrollBarVisibility="Hidden"
+        HorizontalScrollBarVisibility="Disabled">
 
-        <StackPanel Margin="28" Spacing="24">
-
+        <StackPanel
+            Margin="0"
+            Spacing="18">
 
             <Grid ColumnDefinitions="*,Auto">
 
                 <StackPanel Spacing="4">
 
                     <TextBlock
-                        Classes="title"
+                        Classes="page-title"
                         Text="Аналитика"/>
 
                     <TextBlock
-                        Classes="subtitle"
+                        Classes="page-subtitle"
                         Text="Статистика по вашим точкам питания и лотам"/>
 
                 </StackPanel>
 
                 <Button
                     Grid.Column="1"
-                    Content="Обновить"
+                    Classes="refresh-button"
                     Command="{Binding RefreshCommand}"
-                    Background="#75C943"
-                    Foreground="Black"
-                    FontWeight="Bold"
-                    Padding="18,10"/>
+                    VerticalAlignment="Top">
+
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Spacing="8"
+                        VerticalAlignment="Center">
+
+                        <Path
+                            Width="16"
+                            Height="16"
+                            Data="M13,4 A6,6 0 1 0 14.5,9 M14.5,9 L14.5,5 M14.5,9 L10.5,9"
+                            Stroke="#07100D"
+                            StrokeThickness="2"
+                            StrokeLineCap="Round"
+                            Stretch="Uniform"/>
+
+                        <TextBlock
+                            Text="Обновить"
+                            VerticalAlignment="Center"/>
+
+                    </StackPanel>
+
+                </Button>
 
             </Grid>
 
-
             <Grid
                 ColumnDefinitions="Auto,Auto,*"
-                ColumnSpacing="16">
+                ColumnSpacing="14">
 
                 <ComboBox
                     Grid.Column="0"
@@ -90,13 +242,18 @@
                     Grid.Column="1"
                     Classes="analytics-filter"
                     ItemsSource="{Binding FoodPoints}"
-                    SelectedItem="{Binding SelectedFoodPoint}"/>
+                    SelectedItem="{Binding SelectedFoodPoint}"
+                    IsEnabled="{Binding IsFoodPointFilterEnabled}"/>
 
             </Grid>
 
+            <Border
+                Height="1"
+                Background="#21332D"
+                Opacity="0.8"/>
 
             <Border
-                Classes="card"
+                Classes="analytics-card"
                 IsVisible="{Binding IsLoading}">
 
                 <StackPanel
@@ -106,7 +263,9 @@
 
                     <ProgressBar
                         Width="260"
-                        IsIndeterminate="True"/>
+                        IsIndeterminate="True"
+                        Foreground="#75C943"
+                        Background="#263A33"/>
 
                     <TextBlock
                         Text="Загрузка аналитики..."
@@ -118,14 +277,13 @@
 
             </Border>
 
-
             <Border
-                Classes="card"
+                Classes="analytics-card"
                 Background="#2A1515"
                 BorderBrush="#5C2D2D"
-                IsVisible="{Binding ErrorMessage}">
+                IsVisible="{Binding HasErrorMessage}">
 
-                <StackPanel Spacing="10">
+                <StackPanel Spacing="8">
 
                     <TextBlock
                         Text="Ошибка загрузки"
@@ -143,421 +301,722 @@
             </Border>
 
             <Border
-                Classes="card"
-                IsVisible="{Binding EmptyStateMessage}">
+                Classes="analytics-card"
+                IsVisible="{Binding HasEmptyStateMessage}">
 
                 <TextBlock
                     Text="{Binding EmptyStateMessage}"
-                    Foreground="#D7E7DB"
-                    FontSize="16"/>
+                    Foreground="#C8D8D0"
+                    FontSize="15"
+                    TextWrapping="Wrap"/>
 
             </Border>
 
-            <Grid
-                ColumnDefinitions="*,*,*,*,*"
-                ColumnSpacing="18">
+            <StackPanel
+                Spacing="18"
+                IsVisible="{Binding HasAnalyticsContent}">
 
-                <Border
-                    Grid.Column="0"
-                    Classes="card">
+                <Grid
+                    ColumnDefinitions="*,*,*,*,*"
+                    ColumnSpacing="14">
 
-                    <StackPanel Spacing="8">
+                    <Border
+                        Grid.Column="0"
+                        Classes="kpi-card">
 
-                        <TextBlock
-                            Text="Выдано бронирований"
-                            Foreground="#CFE0D5"/>
+                        <Grid RowDefinitions="Auto,*,Auto">
 
-                        <TextBlock
-                            Classes="kpi-value"
-                            Text="{Binding IssuedBookingsCount}"/>
+                            <Grid ColumnDefinitions="58,*">
 
-                    </StackPanel>
+                                <Border Classes="icon-box">
+                                    <Image
+                                        Source="/Assets/Icons/Booking/check-green.png"
+                                        Width="23"
+                                        Height="23"
+                                        Stretch="Uniform"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                                </Border>
 
-                </Border>
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Classes="kpi-title"
+                                    Text="Выдано бронирований"
+                                    VerticalAlignment="Center"/>
 
-                <Border
-                    Grid.Column="1"
-                    Classes="card">
+                            </Grid>
 
-                    <StackPanel Spacing="8">
+                            <TextBlock
+                                Grid.Row="1"
+                                Classes="kpi-value"
+                                Text="{Binding IssuedBookingsDisplay}"
+                                Margin="0,14,0,4"/>
 
-                        <TextBlock
-                            Text="Спасено порций"
-                            Foreground="#CFE0D5"/>
-
-                        <TextBlock
-                            Classes="kpi-value"
-                            Text="{Binding SavedPortionsCount}"/>
-
-                    </StackPanel>
-
-                </Border>
-
-                <Border
-                    Grid.Column="2"
-                    Classes="card">
-
-                    <StackPanel Spacing="8">
-
-                        <TextBlock
-                            Text="Отменено"
-                            Foreground="#CFE0D5"/>
-
-                        <TextBlock
-                            Classes="kpi-value"
-                            Text="{Binding CancelledBookingsCount}"/>
-
-                    </StackPanel>
-
-                </Border>
-
-                <Border
-                    Grid.Column="3"
-                    Classes="card">
-
-                    <StackPanel Spacing="8">
-
-                        <TextBlock
-                            Text="Активных"
-                            Foreground="#CFE0D5"/>
-
-                        <TextBlock
-                            Classes="kpi-value"
-                            Text="{Binding ActiveBookingsCount}"/>
-
-                    </StackPanel>
-
-                </Border>
-
-                <Border
-                    Grid.Column="4"
-                    Classes="card">
-
-                    <StackPanel Spacing="8">
-
-                        <TextBlock
-                            Text="Предотвращено отходов"
-                            Foreground="#CFE0D5"/>
-
-                        <TextBlock
-                            Classes="kpi-value"
-                            Text="{Binding PreventedWasteKg}"/>
-
-                    </StackPanel>
-
-                </Border>
-
-            </Grid>
-
-
-            <Grid
-                RowDefinitions="Auto,Auto,Auto"
-                ColumnDefinitions="*,*"
-                RowSpacing="18"
-                ColumnSpacing="18">
-
-                <Border
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Classes="card">
-
-                    <StackPanel Spacing="16">
-
-                        <TextBlock
-                            Text="Спасённые порции по дням"
-                            FontSize="18"
-                            FontWeight="SemiBold"
-                            Foreground="#F4FFF6"/>
-
-                        <Grid
-                            Height="320"
-                            RowDefinitions="*,Auto">
-
-                            <ItemsControl
-                                Grid.Row="0"
-                                ItemsSource="{Binding SavedPortionsChartItems}">
-
-                                <ItemsControl.ItemsPanel>
-
-                                    <ItemsPanelTemplate>
-
-                                        <StackPanel
-                                            Orientation="Horizontal"
-                                            Spacing="12"
-                                            VerticalAlignment="Bottom"
-                                            HorizontalAlignment="Center"/>
-
-                                    </ItemsPanelTemplate>
-
-                                </ItemsControl.ItemsPanel>
-
-                                <ItemsControl.ItemTemplate>
-
-                                    <DataTemplate>
-
-                                        <StackPanel
-                                            VerticalAlignment="Bottom"
-                                            Spacing="8">
-
-                                            <TextBlock
-                                                Text="{Binding Value}"
-                                                HorizontalAlignment="Center"
-                                                Foreground="#D7E7DB"
-                                                FontSize="12"/>
-
-                                            <Border
-                                                Width="36"
-                                                Height="{Binding Height}"
-                                                Background="#75C943"
-                                                CornerRadius="8,8,0,0"
-                                                VerticalAlignment="Bottom"/>
-
-                                            <TextBlock
-                                                Text="{Binding Label}"
-                                                HorizontalAlignment="Center"
-                                                FontSize="11"
-                                                Foreground="#8FA59A"/>
-
-                                        </StackPanel>
-
-                                    </DataTemplate>
-
-                                </ItemsControl.ItemTemplate>
-
-                            </ItemsControl>
+                            <TextBlock
+                                Grid.Row="2"
+                                Classes="kpi-caption"
+                                Text="{Binding IssuedBookingsCaption}"/>
 
                         </Grid>
 
-                    </StackPanel>
+                    </Border>
 
-                </Border>
+                    <Border
+                        Grid.Column="1"
+                        Classes="kpi-card">
 
-                <Border
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Classes="card">
+                        <Grid RowDefinitions="Auto,*,Auto">
 
-                    <StackPanel Spacing="16">
+                            <Grid ColumnDefinitions="58,*">
 
-                        <TextBlock
-                            Text="Статусы бронирований"
-                            FontSize="18"
-                            FontWeight="SemiBold"
-                            Foreground="#F4FFF6"/>
+                                <Border Classes="icon-box">
+                                    <Image
+                                        Source="/Assets/Icons/Booking/portions-green.png"
+                                        Width="25"
+                                        Height="25"
+                                        Stretch="Uniform"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                                </Border>
 
-                        <Grid
-                            Height="320"
-                            RowDefinitions="*,Auto">
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Classes="kpi-title"
+                                    Text="Спасено порций"
+                                    VerticalAlignment="Center"/>
 
-                            <ItemsControl
-                                Grid.Row="0"
-                                ItemsSource="{Binding BookingStatusesChartItems}">
+                            </Grid>
 
-                                <ItemsControl.ItemsPanel>
+                            <TextBlock
+                                Grid.Row="1"
+                                Classes="kpi-value"
+                                Text="{Binding SavedPortionsDisplay}"
+                                Margin="0,14,0,4"/>
 
-                                    <ItemsPanelTemplate>
-
-                                        <StackPanel
-                                            Orientation="Horizontal"
-                                            Spacing="18"
-                                            VerticalAlignment="Bottom"
-                                            HorizontalAlignment="Center"/>
-
-                                    </ItemsPanelTemplate>
-
-                                </ItemsControl.ItemsPanel>
-
-                                <ItemsControl.ItemTemplate>
-
-                                    <DataTemplate>
-
-                                        <StackPanel
-                                            VerticalAlignment="Bottom"
-                                            Spacing="8">
-
-                                            <TextBlock
-                                                Text="{Binding Value}"
-                                                HorizontalAlignment="Center"
-                                                Foreground="#D7E7DB"
-                                                FontSize="12"/>
-
-                                            <Border
-                                                Width="44"
-                                                Height="{Binding Height}"
-                                                Background="#4FA3FF"
-                                                CornerRadius="8,8,0,0"
-                                                VerticalAlignment="Bottom"/>
-
-                                            <TextBlock
-                                                Text="{Binding Label}"
-                                                Width="70"
-                                                TextAlignment="Center"
-                                                TextWrapping="Wrap"
-                                                FontSize="11"
-                                                Foreground="#8FA59A"/>
-
-                                        </StackPanel>
-
-                                    </DataTemplate>
-
-                                </ItemsControl.ItemTemplate>
-
-                            </ItemsControl>
+                            <TextBlock
+                                Grid.Row="2"
+                                Classes="kpi-caption"
+                                Text="{Binding SavedPortionsCaption}"/>
 
                         </Grid>
 
-                    </StackPanel>
+                    </Border>
 
-                </Border>
+                    <Border
+                        Grid.Column="2"
+                        Classes="kpi-card">
 
+                        <Grid RowDefinitions="Auto,*,Auto">
 
-                <Border
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Classes="card">
+                            <Grid ColumnDefinitions="58,*">
 
-                    <StackPanel Spacing="16">
+                                <Border Classes="icon-box neutral">
+                                    <Image
+                                        Source="/Assets/Icons/Booking/cancel-red.png"
+                                        Width="21"
+                                        Height="21"
+                                        Stretch="Uniform"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                                </Border>
 
-                        <TextBlock
-                            Text="Топ популярных лотов"
-                            FontSize="18"
-                            FontWeight="SemiBold"
-                            Foreground="#F4FFF6"/>
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Classes="kpi-title"
+                                    Text="Отменено"
+                                    VerticalAlignment="Center"/>
 
-                        <ItemsControl
-                            ItemsSource="{Binding TopLotsChartItems}">
-
-                            <ItemsControl.ItemTemplate>
-
-                                <DataTemplate>
-
-                                    <StackPanel Spacing="6">
-
-                                        <DockPanel>
-
-                                            <TextBlock
-                                                DockPanel.Dock="Left"
-                                                Text="{Binding Label}"
-                                                Foreground="#D7E7DB"
-                                                FontSize="13"/>
-
-                                            <TextBlock
-                                                DockPanel.Dock="Right"
-                                                Text="{Binding Value}"
-                                                Foreground="#75C943"
-                                                FontWeight="Bold"/>
-
-                                        </DockPanel>
-
-                                        <Border
-                                            Height="18"
-                                            Width="{Binding Width}"
-                                            Background="#75C943"
-                                            CornerRadius="8"/>
-
-                                    </StackPanel>
-
-                                </DataTemplate>
-
-                            </ItemsControl.ItemTemplate>
-
-                        </ItemsControl>
-
-                    </StackPanel>
-
-                </Border>
-
-                <Border
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Classes="card">
-
-                    <StackPanel Spacing="16">
-
-                        <TextBlock
-                            Text="Эффективность точек питания"
-                            FontSize="18"
-                            FontWeight="SemiBold"
-                            Foreground="#F4FFF6"/>
-
-                        <ItemsControl
-                            ItemsSource="{Binding FoodPointsChartItems}">
-
-                            <ItemsControl.ItemTemplate>
-
-                                <DataTemplate>
-
-                                    <StackPanel Spacing="6">
-
-                                        <DockPanel>
-
-                                            <TextBlock
-                                                DockPanel.Dock="Left"
-                                                Text="{Binding Label}"
-                                                Foreground="#D7E7DB"
-                                                FontSize="13"/>
-
-                                            <TextBlock
-                                                DockPanel.Dock="Right"
-                                                Text="{Binding Value}"
-                                                Foreground="#4FA3FF"
-                                                FontWeight="Bold"/>
-
-                                        </DockPanel>
-
-                                        <Border
-                                            Height="18"
-                                            Width="{Binding Width}"
-                                            Background="#4FA3FF"
-                                            CornerRadius="8"/>
-
-                                    </StackPanel>
-
-                                </DataTemplate>
-
-                            </ItemsControl.ItemTemplate>
-
-                        </ItemsControl>
-
-                    </StackPanel>
-
-                </Border>
-
-
-                <Border
-                    Grid.Row="2"
-                    Grid.ColumnSpan="2"
-                    Classes="card">
-
-                    <Grid Height="320">
-
-                        <StackPanel
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Spacing="12">
+                            </Grid>
 
                             <TextBlock
-                                Text="Скоро здесь появится расширенная аналитика"
-                                FontSize="20"
-                                FontWeight="SemiBold"
-                                Foreground="#F4FFF6"
-                                HorizontalAlignment="Center"/>
+                                Grid.Row="1"
+                                Classes="kpi-value"
+                                Foreground="#DCE5E0"
+                                Text="{Binding CancelledBookingsDisplay}"
+                                Margin="0,14,0,4"/>
 
                             <TextBlock
-                                Text="Прогнозы, динамика отходов, эффективность лотов и сравнение точек питания"
-                                Width="520"
-                                TextAlignment="Center"
-                                TextWrapping="Wrap"
-                                FontSize="14"
-                                Foreground="#8FA59A"/>
+                                Grid.Row="2"
+                                Classes="kpi-caption"
+                                Text="{Binding CancelledBookingsCaption}"/>
+
+                        </Grid>
+
+                    </Border>
+
+                    <Border
+                        Grid.Column="3"
+                        Classes="kpi-card">
+
+                        <Grid RowDefinitions="Auto,*,Auto">
+
+                            <Grid ColumnDefinitions="58,*">
+
+                                <Border Classes="icon-box">
+                                    <Image
+                                        Source="/Assets/Icons/time.png"
+                                        Width="23"
+                                        Height="23"
+                                        Stretch="Uniform"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                                </Border>
+
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Classes="kpi-title"
+                                    Text="Активных"
+                                    VerticalAlignment="Center"/>
+
+                            </Grid>
+
+                            <TextBlock
+                                Grid.Row="1"
+                                Classes="kpi-value"
+                                Text="{Binding ActiveBookingsDisplay}"
+                                Margin="0,14,0,4"/>
+
+                            <TextBlock
+                                Grid.Row="2"
+                                Classes="kpi-caption"
+                                Text="{Binding ActiveBookingsCaption}"/>
+
+                        </Grid>
+
+                    </Border>
+
+                    <Border
+                        Grid.Column="4"
+                        Classes="kpi-card">
+
+                        <Grid RowDefinitions="Auto,*,Auto">
+
+                            <Grid ColumnDefinitions="58,*">
+
+                                <Border Classes="icon-box orange">
+                                    <Image
+                                        Source="/Assets/Icons/leaf.png"
+                                        Width="24"
+                                        Height="24"
+                                        Stretch="Uniform"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                                </Border>
+
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Classes="kpi-title"
+                                    Text="Предотвращено отходов"
+                                    VerticalAlignment="Center"/>
+
+                            </Grid>
+
+                            <TextBlock
+                                Grid.Row="1"
+                                Classes="kpi-value"
+                                Text="{Binding PreventedWasteDisplay}"
+                                Margin="0,14,0,4"/>
+
+                            <TextBlock
+                                Grid.Row="2"
+                                Classes="kpi-caption"
+                                Text="{Binding PreventedWasteCaption}"/>
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+                <Grid
+                    ColumnDefinitions="1.03*,*"
+                    ColumnSpacing="16">
+
+                    <Border
+                        Grid.Column="0"
+                        Classes="analytics-card">
+
+                        <StackPanel Spacing="16">
+
+                            <TextBlock
+                                Classes="card-title"
+                                Text="Спасённые порции по дням"/>
+
+                            <Grid Height="260">
+
+                                <Grid
+                                    RowDefinitions="*,*,*,*"
+                                    IsHitTestVisible="False">
+                                    <Border Classes="chart-line"/>
+                                    <Border Grid.Row="1" Classes="chart-line"/>
+                                    <Border Grid.Row="2" Classes="chart-line"/>
+                                    <Border Grid.Row="3" Classes="chart-line"/>
+                                </Grid>
+
+                                <ScrollViewer
+                                    HorizontalScrollBarVisibility="Hidden"
+                                    VerticalScrollBarVisibility="Disabled"
+                                    IsVisible="{Binding HasSavedPortionsChartData}">
+
+                                    <ItemsControl
+                                        ItemsSource="{Binding SavedPortionsChartItems}"
+                                        VerticalAlignment="Bottom">
+
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel
+                                                    Orientation="Horizontal"
+                                                    Spacing="18"
+                                                    VerticalAlignment="Bottom"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:AnalyticsBarItem">
+                                                <StackPanel
+                                                    Width="56"
+                                                    VerticalAlignment="Bottom"
+                                                    Spacing="7">
+
+                                                    <TextBlock
+                                                        Text="{Binding DisplayValue}"
+                                                        HorizontalAlignment="Center"
+                                                        Foreground="#EEF7F1"
+                                                        FontSize="12"
+                                                        FontWeight="SemiBold"/>
+
+                                                    <Border
+                                                        Width="32"
+                                                        Height="{Binding Height}"
+                                                        Background="#75C943"
+                                                        CornerRadius="7,7,0,0"
+                                                        HorizontalAlignment="Center"/>
+
+                                                    <TextBlock
+                                                        Text="{Binding Label}"
+                                                        HorizontalAlignment="Center"
+                                                        Foreground="#95A79D"
+                                                        FontSize="12"/>
+
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+
+                                    </ItemsControl>
+
+                                </ScrollViewer>
+
+                                <TextBlock
+                                    Classes="empty-text"
+                                    Text="Нет выданных бронирований за выбранный период."
+                                    IsVisible="{Binding HasNoSavedPortionsChartData}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    MaxWidth="360"/>
+
+                            </Grid>
 
                         </StackPanel>
 
-                    </Grid>
+                    </Border>
+
+                    <Border
+                        Grid.Column="1"
+                        Classes="analytics-card">
+
+                        <StackPanel Spacing="16">
+
+                            <TextBlock
+                                Classes="card-title"
+                                Text="Статусы бронирований"/>
+
+                            <Grid Height="260">
+
+                                <Grid
+                                    IsVisible="{Binding HasBookingStatusesChartData}"
+                                    ColumnDefinitions="250,*"
+                                    ColumnSpacing="24">
+
+                                    <Grid
+                                        Width="220"
+                                        Height="220"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+
+                                        <Ellipse
+                                            Width="220"
+                                            Height="220"
+                                            Fill="#111B18"
+                                            Stroke="#24362F"
+                                            StrokeThickness="1"/>
+
+                                        <ItemsControl
+                                            Width="220"
+                                            Height="220"
+                                            ItemsSource="{Binding BookingStatusPieSlices}">
+
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <Canvas
+                                                        Width="220"
+                                                        Height="220"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:AnalyticsPieSliceItem">
+                                                    <Path
+                                                        Data="{Binding Geometry}"
+                                                        Fill="{Binding Brush}"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+
+                                        </ItemsControl>
+
+                                        <Ellipse
+                                            Width="116"
+                                            Height="116"
+                                            Fill="#101917"
+                                            Stroke="#1E312B"
+                                            StrokeThickness="1"/>
+
+                                        <StackPanel
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Spacing="2">
+
+                                            <TextBlock
+                                                Text="{Binding TotalBookingsCount}"
+                                                FontSize="30"
+                                                FontWeight="Bold"
+                                                Foreground="#F4FFF6"
+                                                HorizontalAlignment="Center"/>
+
+                                            <TextBlock
+                                                Text="всего"
+                                                FontSize="12"
+                                                Foreground="#A6B8AE"
+                                                HorizontalAlignment="Center"/>
+
+                                        </StackPanel>
+
+                                    </Grid>
+
+                                    <ItemsControl
+                                        Grid.Column="1"
+                                        ItemsSource="{Binding BookingStatusPieSlices}"
+                                        VerticalAlignment="Center">
+
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:AnalyticsPieSliceItem">
+
+                                                <Grid
+                                                    ColumnDefinitions="18,*,Auto"
+                                                    ColumnSpacing="10"
+                                                    Margin="0,0,0,12">
+
+                                                    <Rectangle
+                                                        Width="12"
+                                                        Height="12"
+                                                        RadiusX="4"
+                                                        RadiusY="4"
+                                                        Fill="{Binding Brush}"
+                                                        VerticalAlignment="Center"/>
+
+                                                    <TextBlock
+                                                        Grid.Column="1"
+                                                        Text="{Binding Label}"
+                                                        Foreground="#D7E7DB"
+                                                        FontSize="14"
+                                                        TextWrapping="Wrap"/>
+
+                                                    <TextBlock
+                                                        Grid.Column="2"
+                                                        Text="{Binding DisplayValue}"
+                                                        Foreground="#F4FFF6"
+                                                        FontWeight="SemiBold"
+                                                        FontSize="14"/>
+
+                                                </Grid>
+
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+
+                                    </ItemsControl>
+
+                                </Grid>
+
+                                <TextBlock
+                                    Classes="empty-text"
+                                    Text="Недостаточно данных для построения диаграммы."
+                                    IsVisible="{Binding HasNoBookingStatusesChartData}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    MaxWidth="360"/>
+
+                            </Grid>
+
+                        </StackPanel>
+
+                    </Border>
+
+                </Grid>
+
+                <Grid
+                    ColumnDefinitions="1.03*,*"
+                    ColumnSpacing="16">
+
+                    <Border
+                        Grid.Column="0"
+                        Classes="analytics-card">
+
+                        <StackPanel Spacing="14">
+
+                            <TextBlock
+                                Classes="card-title"
+                                Text="Топ популярных лотов"/>
+
+                            <TextBlock
+                                Classes="card-caption"
+                                Text="по выданным порциям"/>
+
+                            <ItemsControl
+                                IsVisible="{Binding HasTopLotsChartData}"
+                                ItemsSource="{Binding TopLotsChartItems}">
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:AnalyticsBarItem">
+
+                                        <Grid
+                                            ColumnDefinitions="24,160,Auto,*"
+                                            ColumnSpacing="12"
+                                            Margin="0,0,0,12">
+
+                                            <TextBlock
+                                                Text="{Binding RankText}"
+                                                Foreground="#75C943"
+                                                FontWeight="SemiBold"
+                                                VerticalAlignment="Center"/>
+
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                Text="{Binding Label}"
+                                                Foreground="#E4EFE8"
+                                                FontSize="14"
+                                                TextTrimming="CharacterEllipsis"
+                                                VerticalAlignment="Center"/>
+
+                                            <Grid
+                                                Grid.Column="2"
+                                                VerticalAlignment="Center">
+
+                                                <Border Classes="progress-track"/>
+
+                                                <Border
+                                                    Classes="progress-fill"
+                                                    Width="{Binding Width}"/>
+
+                                            </Grid>
+
+                                            <TextBlock
+                                                Grid.Column="3"
+                                                Text="{Binding DisplayValue}"
+                                                Foreground="#F4FFF6"
+                                                FontWeight="SemiBold"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"/>
+
+                                        </Grid>
+
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+
+                            </ItemsControl>
+
+                            <TextBlock
+                                Classes="empty-text"
+                                Text="Популярные лоты появятся после первых выданных бронирований."
+                                IsVisible="{Binding HasNoTopLotsChartData}"
+                                HorizontalAlignment="Center"
+                                Margin="0,28,0,18"
+                                MaxWidth="420"/>
+
+                        </StackPanel>
+
+                    </Border>
+
+                    <Border
+                        Grid.Column="1"
+                        Classes="analytics-card">
+
+                        <StackPanel Spacing="14">
+
+                            <TextBlock
+                                Classes="card-title"
+                                Text="Эффективность точек питания"/>
+
+                            <TextBlock
+                                Classes="card-caption"
+                                Text="по выданным порциям"/>
+
+                            <ItemsControl
+                                IsVisible="{Binding HasFoodPointsChartData}"
+                                ItemsSource="{Binding FoodPointsChartItems}">
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:AnalyticsBarItem">
+
+                                        <Grid
+                                            ColumnDefinitions="24,160,Auto,*"
+                                            ColumnSpacing="12"
+                                            Margin="0,0,0,12">
+
+                                            <TextBlock
+                                                Text="{Binding RankText}"
+                                                Foreground="#75C943"
+                                                FontWeight="SemiBold"
+                                                VerticalAlignment="Center"/>
+
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                Text="{Binding Label}"
+                                                Foreground="#E4EFE8"
+                                                FontSize="14"
+                                                TextTrimming="CharacterEllipsis"
+                                                VerticalAlignment="Center"/>
+
+                                            <Grid
+                                                Grid.Column="2"
+                                                VerticalAlignment="Center">
+
+                                                <Border Classes="progress-track"/>
+
+                                                <Border
+                                                    Classes="progress-fill blue"
+                                                    Width="{Binding Width}"/>
+
+                                            </Grid>
+
+                                            <TextBlock
+                                                Grid.Column="3"
+                                                Text="{Binding DisplayValue}"
+                                                Foreground="#F4FFF6"
+                                                FontWeight="SemiBold"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"/>
+
+                                        </Grid>
+
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+
+                            </ItemsControl>
+
+                            <TextBlock
+                                Classes="empty-text"
+                                Text="Эффективность точек появится после первых выданных бронирований."
+                                IsVisible="{Binding HasNoFoodPointsChartData}"
+                                HorizontalAlignment="Center"
+                                Margin="0,28,0,18"
+                                MaxWidth="420"/>
+
+                        </StackPanel>
+
+                    </Border>
+
+                </Grid>
+
+                <Border Classes="analytics-card">
+
+                    <StackPanel Spacing="16">
+
+                        <TextBlock
+                            Classes="card-title"
+                            Text="Предотвращённые отходы по дням"/>
+
+                        <TextBlock
+                            Classes="card-caption"
+                            Text="расчёт по коэффициенту 0,35 кг за спасённую порцию"/>
+
+                        <Grid Height="260">
+
+                            <Grid
+                                RowDefinitions="*,*,*,*"
+                                IsHitTestVisible="False">
+                                <Border Classes="chart-line"/>
+                                <Border Grid.Row="1" Classes="chart-line"/>
+                                <Border Grid.Row="2" Classes="chart-line"/>
+                                <Border Grid.Row="3" Classes="chart-line"/>
+                            </Grid>
+
+                            <ScrollViewer
+                                HorizontalScrollBarVisibility="Hidden"
+                                VerticalScrollBarVisibility="Disabled"
+                                IsVisible="{Binding HasPreventedWasteChartData}">
+
+                                <ItemsControl
+                                    ItemsSource="{Binding PreventedWasteChartItems}"
+                                    VerticalAlignment="Bottom">
+
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel
+                                                Orientation="Horizontal"
+                                                Spacing="18"
+                                                VerticalAlignment="Bottom"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:AnalyticsBarItem">
+                                            <StackPanel
+                                                Width="56"
+                                                VerticalAlignment="Bottom"
+                                                Spacing="7">
+
+                                                <TextBlock
+                                                    Text="{Binding DisplayValue}"
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#EEF7F1"
+                                                    FontSize="12"
+                                                    FontWeight="SemiBold"/>
+
+                                                <Border
+                                                    Width="32"
+                                                    Height="{Binding Height}"
+                                                    Background="#FFB84D"
+                                                    CornerRadius="7,7,0,0"
+                                                    HorizontalAlignment="Center"/>
+
+                                                <TextBlock
+                                                    Text="{Binding Label}"
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#95A79D"
+                                                    FontSize="12"/>
+
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+
+                                </ItemsControl>
+
+                            </ScrollViewer>
+
+                            <TextBlock
+                                Classes="empty-text"
+                                Text="Расчёт предотвращённых отходов появится после первых выданных бронирований."
+                                IsVisible="{Binding HasNoPreventedWasteChartData}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                MaxWidth="460"/>
+
+                        </Grid>
+
+                    </StackPanel>
 
                 </Border>
 
-            </Grid>
+            </StackPanel>
 
         </StackPanel>
 

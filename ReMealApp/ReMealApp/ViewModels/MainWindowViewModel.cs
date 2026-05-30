@@ -14,6 +14,8 @@ namespace ReMealApp.ViewModels
         private readonly IBookingService _bookingService;
         private readonly IAdminService _adminService;
         private readonly IProfileStatisticsService _profileStatisticsService;
+        private readonly IGeocodingService _geocodingService;
+        private readonly IMapService _mapService;
         private readonly IPartnerAnalyticsService _partnerAnalyticsService;
         private readonly Action _exitApplication;
 
@@ -28,6 +30,8 @@ namespace ReMealApp.ViewModels
             IBookingService bookingService,
             IAdminService adminService,
             IProfileStatisticsService profileStatisticsService,
+            IGeocodingService geocodingService,
+            IMapService mapService,
             IPartnerAnalyticsService partnerAnalyticsService,
             Action exitApplication)
         {
@@ -38,6 +42,8 @@ namespace ReMealApp.ViewModels
             _bookingService = bookingService;
             _adminService = adminService;
             _profileStatisticsService = profileStatisticsService;
+            _geocodingService = geocodingService;
+            _mapService = mapService;
             _partnerAnalyticsService = partnerAnalyticsService;
             _exitApplication = exitApplication;
 
@@ -82,6 +88,8 @@ namespace ReMealApp.ViewModels
                 _bookingService,
                 _adminService,
                 _profileStatisticsService,
+                _geocodingService,
+                _mapService,
                 _partnerAnalyticsService,
                 ShowLogin,
                 _exitApplication);

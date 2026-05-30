@@ -1,4 +1,5 @@
 using Application.DTOs.Admin;
+using Application.DTOs.Analytics;
 using Application.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -7,6 +8,7 @@ using ReMealApp.ViewModels.Admin;
 using ReMealApp.ViewModels.Analytics;
 using ReMealApp.ViewModels.Booking;
 using ReMealApp.ViewModels.Catalog;
+using ReMealApp.ViewModels.Maps;
 using ReMealApp.ViewModels.Partner;
 using ReMealApp.ViewModels.Profile;
 
@@ -74,6 +76,31 @@ namespace ReMealApp.ViewModels.Shell
             ILotService lotService,
             IBookingService bookingService,
             IProfileStatisticsService profileStatisticsService,
+            Action<string> showLogin,
+            Action exitApplication)
+            : this(
+                authService,
+                userProfileService,
+                foodPointService,
+                lotService,
+                bookingService,
+                new DeniedAdminService(),
+                profileStatisticsService,
+                new UnavailableGeocodingService(),
+                new UnavailableMapService(),
+                new UnavailablePartnerAnalyticsService(),
+                showLogin,
+                exitApplication)
+        {
+        }
+
+        public HomeViewModel(
+            IAuthService authService,
+            IUserProfileService userProfileService,
+            IFoodPointService foodPointService,
+            ILotService lotService,
+            IBookingService bookingService,
+            IProfileStatisticsService profileStatisticsService,
             IPartnerAnalyticsService partnerAnalyticsService,
             Action<string> showLogin,
             Action exitApplication)
@@ -85,6 +112,61 @@ namespace ReMealApp.ViewModels.Shell
                 bookingService,
                 new DeniedAdminService(),
                 profileStatisticsService,
+                new UnavailableGeocodingService(),
+                new UnavailableMapService(),
+                partnerAnalyticsService,
+                showLogin,
+                exitApplication)
+        {
+        }
+
+        public HomeViewModel(
+            IAuthService authService,
+            IUserProfileService userProfileService,
+            IFoodPointService foodPointService,
+            ILotService lotService,
+            IBookingService bookingService,
+            IProfileStatisticsService profileStatisticsService,
+            IGeocodingService geocodingService,
+            Action<string> showLogin,
+            Action exitApplication)
+            : this(
+                authService,
+                userProfileService,
+                foodPointService,
+                lotService,
+                bookingService,
+                new DeniedAdminService(),
+                profileStatisticsService,
+                geocodingService,
+                new UnavailableMapService(),
+                new UnavailablePartnerAnalyticsService(),
+                showLogin,
+                exitApplication)
+        {
+        }
+
+        public HomeViewModel(
+            IAuthService authService,
+            IUserProfileService userProfileService,
+            IFoodPointService foodPointService,
+            ILotService lotService,
+            IBookingService bookingService,
+            IAdminService adminService,
+            IProfileStatisticsService profileStatisticsService,
+            IPartnerAnalyticsService partnerAnalyticsService,
+            Action<string> showLogin,
+            Action exitApplication)
+            : this(
+                authService,
+                userProfileService,
+                foodPointService,
+                lotService,
+                bookingService,
+                adminService,
+                profileStatisticsService,
+                new UnavailableGeocodingService(),
+                new UnavailableMapService(),
                 partnerAnalyticsService,
                 showLogin,
                 exitApplication)
@@ -99,6 +181,8 @@ namespace ReMealApp.ViewModels.Shell
             IBookingService bookingService,
             IAdminService adminService,
             IProfileStatisticsService profileStatisticsService,
+            IGeocodingService geocodingService,
+            IMapService mapService,
             IPartnerAnalyticsService partnerAnalyticsService,
             Action<string> showLogin,
             Action exitApplication)
@@ -119,30 +203,13 @@ namespace ReMealApp.ViewModels.Shell
                 showLogin);
 
             Catalog = new CatalogViewModel(lotService, bookingService);
-
-            FoodPoint = new FoodPointViewModel(
-                foodPointService,
-                lotService,
-                this);
-
-            PartnerLots = new PartnerLotsViewModel(
-                lotService,
-                foodPointService,
-                this);
-
-            PartnerBookings = new PartnerBookingsViewModel(
-                bookingService);
-
-            CreateLot = new CreateLotViewModel(
-                foodPointService,
-                lotService,
-                this);
-
-            MyBookings = new MyBookingsViewModel(
-                bookingService);
-
-            AdminPanel = new AdminPanelViewModel(
-                adminService);
+            Map = new MapViewModel(mapService, OpenCatalogForFoodPoint);
+            FoodPoint = new FoodPointViewModel(foodPointService, lotService, geocodingService, this);
+            PartnerLots = new PartnerLotsViewModel(lotService, foodPointService, this);
+            PartnerBookings = new PartnerBookingsViewModel(bookingService);
+            CreateLot = new CreateLotViewModel(foodPointService, lotService, this);
+            MyBookings = new MyBookingsViewModel(bookingService);
+            AdminPanel = new AdminPanelViewModel(adminService);
 
             Analytics = new PartnerAnalyticsViewModel(
                 _partnerAnalyticsService,
@@ -154,6 +221,8 @@ namespace ReMealApp.ViewModels.Shell
         public UserProfileViewModel Profile { get; }
 
         public CatalogViewModel Catalog { get; }
+
+        public MapViewModel Map { get; }
 
         public FoodPointViewModel FoodPoint { get; }
 
@@ -206,12 +275,9 @@ namespace ReMealApp.ViewModels.Shell
             IsPartner ? "Брони клиентов" : "Мои брони";
 
         public string FoodPointsNavigationText =>
-            IsPartner ? "Мои точки" : "Партнёры";
+            IsPartner ? "Мои точки" : "Карта";
 
-        public string FoodPointsNavigationIconPath =>
-            IsPartner
-                ? "/Assets/Icons/location.png"
-                : "/Assets/Icons/partners.png";
+        public string FoodPointsNavigationIconPath => "/Assets/Icons/location.png";
 
         public async Task InitializeAsync()
         {
@@ -244,7 +310,7 @@ namespace ReMealApp.ViewModels.Shell
                 }
                 else if (role == UserRole.StudentCustomer)
                 {
-                    await Catalog.LoadAsync();
+                    await Catalog.LoadAllAsync();
                 }
                 else if (IsAdmin)
                 {
@@ -373,6 +439,19 @@ namespace ReMealApp.ViewModels.Shell
             return NavigateToSectionAsync(PartnerLotsSection);
         }
 
+        private async void OpenCatalogForFoodPoint(Guid foodPointId)
+        {
+            try
+            {
+                await Catalog.LoadForFoodPointAsync(foodPointId);
+                SetSection(CatalogSection, Catalog);
+            }
+            catch (Exception ex)
+            {
+                Map.StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
+        }
+
         private void NavigateToSection(string sectionKey)
         {
             _ = NavigateToSectionAsync(sectionKey);
@@ -396,9 +475,7 @@ namespace ReMealApp.ViewModels.Shell
                         break;
 
                     case CatalogSection when IsCatalogVisible:
-
-                        await Catalog.LoadAsync();
-
+                        await Catalog.LoadAllAsync();
                         SetSection(CatalogSection, Catalog);
 
                         break;
@@ -453,23 +530,32 @@ namespace ReMealApp.ViewModels.Shell
                         }
                         else
                         {
-                            SetSection(
-                                FoodPointsSection,
-                                new ModulePlaceholderViewModel(
-                                    "Партнеры",
-                                    "Раздел партнеров пока не реализован.",
-                                    "/Assets/Icons/partners.png"));
+                            await Map.LoadAsync();
+                            SetSection(FoodPointsSection, Map);
                         }
 
                         break;
 
-                    case AnalyticsSection:
+                    case AnalyticsSection when IsPartner:
 
                         await Analytics.LoadAsync();
 
                         SetSection(
                             AnalyticsSection,
                             Analytics);
+
+                        break;
+
+                    case AnalyticsSection:
+
+                        Profile.StatusMessage =
+                            "Аналитика доступна только партнеру.";
+
+                        await Profile.LoadAsync();
+
+                        SetSection(
+                            ProfileSection,
+                            Profile);
 
                         break;
 
@@ -622,6 +708,62 @@ namespace ReMealApp.ViewModels.Shell
             {
                 throw new UnauthorizedAccessException(
                     "Административный модуль доступен только администратору.");
+            }
+        }
+
+        private sealed class UnavailableGeocodingService : IGeocodingService
+        {
+            public Task<Application.DTOs.Maps.GeocodingResultDto?> GeocodeAddressAsync(
+                string address,
+                CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<Application.DTOs.Maps.GeocodingResultDto?>(null);
+            }
+
+            public Task<Application.DTOs.Maps.GeocodingResultDto?> ReverseGeocodeAsync(
+                Application.DTOs.Maps.CoordinatesDto coordinates,
+                CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<Application.DTOs.Maps.GeocodingResultDto?>(null);
+            }
+        }
+
+        private sealed class UnavailableMapService : IMapService
+        {
+            public Task<IReadOnlyList<Application.DTOs.Maps.MapFoodPointDto>> GetFoodPointsForMapAsync(
+                CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<IReadOnlyList<Application.DTOs.Maps.MapFoodPointDto>>(
+                    Array.Empty<Application.DTOs.Maps.MapFoodPointDto>());
+            }
+
+            public Task<IReadOnlyList<Application.DTOs.Maps.NearestFoodPointDto>> FindNearestFoodPointsAsync(
+                string address,
+                int maxResults = 5,
+                CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<IReadOnlyList<Application.DTOs.Maps.NearestFoodPointDto>>(
+                    Array.Empty<Application.DTOs.Maps.NearestFoodPointDto>());
+            }
+
+            public double CalculateDistanceKm(
+                Application.DTOs.Maps.CoordinatesDto first,
+                Application.DTOs.Maps.CoordinatesDto second)
+            {
+                return 0;
+            }
+        }
+
+        private sealed class UnavailablePartnerAnalyticsService : IPartnerAnalyticsService
+        {
+            public Task<PartnerAnalyticsDashboardDto> GetDashboardAsync(
+                AnalyticsPeriod period,
+                Guid? foodPointId = null,
+                CancellationToken cancellationToken = default)
+            {
+                return Task.FromException<PartnerAnalyticsDashboardDto>(
+                    new InvalidOperationException(
+                        "Сервис аналитики не зарегистрирован."));
             }
         }
     }

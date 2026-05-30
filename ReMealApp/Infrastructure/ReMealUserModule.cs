@@ -6,6 +6,7 @@ using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Repositories;
 using Infrastructure.Security;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
@@ -20,6 +21,8 @@ namespace Infrastructure
             IBookingService bookingService,
             IAdminService adminService,
             IProfileStatisticsService profileStatisticsService,
+            IGeocodingService geocodingService,
+            IMapService mapService,
             IPartnerAnalyticsService partnerAnalyticsService)
         {
             AuthService = authService;
@@ -29,6 +32,8 @@ namespace Infrastructure
             BookingService = bookingService;
             AdminService = adminService;
             ProfileStatisticsService = profileStatisticsService;
+            GeocodingService = geocodingService;
+            MapService = mapService;
             PartnerAnalyticsService = partnerAnalyticsService;
         }
 
@@ -45,6 +50,10 @@ namespace Infrastructure
         public IAdminService AdminService { get; }
 
         public IProfileStatisticsService ProfileStatisticsService { get; }
+
+        public IGeocodingService GeocodingService { get; }
+
+        public IMapService MapService { get; }
 
         public IPartnerAnalyticsService PartnerAnalyticsService { get; }
 
@@ -76,69 +85,33 @@ namespace Infrastructure
                     ReMealDatabaseInitializer.EnsureSchema(dbContext);
                 }
 
-                IUserRepository userRepository =
-                    new UserRepository(dbContext);
+                IUserRepository userRepository = new UserRepository(dbContext);
+                IPasswordHasher passwordHasher = new PasswordHasher();
+                IRememberedUserStore rememberedUserStore = RememberedUserStore.CreateDefault();
+                IAuthService authService = new AuthService(userRepository, passwordHasher, rememberedUserStore);
+                IUserProfileService userProfileService = new UserProfileService(authService, userRepository);
 
-                IPasswordHasher passwordHasher =
-                    new PasswordHasher();
-
-                IRememberedUserStore rememberedUserStore =
-                    RememberedUserStore.CreateDefault();
-
-                IAuthService authService =
-                    new AuthService(
-                        userRepository,
-                        passwordHasher,
-                        rememberedUserStore);
-
-                IUserProfileService userProfileService =
-                    new UserProfileService(
-                        authService,
-                        userRepository);
-
-                IFoodPointRepository foodPointRepository =
-                    new FoodPointRepository(dbContext);
-
-                IFoodLotRepository foodLotRepository =
-                    new FoodLotRepository(dbContext);
-
-                IBookingRepository bookingRepository =
-                    new BookingRepository(dbContext);
-
-                IFoodPointService foodPointService =
-                    new FoodPointService(
-                        foodPointRepository,
-                        authService);
-
-                ILotService lotService =
-                    new LotService(
-                        foodPointRepository,
-                        foodLotRepository,
-                        authService);
-
-                IBookingService bookingService =
-                    new BookingService(
-                        bookingRepository,
-                        authService);
-
-                IAdminService adminService =
-                    new AdminService(
-                        authService,
-                        userRepository,
-                        foodPointRepository,
-                        foodLotRepository,
-                        bookingRepository);
-
-                IProfileStatisticsService profileStatisticsService =
-                    new ProfileStatisticsService(
-                        authService,
-                        userRepository,
-                        foodPointRepository,
-                        foodLotRepository);
-
+                IFoodPointRepository foodPointRepository = new FoodPointRepository(dbContext);
+                IFoodLotRepository foodLotRepository = new FoodLotRepository(dbContext);
+                IFoodPointService foodPointService = new FoodPointService(foodPointRepository, authService);
+                ILotService lotService = new LotService(foodPointRepository, foodLotRepository, authService);
+                IBookingRepository bookingRepository = new BookingRepository(dbContext);
+                IBookingService bookingService = new BookingService(bookingRepository, authService);
+                IAdminService adminService = new AdminService(
+                    authService,
+                    userRepository,
+                    foodPointRepository,
+                    foodLotRepository,
+                    bookingRepository);
+                IProfileStatisticsService profileStatisticsService = new ProfileStatisticsService(
+                    authService,
+                    userRepository,
+                    foodPointRepository,
+                    foodLotRepository);
+                IGeocodingService geocodingService = new NominatimGeocodingService(new HttpClient());
+                IMapService mapService = new MapService(lotService, geocodingService);
                 IPartnerAnalyticsService partnerAnalyticsService =
                     new PartnerAnalyticsService(
-                        foodLotRepository,
                         authService,
                         bookingRepository);
 
@@ -150,9 +123,10 @@ namespace Infrastructure
                     bookingService,
                     adminService,
                     profileStatisticsService,
+                    geocodingService,
+                    mapService,
                     partnerAnalyticsService);
-            },
-            "инициализировать доступ к данным приложения");
+            }, "инициализировать доступ к данным приложения");
         }
     }
 }

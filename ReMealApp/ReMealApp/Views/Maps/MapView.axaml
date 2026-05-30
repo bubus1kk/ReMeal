@@ -1,0 +1,315 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ReMealApp.ViewModels.Maps"
+             xmlns:maps="using:ReMealApp.Views.Maps"
+             x:Class="ReMealApp.Views.Maps.MapView"
+             x:DataType="vm:MapViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="TextBlock.page-title">
+            <Setter Property="Foreground" Value="#F7FBF4"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style Selector="TextBlock.section-title">
+            <Setter Property="Foreground" Value="#F7FBF4"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style Selector="TextBlock.muted">
+            <Setter Property="Foreground" Value="#AAB8B1"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style Selector="Border.panel">
+            <Setter Property="Background" Value="#0D1714"/>
+            <Setter Property="BorderBrush" Value="#26382F"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Padding" Value="18"/>
+        </Style>
+
+        <Style Selector="Button.food-point-item">
+            <Setter Property="Padding" Value="14"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Background" Value="#101B17"/>
+            <Setter Property="BorderBrush" Value="#26382F"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Foreground" Value="#E6F1EA"/>
+        </Style>
+
+        <Style Selector="Button.food-point-item:pointerover">
+            <Setter Property="Background" Value="#14231E"/>
+            <Setter Property="BorderBrush" Value="#3D594A"/>
+        </Style>
+
+        <Style Selector="Border.nearest-item">
+            <Setter Property="Padding" Value="14"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Background" Value="#101B17"/>
+            <Setter Property="BorderBrush" Value="#26382F"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+        <Style Selector="TextBox.search-input">
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Background" Value="#0B1411"/>
+            <Setter Property="BorderBrush" Value="#31483C"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#F7FBF4"/>
+            <Setter Property="WatermarkForeground" Value="#6F7E77"/>
+        </Style>
+
+        <Style Selector="Button.primary-action">
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="Padding" Value="18,0"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#69CB4B"/>
+            <Setter Property="Foreground" Value="#F8FFF4"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style Selector="Button.secondary-action">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="CornerRadius" Value="9"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#111B18"/>
+            <Setter Property="BorderBrush" Value="#34483E"/>
+            <Setter Property="Foreground" Value="#E6EFE9"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto,*"
+          RowSpacing="18">
+        <Border Grid.Row="0"
+                Classes="panel"
+                Padding="20">
+            <Grid ColumnDefinitions="Auto,*,Auto"
+                  ColumnSpacing="18">
+                <Border Width="58"
+                        Height="58"
+                        CornerRadius="16"
+                        Background="#163020"
+                        BorderBrush="#285239"
+                        BorderThickness="1">
+                    <Path Width="26"
+                          Height="26"
+                          Data="M12,2 C7.58,2 4,5.58 4,10 C4,15.25 12,22 12,22 C12,22 20,15.25 20,10 C20,5.58 16.42,2 12,2 Z M12,13 A3,3 0 1,1 12,7 A3,3 0 0,1 12,13 Z"
+                          Fill="#69CB4B"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+                </Border>
+
+                <StackPanel Grid.Column="1"
+                            Spacing="5"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="Карта точек питания"
+                               Classes="page-title"/>
+                    <TextBlock Text="Показываются активные точки с координатами и доступными наборами."
+                               Classes="muted"/>
+                </StackPanel>
+
+                <TextBlock Grid.Column="2"
+                           Text="© OpenStreetMap contributors"
+                           Classes="muted"
+                           VerticalAlignment="Top"/>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1"
+              ColumnDefinitions="2*,420"
+              ColumnSpacing="18">
+            <Border Grid.Column="0"
+                    Classes="panel"
+                    Padding="14"
+                    ClipToBounds="True">
+                <Grid>
+                    <maps:OsmFoodPointMapControl x:Name="FoodPointMap"
+                                                 MinHeight="560"
+                                                 HorizontalAlignment="Stretch"
+                                                 VerticalAlignment="Stretch"
+                                                 IsVisible="{Binding HasFoodPoints}"/>
+
+                    <Border IsVisible="{Binding HasNoFoodPoints}"
+                            Background="#0A120F"
+                            CornerRadius="10"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                        <TextBlock Text="{Binding EmptyStateText}"
+                                   Classes="muted"
+                                   FontSize="16"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Column="1"
+                  RowDefinitions="Auto,*,Auto"
+                  RowSpacing="18">
+                <Border Grid.Row="0"
+                        Classes="panel">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="Поиск рядом"
+                                   Classes="section-title"/>
+                        <Grid ColumnDefinitions="*,Auto"
+                              ColumnSpacing="10">
+                            <TextBox Classes="search-input"
+                                     Text="{Binding AddressQuery, Mode=TwoWay}"
+                                     PlaceholderText="Введите адрес"/>
+                            <Button Grid.Column="1"
+                                    Classes="primary-action"
+                                    MinWidth="210"
+                                    Command="{Binding FindNearestCommand}"
+                                    IsEnabled="{Binding CanSearchNearest}">
+                                <TextBlock Text="Найти ближайшие точки"/>
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="1"
+                        Classes="panel">
+                    <DockPanel LastChildFill="True">
+                        <StackPanel DockPanel.Dock="Top"
+                                    Spacing="6"
+                                    Margin="0,0,0,14">
+                            <TextBlock Text="Точки на карте"
+                                       Classes="section-title"/>
+                            <TextBlock Text="{Binding StatusMessage}"
+                                       Classes="muted"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <StackPanel IsVisible="{Binding SearchPerformed}"
+                                            Spacing="10">
+                                    <TextBlock Text="Ближайшие точки"
+                                               Classes="section-title"
+                                               FontSize="18"/>
+                                    <Border IsVisible="{Binding HasNoNearestFoodPoints}"
+                                            Background="#0A120F"
+                                            BorderBrush="#25372F"
+                                            BorderThickness="1"
+                                            CornerRadius="10"
+                                            Padding="18">
+                                        <TextBlock Text="{Binding NearestEmptyStateText}"
+                                                   Classes="muted"
+                                                   TextAlignment="Center"
+                                                   TextWrapping="Wrap"/>
+                                    </Border>
+                                    <ItemsControl ItemsSource="{Binding NearestFoodPoints}"
+                                                  IsVisible="{Binding HasNearestFoodPoints}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:NearestFoodPointItemViewModel">
+                                                <Border Classes="nearest-item">
+                                                    <StackPanel Spacing="7">
+                                                        <TextBlock Text="{Binding Name}"
+                                                                   Foreground="#F7FBF4"
+                                                                   FontSize="16"
+                                                                   FontWeight="SemiBold"
+                                                                   TextWrapping="Wrap"/>
+                                                        <TextBlock Text="{Binding Address}"
+                                                                   Classes="muted"
+                                                                   TextWrapping="Wrap"/>
+                                                        <TextBlock Text="{Binding DistanceText, StringFormat='Расстояние: {0}'}"
+                                                                   Foreground="#CFE7C7"
+                                                                   FontSize="13"/>
+                                                        <TextBlock Text="{Binding AvailableLotsDisplayText}"
+                                                                   Foreground="#9FE58D"
+                                                                   FontSize="13"/>
+                                                        <Grid ColumnDefinitions="*,*"
+                                                              ColumnSpacing="8"
+                                                              Margin="0,4,0,0">
+                                                            <Button Classes="secondary-action"
+                                                                    Command="{Binding $parent[UserControl].DataContext.ShowOnMapCommand}"
+                                                                    CommandParameter="{Binding}">
+                                                                <TextBlock Text="Показать"/>
+                                                            </Button>
+                                                            <Button Grid.Column="1"
+                                                                    Classes="secondary-action"
+                                                                    Command="{Binding $parent[UserControl].DataContext.OpenLotsCommand}"
+                                                                    CommandParameter="{Binding}">
+                                                                <TextBlock Text="Открыть лоты"/>
+                                                            </Button>
+                                                        </Grid>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+
+                                <ItemsControl ItemsSource="{Binding FoodPoints}"
+                                              IsVisible="{Binding IsInitialPointListVisible}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:MapFoodPointItemViewModel">
+                                            <Button Classes="food-point-item"
+                                                    Margin="0,0,0,10"
+                                                    Command="{Binding $parent[UserControl].DataContext.SelectFoodPointCommand}"
+                                                    CommandParameter="{Binding}">
+                                                <StackPanel Spacing="6">
+                                                    <TextBlock Text="{Binding Name}"
+                                                               Foreground="#F7FBF4"
+                                                               FontSize="16"
+                                                               FontWeight="SemiBold"
+                                                               TextWrapping="Wrap"/>
+                                                    <TextBlock Text="{Binding Address}"
+                                                               Classes="muted"
+                                                               TextWrapping="Wrap"/>
+                                                    <TextBlock Text="{Binding AvailableLotsDisplayText}"
+                                                               Foreground="#9FE58D"
+                                                               FontSize="13"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </DockPanel>
+                </Border>
+
+                <Border Grid.Row="2"
+                        Classes="panel"
+                        IsVisible="{Binding HasSelectedFoodPoint}">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Выбранная точка"
+                                   Classes="section-title"/>
+                        <TextBlock Text="{Binding SelectedFoodPoint.Name}"
+                                   Foreground="#F7FBF4"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding SelectedFoodPoint.Address}"
+                                   Classes="muted"
+                                   TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding SelectedFoodPoint.CoordinatesText}"
+                                   Classes="muted"
+                                   TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding SelectedFoodPoint.AvailableLotsDisplayText}"
+                                   Foreground="#9FE58D"
+                                   FontSize="14"/>
+                        <Button Classes="primary-action"
+                                Command="{Binding OpenSelectedFoodPointLotsCommand}"
+                                HorizontalAlignment="Stretch"
+                                Margin="0,6,0,0">
+                            <TextBlock Text="Открыть лоты"/>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

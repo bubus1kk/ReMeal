@@ -28,6 +28,12 @@ namespace Infrastructure.Persistence.Configurations
                 .HasMaxLength(50)
                 .IsRequired();
 
+            builder.Property(x => x.Latitude)
+                .HasColumnType("REAL");
+
+            builder.Property(x => x.Longitude)
+                .HasColumnType("REAL");
+
             builder.Property(x => x.OwnerId)
                 .IsRequired();
 
