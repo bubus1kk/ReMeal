@@ -1,0 +1,73 @@
+<mxfile host="Electron">
+  <diagram name="Страница-1" id="DmqV8vdwQQd7i7VIdxuh">
+    <mxGraphModel dx="1030" dy="722" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-8" edge="1" parent="1" source="_D_uWlJ3hm3CKLja04Rc-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="_D_uWlJ3hm3CKLja04Rc-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-1" parent="1" style="html=1;whiteSpace=wrap;" value="Покупатель" vertex="1">
+          <mxGeometry height="50" width="110" x="180" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-10" edge="1" parent="1" source="_D_uWlJ3hm3CKLja04Rc-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="_D_uWlJ3hm3CKLja04Rc-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-25" edge="1" parent="1" source="_D_uWlJ3hm3CKLja04Rc-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="_D_uWlJ3hm3CKLja04Rc-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-2" parent="1" style="html=1;whiteSpace=wrap;" value="Экран каталога" vertex="1">
+          <mxGeometry height="50" width="110" x="470" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-13" edge="1" parent="1" source="_D_uWlJ3hm3CKLja04Rc-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="_D_uWlJ3hm3CKLja04Rc-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-23" edge="1" parent="1" source="_D_uWlJ3hm3CKLja04Rc-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="_D_uWlJ3hm3CKLja04Rc-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-4" parent="1" style="html=1;whiteSpace=wrap;" value="Модуль каталога&lt;div&gt;наборов&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="110" x="717" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-17" edge="1" parent="1" source="_D_uWlJ3hm3CKLja04Rc-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" target="_D_uWlJ3hm3CKLja04Rc-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-21" edge="1" parent="1" source="_D_uWlJ3hm3CKLja04Rc-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="_D_uWlJ3hm3CKLja04Rc-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-5" parent="1" style="html=1;whiteSpace=wrap;" value="Модуль доступа к данным" vertex="1">
+          <mxGeometry height="50" width="110" x="717" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-19" edge="1" parent="1" source="_D_uWlJ3hm3CKLja04Rc-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="_D_uWlJ3hm3CKLja04Rc-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-6" parent="1" style="html=1;whiteSpace=wrap;" value="БД" vertex="1">
+          <mxGeometry height="50" width="110" x="400" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-9" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1. Ввести параметры поиска" vertex="1">
+          <mxGeometry height="30" width="140" x="320" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-11" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="2. Выполнить поиск" vertex="1">
+          <mxGeometry height="30" width="80" x="610" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-14" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="3. Получить лоты по параметрам" vertex="1">
+          <mxGeometry height="30" width="80" x="660" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-18" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="4. Запросить активные лоты по параметрам поиска" vertex="1">
+          <mxGeometry height="30" width="160" x="540" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-20" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="5. Вернуть список лотов" vertex="1">
+          <mxGeometry height="30" width="110" x="560" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-22" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="6. Передать данные лотов" vertex="1">
+          <mxGeometry height="30" width="100" x="800" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-24" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="7. Вернуть результаты поиска" vertex="1">
+          <mxGeometry height="30" width="120" x="590" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="_D_uWlJ3hm3CKLja04Rc-26" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="8. Показать результаты поиска" vertex="1">
+          <mxGeometry height="30" width="110" x="330" y="190" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
