@@ -93,24 +93,7 @@ public partial class PartnerBookingsViewModel : ViewModelBase
         {
             IsBusy = true;
 
-            var result = await _bookingService.GetCurrentPartnerBookingsAsync();
-
-            foreach (var booking in result)
-            {
-                booking.IsIssued = booking.Status == BookingStatus.Issued;
-                booking.IsPending = booking.Status == BookingStatus.Active;
-                booking.IsCancelled = booking.Status == BookingStatus.Cancelled;
-            }
-
-            _allBookings = result.ToList();
-
-            LoadFilters();
-
-            ApplyFilters();
-
-            RecalculateAnalytics(result);
-
-            StatusMessage = $"Бронирований: {result.Count}";
+            await LoadBookingsCoreAsync();
         }
         catch (Exception ex)
         {
@@ -120,6 +103,28 @@ public partial class PartnerBookingsViewModel : ViewModelBase
         {
             IsBusy = false;
         }
+    }
+
+    private async Task LoadBookingsCoreAsync()
+    {
+        var result = await _bookingService.GetCurrentPartnerBookingsAsync();
+
+        foreach (var booking in result)
+        {
+            booking.IsIssued = booking.Status == BookingStatus.Issued;
+            booking.IsPending = booking.Status == BookingStatus.Active;
+            booking.IsCancelled = booking.Status == BookingStatus.Cancelled;
+        }
+
+        _allBookings = result.ToList();
+
+        LoadFilters();
+
+        ApplyFilters();
+
+        RecalculateAnalytics(result);
+
+        StatusMessage = $"Бронирований: {result.Count}";
     }
 
     private void LoadFilters()
@@ -207,7 +212,7 @@ public partial class PartnerBookingsViewModel : ViewModelBase
 
             await _bookingService.ConfirmBookingAsync(bookingId);
 
-            await LoadBookingsAsync();
+            await LoadBookingsCoreAsync();
 
             StatusMessage = "Выдача подтверждена.";
         }

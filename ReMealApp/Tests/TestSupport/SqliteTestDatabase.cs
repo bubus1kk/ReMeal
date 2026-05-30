@@ -26,6 +26,10 @@ namespace Tests.TestSupport
             FoodPointService = new FoodPointService(FoodPointRepository, Auth);
             LotService = new LotService(FoodPointRepository, FoodLotRepository, Auth);
             BookingService = new BookingService(BookingRepository, Auth);
+            PartnerAnalyticsService = new PartnerAnalyticsService(
+                FoodLotRepository,
+                Auth,
+                BookingRepository);
         }
 
         public SqliteConnection Connection { get; }
@@ -47,6 +51,8 @@ namespace Tests.TestSupport
         public LotService LotService { get; }
 
         public BookingService BookingService { get; }
+
+        public PartnerAnalyticsService PartnerAnalyticsService { get; }
 
         public static async Task<SqliteTestDatabase> CreateAsync()
         {
