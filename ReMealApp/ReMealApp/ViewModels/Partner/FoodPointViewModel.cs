@@ -124,7 +124,7 @@ namespace ReMealApp.ViewModels.Partner
         public string CoordinatesStatusText => HasSelectedCoordinates ? "Координаты выбраны" : "Координаты не выбраны";
 
         public string CoordinatesTechnicalText => HasSelectedCoordinates
-            ? $"Latitude: {Latitude!.Value:F6}; Longitude: {Longitude!.Value:F6}"
+            ? $"Широта: {Latitude!.Value:F6}; Долгота: {Longitude!.Value:F6}"
             : "Нажмите «Найти на карте», чтобы определить координаты по адресу.";
 
         public bool IsInactiveDetail => HasCurrentFoodPoint && CurrentDetails?.IsActive == false;

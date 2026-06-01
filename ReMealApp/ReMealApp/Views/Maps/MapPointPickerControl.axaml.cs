@@ -397,7 +397,7 @@ namespace ReMealApp.Views.Maps
         {
             CoordinatesText.Text = string.Create(
                 CultureInfo.InvariantCulture,
-                $"Latitude: {_selectedLatitude:F6}; Longitude: {_selectedLongitude:F6}");
+                $"Широта: {_selectedLatitude:F6}; Долгота: {_selectedLongitude:F6}");
         }
 
         private static (double X, double Y) ToGlobalPixel(double latitude, double longitude, int zoom)

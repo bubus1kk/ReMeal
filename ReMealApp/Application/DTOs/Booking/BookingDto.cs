@@ -22,6 +22,8 @@ public class BookingDto
 
     public string FoodPointAddress { get; set; } = string.Empty;
 
+    public string FoodLotImagePath { get; set; } = string.Empty;
+
     public int Quantity { get; set; }
 
     public decimal PriceAtReservation { get; set; }
@@ -29,6 +31,8 @@ public class BookingDto
     public decimal TotalPrice => PriceAtReservation * Quantity;
 
     public DateTime ReservedAt { get; set; }
+
+    public DateTime PickupDeadline { get; set; }
 
     public DateTime? CancelledAt { get; set; }
 

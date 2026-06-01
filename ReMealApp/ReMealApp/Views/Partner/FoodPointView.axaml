@@ -344,7 +344,7 @@
     <Grid>
         <Border Classes="food-shell"
                 IsVisible="{Binding IsListMode}">
-            <Grid RowDefinitions="Auto,Auto,Auto,*,Auto"
+            <Grid RowDefinitions="Auto,Auto,*,Auto"
                   RowSpacing="16">
                 <Grid Grid.Row="0"
                       ColumnDefinitions="Auto,*,Auto"
@@ -441,36 +441,6 @@
                 </Border>
 
                 <Border Grid.Row="2"
-                        Classes="food-card">
-                    <Grid ColumnDefinitions="52,*"
-                          ColumnSpacing="14">
-                        <Border Classes="icon-tile"
-                                Width="44"
-                                Height="44"
-                                CornerRadius="12">
-                            <Image Source="/Assets/Icons/analytics.png"
-                                   Width="22"
-                                   Height="22"
-                                   Opacity="0.82"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
-                        </Border>
-                        <StackPanel Grid.Column="1"
-                                    Spacing="4"
-                                    VerticalAlignment="Center">
-                            <TextBlock Text="Статистика точек пока не реализована"
-                                       Foreground="#F1F6F0"
-                                       FontSize="16"
-                                       FontWeight="SemiBold"/>
-                            <TextBlock Text="Здесь появятся показатели по точкам питания после подключения модуля аналитики."
-                                       Classes="muted"
-                                       FontSize="14"
-                                       TextWrapping="Wrap"/>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-
-                <Border Grid.Row="3"
                         Classes="food-card"
                         Padding="8">
                     <Grid RowDefinitions="Auto,*">
@@ -647,18 +617,12 @@
                     </Grid>
                 </Border>
 
-                <StackPanel Grid.Row="4"
+                <StackPanel Grid.Row="3"
                             Spacing="6">
                     <TextBlock Text="ⓘ  Выберите точку, чтобы открыть её полные данные и редактирование."
                                Foreground="#A4B0AA"
                                FontSize="13"
                                HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding StatusMessage}"
-                               Foreground="#A4B0AA"
-                               FontSize="13"
-                               TextWrapping="Wrap"
-                               HorizontalAlignment="Center"
-                               IsVisible="{Binding HasStatusMessage}"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -876,41 +840,6 @@
 
                                 <Border Classes="food-card"
                                         IsVisible="{Binding IsEditing}">
-                                    <StackPanel Spacing="12">
-                                        <Grid ColumnDefinitions="*,Auto"
-                                              ColumnSpacing="12">
-                                            <StackPanel Spacing="4">
-                                                <TextBlock Text="Расположение на карте"
-                                                           Classes="card-title"/>
-                                                <TextBlock Text="{Binding CoordinatesStatusText}"
-                                                           Classes="muted"
-                                                           FontSize="13"/>
-                                            </StackPanel>
-                                            <TextBlock Grid.Column="1"
-                                                       Text="© OpenStreetMap contributors"
-                                                       Classes="muted"
-                                                       FontSize="12"
-                                                       VerticalAlignment="Top"/>
-                                        </Grid>
-
-                                        <Border Background="#0B1210"
-                                                BorderBrush="#26352F"
-                                                BorderThickness="1"
-                                                CornerRadius="10"
-                                                Padding="18"
-                                                MinHeight="96">
-                                            <TextBlock Text="{Binding CoordinatesTechnicalText}"
-                                                       Classes="muted"
-                                                       TextWrapping="Wrap"
-                                                       HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center"/>
-                                        </Border>
-
-                                    </StackPanel>
-                                </Border>
-
-                                <Border Classes="food-card"
-                                        IsVisible="{Binding IsEditing}">
                                     <Grid ColumnDefinitions="*,*"
                                           ColumnSpacing="12">
                                         <Button Classes="primary-action"
@@ -946,42 +875,34 @@
                                     </StackPanel>
                                 </Border>
 
-                                <TextBlock Text="{Binding StatusMessage}"
-                                           Classes="muted"
-                                           FontSize="13"
-                                           TextWrapping="Wrap"
-                                           IsVisible="{Binding HasStatusMessage}"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="1"
                                         Spacing="14">
-                                <Border Classes="food-card">
-                                    <Grid ColumnDefinitions="52,*"
-                                          ColumnSpacing="14">
-                                        <Border Classes="icon-tile"
-                                                Width="44"
-                                                Height="44"
-                                                CornerRadius="12">
-                                            <Image Source="/Assets/Icons/analytics.png"
-                                                   Width="22"
-                                                   Height="22"
-                                                   Opacity="0.82"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"/>
-                                        </Border>
-                                        <StackPanel Grid.Column="1"
-                                                    Spacing="4"
-                                                    VerticalAlignment="Center">
-                                            <TextBlock Text="Статистика точки пока не реализована"
-                                                       Foreground="#F1F6F0"
-                                                       FontSize="16"
-                                                       FontWeight="SemiBold"/>
-                                            <TextBlock Text="Здесь появятся данные по лотам и бронированиям после подключения аналитики."
+                                <Border Classes="food-card"
+                                        IsVisible="{Binding IsEditing}">
+                                    <StackPanel Spacing="12">
+                                        <StackPanel Spacing="4">
+                                            <TextBlock Text="Расположение на карте"
+                                                       Classes="card-title"/>
+                                            <TextBlock Text="{Binding CoordinatesStatusText}"
                                                        Classes="muted"
-                                                       FontSize="14"
-                                                       TextWrapping="Wrap"/>
+                                                       FontSize="13"/>
                                         </StackPanel>
-                                    </Grid>
+
+                                        <Border Background="#0B1210"
+                                                BorderBrush="#26352F"
+                                                BorderThickness="1"
+                                                CornerRadius="10"
+                                                Padding="18"
+                                                MinHeight="180">
+                                            <TextBlock Text="{Binding CoordinatesTechnicalText}"
+                                                       Classes="muted"
+                                                       TextWrapping="Wrap"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+                                    </StackPanel>
                                 </Border>
 
                                 <Border Classes="food-card"

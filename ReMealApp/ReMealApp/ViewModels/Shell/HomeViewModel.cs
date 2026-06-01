@@ -32,6 +32,7 @@ namespace ReMealApp.ViewModels.Shell
         private readonly IAuthService _authService;
         private readonly Action<string> _showLogin;
         private readonly Action _exitApplication;
+        private readonly ILotService _lotService;
         private readonly IBookingService _bookingService;
         private readonly IAdminService _adminService;
         private readonly IPartnerAnalyticsService _partnerAnalyticsService;
@@ -191,6 +192,7 @@ namespace ReMealApp.ViewModels.Shell
             _showLogin = showLogin;
             _exitApplication = exitApplication;
 
+            _lotService = lotService;
             _bookingService = bookingService;
             _adminService = adminService;
             _partnerAnalyticsService = partnerAnalyticsService;
@@ -202,7 +204,20 @@ namespace ReMealApp.ViewModels.Shell
                 NavigateToSection,
                 showLogin);
 
-            Catalog = new CatalogViewModel(lotService, bookingService);
+            Catalog = new CatalogViewModel(
+                lotService,
+                bookingService,
+                OpenCustomerLotDetailsAsync);
+            CustomerHome = new CustomerHomeViewModel(
+                authService,
+                lotService,
+                bookingService,
+                NavigateToSection,
+                OpenCustomerLotDetailsAsync);
+            AdminHome = new AdminHomeViewModel(
+                authService,
+                adminService,
+                NavigateToSection);
             Map = new MapViewModel(mapService, OpenCatalogForFoodPoint);
             FoodPoint = new FoodPointViewModel(foodPointService, lotService, geocodingService, this);
             PartnerLots = new PartnerLotsViewModel(lotService, foodPointService, this);
@@ -221,6 +236,10 @@ namespace ReMealApp.ViewModels.Shell
         public UserProfileViewModel Profile { get; }
 
         public CatalogViewModel Catalog { get; }
+
+        public CustomerHomeViewModel CustomerHome { get; }
+
+        public AdminHomeViewModel AdminHome { get; }
 
         public MapViewModel Map { get; }
 
@@ -312,12 +331,10 @@ namespace ReMealApp.ViewModels.Shell
                 {
                     await Catalog.LoadAllAsync();
                 }
-                else if (IsAdmin)
-                {
-                    await AdminPanel.InitializeAsync();
-                }
-
-                await NavigateToSectionAsync(ProfileSection);
+                await NavigateToSectionAsync(
+                    role is UserRole.StudentCustomer or UserRole.Administrator
+                        ? HomeSection
+                        : ProfileSection);
             }
             catch (Exception ex)
             {
@@ -439,6 +456,30 @@ namespace ReMealApp.ViewModels.Shell
             return NavigateToSectionAsync(PartnerLotsSection);
         }
 
+        private async Task OpenCustomerLotDetailsAsync(Guid lotId)
+        {
+            try
+            {
+                var details = new CustomerLotDetailsViewModel(
+                    lotId,
+                    _lotService,
+                    _bookingService,
+                    async () =>
+                    {
+                        await Catalog.LoadAsync();
+                        SetSection(CatalogSection, Catalog);
+                    });
+
+                await details.LoadAsync();
+                SetSection(CatalogSection, details);
+            }
+            catch (Exception ex)
+            {
+                CustomerHome.StatusMessage =
+                    ExceptionMessageFormatter.ToUserMessage(ex);
+            }
+        }
+
         private async void OpenCatalogForFoodPoint(Guid foodPointId)
         {
             try
@@ -465,12 +506,25 @@ namespace ReMealApp.ViewModels.Shell
                 {
                     case HomeSection:
 
-                        SetSection(
-                            HomeSection,
-                            new ModulePlaceholderViewModel(
-                                "Главная",
-                                "Основной экран будет развиваться отдельно.",
-                                "/Assets/Icons/home.png"));
+                        if (IsCatalogVisible)
+                        {
+                            await CustomerHome.LoadAsync();
+                            SetSection(HomeSection, CustomerHome);
+                        }
+                        else if (IsAdmin)
+                        {
+                            await AdminHome.LoadAsync();
+                            SetSection(HomeSection, AdminHome);
+                        }
+                        else
+                        {
+                            SetSection(
+                                HomeSection,
+                                new ModulePlaceholderViewModel(
+                                    "Главная",
+                                    "Этот экран доступен для покупателя.",
+                                    "/Assets/Icons/home.png"));
+                        }
 
                         break;
 
