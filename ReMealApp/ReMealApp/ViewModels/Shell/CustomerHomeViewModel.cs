@@ -35,6 +35,9 @@ public partial class CustomerHomeViewModel : ViewModelBase
     private string _statusMessage = string.Empty;
 
     [ObservableProperty]
+    private string _bookingLimitMessage = string.Empty;
+
+    [ObservableProperty]
     private bool _isBusy;
 
     [ObservableProperty]
@@ -122,6 +125,8 @@ public partial class CustomerHomeViewModel : ViewModelBase
     public bool IsActiveBookingsEmpty => !IsBusy && !HasActiveBookings;
 
     public bool HasStatusMessage => !string.IsNullOrWhiteSpace(StatusMessage);
+
+    public bool IsBookingLimitDialogOpen => !string.IsNullOrWhiteSpace(BookingLimitMessage);
 
     public string AvailableLotCountText => _loadedLots.Count.ToString(CultureInfo.InvariantCulture);
 
@@ -228,7 +233,7 @@ public partial class CustomerHomeViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            ShowBookingFailure(ex);
         }
         finally
         {
@@ -238,7 +243,6 @@ public partial class CustomerHomeViewModel : ViewModelBase
         if (bookingCreated)
         {
             await LoadAsync();
-            StatusMessage = "Бронирование создано.";
         }
     }
 
@@ -246,6 +250,12 @@ public partial class CustomerHomeViewModel : ViewModelBase
     private void CloseStatusMessage()
     {
         StatusMessage = string.Empty;
+    }
+
+    [RelayCommand]
+    private void CloseBookingLimitDialog()
+    {
+        BookingLimitMessage = string.Empty;
     }
 
     [RelayCommand]
@@ -306,6 +316,11 @@ public partial class CustomerHomeViewModel : ViewModelBase
         OnPropertyChanged(nameof(HasStatusMessage));
     }
 
+    partial void OnBookingLimitMessageChanged(string value)
+    {
+        OnPropertyChanged(nameof(IsBookingLimitDialogOpen));
+    }
+
     partial void OnDisplayNameChanged(string value)
     {
         OnPropertyChanged(nameof(FirstName));
@@ -363,6 +378,19 @@ public partial class CustomerHomeViewModel : ViewModelBase
     {
         OnPropertyChanged(nameof(AvailableLotCountText));
         OnPropertyChanged(nameof(ActiveBookingCountText));
+    }
+
+    private void ShowBookingFailure(Exception exception)
+    {
+        var message = ExceptionMessageFormatter.ToUserMessage(exception);
+        if (BookingLimitMessageFormatter.TryFormat(message, out var bookingLimitMessage))
+        {
+            BookingLimitMessage = bookingLimitMessage;
+            StatusMessage = string.Empty;
+            return;
+        }
+
+        StatusMessage = message;
     }
 
     private static string ResolveDisplayName(

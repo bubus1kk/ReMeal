@@ -88,6 +88,9 @@ public partial class CustomerLotDetailsViewModel : ViewModelBase
     private string _statusMessage = string.Empty;
 
     [ObservableProperty]
+    private string _bookingLimitMessage = string.Empty;
+
+    [ObservableProperty]
     private bool _isBusy;
 
     [ObservableProperty]
@@ -126,6 +129,8 @@ public partial class CustomerLotDetailsViewModel : ViewModelBase
     public bool HasGalleryThumbnails => GalleryImages.Count > 1;
 
     public bool HasStatusMessage => !string.IsNullOrWhiteSpace(StatusMessage);
+
+    public bool IsBookingLimitDialogOpen => !string.IsNullOrWhiteSpace(BookingLimitMessage);
 
     public bool IsRouteAvailable => false;
 
@@ -183,7 +188,6 @@ public partial class CustomerLotDetailsViewModel : ViewModelBase
             StatusMessage = string.Empty;
 
             await _bookingService.BookLotAsync(_lotId, 1);
-            StatusMessage = "Бронирование создано.";
 
             var updated = await _lotService.GetLotAsync(_lotId);
             if (updated is not null)
@@ -191,12 +195,18 @@ public partial class CustomerLotDetailsViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            ShowBookingFailure(ex);
         }
         finally
         {
             IsBusy = false;
         }
+    }
+
+    [RelayCommand]
+    private void CloseBookingLimitDialog()
+    {
+        BookingLimitMessage = string.Empty;
     }
 
     [RelayCommand]
@@ -219,6 +229,11 @@ public partial class CustomerLotDetailsViewModel : ViewModelBase
     partial void OnStatusMessageChanged(string value)
     {
         OnPropertyChanged(nameof(HasStatusMessage));
+    }
+
+    partial void OnBookingLimitMessageChanged(string value)
+    {
+        OnPropertyChanged(nameof(IsBookingLimitDialogOpen));
     }
 
     partial void OnCompositionTextOnlyChanged(string value)
@@ -292,6 +307,19 @@ public partial class CustomerLotDetailsViewModel : ViewModelBase
         OnPropertyChanged(nameof(IsCompositionEmpty));
         OnPropertyChanged(nameof(CanBook));
         OnPropertyChanged(nameof(BookButtonText));
+    }
+
+    private void ShowBookingFailure(Exception exception)
+    {
+        var message = ExceptionMessageFormatter.ToUserMessage(exception);
+        if (BookingLimitMessageFormatter.TryFormat(message, out var bookingLimitMessage))
+        {
+            BookingLimitMessage = bookingLimitMessage;
+            StatusMessage = string.Empty;
+            return;
+        }
+
+        StatusMessage = message;
     }
 
     private void RebuildGallery(FoodLot lot)

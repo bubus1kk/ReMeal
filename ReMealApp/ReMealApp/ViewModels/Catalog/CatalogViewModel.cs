@@ -53,6 +53,9 @@ namespace ReMealApp.ViewModels.Catalog
         private string _feedbackMessage = string.Empty;
 
         [ObservableProperty]
+        private string _bookingLimitMessage = string.Empty;
+
+        [ObservableProperty]
         private string _summaryMessage = "Доступных наборов: 0";
 
         [ObservableProperty]
@@ -107,6 +110,8 @@ namespace ReMealApp.ViewModels.Catalog
         public bool IsNoDataEmptyState => IsCatalogEmpty && !HasAnyLoadedLots;
 
         public bool HasFeedbackMessage => !string.IsNullOrWhiteSpace(FeedbackMessage);
+
+        public bool IsBookingLimitDialogOpen => !string.IsNullOrWhiteSpace(BookingLimitMessage);
 
         public bool CanResetFilters => HasActiveFilters;
 
@@ -195,15 +200,10 @@ namespace ReMealApp.ViewModels.Catalog
 
                 _pendingFoodPointFilterId = SelectedFoodPointFilter?.Id;
                 await ReloadDataCoreAsync();
-
-                FeedbackMessage = "Бронирование создано.";
-                StatusMessage = FeedbackMessage;
             }
             catch (Exception ex)
             {
-                FeedbackMessage = ExceptionMessageFormatter
-                    .ToUserMessage(ex);
-                StatusMessage = FeedbackMessage;
+                ShowBookingFailure(ex);
             }
             finally
             {
@@ -238,6 +238,12 @@ namespace ReMealApp.ViewModels.Catalog
             ApplyFilters();
         }
 
+        [RelayCommand]
+        private void CloseBookingLimitDialog()
+        {
+            BookingLimitMessage = string.Empty;
+        }
+
         partial void OnSearchTextChanged(string value) => ApplyFilters();
 
         partial void OnSelectedFoodPointFilterChanged(CatalogFoodPointFilterOption? value)
@@ -260,6 +266,9 @@ namespace ReMealApp.ViewModels.Catalog
 
         partial void OnFeedbackMessageChanged(string value) =>
             OnPropertyChanged(nameof(HasFeedbackMessage));
+
+        partial void OnBookingLimitMessageChanged(string value) =>
+            OnPropertyChanged(nameof(IsBookingLimitDialogOpen));
 
         private async Task ReloadDataCoreAsync()
         {
@@ -367,6 +376,21 @@ namespace ReMealApp.ViewModels.Catalog
                 : SummaryMessage;
             IsFoodPointFilterActive = SelectedFoodPointFilter?.Id is not null;
             RefreshStateProperties();
+        }
+
+        private void ShowBookingFailure(Exception exception)
+        {
+            var message = ExceptionMessageFormatter.ToUserMessage(exception);
+            if (BookingLimitMessageFormatter.TryFormat(message, out var bookingLimitMessage))
+            {
+                BookingLimitMessage = bookingLimitMessage;
+                FeedbackMessage = string.Empty;
+                StatusMessage = string.Empty;
+                return;
+            }
+
+            FeedbackMessage = message;
+            StatusMessage = message;
         }
 
         private void RefreshStateProperties()
