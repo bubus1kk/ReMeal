@@ -21,6 +21,10 @@ namespace Infrastructure.Persistence
 
         public DbSet<Booking> Bookings => Set<Booking>();
 
+        public DbSet<BookingStatusReference> BookingStatuses => Set<BookingStatusReference>();
+
+        public DbSet<LotStatusReference> LotStatuses => Set<LotStatusReference>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -29,6 +33,8 @@ namespace Infrastructure.Persistence
             modelBuilder.ApplyConfiguration(new FoodPointConfiguration());
             modelBuilder.ApplyConfiguration(new FoodLotConfiguration());
             modelBuilder.ApplyConfiguration(new LotComponentConfiguration());
+            modelBuilder.ApplyConfiguration(new BookingStatusReferenceConfiguration());
+            modelBuilder.ApplyConfiguration(new LotStatusReferenceConfiguration());
             modelBuilder.ApplyConfiguration(new BookingConfiguration());
         }
     }

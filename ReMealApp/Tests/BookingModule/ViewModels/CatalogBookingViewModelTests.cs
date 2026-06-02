@@ -23,7 +23,9 @@ namespace Tests.BookingModule.ViewModels
             var savedLot = await database.FoodLotRepository.GetByIdAsync(lot.Id);
             var bookings = await database.BookingRepository.GetUserBookingsAsync(customer.Id);
 
-            Assert.AreEqual("Бронирование создано.", viewModel.StatusMessage);
+            Assert.AreEqual("Доступных наборов: 1", viewModel.StatusMessage);
+            Assert.AreEqual(string.Empty, viewModel.FeedbackMessage);
+            Assert.IsFalse(viewModel.IsBookingLimitDialogOpen);
             Assert.IsNotNull(savedLot);
             Assert.AreEqual(1, savedLot.AvailableQuantity);
             Assert.HasCount(1, bookings);
@@ -47,7 +49,33 @@ namespace Tests.BookingModule.ViewModels
             await viewModel.BookLotCommand.ExecuteAsync(lot.Id);
 
             Assert.IsGreaterThan(0, viewModel.StatusMessage.Length);
-            Assert.AreNotEqual("Бронирование создано.", viewModel.StatusMessage);
+        }
+
+        [TestMethod]
+        public async Task BookLotCommand_WhenActiveBookingLimitReached_OpensLimitDialog()
+        {
+            await using var database = await SqliteTestDatabase.CreateAsync();
+            var partner = await database.AddUserAsync(UserRole.FoodPointRepresentative);
+            var customer = await database.AddUserAsync(UserRole.StudentCustomer);
+            var foodPoint = await database.AddFoodPointAsync(partner);
+            var lot = await database.AddLotAsync(foodPoint, totalQuantity: 10);
+            database.Auth.SetCurrentUser(customer);
+
+            for (var index = 0; index < 5; index++)
+                await database.BookingService.BookLotAsync(lot.Id, 1);
+
+            var viewModel = new CatalogViewModel(database.LotService, database.BookingService);
+
+            await viewModel.BookLotCommand.ExecuteAsync(lot.Id);
+
+            Assert.IsTrue(viewModel.IsBookingLimitDialogOpen);
+            Assert.AreEqual("У вас уже есть 5 активных бронирований.", viewModel.BookingLimitMessage);
+            Assert.AreEqual(string.Empty, viewModel.FeedbackMessage);
+            Assert.AreEqual(string.Empty, viewModel.StatusMessage);
+
+            viewModel.CloseBookingLimitDialogCommand.Execute(null);
+
+            Assert.IsFalse(viewModel.IsBookingLimitDialogOpen);
         }
     }
 }

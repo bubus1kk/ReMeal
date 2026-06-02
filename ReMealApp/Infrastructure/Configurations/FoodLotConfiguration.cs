@@ -37,8 +37,10 @@ namespace Infrastructure.Persistence.Configurations
             builder.Property(x => x.PickupDeadline)
                 .IsRequired();
 
-            builder.Property(x => x.Status)
-                .HasConversion<int>()
+            builder.Ignore(x => x.Status);
+
+            builder.Property(x => x.StatusId)
+                .HasColumnName("Status")
                 .IsRequired();
 
             builder.Property(x => x.CreatedAt)
@@ -56,8 +58,14 @@ namespace Infrastructure.Persistence.Configurations
                 .HasForeignKey(x => x.LotId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasOne(x => x.StatusReference)
+                .WithMany(x => x.Lots)
+                .HasForeignKey(x => x.StatusId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasIndex(x => x.FoodPointId);
-            builder.HasIndex(x => x.Status);
+            builder.HasIndex(x => x.StatusId)
+                .HasDatabaseName("IX_FoodLots_Status");
             builder.HasIndex(x => x.PickupDeadline);
         }
     }

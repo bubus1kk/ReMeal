@@ -1,6 +1,6 @@
 <mxfile host="Electron">
   <diagram name="Страница-1" id="uL2mcitFuwueI5ikn-ph">
-    <mxGraphModel dx="1336" dy="619" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2115" dy="903" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -21,7 +21,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Запросить отображение точек питания" vertex="1">
-          <mxGeometry height="40" width="120" x="60" y="210" as="geometry" />
+          <mxGeometry height="60" width="150" x="45" y="210" as="geometry" />
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-6" edge="1" parent="1" source="kcVbVRv7U_UjGHI1dnRE-5" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
@@ -37,7 +37,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Выбрать все активные точки питания с координатами" vertex="1">
-          <mxGeometry height="40" width="180" x="30" y="410" as="geometry" />
+          <mxGeometry height="50" width="180" x="30" y="410" as="geometry" />
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-10" edge="1" parent="1" source="kcVbVRv7U_UjGHI1dnRE-9" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
@@ -61,7 +61,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Запросить информацию о выбранной точке" vertex="1">
-          <mxGeometry height="40" width="120" x="60" y="710" as="geometry" />
+          <mxGeometry height="60" width="150" x="45" y="710" as="geometry" />
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-16" edge="1" parent="1" source="kcVbVRv7U_UjGHI1dnRE-15" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
@@ -69,7 +69,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Получить информацию о выбранной точке" vertex="1">
-          <mxGeometry height="40" width="120" x="60" y="810" as="geometry" />
+          <mxGeometry height="60" width="140" x="50" y="810" as="geometry" />
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-18" edge="1" parent="1" source="kcVbVRv7U_UjGHI1dnRE-17" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
@@ -77,15 +77,15 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-19" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Проверить существование точки" vertex="1">
-          <mxGeometry height="40" width="120" x="60" y="910" as="geometry" />
+          <mxGeometry height="50" width="140" x="50" y="910" as="geometry" />
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-20" edge="1" parent="1" source="kcVbVRv7U_UjGHI1dnRE-19" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="kcVbVRv7U_UjGHI1dnRE-21" value="">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="115" y="1010" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="kcVbVRv7U_UjGHI1dnRE-21" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="" vertex="1">
-          <mxGeometry height="40" width="80" x="80" y="1010" as="geometry" />
+        <mxCell id="kcVbVRv7U_UjGHI1dnRE-21" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Точка найдена" vertex="1">
+          <mxGeometry height="65" width="110" x="65" y="997.5" as="geometry" />
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-26" edge="1" parent="1" source="kcVbVRv7U_UjGHI1dnRE-21" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" value="">
           <mxGeometry relative="1" as="geometry">
@@ -104,72 +104,64 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-28" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Получить детали точки и доступные лоты" vertex="1">
-          <mxGeometry height="40" width="120" x="60" y="1120" as="geometry" />
+          <mxGeometry height="50" width="130" x="55" y="1120" as="geometry" />
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-30" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Выбрать данные точки и доступные лоты по ее ID" vertex="1">
-          <mxGeometry height="40" width="120" x="300" y="1120" as="geometry" />
-        </mxCell>
-        <mxCell id="kcVbVRv7U_UjGHI1dnRE-31" edge="1" parent="1" source="kcVbVRv7U_UjGHI1dnRE-30" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="kcVbVRv7U_UjGHI1dnRE-32" value="">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="360" y="1240" />
-            </Array>
-            <mxPoint x="360" y="1220" as="targetPoint" />
-          </mxGeometry>
+          <mxGeometry height="60" width="150" x="45" y="1220" as="geometry" />
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-32" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Вернуть данные о точке" vertex="1">
-          <mxGeometry height="40" width="120" x="60" y="1220" as="geometry" />
+          <mxGeometry height="40" width="120" x="60" y="1350" as="geometry" />
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-33" edge="1" parent="1" source="kcVbVRv7U_UjGHI1dnRE-32" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="120" y="1320" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="kcVbVRv7U_UjGHI1dnRE-34" edge="1" parent="1" source="kcVbVRv7U_UjGHI1dnRE-28" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="kcVbVRv7U_UjGHI1dnRE-30" value="">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="240" y="1140" />
-              <mxPoint x="240" y="1140" />
-            </Array>
-            <mxPoint x="360" y="1120" as="sourcePoint" />
-            <mxPoint x="250" y="1120" as="targetPoint" />
+            <mxPoint x="120" y="1450" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-35" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Показать информацию о точке питания" vertex="1">
-          <mxGeometry height="40" width="120" x="60" y="1320" as="geometry" />
+          <mxGeometry height="60" width="130" x="55" y="1450" as="geometry" />
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-36" edge="1" parent="1" source="kcVbVRv7U_UjGHI1dnRE-35" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="120" y="1420" as="targetPoint" />
+            <mxPoint x="120" y="1550" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-37" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Посмотреть информацию о точке" vertex="1">
-          <mxGeometry height="40" width="120" x="60" y="1420" as="geometry" />
+          <mxGeometry height="60" width="140" x="50" y="1550" as="geometry" />
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-38" edge="1" parent="1" source="kcVbVRv7U_UjGHI1dnRE-37" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="120" y="1520" as="targetPoint" />
+            <mxPoint x="120" y="1650" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-39" parent="1" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#ff0000;" value="" vertex="1">
-          <mxGeometry height="30" width="30" x="105" y="1520" as="geometry" />
+          <mxGeometry height="30" width="30" x="105" y="1650" as="geometry" />
         </mxCell>
         <mxCell id="kcVbVRv7U_UjGHI1dnRE-40" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Показать ошибку" vertex="1">
           <mxGeometry height="40" width="120" x="-150" y="1010" as="geometry" />
         </mxCell>
-        <mxCell id="kcVbVRv7U_UjGHI1dnRE-41" edge="1" parent="1" source="kcVbVRv7U_UjGHI1dnRE-40" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="kcVbVRv7U_UjGHI1dnRE-39" value="">
+        <mxCell id="kcxmbh1TVteR-UV1oBnu-2" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" value="">
           <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="-80" y="1535" />
-            </Array>
-            <mxPoint x="-90" y="1110" as="targetPoint" />
+            <mxPoint x="120" y="1170" as="sourcePoint" />
+            <mxPoint x="120" y="1220" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="kcVbVRv7U_UjGHI1dnRE-42" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Точка не найдена" vertex="1">
-          <mxGeometry height="30" width="60" x="-20" y="990" as="geometry" />
+        <mxCell id="kcxmbh1TVteR-UV1oBnu-3" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="120" y="1280" as="sourcePoint" />
+            <mxPoint x="120" y="1350" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="kcVbVRv7U_UjGHI1dnRE-43" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Точка найдена" vertex="1">
+        <mxCell id="kcxmbh1TVteR-UV1oBnu-4" edge="1" parent="1" source="kcVbVRv7U_UjGHI1dnRE-40" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="kcVbVRv7U_UjGHI1dnRE-39" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-110" y="1190" as="sourcePoint" />
+            <mxPoint x="-110" y="1260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kcxmbh1TVteR-UV1oBnu-5" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Да" vertex="1">
           <mxGeometry height="30" width="60" x="120" y="1060" as="geometry" />
+        </mxCell>
+        <mxCell id="kcxmbh1TVteR-UV1oBnu-6" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Нет" vertex="1">
+          <mxGeometry height="30" width="60" x="30" y="990" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

@@ -33,7 +33,7 @@ public class Booking
         Quantity = quantity;
         PriceAtReservation = priceAtReservation;
         ReservedAt = reservedAt;
-        Status = BookingStatus.Active;
+        StatusId = (int)BookingStatus.Active;
     }
 
     public Guid Id { get; private set; }
@@ -46,7 +46,13 @@ public class Booking
 
     public decimal PriceAtReservation { get; private set; }
 
-    public BookingStatus Status { get; private set; }
+    public int StatusId { get; private set; }
+
+    public BookingStatus Status
+    {
+        get => (BookingStatus)StatusId;
+        private set => StatusId = (int)value;
+    }
 
     public DateTime ReservedAt { get; private set; }
 
@@ -58,12 +64,14 @@ public class Booking
 
     public FoodLot? FoodLot { get; private set; }
 
+    public BookingStatusReference? StatusReference { get; private set; }
+
     public void Cancel(DateTime cancelledAt)
     {
         if (Status != BookingStatus.Active)
             throw new InvalidOperationException("Отменить можно только активное бронирование.");
 
-        Status = BookingStatus.Cancelled;
+        StatusId = (int)BookingStatus.Cancelled;
         CancelledAt = cancelledAt;
     }
 
@@ -72,7 +80,7 @@ public class Booking
         if (Status != BookingStatus.Active)
             throw new InvalidOperationException("Подтвердить выдачу можно только для активного бронирования.");
 
-        Status = BookingStatus.Issued;
+        StatusId = (int)BookingStatus.Issued;
         IssuedAt = issuedAt;
     }
 }

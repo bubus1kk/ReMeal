@@ -545,6 +545,40 @@
             </Border>
         </Grid>
 
+        <Grid Grid.ColumnSpan="2"
+              IsVisible="{Binding CustomerHome.IsBookingLimitDialogOpen}"
+              Background="#99000000">
+            <Border Width="600"
+                    Padding="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    CornerRadius="18"
+                    BorderBrush="#31443A"
+                    BorderThickness="1"
+                    Background="#101917"
+                    BoxShadow="0 24 70 0 #99000000">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Лимит бронирований"
+                               Foreground="#F2F8F1"
+                               FontSize="22"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding CustomerHome.BookingLimitMessage}"
+                               Foreground="#AAB9B0"
+                               FontSize="14"
+                               LineHeight="21"
+                               TextWrapping="Wrap"/>
+                    <Button Classes="dialog-button"
+                            Content="Понятно"
+                            Command="{Binding CustomerHome.CloseBookingLimitDialogCommand}"
+                            Margin="0,8,0,0"
+                            Background="#4C923E"
+                            BorderThickness="0"
+                            Foreground="#F8FFF4"
+                            FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
     </Grid>
 
 </UserControl>

@@ -22,7 +22,13 @@ namespace Domain.Entities
 
         public DateTime PickupDeadline { get; private set; }
 
-        public LotStatus Status { get; private set; }
+        public int StatusId { get; private set; }
+
+        public LotStatus Status
+        {
+            get => (LotStatus)StatusId;
+            private set => StatusId = (int)value;
+        }
 
         public DateTime CreatedAt { get; private set; }
 
@@ -31,6 +37,8 @@ namespace Domain.Entities
         public string? ImagePath { get; private set; }
 
         public FoodPoint? FoodPoint { get; private set; }
+
+        public LotStatusReference? StatusReference { get; private set; }
 
         public List<LotComponent> Components { get; private set; } = new();
 
@@ -156,7 +164,7 @@ namespace Domain.Entities
 
         public void MarkExpired()
         {
-            Status = LotStatus.Expired;
+            StatusId = (int)LotStatus.Expired;
             UpdatedAt = DateTime.UtcNow;
         }
 
@@ -168,7 +176,7 @@ namespace Domain.Entities
             if (Status == LotStatus.Cancelled)
                 return;
 
-            Status = LotStatus.Cancelled;
+            StatusId = (int)LotStatus.Cancelled;
             UpdatedAt = DateTime.UtcNow;
         }
 
@@ -240,17 +248,17 @@ namespace Domain.Entities
 
             if (PickupDeadline <= DateTime.UtcNow)
             {
-                Status = LotStatus.Expired;
+                StatusId = (int)LotStatus.Expired;
                 return;
             }
 
             if (AvailableQuantity <= 0)
             {
-                Status = LotStatus.SoldOut;
+                StatusId = (int)LotStatus.SoldOut;
                 return;
             }
 
-            Status = LotStatus.Active;
+            StatusId = (int)LotStatus.Active;
         }
 
         private static string? NormalizeImagePath(string? imagePath)

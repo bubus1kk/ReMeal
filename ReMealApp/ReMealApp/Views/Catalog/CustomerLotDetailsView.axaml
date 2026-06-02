@@ -90,6 +90,16 @@
             <Setter Property="Opacity" Value="1"/>
         </Style>
 
+        <Style Selector="Button.dialog-button">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
         <Style Selector="Button.thumbnail-button">
             <Setter Property="Width" Value="104"/>
             <Setter Property="Height" Value="62"/>
@@ -105,14 +115,15 @@
         </Style>
     </UserControl.Styles>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                  VerticalScrollBarVisibility="Auto">
-        <Grid RowDefinitions="Auto,*"
-              RowSpacing="14"
-              Width="1240"
-              MaxWidth="1240"
-              HorizontalAlignment="Center"
-              Margin="12,0,12,24">
+    <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <Grid RowDefinitions="Auto,*"
+                  RowSpacing="14"
+                  Width="1240"
+                  MaxWidth="1240"
+                  HorizontalAlignment="Center"
+                  Margin="12,0,12,24">
 
             <Grid Grid.Row="0"
                   ColumnDefinitions="Auto">
@@ -426,6 +437,40 @@
                                TextWrapping="Wrap"/>
                 </Border>
             </StackPanel>
+            </Grid>
+        </ScrollViewer>
+
+        <Grid IsVisible="{Binding IsBookingLimitDialogOpen}"
+              Background="#99000000">
+            <Border Width="600"
+                    Padding="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    CornerRadius="18"
+                    BorderBrush="#31443A"
+                    BorderThickness="1"
+                    Background="#101917"
+                    BoxShadow="0 24 70 0 #99000000">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Лимит бронирований"
+                               Foreground="#F2F8F1"
+                               FontSize="22"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding BookingLimitMessage}"
+                               Foreground="#AAB9B0"
+                               FontSize="14"
+                               LineHeight="21"
+                               TextWrapping="Wrap"/>
+                    <Button Classes="dialog-button"
+                            Content="Понятно"
+                            Command="{Binding CloseBookingLimitDialogCommand}"
+                            Margin="0,8,0,0"
+                            Background="#4C923E"
+                            BorderThickness="0"
+                            Foreground="#F8FFF4"
+                            FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
         </Grid>
-    </ScrollViewer>
+    </Grid>
 </UserControl>

@@ -19,8 +19,10 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
             .HasPrecision(18, 2)
             .IsRequired();
 
-        builder.Property(x => x.Status)
-            .HasConversion<int>()
+        builder.Ignore(x => x.Status);
+
+        builder.Property(x => x.StatusId)
+            .HasColumnName("Status")
             .IsRequired();
 
         builder.Property(x => x.ReservedAt)
@@ -42,9 +44,15 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
             .HasForeignKey(x => x.FoodLotId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasOne(x => x.StatusReference)
+            .WithMany(x => x.Bookings)
+            .HasForeignKey(x => x.StatusId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         builder.HasIndex(x => x.UserId);
         builder.HasIndex(x => x.FoodLotId);
-        builder.HasIndex(x => x.Status);
+        builder.HasIndex(x => x.StatusId)
+            .HasDatabaseName("IX_Bookings_Status");
         builder.HasIndex(x => x.ReservedAt);
     }
 }

@@ -85,7 +85,7 @@ public class BookingRepository : IBookingRepository
     {
         return DataAccessGuard.ExecuteAsync(
             () => _context.Bookings.CountAsync(
-                x => x.UserId == userId && x.Status == BookingStatus.Active,
+                x => x.UserId == userId && x.StatusId == (int)BookingStatus.Active,
                 cancellationToken),
             "посчитать активные бронирования пользователя");
     }

@@ -61,7 +61,7 @@ namespace Infrastructure.Repositories
             return DataAccessGuard.ExecuteAsync(
                 () => _dbContext.FoodLots
                     .Where(x =>
-                        x.Status == LotStatus.Active &&
+                        x.StatusId == (int)LotStatus.Active &&
                         x.PickupDeadline <= now)
                     .ToListAsync(cancellationToken),
                 "получить истекшие лоты");
