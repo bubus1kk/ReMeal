@@ -1,20 +1,20 @@
 <mxfile host="Electron">
   <diagram name="Страница-1" id="uL2mcitFuwueI5ikn-ph">
-    <mxGraphModel dx="2390" dy="1088" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1717" dy="1057" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="vc5XhiVp_my2PsId-hyT-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
-          <mxGeometry height="940" width="280" x="-20" y="30" as="geometry" />
+          <mxGeometry height="910" width="250" x="10" y="30" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
           <mxGeometry height="940" width="370" x="270" y="30" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
-          <mxGeometry height="940" width="480" x="650" y="30" as="geometry" />
+          <mxGeometry height="950" width="480" x="650" y="30" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
-          <mxGeometry height="940" width="250" x="1140" y="30" as="geometry" />
+          <mxGeometry height="350" width="250" x="1140" y="30" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-5" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Пользователь" vertex="1">
           <mxGeometry height="30" width="60" x="20" y="30" as="geometry" />
@@ -53,7 +53,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Нажать кнопку&lt;br&gt;&quot;Редактировать профиль&quot;" vertex="1">
-          <mxGeometry height="60" width="175" x="17.5" y="350" as="geometry" />
+          <mxGeometry height="40" width="120" x="45" y="350" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-17" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-16" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
@@ -81,7 +81,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Получить изменённые данные" vertex="1">
-          <mxGeometry height="50" width="140" x="310" y="75" as="geometry" />
+          <mxGeometry height="40" width="120" x="320" y="80" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-23" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-22" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
@@ -89,7 +89,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-24" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Передать данные&lt;br&gt;в сервис личного кабинета" vertex="1">
-          <mxGeometry height="60" width="150" x="320" y="180" as="geometry" />
+          <mxGeometry height="40" width="120" x="320" y="180" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-25" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-24" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="vc5XhiVp_my2PsId-hyT-26" value="">
           <mxGeometry relative="1" as="geometry">
@@ -105,31 +105,31 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-28" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Поля заполнены?" vertex="1">
-          <mxGeometry height="60" width="150" x="685" y="180" as="geometry" />
+          <mxGeometry height="40" width="80" x="720" y="180" as="geometry" />
         </mxCell>
-        <mxCell id="vc5XhiVp_my2PsId-hyT-29" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-28" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="vc5XhiVp_my2PsId-hyT-31" value="Нет">
+        <mxCell id="vc5XhiVp_my2PsId-hyT-29" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-28" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="vc5XhiVp_my2PsId-hyT-31" value="no">
           <mxGeometry relative="1" x="-1" as="geometry">
             <mxPoint x="900" y="200" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="vc5XhiVp_my2PsId-hyT-30" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-28" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;verticalAlign=top;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="vc5XhiVp_my2PsId-hyT-37" value="Да">
+        <mxCell id="vc5XhiVp_my2PsId-hyT-30" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-28" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;verticalAlign=top;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="yes">
           <mxGeometry relative="1" x="-1" as="geometry">
             <mxPoint x="760" y="280" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-31" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="&lt;pre class=&quot;overflow-visible! px-0!&quot; data-start=&quot;1401&quot; data-end=&quot;1437&quot;&gt;&lt;div class=&quot;relative w-full mt-4 mb-1&quot;&gt;&lt;div class=&quot;&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;h-full min-h-0 min-w-0&quot;&gt;&lt;div class=&quot;h-full min-h-0 min-w-0&quot;&gt;&lt;div class=&quot;border border-token-border-light border-radius-3xl corner-superellipse/1.1 rounded-3xl&quot;&gt;&lt;div class=&quot;h-full w-full border-radius-3xl bg-token-bg-elevated-secondary corner-superellipse/1.1 overflow-clip rounded-3xl lxnfua_clipPathFallback&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;pe-11 pt-3&quot;&gt;&lt;div class=&quot;relative z-0 flex max-w-full&quot;&gt;&lt;div id=&quot;code-block-viewer&quot; dir=&quot;ltr&quot; class=&quot;q9tKkq_viewer cm-editor z-10 light:cm-light dark:cm-light flex h-full w-full flex-col items-stretch ͼs ͼ16&quot;&gt;&lt;div class=&quot;cm-scroller&quot;&gt;&lt;pre class=&quot;cm-content q9tKkq_readonly m-0&quot;&gt;&lt;code&gt;Вернуть ошибку&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;p data-start=&quot;1439&quot; data-end=&quot;1440&quot;&gt;&lt;/p&gt;" vertex="1">
-          <mxGeometry height="40" width="120" x="980" y="190" as="geometry" />
+          <mxGeometry height="40" width="120" x="980" y="180" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-32" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-31" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="vc5XhiVp_my2PsId-hyT-33" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1040" y="285" />
+              <mxPoint x="1040" y="280" />
             </Array>
             <mxPoint x="1040" y="280" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-33" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Показать сообщение об ошибке" vertex="1">
-          <mxGeometry height="50" width="140" x="420" y="260" as="geometry" />
+          <mxGeometry height="40" width="120" x="430" y="260" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-34" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-33" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
@@ -137,7 +137,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-35" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="&lt;pre class=&quot;overflow-visible! px-0!&quot; data-start=&quot;1457&quot; data-end=&quot;1541&quot;&gt;&lt;div class=&quot;relative w-full mt-4 mb-1&quot;&gt;&lt;div class=&quot;&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;h-full min-h-0 min-w-0&quot;&gt;&lt;div class=&quot;h-full min-h-0 min-w-0&quot;&gt;&lt;div class=&quot;border border-token-border-light border-radius-3xl corner-superellipse/1.1 rounded-3xl&quot;&gt;&lt;div class=&quot;h-full w-full border-radius-3xl bg-token-bg-elevated-secondary corner-superellipse/1.1 overflow-clip rounded-3xl lxnfua_clipPathFallback&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;pe-11 pt-3&quot;&gt;&lt;div class=&quot;relative z-0 flex max-w-full&quot;&gt;&lt;div id=&quot;code-block-viewer&quot; dir=&quot;ltr&quot; class=&quot;q9tKkq_viewer cm-editor z-10 light:cm-light dark:cm-light flex h-full w-full flex-col items-stretch ͼs ͼ16&quot;&gt;&lt;div class=&quot;cm-scroller&quot;&gt;&lt;pre class=&quot;cm-content q9tKkq_readonly m-0&quot;&gt;&lt;code&gt;Повторное редактирование данных&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;p data-start=&quot;1543&quot; data-end=&quot;1544&quot;&gt;&lt;/p&gt;" vertex="1">
-          <mxGeometry height="40" width="240" x="367.5" y="360" as="geometry" />
+          <mxGeometry height="40" width="120" x="430" y="360" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-36" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-35" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="vc5XhiVp_my2PsId-hyT-18" value="">
           <mxGeometry relative="1" as="geometry">
@@ -148,40 +148,39 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-37" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Проверить корректность данных профиля" vertex="1">
-          <mxGeometry height="70" width="150" x="685" y="290" as="geometry" />
+          <mxGeometry height="40" width="120" x="700" y="280" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-38" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-37" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="760" y="380" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="vc5XhiVp_my2PsId-hyT-39" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="данные&amp;nbsp;&lt;div&gt;корректны?&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="130" x="695" y="380" as="geometry" />
+        <mxCell id="vc5XhiVp_my2PsId-hyT-39" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="данные корректны?" vertex="1">
+          <mxGeometry height="40" width="80" x="720" y="380" as="geometry" />
         </mxCell>
-        <mxCell id="vc5XhiVp_my2PsId-hyT-40" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-39" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="vc5XhiVp_my2PsId-hyT-42" value="Нет">
+        <mxCell id="vc5XhiVp_my2PsId-hyT-40" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-39" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="vc5XhiVp_my2PsId-hyT-42" value="no">
           <mxGeometry relative="1" x="-1" as="geometry">
             <mxPoint x="900" y="400" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="vc5XhiVp_my2PsId-hyT-41" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-39" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;verticalAlign=top;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="Да">
+        <mxCell id="vc5XhiVp_my2PsId-hyT-41" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-39" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;verticalAlign=top;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="yes">
           <mxGeometry relative="1" x="-1" as="geometry">
             <mxPoint x="760" y="480" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-42" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="&lt;pre class=&quot;overflow-visible! px-0!&quot; data-start=&quot;1843&quot; data-end=&quot;1889&quot;&gt;&lt;div class=&quot;relative w-full mt-4 mb-1&quot;&gt;&lt;div class=&quot;&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;h-full min-h-0 min-w-0&quot;&gt;&lt;div class=&quot;h-full min-h-0 min-w-0&quot;&gt;&lt;div class=&quot;border border-token-border-light border-radius-3xl corner-superellipse/1.1 rounded-3xl&quot;&gt;&lt;div class=&quot;h-full w-full border-radius-3xl bg-token-bg-elevated-secondary corner-superellipse/1.1 overflow-clip rounded-3xl lxnfua_clipPathFallback&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;pe-11 pt-3&quot;&gt;&lt;div class=&quot;relative z-0 flex max-w-full&quot;&gt;&lt;div id=&quot;code-block-viewer&quot; dir=&quot;ltr&quot; class=&quot;q9tKkq_viewer cm-editor z-10 light:cm-light dark:cm-light flex h-full w-full flex-col items-stretch ͼs ͼ16&quot;&gt;&lt;div class=&quot;cm-scroller&quot;&gt;&lt;pre class=&quot;cm-content q9tKkq_readonly m-0&quot;&gt;&lt;code&gt;Вернуть ошибку проверки&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;p data-start=&quot;1891&quot; data-end=&quot;1892&quot;&gt;&lt;/p&gt;" vertex="1">
-          <mxGeometry height="50" width="190" x="910" y="450" as="geometry" />
+          <mxGeometry height="40" width="120" x="930" y="450" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-43" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-42" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="vc5XhiVp_my2PsId-hyT-44" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="990" y="540" />
-              <mxPoint x="550" y="540" />
+              <mxPoint x="990" y="520" />
             </Array>
             <mxPoint x="890" y="550" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-44" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Показать сообщение:&lt;br&gt;&quot;Некорректные данные&quot;" vertex="1">
-          <mxGeometry height="40" width="160" x="390" y="520" as="geometry" />
+          <mxGeometry height="40" width="160" x="390" y="500" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-45" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-44" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
@@ -189,7 +188,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-48" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="&lt;pre class=&quot;overflow-visible! px-0!&quot; data-start=&quot;1901&quot; data-end=&quot;1992&quot;&gt;&lt;div class=&quot;relative w-full mt-4 mb-1&quot;&gt;&lt;div class=&quot;&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;h-full min-h-0 min-w-0&quot;&gt;&lt;div class=&quot;h-full min-h-0 min-w-0&quot;&gt;&lt;div class=&quot;border border-token-border-light border-radius-3xl corner-superellipse/1.1 rounded-3xl&quot;&gt;&lt;div class=&quot;h-full w-full border-radius-3xl bg-token-bg-elevated-secondary corner-superellipse/1.1 overflow-clip rounded-3xl lxnfua_clipPathFallback&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;pe-11 pt-3&quot;&gt;&lt;div class=&quot;relative z-0 flex max-w-full&quot;&gt;&lt;div id=&quot;code-block-viewer&quot; dir=&quot;ltr&quot; class=&quot;q9tKkq_viewer cm-editor z-10 light:cm-light dark:cm-light flex h-full w-full flex-col items-stretch ͼs ͼ16&quot;&gt;&lt;div class=&quot;cm-scroller&quot;&gt;&lt;pre class=&quot;cm-content q9tKkq_readonly m-0&quot;&gt;&lt;code&gt;Повторное редактирование&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;p data-start=&quot;1994&quot; data-end=&quot;1995&quot;&gt;&lt;/p&gt;" vertex="1">
-          <mxGeometry height="60" width="180" x="380" y="585" as="geometry" />
+          <mxGeometry height="40" width="120" x="410" y="600" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-49" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-48" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="vc5XhiVp_my2PsId-hyT-18" value="">
           <mxGeometry relative="1" as="geometry">
@@ -201,7 +200,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-50" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="&lt;pre class=&quot;overflow-visible! px-0!&quot; data-start=&quot;2138&quot; data-end=&quot;2191&quot;&gt;&lt;div class=&quot;relative w-full mt-4 mb-1&quot;&gt;&lt;div class=&quot;&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;h-full min-h-0 min-w-0&quot;&gt;&lt;div class=&quot;h-full min-h-0 min-w-0&quot;&gt;&lt;div class=&quot;border border-token-border-light border-radius-3xl corner-superellipse/1.1 rounded-3xl&quot;&gt;&lt;div class=&quot;h-full w-full border-radius-3xl bg-token-bg-elevated-secondary corner-superellipse/1.1 overflow-clip rounded-3xl lxnfua_clipPathFallback&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;pe-11 pt-3&quot;&gt;&lt;div class=&quot;relative z-0 flex max-w-full&quot;&gt;&lt;div id=&quot;code-block-viewer&quot; dir=&quot;ltr&quot; class=&quot;q9tKkq_viewer cm-editor z-10 light:cm-light dark:cm-light flex h-full w-full flex-col items-stretch ͼs ͼ16&quot;&gt;&lt;div class=&quot;cm-scroller&quot;&gt;&lt;pre class=&quot;cm-content q9tKkq_readonly m-0&quot;&gt;&lt;code&gt;Подготовить обновление профиля&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;p data-start=&quot;2193&quot; data-end=&quot;2194&quot;&gt;&lt;/p&gt;" vertex="1">
-          <mxGeometry height="40" width="210" x="655" y="480" as="geometry" />
+          <mxGeometry height="40" width="120" x="700" y="480" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-51" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-50" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="vc5XhiVp_my2PsId-hyT-52" value="">
           <mxGeometry relative="1" as="geometry">
@@ -214,7 +213,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-52" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Сохранить изменения профиля" vertex="1">
-          <mxGeometry height="40" width="120.5" x="1180" y="60" as="geometry" />
+          <mxGeometry height="40" width="120" x="1181" y="60" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-53" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-52" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
@@ -222,7 +221,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-54" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Вернуть результат сохранения" vertex="1">
-          <mxGeometry height="40" width="160" x="1170.25" y="160" as="geometry" />
+          <mxGeometry height="40" width="120" x="1181" y="160" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-55" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-54" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="vc5XhiVp_my2PsId-hyT-56" value="">
           <mxGeometry relative="1" as="geometry">
@@ -241,19 +240,19 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-58" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Вернуть успешный результат" vertex="1">
-          <mxGeometry height="40" width="120" x="745" y="720" as="geometry" />
+          <mxGeometry height="40" width="120" x="750" y="720" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-59" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-58" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="vc5XhiVp_my2PsId-hyT-60" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="570" y="740" />
-              <mxPoint x="570" y="740" />
+              <mxPoint x="600" y="740" />
+              <mxPoint x="600" y="720" />
             </Array>
             <mxPoint x="810" y="820" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-60" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Обновить отображение профиля" vertex="1">
-          <mxGeometry height="60" width="165" x="372.5" y="710" as="geometry" />
+          <mxGeometry height="40" width="120" x="395" y="700" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-61" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-60" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
@@ -261,7 +260,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-62" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Показать сообщение:&lt;br&gt;&quot;Профиль успешно обновлён&quot;" vertex="1">
-          <mxGeometry height="80" width="175" x="367.5" y="800" as="geometry" />
+          <mxGeometry height="40" width="120" x="395" y="800" as="geometry" />
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-63" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-62" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="vc5XhiVp_my2PsId-hyT-64" value="">
           <mxGeometry relative="1" as="geometry">
@@ -269,16 +268,15 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-64" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fontColor=#000000;fillColor=#ffffc0;strokeColor=#ff0000;" value="Просмотр обновлённого профиля" vertex="1">
-          <mxGeometry height="80" width="170" x="20" y="800" as="geometry" />
+          <mxGeometry height="40" width="120" x="70" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="vc5XhiVp_my2PsId-hyT-65" edge="1" parent="1" source="vc5XhiVp_my2PsId-hyT-64" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="840" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="vc5XhiVp_my2PsId-hyT-66" parent="1" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#ff0000;" value="" vertex="1">
-          <mxGeometry height="30" width="30" x="90" y="930" as="geometry" />
-        </mxCell>
-        <mxCell id="iSB5t9NScOnwDxEyuoDp-5" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="104" y="880" as="sourcePoint" />
-            <mxPoint x="104.41" y="930" as="targetPoint" />
-          </mxGeometry>
+          <mxGeometry height="30" width="30" x="115" y="840" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

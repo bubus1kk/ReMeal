@@ -57,34 +57,6 @@
             <Setter Property="Background" Value="#5EB83F"/>
         </Style>
 
-        <Style Selector="Button.map-action">
-            <Setter Property="Background" Value="#69CB4B"/>
-            <Setter Property="Opacity" Value="1"/>
-            <Setter Property="Transitions">
-                <Transitions>
-                    <DoubleTransition Property="Opacity" Duration="0:0:0.18"/>
-                </Transitions>
-            </Setter>
-        </Style>
-
-        <Style Selector="Button.map-action:pointerover">
-            <Setter Property="Background" Value="#66C94D"/>
-            <Setter Property="Opacity" Value="0.94"/>
-        </Style>
-
-        <Style Selector="Button.map-action:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#66C94D"/>
-        </Style>
-
-        <Style Selector="Button.map-action:pressed">
-            <Setter Property="Background" Value="#60BF47"/>
-            <Setter Property="Opacity" Value="0.9"/>
-        </Style>
-
-        <Style Selector="Button.map-action:pressed /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#60BF47"/>
-        </Style>
-
         <Style Selector="Button.secondary">
             <Setter Property="Height" Value="36"/>
             <Setter Property="Padding" Value="13,0"/>
@@ -199,11 +171,12 @@
         </Style>
     </UserControl.Styles>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                  VerticalScrollBarVisibility="Hidden">
-        <StackPanel Spacing="14"
-                    MaxWidth="1540"
-                    HorizontalAlignment="Stretch">
+    <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Hidden">
+            <StackPanel Spacing="14"
+                        MaxWidth="1540"
+                        HorizontalAlignment="Stretch">
 
             <Border Classes="panel"
                     Margin="0,0,0,10"
@@ -460,7 +433,7 @@
             </Grid>
 
             <StackPanel Spacing="10"
-                        Margin="0,18,0,0">
+                        Margin="0,18,0,30">
                 <Grid ColumnDefinitions="*,Auto">
                     <TextBlock Text="Доступные наборы"
                                Classes="title"
@@ -580,209 +553,188 @@
                         <Button Classes="primary"
                                 Content="Открыть каталог"
                                 Command="{Binding OpenCatalogCommand}"
+                                HorizontalAlignment="Center"
                                 Margin="0,6,0,0"/>
                     </StackPanel>
                 </Border>
             </StackPanel>
 
-            <Grid ColumnDefinitions="2*,*"
-                  ColumnSpacing="14">
-                <Border Classes="panel">
-                    <StackPanel Spacing="12">
-                        <Grid ColumnDefinitions="*,Auto">
-                            <TextBlock Text="Мои активные бронирования"
-                                       Classes="title"
-                                       FontSize="20"/>
-                            <Button Grid.Column="1"
-                                    Classes="secondary"
-                                    Content="Смотреть все"
-                                    Command="{Binding OpenBookingsCommand}"/>
-                        </Grid>
-
-                        <Border Classes="soft-panel"
-                                Height="166"
-                                ClipToBounds="True"
-                                IsVisible="{Binding HasActiveBookings}">
-                            <ScrollViewer VerticalScrollBarVisibility="Hidden"
-                                          HorizontalScrollBarVisibility="Disabled">
-                                <ItemsControl ItemsSource="{Binding ActiveBookings}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate x:DataType="vm:CustomerHomeBookingItemViewModel">
-                                            <Border Classes="booking-row">
-                                                <Grid ColumnDefinitions="62,*,130,130,92"
-                                                      ColumnSpacing="12">
-                                                    <Border Width="56"
-                                                            Height="56"
-                                                            CornerRadius="10"
-                                                            Background="#17221E"
-                                                            ClipToBounds="True">
-                                                        <Grid>
-                                                            <Path Width="24"
-                                                                  Height="24"
-                                                                  Data="M4,18 C6,10 10,6 18,4 C19,12 16,18 8,20 C11,16 14,13 18,10 C13,11 9,14 4,18 Z"
-                                                                  Fill="#315B2D"
-                                                                  Stretch="Uniform"
-                                                                  HorizontalAlignment="Center"
-                                                                  VerticalAlignment="Center"/>
-                                                            <Image Source="{Binding ImagePath, Converter={StaticResource ImagePathConverter}}"
-                                                                   Stretch="UniformToFill"
-                                                                   IsVisible="{Binding HasImage}"/>
-                                                        </Grid>
-                                                    </Border>
-
-                                                    <StackPanel Grid.Column="1"
-                                                                Spacing="4"
-                                                                VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding LotTitle}"
-                                                                   Foreground="#F0F6EF"
-                                                                   FontSize="15"
-                                                                   FontWeight="SemiBold"
-                                                                   TextTrimming="CharacterEllipsis"/>
-                                                        <TextBlock Text="{Binding FoodPointName}"
-                                                                   Classes="muted"
-                                                                   TextTrimming="CharacterEllipsis"/>
-                                                        <TextBlock Text="{Binding FoodPointAddress}"
-                                                                   Classes="muted"
-                                                                   TextTrimming="CharacterEllipsis"/>
-                                                    </StackPanel>
-
-                                                    <StackPanel Grid.Column="2"
-                                                                Spacing="4"
-                                                                VerticalAlignment="Center">
-                                                        <TextBlock Text="Количество"
-                                                                   Classes="muted"
-                                                                   FontSize="11"/>
-                                                        <TextBlock Text="{Binding QuantityText}"
-                                                                   Foreground="#E8F2EA"
-                                                                   FontWeight="SemiBold"/>
-                                                    </StackPanel>
-
-                                                    <StackPanel Grid.Column="3"
-                                                                Spacing="4"
-                                                                VerticalAlignment="Center">
-                                                        <TextBlock Text="Забрать до"
-                                                                   Classes="muted"
-                                                                   FontSize="11"/>
-                                                        <TextBlock Text="{Binding PickupDeadlineText}"
-                                                                   Foreground="#E8F2EA"
-                                                                   FontWeight="SemiBold"
-                                                                   TextTrimming="CharacterEllipsis"/>
-                                                    </StackPanel>
-
-                                                    <StackPanel Grid.Column="4"
-                                                                Spacing="6"
-                                                                VerticalAlignment="Center">
-                                                        <Border HorizontalAlignment="Stretch"
-                                                                Padding="8,4"
-                                                                CornerRadius="8"
-                                                                Background="#1C321D"
-                                                                BorderBrush="#3E6632"
-                                                                BorderThickness="1">
-                                                            <TextBlock Text="{Binding StatusText}"
-                                                                       Foreground="#98E873"
-                                                                       FontSize="11"
-                                                                       FontWeight="SemiBold"
-                                                                       TextAlignment="Center"/>
-                                                        </Border>
-                                                        <Button Classes="secondary"
-                                                                Height="32"
-                                                                Padding="8,0"
-                                                                Content="Открыть"
-                                                                Command="{Binding $parent[UserControl].DataContext.OpenBookingsCommand}"/>
-                                                    </StackPanel>
-                                                </Grid>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </ScrollViewer>
-                        </Border>
-
-                        <Border Classes="soft-panel"
-                                Height="166"
-                                IsVisible="{Binding IsActiveBookingsEmpty}">
-                            <StackPanel Spacing="8"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center">
-                                <TextBlock Text="У вас пока нет активных бронирований"
-                                           Classes="title"
-                                           FontSize="17"
-                                           TextAlignment="Center"/>
-                                <TextBlock Text="Перейдите в каталог, чтобы забронировать первый набор."
-                                           Classes="muted"
-                                           TextAlignment="Center"/>
-                                <Button Classes="primary"
-                                        Content="Перейти в каталог"
-                                        Command="{Binding OpenCatalogCommand}"
-                                        HorizontalAlignment="Center"
-                                        Margin="0,6,0,0"/>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </Border>
-
-                <Border Grid.Column="1"
-                        Classes="panel"
-                        ClipToBounds="True">
-                    <Grid RowDefinitions="*,Auto">
-                        <Canvas Opacity="0.55">
-                            <Path Data="M16,20 L140,70 L260,32 L390,92 M40,160 L170,108 L330,158 L470,112 M120,0 L96,210 M280,0 L238,220 M420,10 L360,230"
-                                  Stroke="#24352D"
-                                  StrokeThickness="2"/>
-                            <Path Data="M0,84 L460,186 M0,212 L460,48"
-                                  Stroke="#182620"
-                                  StrokeThickness="1"/>
-                            <Path Canvas.Left="316"
-                                  Canvas.Top="58"
-                                  Width="34"
-                                  Height="34"
-                                  Data="M12,2 C8.1,2 5,5.1 5,9 C5,14 12,21 12,21 C12,21 19,14 19,9 C19,5.1 15.9,2 12,2 Z M12,11.5 A2.5,2.5 0 1,0 12,6.5 A2.5,2.5 0 0,0 12,11.5 Z"
-                                  Fill="#69CB4B"
-                                  Stretch="Uniform"/>
-                            <Path Canvas.Left="232"
-                                  Canvas.Top="108"
-                                  Width="24"
-                                  Height="24"
-                                  Data="M12,2 C8.1,2 5,5.1 5,9 C5,14 12,21 12,21 C12,21 19,14 19,9 C19,5.1 15.9,2 12,2 Z M12,11.5 A2.5,2.5 0 1,0 12,6.5 A2.5,2.5 0 0,0 12,11.5 Z"
-                                  Fill="#69CB4B"
-                                  Stretch="Uniform"/>
-                        </Canvas>
-
-                        <StackPanel Grid.Row="0"
-                                    Spacing="10"
-                                    VerticalAlignment="Top">
-                            <TextBlock Text="Найдите ближайшие точки питания"
-                                       Classes="title"
-                                       FontSize="21"
-                                       HorizontalAlignment="Left"
-                                       TextAlignment="Left"
-                                       TextWrapping="Wrap"/>
-                            <TextBlock Text="Смотрите точки на карте и находите наборы рядом с вами в пару кликов."
-                                       Classes="muted"
-                                       HorizontalAlignment="Left"
-                                       TextAlignment="Left"
-                                       TextWrapping="Wrap"
-                                       MaxWidth="360"/>
-                        </StackPanel>
-
-                        <Button Grid.Row="1"
-                                Classes="primary map-action"
-                                Content="Открыть карту"
-                                Command="{Binding OpenMapCommand}"
-                                HorizontalAlignment="Stretch"
-                                Margin="0,36,0,0"/>
+            <Border Classes="panel">
+                <StackPanel Spacing="12">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Text="Мои активные бронирования"
+                                   Classes="title"
+                                   FontSize="20"/>
+                        <Button Grid.Column="1"
+                                Classes="secondary"
+                                Content="Смотреть все"
+                                Command="{Binding OpenBookingsCommand}"/>
                     </Grid>
-                </Border>
-            </Grid>
 
-            <Border Classes="soft-panel"
-                    IsVisible="{Binding HasStatusMessage}">
-                <TextBlock Text="{Binding StatusMessage}"
-                           Foreground="#9FEA7E"
-                           FontWeight="SemiBold"
-                           TextWrapping="Wrap"/>
+                    <Border Classes="soft-panel"
+                            Height="220"
+                            ClipToBounds="True"
+                            IsVisible="{Binding HasActiveBookings}">
+                        <ScrollViewer VerticalScrollBarVisibility="Hidden"
+                                      HorizontalScrollBarVisibility="Disabled">
+                            <ItemsControl ItemsSource="{Binding ActiveBookings}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:CustomerHomeBookingItemViewModel">
+                                        <Border Classes="booking-row">
+                                            <Grid ColumnDefinitions="62,*,130,130,92"
+                                                  ColumnSpacing="12">
+                                                <Border Width="56"
+                                                        Height="56"
+                                                        CornerRadius="10"
+                                                        Background="#17221E"
+                                                        ClipToBounds="True">
+                                                    <Grid>
+                                                        <Path Width="24"
+                                                              Height="24"
+                                                              Data="M4,18 C6,10 10,6 18,4 C19,12 16,18 8,20 C11,16 14,13 18,10 C13,11 9,14 4,18 Z"
+                                                              Fill="#315B2D"
+                                                              Stretch="Uniform"
+                                                              HorizontalAlignment="Center"
+                                                              VerticalAlignment="Center"/>
+                                                        <Image Source="{Binding ImagePath, Converter={StaticResource ImagePathConverter}}"
+                                                               Stretch="UniformToFill"
+                                                               IsVisible="{Binding HasImage}"/>
+                                                    </Grid>
+                                                </Border>
+
+                                                <StackPanel Grid.Column="1"
+                                                            Spacing="4"
+                                                            VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding LotTitle}"
+                                                               Foreground="#F0F6EF"
+                                                               FontSize="15"
+                                                               FontWeight="SemiBold"
+                                                               TextTrimming="CharacterEllipsis"/>
+                                                    <TextBlock Text="{Binding FoodPointName}"
+                                                               Classes="muted"
+                                                               TextTrimming="CharacterEllipsis"/>
+                                                    <TextBlock Text="{Binding FoodPointAddress}"
+                                                               Classes="muted"
+                                                               TextTrimming="CharacterEllipsis"/>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Column="2"
+                                                            Spacing="4"
+                                                            VerticalAlignment="Center">
+                                                    <TextBlock Text="Количество"
+                                                               Classes="muted"
+                                                               FontSize="11"/>
+                                                    <TextBlock Text="{Binding QuantityText}"
+                                                               Foreground="#E8F2EA"
+                                                               FontWeight="SemiBold"/>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Column="3"
+                                                            Spacing="4"
+                                                            VerticalAlignment="Center">
+                                                    <TextBlock Text="Дедлайн"
+                                                               Classes="muted"
+                                                               FontSize="11"/>
+                                                    <TextBlock Text="{Binding PickupDeadlineText}"
+                                                               Foreground="#E8F2EA"
+                                                               FontWeight="SemiBold"
+                                                               TextTrimming="CharacterEllipsis"/>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Column="4"
+                                                            Spacing="6"
+                                                            VerticalAlignment="Center">
+                                                    <Button Classes="secondary"
+                                                            Height="32"
+                                                            Padding="8,0"
+                                                            Content="Открыть"
+                                                            Command="{Binding $parent[UserControl].DataContext.OpenBookingsCommand}"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
+
+                    <Border Classes="soft-panel"
+                            Height="220"
+                            IsVisible="{Binding IsActiveBookingsEmpty}">
+                        <StackPanel Spacing="8"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="У вас пока нет активных бронирований"
+                                       Classes="title"
+                                       FontSize="17"
+                                       TextAlignment="Center"/>
+                            <TextBlock Text="Перейдите в каталог, чтобы забронировать первый набор."
+                                       Classes="muted"
+                                       TextAlignment="Center"/>
+                            <Button Classes="primary"
+                                    Content="Перейти в каталог"
+                                    Command="{Binding OpenCatalogCommand}"
+                                    HorizontalAlignment="Center"
+                                    Margin="0,6,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
             </Border>
 
-        </StackPanel>
-    </ScrollViewer>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border IsVisible="{Binding HasStatusMessage}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                MinWidth="420"
+                MaxWidth="560"
+                Padding="18"
+                CornerRadius="16"
+                Background="#111917"
+                BorderBrush="#3E6632"
+                BorderThickness="1"
+                BoxShadow="0 24 80 0 #99000000">
+            <Grid ColumnDefinitions="Auto,*,Auto"
+                  ColumnSpacing="14">
+                <Border Width="42"
+                        Height="42"
+                        CornerRadius="12"
+                        Background="#17311F"
+                        VerticalAlignment="Top">
+                    <Path Width="22"
+                          Height="22"
+                          Data="M12,3 A9,9 0 1,0 12,21 A9,9 0 0,0 12,3 Z M12,7 V13 M12,16 V17"
+                          Stroke="#9FEA7E"
+                          StrokeThickness="2"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+                </Border>
+
+                <StackPanel Grid.Column="1"
+                            Spacing="5"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="Уведомление"
+                               Foreground="#F2F8F0"
+                               FontSize="16"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding StatusMessage}"
+                               Foreground="#BFD0C7"
+                               FontSize="14"
+                               LineHeight="20"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+
+                <Button Grid.Column="2"
+                        Classes="secondary"
+                        Content="X"
+                        Width="34"
+                        Height="34"
+                        Padding="0"
+                        Command="{Binding CloseStatusMessageCommand}"
+                        VerticalAlignment="Top"/>
+            </Grid>
+        </Border>
+    </Grid>
 </UserControl>

@@ -215,7 +215,7 @@
               RowSpacing="16">
 
             <Grid Grid.Row="0"
-                  ColumnDefinitions="*,Auto"
+                  ColumnDefinitions="*"
                   ColumnSpacing="20">
                 <StackPanel Spacing="8">
                     <TextBlock Text="{Binding CatalogTitle}"
@@ -224,23 +224,6 @@
                                Classes="page-subtitle"
                                TextWrapping="Wrap"/>
                 </StackPanel>
-
-                <Button Grid.Column="1"
-                        Classes="refresh-button"
-                        Command="{Binding LoadCommand}"
-                        VerticalAlignment="Top">
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="10"
-                                VerticalAlignment="Center">
-                        <Image Source="/Assets/Icons/refresh-green.png"
-                               Width="19"
-                               Height="19"
-                               Stretch="Uniform"
-                               VerticalAlignment="Center"/>
-                        <TextBlock Text="Обновить"
-                                   VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
             </Grid>
 
             <Border Grid.Row="1"
@@ -518,12 +501,6 @@
                                            TextWrapping="Wrap"
                                            HorizontalAlignment="Center"
                                            TextAlignment="Center"/>
-                                <Button Classes="refresh-button"
-                                        Content="Обновить"
-                                        Command="{Binding LoadCommand}"
-                                        IsVisible="{Binding IsNoDataEmptyState}"
-                                        HorizontalAlignment="Center"
-                                        Margin="0,6,0,0"/>
                                 <Button Classes="refresh-button"
                                         Content="Сбросить фильтры"
                                         Command="{Binding ResetFiltersCommand}"

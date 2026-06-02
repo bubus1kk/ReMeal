@@ -65,6 +65,7 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Foreground" Value="#F7FBF4"/>
             <Setter Property="WatermarkForeground" Value="#6F7E77"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
         <Style Selector="Button.primary-action">
@@ -75,6 +76,8 @@
             <Setter Property="Background" Value="#69CB4B"/>
             <Setter Property="Foreground" Value="#F8FFF4"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
         <Style Selector="Button.secondary-action">
@@ -85,6 +88,8 @@
             <Setter Property="Background" Value="#111B18"/>
             <Setter Property="BorderBrush" Value="#34483E"/>
             <Setter Property="Foreground" Value="#E6EFE9"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
     </UserControl.Styles>
 
@@ -93,7 +98,7 @@
         <Border Grid.Row="0"
                 Classes="panel"
                 Padding="20">
-            <Grid ColumnDefinitions="Auto,*,Auto"
+            <Grid ColumnDefinitions="Auto,*"
                   ColumnSpacing="18">
                 <Border Width="58"
                         Height="58"
@@ -119,10 +124,6 @@
                                Classes="muted"/>
                 </StackPanel>
 
-                <TextBlock Grid.Column="2"
-                           Text="© OpenStreetMap contributors"
-                           Classes="muted"
-                           VerticalAlignment="Top"/>
             </Grid>
         </Border>
 
@@ -186,9 +187,6 @@
                                     Margin="0,0,0,14">
                             <TextBlock Text="Точки на карте"
                                        Classes="section-title"/>
-                            <TextBlock Text="{Binding StatusMessage}"
-                                       Classes="muted"
-                                       TextWrapping="Wrap"/>
                         </StackPanel>
 
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -293,9 +291,6 @@
                                    FontWeight="SemiBold"
                                    TextWrapping="Wrap"/>
                         <TextBlock Text="{Binding SelectedFoodPoint.Address}"
-                                   Classes="muted"
-                                   TextWrapping="Wrap"/>
-                        <TextBlock Text="{Binding SelectedFoodPoint.CoordinatesText}"
                                    Classes="muted"
                                    TextWrapping="Wrap"/>
                         <TextBlock Text="{Binding SelectedFoodPoint.AvailableLotsDisplayText}"

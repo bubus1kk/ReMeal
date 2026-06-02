@@ -76,9 +76,6 @@ public partial class CustomerLotDetailsViewModel : ViewModelBase
     private string _statusText = "Недоступен";
 
     [ObservableProperty]
-    private string _statusDetailsText = string.Empty;
-
-    [ObservableProperty]
     private IBrush _statusBadgeBackground = NeutralSoftBrush;
 
     [ObservableProperty]
@@ -112,8 +109,6 @@ public partial class CustomerLotDetailsViewModel : ViewModelBase
 
     public ObservableCollection<CustomerLotGalleryImageViewModel> GalleryImages { get; } = new();
 
-    public string CatalogBreadcrumbText => "Каталог";
-
     public bool HasLot => !IsNotFound;
 
     public bool HasImage => !string.IsNullOrWhiteSpace(SelectedImagePath);
@@ -131,8 +126,6 @@ public partial class CustomerLotDetailsViewModel : ViewModelBase
     public bool HasGalleryThumbnails => GalleryImages.Count > 1;
 
     public bool HasStatusMessage => !string.IsNullOrWhiteSpace(StatusMessage);
-
-    public bool IsFavoriteSupported => false;
 
     public bool IsRouteAvailable => false;
 
@@ -334,8 +327,6 @@ public partial class CustomerLotDetailsViewModel : ViewModelBase
                 _ => lot.Status.ToString()
             };
 
-        StatusDetailsText = ResolveStatusDetails(lot, isBookable);
-
         StatusBadgeBackground = lot.Status switch
         {
             LotStatus.Active when isBookable => GreenSoftBrush,
@@ -354,31 +345,6 @@ public partial class CustomerLotDetailsViewModel : ViewModelBase
             LotStatus.Cancelled => DangerBrush,
             LotStatus.Expired => NeutralBrush,
             _ => NeutralBrush
-        };
-    }
-
-    private static string ResolveStatusDetails(FoodLot lot, bool isBookable)
-    {
-        if (isBookable)
-            return "Можно забронировать 1 набор.";
-
-        if (lot.FoodPoint is { IsActive: false })
-            return "Точка питания сейчас неактивна.";
-
-        if (lot.PickupDeadline == default)
-            return "Время получения не указано.";
-
-        if (lot.PickupDeadline <= DateTime.UtcNow)
-            return "Время получения уже прошло.";
-
-        if (lot.AvailableQuantity <= 0 || lot.Status == LotStatus.SoldOut)
-            return "Набор уже распродан.";
-
-        return lot.Status switch
-        {
-            LotStatus.Cancelled => "Лот снят с публикации.",
-            LotStatus.Expired => "Лот просрочен.",
-            _ => "Бронирование сейчас недоступно."
         };
     }
 

@@ -297,7 +297,7 @@
 
                                 <TextBlock Grid.Column="2"
                                            Classes="nav-label"
-                                           Text="Админка"
+                                           Text="Администрирование"
                                            IsVisible="{Binding IsSidebarExpanded}"
                                            VerticalAlignment="Center"/>
 

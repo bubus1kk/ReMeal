@@ -389,7 +389,7 @@
                 <Border Grid.Row="1"
                         Classes="food-card"
                         Padding="14">
-                    <Grid ColumnDefinitions="*,210,150,240"
+                    <Grid ColumnDefinitions="*,210,240"
                           ColumnSpacing="12">
                         <Border Grid.Column="0"
                                 Classes="control-surface"
@@ -418,21 +418,7 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <Button Grid.Column="2"
-                                Classes="secondary-action"
-                                Command="{Binding LoadCommand}">
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="8"
-                                        HorizontalAlignment="Center">
-                                <TextBlock Text="↻"
-                                           FontSize="17"
-                                           VerticalAlignment="Center"/>
-                                <TextBlock Text="Обновить"
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
-                        <CheckBox Grid.Column="3"
+                        <CheckBox Grid.Column="2"
                                   Content="Показать только активные"
                                   IsChecked="{Binding ShowActiveOnly}"
                                   Foreground="#DCE5DF"

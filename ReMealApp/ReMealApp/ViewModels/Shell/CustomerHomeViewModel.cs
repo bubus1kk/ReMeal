@@ -243,6 +243,12 @@ public partial class CustomerHomeViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private void CloseStatusMessage()
+    {
+        StatusMessage = string.Empty;
+    }
+
+    [RelayCommand]
     private void OpenCatalog()
     {
         _navigateToSection(HomeViewModel.CatalogSection);
@@ -383,18 +389,14 @@ public partial class CustomerHomeViewModel : ViewModelBase
             : "Цена не указана";
     }
 
-    internal static string FormatPickupDeadline(DateTime pickupDeadline)
+    internal static string FormatPickupDeadlineValue(DateTime pickupDeadline)
     {
         if (pickupDeadline == default)
-            return "Время получения не указано";
+            return "Не указано";
 
-        var local = pickupDeadline.ToLocalTime();
-        var today = DateTime.Today;
-
-        if (local.Date == today)
-            return $"Забрать до {local:HH:mm}";
-
-        return $"Забрать до {local:dd.MM HH:mm}";
+        return pickupDeadline
+            .ToLocalTime()
+            .ToString("dd.MM HH:mm", RussianCulture);
     }
 }
 
@@ -432,7 +434,7 @@ public sealed class CustomerHomeLotItemViewModel
             : "Нет доступных наборов";
 
     public string PickupDeadlineText =>
-        CustomerHomeViewModel.FormatPickupDeadline(PickupDeadline);
+        CustomerHomeViewModel.FormatPickupDeadlineValue(PickupDeadline);
 
     public string StatusText => Status switch
     {
@@ -494,7 +496,7 @@ public sealed class CustomerHomeBookingItemViewModel
             : "Количество не указано";
 
     public string PickupDeadlineText =>
-        CustomerHomeViewModel.FormatPickupDeadline(PickupDeadline);
+        CustomerHomeViewModel.FormatPickupDeadlineValue(PickupDeadline);
 
     public string StatusText => Status switch
     {

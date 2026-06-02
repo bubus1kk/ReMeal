@@ -129,21 +129,6 @@
             <Setter Property="Foreground" Value="#EDF6EF"/>
         </Style>
 
-        <Style Selector="Button.refresh-btn">
-            <Setter Property="Background" Value="#17211E"/>
-            <Setter Property="Foreground" Value="#DDE9E1"/>
-            <Setter Property="BorderBrush" Value="#2B3B35"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="12"/>
-            <Setter Property="Padding" Value="18,10"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-        </Style>
-
-        <Style Selector="Button.refresh-btn:pointerover">
-            <Setter Property="Background" Value="#1D2925"/>
-            <Setter Property="BorderBrush" Value="#4C923E"/>
-        </Style>
-
         <Style Selector="Button.clear-btn">
             <Setter Property="Background" Value="#17211E"/>
             <Setter Property="Foreground" Value="#DDE9E1"/>
@@ -207,7 +192,7 @@
             <Grid RowDefinitions="Auto,Auto,Auto,*"
                   RowSpacing="22">
 
-                <Grid ColumnDefinitions="Auto,Auto,*"
+                <Grid ColumnDefinitions="Auto,*"
                       ColumnSpacing="16">
 
                     <TextBlock Text="Бронирования клиентов"
@@ -215,13 +200,6 @@
                                FontWeight="Bold"
                                Foreground="#F4F8F5"
                                VerticalAlignment="Center"/>
-
-                    <Button Grid.Column="1"
-                            Classes="refresh-btn"
-                            Content="Обновить"
-                            Command="{Binding LoadBookingsCommand}"
-                            IsEnabled="{Binding !IsBusy}"
-                            VerticalAlignment="Center"/>
 
                 </Grid>
 

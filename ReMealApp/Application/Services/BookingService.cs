@@ -166,6 +166,7 @@ public class BookingService : IBookingService
         return new BookingDto
         {
             Id = booking.Id,
+            FoodLotId = booking.FoodLotId,
             UserName = booking.User?.FullName ?? string.Empty,
             UserLogin = booking.User?.Login ?? string.Empty,
             UserEmail = booking.User?.Email ?? string.Empty,

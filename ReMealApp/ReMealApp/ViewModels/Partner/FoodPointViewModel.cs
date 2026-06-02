@@ -1,4 +1,5 @@
 using Application.DTOs.FoodPoints;
+using Application.DTOs.Maps;
 using Application.Interfaces;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -12,6 +13,9 @@ namespace ReMealApp.ViewModels.Partner
 {
     public partial class FoodPointViewModel : ViewModelBase
     {
+        private const double DefaultMapLatitude = 55.7558;
+        private const double DefaultMapLongitude = 37.6173;
+
         private readonly IFoodPointService _foodPointService;
         private readonly ILotService _lotService;
         private readonly IGeocodingService _geocodingService;
@@ -134,6 +138,94 @@ namespace ReMealApp.ViewModels.Partner
         public string EmptySubtitle => HasAnyFoodPoints
             ? "Измените поисковый запрос или сбросьте фильтры."
             : "Создайте первую точку, чтобы публиковать лоты и управлять бронированиями.";
+
+        public async Task<CoordinatesDto?> PrepareMapPickerCoordinatesAsync(
+            CancellationToken cancellationToken = default)
+        {
+            if (IsBusy)
+                return null;
+
+            if (string.IsNullOrWhiteSpace(Address))
+            {
+                if (HasSelectedCoordinates)
+                    return new CoordinatesDto(Latitude!.Value, Longitude!.Value);
+
+                StatusMessage = "Выберите точку на карте.";
+                return new CoordinatesDto(DefaultMapLatitude, DefaultMapLongitude);
+            }
+
+            try
+            {
+                IsBusy = true;
+                StatusMessage = "Ищем адрес на карте...";
+
+                using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                timeout.CancelAfter(TimeSpan.FromSeconds(8));
+
+                var result = await _geocodingService.GeocodeAddressAsync(Address, timeout.Token);
+                if (result is null)
+                {
+                    StatusMessage = "Адрес не найден. Выберите точку на карте вручную.";
+                    return new CoordinatesDto(DefaultMapLatitude, DefaultMapLongitude);
+                }
+
+                SetSelectedCoordinates(
+                    result.Coordinates.Latitude,
+                    result.Coordinates.Longitude);
+
+                StatusMessage = "Адрес найден на карте.";
+                return result.Coordinates;
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (OperationCanceledException)
+            {
+                StatusMessage = "Поиск адреса занял слишком много времени. Выберите точку на карте вручную.";
+                return new CoordinatesDto(DefaultMapLatitude, DefaultMapLongitude);
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+                return new CoordinatesDto(DefaultMapLatitude, DefaultMapLongitude);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        public async Task OpenDetailsByIdAsync(Guid foodPointId)
+        {
+            if (IsBusy)
+                return;
+
+            try
+            {
+                IsBusy = true;
+                await ReloadFoodPointsAsync();
+
+                var item = _allFoodPoints.FirstOrDefault(x => x.Id == foodPointId);
+                if (item is null)
+                {
+                    BackToListCore();
+                    StatusMessage = "Точка питания не найдена.";
+                    return;
+                }
+
+                await ShowDetailsCoreAsync(item.FoodPoint);
+                StatusMessage = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
 
         public string DetailTitle => IsCreateMode
             ? "Новая точка питания"

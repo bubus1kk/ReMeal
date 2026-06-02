@@ -1,6 +1,6 @@
 <mxfile host="Electron">
   <diagram name="Страница-1" id="oV9YJGga95vGioxsOYgR">
-    <mxGraphModel dx="1373" dy="2132" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1471" dy="2200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -41,16 +41,16 @@
           <mxGeometry height="26" width="380" y="268" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-13" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&lt;b&gt;&amp;lt;enum&amp;gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;РольПользователя&lt;/b&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="104" width="140" x="274" y="80" as="geometry" />
+          <mxGeometry height="104" width="196" x="274" y="80" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-14" parent="JiTfGMjJou_D4Jt2tbg5-13" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ Покупатель" vertex="1">
-          <mxGeometry height="26" width="140" y="26" as="geometry" />
+          <mxGeometry height="26" width="196" y="26" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-15" parent="JiTfGMjJou_D4Jt2tbg5-13" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ Партнёр" vertex="1">
-          <mxGeometry height="26" width="140" y="52" as="geometry" />
+          <mxGeometry height="26" width="196" y="52" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-16" parent="JiTfGMjJou_D4Jt2tbg5-13" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ Администратор" vertex="1">
-          <mxGeometry height="26" width="140" y="78" as="geometry" />
+          <mxGeometry height="26" width="196" y="78" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-21" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="ТочкаПитания" vertex="1">
           <mxGeometry height="376" width="250" x="840" y="-300" as="geometry" />
@@ -95,19 +95,19 @@
           <mxGeometry height="26" width="250" y="350" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-25" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&lt;b&gt;&amp;lt;enum&amp;gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;СтатусЛота&lt;/b&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="130" width="140" x="1200" y="-520" as="geometry" />
+          <mxGeometry height="130" width="170" x="1200" y="-520" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-26" parent="JiTfGMjJou_D4Jt2tbg5-25" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ Активен" vertex="1">
-          <mxGeometry height="26" width="140" y="26" as="geometry" />
+          <mxGeometry height="26" width="170" y="26" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-27" parent="JiTfGMjJou_D4Jt2tbg5-25" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ Распродан" vertex="1">
-          <mxGeometry height="26" width="140" y="52" as="geometry" />
+          <mxGeometry height="26" width="170" y="52" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-28" parent="JiTfGMjJou_D4Jt2tbg5-25" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ Просрочен" vertex="1">
-          <mxGeometry height="26" width="140" y="78" as="geometry" />
+          <mxGeometry height="26" width="170" y="78" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-84" parent="JiTfGMjJou_D4Jt2tbg5-25" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ Отменен" vertex="1">
-          <mxGeometry height="26" width="140" y="104" as="geometry" />
+          <mxGeometry height="26" width="170" y="104" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-29" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Лот" vertex="1">
           <mxGeometry height="504" width="270" x="1300" y="-280" as="geometry" />
@@ -167,19 +167,19 @@
           <mxGeometry height="26" width="270" y="478" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-33" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&lt;b&gt;&amp;lt;enum&amp;gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;СтатусБронирования&lt;/b&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="130" width="140" x="1230" y="300" as="geometry" />
+          <mxGeometry height="130" width="190" x="1230" y="300" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-34" parent="JiTfGMjJou_D4Jt2tbg5-33" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ Активно" vertex="1">
-          <mxGeometry height="26" width="140" y="26" as="geometry" />
+          <mxGeometry height="26" width="190" y="26" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-35" parent="JiTfGMjJou_D4Jt2tbg5-33" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ Отменен" vertex="1">
-          <mxGeometry height="26" width="140" y="52" as="geometry" />
+          <mxGeometry height="26" width="190" y="52" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-100" parent="JiTfGMjJou_D4Jt2tbg5-33" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ Выдано" vertex="1">
-          <mxGeometry height="26" width="140" y="78" as="geometry" />
+          <mxGeometry height="26" width="190" y="78" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-36" parent="JiTfGMjJou_D4Jt2tbg5-33" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ Просрочен" vertex="1">
-          <mxGeometry height="26" width="140" y="104" as="geometry" />
+          <mxGeometry height="26" width="190" y="104" as="geometry" />
         </mxCell>
         <mxCell id="JiTfGMjJou_D4Jt2tbg5-37" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Бронирование" vertex="1">
           <mxGeometry height="320" width="290" x="827" y="120" as="geometry" />
