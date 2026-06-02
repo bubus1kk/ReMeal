@@ -34,37 +34,6 @@
             <Setter Property="FontSize" Value="13"/>
         </Style>
 
-        <Style Selector="Button.refresh-button">
-            <Setter Property="Height" Value="38"/>
-            <Setter Property="Padding" Value="14,0"/>
-            <Setter Property="CornerRadius" Value="8"/>
-            <Setter Property="Background" Value="#101B17"/>
-            <Setter Property="BorderBrush" Value="#4F8F3B"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="#F4FAF0"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FocusAdorner" Value="{x:Null}"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
-
-        <Style Selector="Button.refresh-button:pointerover">
-            <Setter Property="Background" Value="#14221D"/>
-            <Setter Property="BorderBrush" Value="#70C957"/>
-        </Style>
-
-        <Style Selector="Button.refresh-button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#14221D"/>
-        </Style>
-
-        <Style Selector="Button.refresh-button:pressed /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#182B22"/>
-        </Style>
-
-        <Style Selector="Button.refresh-button:disabled">
-            <Setter Property="Opacity" Value="0.65"/>
-        </Style>
-
         <Style Selector="Border.kpi-card">
             <Setter Property="Background" Value="#121B19"/>
             <Setter Property="BorderBrush" Value="#263A33"/>
@@ -424,7 +393,7 @@
         <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                       VerticalScrollBarVisibility="Hidden">
             <StackPanel Spacing="12">
-                <Grid ColumnDefinitions="Auto,*,Auto"
+                <Grid ColumnDefinitions="Auto,*"
                       ColumnSpacing="12">
                     <Border Grid.Column="0"
                             Classes="header-icon">
@@ -444,22 +413,6 @@
                                    Classes="page-subtitle"/>
                     </StackPanel>
 
-                    <Button Grid.Column="2"
-                            Classes="refresh-button"
-                            Command="{Binding LoadCommand}"
-                            IsEnabled="{Binding !IsBusy}"
-                            VerticalAlignment="Center">
-                        <StackPanel Orientation="Horizontal"
-                                    Spacing="8"
-                                    VerticalAlignment="Center">
-                            <Image Source="/Assets/Icons/Lots/Tinted/update-icon-light.png"
-                                   Width="16"
-                                   Height="16"
-                                   VerticalAlignment="Center"/>
-                            <TextBlock Text="Обновить"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
                 </Grid>
 
                 <Grid ColumnDefinitions="*,*,*,*"

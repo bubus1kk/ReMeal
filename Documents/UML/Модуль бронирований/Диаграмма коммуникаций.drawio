@@ -1,0 +1,125 @@
+<mxfile host="Electron">
+  <diagram name="Страница-1" id="CV6zzcqolPHdemouPKFy">
+    <mxGraphModel dx="1030" dy="722" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="BAm2A80Uvont_80H3WhP-6" edge="1" parent="1" source="BAm2A80Uvont_80H3WhP-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="BAm2A80Uvont_80H3WhP-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-1" parent="1" style="html=1;whiteSpace=wrap;" value="Покупатель" vertex="1">
+          <mxGeometry height="50" width="110" x="130" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-8" edge="1" parent="1" source="BAm2A80Uvont_80H3WhP-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="BAm2A80Uvont_80H3WhP-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-28" edge="1" parent="1" source="BAm2A80Uvont_80H3WhP-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="BAm2A80Uvont_80H3WhP-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-2" parent="1" style="html=1;whiteSpace=wrap;" value="Экран каталога" vertex="1">
+          <mxGeometry height="50" width="110" x="450" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-30" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="310" as="sourcePoint" />
+            <mxPoint x="450" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-34" edge="1" parent="1" source="BAm2A80Uvont_80H3WhP-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="BAm2A80Uvont_80H3WhP-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-41" edge="1" parent="1" source="BAm2A80Uvont_80H3WhP-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" target="BAm2A80Uvont_80H3WhP-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-3" parent="1" style="html=1;whiteSpace=wrap;" value="Модуль доступа к данным" vertex="1">
+          <mxGeometry height="120" width="180" x="760" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-32" edge="1" parent="1" source="BAm2A80Uvont_80H3WhP-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="BAm2A80Uvont_80H3WhP-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-37" edge="1" parent="1" source="BAm2A80Uvont_80H3WhP-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.004;entryY=0.913;entryDx=0;entryDy=0;entryPerimeter=0;" target="BAm2A80Uvont_80H3WhP-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="450" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-4" parent="1" style="html=1;whiteSpace=wrap;" value="БД" vertex="1">
+          <mxGeometry height="120" width="110" x="340" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-23" edge="1" parent="1" source="BAm2A80Uvont_80H3WhP-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="BAm2A80Uvont_80H3WhP-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-40" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="778" y="160" as="sourcePoint" />
+            <mxPoint x="778" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-42" edge="1" parent="1" source="BAm2A80Uvont_80H3WhP-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" target="BAm2A80Uvont_80H3WhP-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-5" parent="1" style="html=1;whiteSpace=wrap;" value="Модуль бронирования" vertex="1">
+          <mxGeometry height="50" width="180" x="760" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-7" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1. Выбрать лот и нажать &quot;Забронировать&quot;" vertex="1">
+          <mxGeometry height="30" width="170" x="270" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-9" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="2. Передать запрос на бронирование" vertex="1">
+          <mxGeometry height="30" width="140" x="590" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-11" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="3. Получить данные выбранного лота" vertex="1">
+          <mxGeometry height="30" width="120" x="660" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="4. Найти лот по ID" vertex="1">
+          <mxGeometry height="30" width="110" x="540" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-16" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="5. Вернуть данные лота" vertex="1">
+          <mxGeometry height="30" width="110" x="542" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-20" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="6. Передать данные лота" vertex="1">
+          <mxGeometry height="30" width="100" x="793" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-21" edge="1" parent="1" source="BAm2A80Uvont_80H3WhP-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="BAm2A80Uvont_80H3WhP-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="950" y="148" />
+              <mxPoint x="950" y="80" />
+              <mxPoint x="850" y="80" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-22" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="7. Проверить возможность бронирования" vertex="1">
+          <mxGeometry height="40" width="110" x="850" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-26" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="8. Сохранить бронирование и изменения лота" vertex="1">
+          <mxGeometry height="60" width="140" x="880" y="185" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-27" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="12. Сообщить о содании бронирования" vertex="1">
+          <mxGeometry height="30" width="140" x="595" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-29" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="13.Показать сообщение об успешном бронировании" vertex="1">
+          <mxGeometry height="30" width="180" x="260" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-35" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="9. Сохранить изменения" vertex="1">
+          <mxGeometry height="30" width="150" x="521" y="367" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-38" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="10. Подтвердить сохранение" vertex="1">
+          <mxGeometry height="30" width="180" x="505" y="404" as="geometry" />
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-44" edge="1" parent="1" source="BAm2A80Uvont_80H3WhP-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0.9;entryY=0.968;entryDx=0;entryDy=0;entryPerimeter=0;" target="BAm2A80Uvont_80H3WhP-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1020" y="300" />
+              <mxPoint x="1020" y="180" />
+              <mxPoint x="922" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BAm2A80Uvont_80H3WhP-45" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="11. Вернуть результат сохранения" vertex="1">
+          <mxGeometry height="30" width="60" x="1030" y="215" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

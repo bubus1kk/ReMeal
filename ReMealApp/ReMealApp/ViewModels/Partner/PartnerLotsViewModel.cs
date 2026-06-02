@@ -106,6 +106,28 @@ namespace ReMealApp.ViewModels.Partner
             ? "Измените поисковый запрос или сбросьте фильтры."
             : "Создайте первый лот, чтобы он появился в каталоге и стал доступен покупателям.";
 
+        public async Task OpenDetailsByIdAsync(Guid lotId)
+        {
+            if (IsBusy)
+                return;
+
+            try
+            {
+                IsBusy = true;
+                var lot = await _lotService.GetCurrentPartnerLotAsync(lotId);
+                CurrentDetails = CreateDetails(lot);
+                StatusMessage = lot is null ? "Лот не найден." : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = ExceptionMessageFormatter.ToUserMessage(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
         private bool HasActiveFilters =>
             !string.IsNullOrWhiteSpace(SearchQuery) ||
             ShowAvailableOnly ||

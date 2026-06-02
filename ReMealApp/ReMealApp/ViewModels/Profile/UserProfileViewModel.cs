@@ -1,22 +1,30 @@
+using Application.DTOs.Booking;
 using Application.DTOs.Profile;
 using Application.DTOs.Users;
 using Application.Interfaces;
+using Avalonia;
+using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Domain.Enums;
 using ReMealApp.ViewModels;
 using ReMealApp.ViewModels.Shell;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace ReMealApp.ViewModels.Profile
 {
     public partial class UserProfileViewModel : ViewModelBase
     {
         private const string DefaultAvatarPath = "/Assets/Profile/avatar-placeholder.png";
+        private const double CustomerPieChartSize = 184;
+        private const double CustomerPieChartOuterRadius = 86;
+        private const double CustomerPieChartInnerRadius = 48;
 
         private readonly IUserProfileService _userProfileService;
         private readonly IAuthService _authService;
         private readonly IProfileStatisticsService _profileStatisticsService;
+        private readonly IBookingService? _bookingService;
         private readonly Action<string> _navigateToSection;
         private readonly Action<string> _showLogin;
 
@@ -86,16 +94,21 @@ namespace ReMealApp.ViewModels.Profile
         [ObservableProperty]
         private bool _isLogoutConfirmationOpen;
 
+        [ObservableProperty]
+        private int _customerTotalBookingsCount;
+
         public UserProfileViewModel(
             IUserProfileService userProfileService,
             IAuthService authService,
             IProfileStatisticsService profileStatisticsService,
             Action<string> navigateToSection,
-            Action<string> showLogin)
+            Action<string> showLogin,
+            IBookingService? bookingService = null)
         {
             _userProfileService = userProfileService;
             _authService = authService;
             _profileStatisticsService = profileStatisticsService;
+            _bookingService = bookingService;
             _navigateToSection = navigateToSection;
             _showLogin = showLogin;
         }
@@ -107,6 +120,12 @@ namespace ReMealApp.ViewModels.Profile
         public ObservableCollection<PartnerFoodPointItemViewModel> PartnerFoodPoints { get; } = new();
 
         public ObservableCollection<RoleDistributionItemViewModel> RoleDistribution { get; } = new();
+
+        public ObservableCollection<CustomerProfileMetricItemViewModel> CustomerActivityMetrics { get; } = new();
+
+        public ObservableCollection<CustomerBookingStatusItemViewModel> CustomerBookingStatuses { get; } = new();
+
+        public ObservableCollection<CustomerRecentBookingItemViewModel> CustomerRecentBookings { get; } = new();
 
         public string AvatarImagePath => string.IsNullOrWhiteSpace(AvatarPath) ? DefaultAvatarPath : AvatarPath;
 
@@ -142,7 +161,7 @@ namespace ReMealApp.ViewModels.Profile
         {
             UserRole.StudentCustomer => "Мои брони",
             UserRole.FoodPointRepresentative => "Управлять точками",
-            UserRole.Administrator => "К админке",
+            UserRole.Administrator => "Открыть администрирование",
             _ => "Открыть раздел"
         };
 
@@ -152,7 +171,11 @@ namespace ReMealApp.ViewModels.Profile
 
         public bool IsAdmin => Role == UserRole.Administrator;
 
-        public bool IsEmptyCustomerStatisticsVisible => IsCustomer;
+        public bool IsCustomerOverviewVisible => IsCustomer;
+
+        public bool HasCustomerRecentBookings => CustomerRecentBookings.Count > 0;
+
+        public bool HasNoCustomerRecentBookings => IsCustomer && !HasCustomerRecentBookings;
 
         public bool IsPartnerOverviewVisible => IsPartner;
 
@@ -185,9 +208,17 @@ namespace ReMealApp.ViewModels.Profile
                 Kpis.Clear();
                 PartnerFoodPoints.Clear();
                 RoleDistribution.Clear();
+                CustomerActivityMetrics.Clear();
+                CustomerBookingStatuses.Clear();
+                CustomerRecentBookings.Clear();
+                CustomerTotalBookingsCount = 0;
                 SelectedPartnerFoodPoint = null;
 
-                if (IsPartner)
+                if (IsCustomer)
+                {
+                    await LoadCustomerBookingsAsync();
+                }
+                else if (IsPartner)
                 {
                     var statistics = await _profileStatisticsService.GetCurrentPartnerStatisticsAsync();
                     ApplyPartnerStatistics(statistics);
@@ -202,6 +233,7 @@ namespace ReMealApp.ViewModels.Profile
                 HasPartnerFoodPoints = PartnerFoodPoints.Count > 0;
                 HasNoPartnerFoodPoints = !HasPartnerFoodPoints;
                 HasRoleDistribution = RoleDistribution.Count > 0;
+                NotifyCustomerBookingStateChanged();
             }
             catch (Exception ex)
             {
@@ -361,7 +393,8 @@ namespace ReMealApp.ViewModels.Profile
             OnPropertyChanged(nameof(IsCustomer));
             OnPropertyChanged(nameof(IsPartner));
             OnPropertyChanged(nameof(IsAdmin));
-            OnPropertyChanged(nameof(IsEmptyCustomerStatisticsVisible));
+            OnPropertyChanged(nameof(IsCustomerOverviewVisible));
+            OnPropertyChanged(nameof(HasNoCustomerRecentBookings));
             OnPropertyChanged(nameof(IsPartnerOverviewVisible));
             OnPropertyChanged(nameof(IsAdminOverviewVisible));
         }
@@ -432,6 +465,131 @@ namespace ReMealApp.ViewModels.Profile
                 RoleDistribution.Add(RoleDistributionItemViewModel.FromDto(role));
         }
 
+        private async Task LoadCustomerBookingsAsync()
+        {
+            if (_bookingService is null)
+            {
+                ApplyCustomerBookings(Array.Empty<BookingDto>());
+                return;
+            }
+
+            var bookings = await _bookingService.GetCurrentUserBookingsAsync();
+            ApplyCustomerBookings(bookings);
+        }
+
+        private void ApplyCustomerBookings(IReadOnlyCollection<BookingDto> bookings)
+        {
+            var orderedBookings = bookings
+                .OrderByDescending(x => x.ReservedAt)
+                .ToList();
+
+            var totalCount = orderedBookings.Count;
+            var activeBookings = orderedBookings
+                .Where(x => x.Status == BookingStatus.Active)
+                .ToList();
+            var issuedBookings = orderedBookings
+                .Where(x => x.Status == BookingStatus.Issued)
+                .ToList();
+            var cancelledBookings = orderedBookings
+                .Where(x => x.Status == BookingStatus.Cancelled)
+                .ToList();
+
+            Kpis.Add(new ProfileKpiItemViewModel(
+                "Всего броней",
+                totalCount.ToString("N0", CultureInfo.CurrentCulture),
+                "За всё время"));
+            Kpis.Add(new ProfileKpiItemViewModel(
+                "Активные",
+                activeBookings.Count.ToString("N0", CultureInfo.CurrentCulture),
+                "Ожидают выдачи"));
+            Kpis.Add(new ProfileKpiItemViewModel(
+                "Получено",
+                issuedBookings.Count.ToString("N0", CultureInfo.CurrentCulture),
+                "Выданные брони"));
+            Kpis.Add(new ProfileKpiItemViewModel(
+                "Отменено",
+                cancelledBookings.Count.ToString("N0", CultureInfo.CurrentCulture),
+                "Отмененные брони"));
+
+            var totalReservedQuantity = orderedBookings.Sum(x => x.Quantity);
+            var activeQuantity = activeBookings.Sum(x => x.Quantity);
+            var lastBooking = orderedBookings.FirstOrDefault();
+            CustomerTotalBookingsCount = totalCount;
+
+            CustomerActivityMetrics.Add(new CustomerProfileMetricItemViewModel(
+                "Бронирований",
+                totalCount.ToString("N0", CultureInfo.CurrentCulture),
+                "Всего записей в истории"));
+            CustomerActivityMetrics.Add(new CustomerProfileMetricItemViewModel(
+                "Наборов забронировано",
+                FormatQuantity(totalReservedQuantity),
+                "Суммарное количество"));
+            CustomerActivityMetrics.Add(new CustomerProfileMetricItemViewModel(
+                "Активно сейчас",
+                FormatQuantity(activeQuantity),
+                "Ожидает выдачи"));
+            CustomerActivityMetrics.Add(new CustomerProfileMetricItemViewModel(
+                "Последняя бронь",
+                FormatBookingDate(lastBooking),
+                "По дате создания"));
+
+            var startAngle = -90d;
+            startAngle = AddCustomerStatus(
+                "Активные",
+                activeBookings.Count,
+                totalCount,
+                BookingStatus.Active,
+                "#FFB84D",
+                startAngle);
+            startAngle = AddCustomerStatus(
+                "Выданы",
+                issuedBookings.Count,
+                totalCount,
+                BookingStatus.Issued,
+                "#65D97A",
+                startAngle);
+            AddCustomerStatus(
+                "Отменены",
+                cancelledBookings.Count,
+                totalCount,
+                BookingStatus.Cancelled,
+                "#FF7387",
+                startAngle);
+
+            foreach (var booking in orderedBookings.Take(4))
+                CustomerRecentBookings.Add(CustomerRecentBookingItemViewModel.FromDto(booking));
+        }
+
+        private double AddCustomerStatus(
+            string title,
+            int count,
+            int total,
+            BookingStatus status,
+            string color,
+            double startAngle)
+        {
+            var percentage = total == 0
+                ? 0
+                : Math.Round(count * 100d / total, 1);
+            var sweepAngle = total == 0 ? 0 : count / (double)total * 360;
+
+            CustomerBookingStatuses.Add(new CustomerBookingStatusItemViewModel(
+                title,
+                count,
+                percentage,
+                status,
+                color,
+                CreateCustomerDonutSliceGeometry(startAngle, sweepAngle)));
+
+            return startAngle + sweepAngle;
+        }
+
+        private void NotifyCustomerBookingStateChanged()
+        {
+            OnPropertyChanged(nameof(HasCustomerRecentBookings));
+            OnPropertyChanged(nameof(HasNoCustomerRecentBookings));
+        }
+
         private void RefreshProfileFields()
         {
             ProfileFields.Clear();
@@ -440,12 +598,97 @@ namespace ReMealApp.ViewModels.Profile
             ProfileFields.Add(new ProfileFieldItemViewModel("Email", EmptyFallback(Email)));
             ProfileFields.Add(new ProfileFieldItemViewModel("Телефон", PhoneText));
             ProfileFields.Add(new ProfileFieldItemViewModel("Роль", RoleText));
-            ProfileFields.Add(new ProfileFieldItemViewModel("Дата регистрации", "Не хранится в текущей модели"));
         }
 
         private static string EmptyFallback(string value)
         {
             return string.IsNullOrWhiteSpace(value) ? "Не указано" : value;
+        }
+
+        private static string FormatBookingDate(BookingDto? booking)
+        {
+            return booking is null || booking.ReservedAt == default
+                ? "Нет броней"
+                : booking.ReservedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm", CultureInfo.CurrentCulture);
+        }
+
+        private static string FormatQuantity(int quantity)
+        {
+            return $"{quantity.ToString("N0", CultureInfo.CurrentCulture)} шт.";
+        }
+
+        private static Geometry CreateCustomerDonutSliceGeometry(
+            double startAngle,
+            double sweepAngle)
+        {
+            if (sweepAngle <= 0)
+                return new StreamGeometry();
+
+            var center = new Point(
+                CustomerPieChartSize / 2,
+                CustomerPieChartSize / 2);
+
+            var visibleSweepAngle = Math.Clamp(
+                sweepAngle,
+                0.1,
+                359.99);
+            var endAngle = startAngle + visibleSweepAngle;
+
+            var outerStart = GetCustomerArcPoint(
+                center,
+                CustomerPieChartOuterRadius,
+                startAngle);
+            var outerEnd = GetCustomerArcPoint(
+                center,
+                CustomerPieChartOuterRadius,
+                endAngle);
+            var innerStart = GetCustomerArcPoint(
+                center,
+                CustomerPieChartInnerRadius,
+                startAngle);
+            var innerEnd = GetCustomerArcPoint(
+                center,
+                CustomerPieChartInnerRadius,
+                endAngle);
+
+            var geometry = new StreamGeometry();
+            using var context = geometry.Open();
+
+            var isLargeArc = visibleSweepAngle > 180;
+
+            context.BeginFigure(outerStart, true);
+            context.ArcTo(
+                outerEnd,
+                new Size(
+                    CustomerPieChartOuterRadius,
+                    CustomerPieChartOuterRadius),
+                0,
+                isLargeArc,
+                SweepDirection.Clockwise);
+            context.LineTo(innerEnd);
+            context.ArcTo(
+                innerStart,
+                new Size(
+                    CustomerPieChartInnerRadius,
+                    CustomerPieChartInnerRadius),
+                0,
+                isLargeArc,
+                SweepDirection.CounterClockwise);
+            context.EndFigure(true);
+
+            return geometry;
+        }
+
+        private static Point GetCustomerArcPoint(
+            Point center,
+            double radius,
+            double angle)
+        {
+            var radians = angle * Math.PI / 180;
+
+            return new Point(
+                center.X + Math.Cos(radians) * radius,
+                center.Y + Math.Sin(radians) * radius);
         }
 
         private static string FormatCompactName(string value)
@@ -504,6 +747,108 @@ namespace ReMealApp.ViewModels.Profile
         public string Label { get; }
 
         public string Value { get; }
+    }
+
+    public sealed class CustomerProfileMetricItemViewModel
+    {
+        public CustomerProfileMetricItemViewModel(string title, string value, string caption)
+        {
+            Title = title;
+            Value = value;
+            Caption = caption;
+        }
+
+        public string Title { get; }
+
+        public string Value { get; }
+
+        public string Caption { get; }
+    }
+
+    public sealed class CustomerBookingStatusItemViewModel
+    {
+        public CustomerBookingStatusItemViewModel(
+            string title,
+            int count,
+            double percentage,
+            BookingStatus status,
+            string color,
+            Geometry geometry)
+        {
+            Title = title;
+            Count = count;
+            Percentage = percentage;
+            Status = status;
+            CountText = count.ToString("N0", CultureInfo.CurrentCulture);
+            PercentageText = $"{percentage.ToString("N1", CultureInfo.CurrentCulture)}%";
+            Brush = new SolidColorBrush(Color.Parse(color));
+            Geometry = geometry;
+        }
+
+        public string Title { get; }
+
+        public int Count { get; }
+
+        public double Percentage { get; }
+
+        public BookingStatus Status { get; }
+
+        public string CountText { get; }
+
+        public string PercentageText { get; }
+
+        public IBrush Brush { get; }
+
+        public Geometry Geometry { get; }
+
+        public bool IsActive => Status == BookingStatus.Active;
+
+        public bool IsIssued => Status == BookingStatus.Issued;
+
+        public bool IsCancelled => Status == BookingStatus.Cancelled;
+    }
+
+    public sealed class CustomerRecentBookingItemViewModel
+    {
+        private CustomerRecentBookingItemViewModel()
+        {
+        }
+
+        public string LotTitle { get; init; } = string.Empty;
+
+        public string FoodPointName { get; init; } = string.Empty;
+
+        public string DateText { get; init; } = string.Empty;
+
+        public string QuantityText { get; init; } = string.Empty;
+
+        public string TotalText { get; init; } = string.Empty;
+
+        public string StatusText { get; init; } = string.Empty;
+
+        public BookingStatus Status { get; init; }
+
+        public bool IsActive => Status == BookingStatus.Active;
+
+        public bool IsIssued => Status == BookingStatus.Issued;
+
+        public bool IsCancelled => Status == BookingStatus.Cancelled;
+
+        public static CustomerRecentBookingItemViewModel FromDto(BookingDto dto)
+        {
+            return new CustomerRecentBookingItemViewModel
+            {
+                LotTitle = dto.DisplayLotTitle,
+                FoodPointName = dto.DisplayFoodPointName,
+                DateText = string.IsNullOrWhiteSpace(dto.DisplayReservedTime)
+                    ? dto.DisplayReservedDate
+                    : $"{dto.DisplayReservedDate} {dto.DisplayReservedTime}",
+                QuantityText = dto.DisplayQuantityWithUnit,
+                TotalText = dto.DisplayReservationTotal,
+                StatusText = dto.StatusText,
+                Status = dto.Status
+            };
+        }
     }
 
     public sealed class PartnerFoodPointItemViewModel

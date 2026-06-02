@@ -1,6 +1,6 @@
 <mxfile host="Electron">
   <diagram name="Страница-1" id="uL2mcitFuwueI5ikn-ph">
-    <mxGraphModel dx="2060" dy="2437" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1717" dy="2372" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -11,7 +11,7 @@
           <mxGeometry height="1010" width="490" x="792.5" y="-720" as="geometry" />
         </mxCell>
         <mxCell id="vzy0HnwZaLookSlOg5ek-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=default;" value="" vertex="1">
-          <mxGeometry height="520" width="315" x="460" y="-720" as="geometry" />
+          <mxGeometry height="1010" width="315" x="460" y="-720" as="geometry" />
         </mxCell>
         <mxCell id="vzy0HnwZaLookSlOg5ek-2" parent="1" style="ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#ff0000;" value="" vertex="1">
           <mxGeometry height="30" width="30" x="602.5" y="-690" as="geometry" />

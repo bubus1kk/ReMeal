@@ -22,25 +22,21 @@ namespace ReMealApp.Views.Partner
         {
             e.Handled = true;
 
-            if (DataContext is not FoodPointViewModel viewModel ||
-                !viewModel.FindAddressOnMapCommand.CanExecute(null))
+            if (DataContext is not FoodPointViewModel viewModel)
             {
                 return;
             }
 
-            await viewModel.FindAddressOnMapCommand.ExecuteAsync(null);
+            var coordinates = await viewModel.PrepareMapPickerCoordinatesAsync();
 
-            if (viewModel is not
-                {
-                    HasSelectedCoordinates: true,
-                    Latitude: double latitude,
-                    Longitude: double longitude
-                })
+            if (coordinates is null)
             {
                 return;
             }
 
-            await ShowInlineMapPickerAsync(latitude, longitude);
+            await ShowInlineMapPickerAsync(
+                coordinates.Latitude,
+                coordinates.Longitude);
         }
 
         private async Task ShowInlineMapPickerAsync(double latitude, double longitude)

@@ -1,0 +1,99 @@
+<mxfile host="Electron">
+  <diagram name="Страница-1" id="UEBndkRQOZ71f4P_1A0j">
+    <mxGraphModel dx="1030" dy="722" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-6" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="300" y="105.5" as="sourcePoint" />
+            <mxPoint x="520" y="105.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-1" parent="1" style="html=1;whiteSpace=wrap;" value="Партнер" vertex="1">
+          <mxGeometry height="110" width="150" x="150" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-8" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="670" y="107.5" as="sourcePoint" />
+            <mxPoint x="900" y="107.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-24" edge="1" parent="1" source="h0tWiSdRbB0bQvYcXSo2-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="h0tWiSdRbB0bQvYcXSo2-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-25" connectable="0" parent="h0tWiSdRbB0bQvYcXSo2-24" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="9. Отобразить KPI карточки, графики&amp;nbsp;&lt;div&gt;и диаграммы&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.58" y="8" as="geometry">
+            <mxPoint x="68" y="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-2" parent="1" style="html=1;whiteSpace=wrap;" value="Экран анаитики" vertex="1">
+          <mxGeometry height="110" width="150" x="520" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-10" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="918.5" y="200" as="sourcePoint" />
+            <mxPoint x="918.5" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-22" edge="1" parent="1" source="h0tWiSdRbB0bQvYcXSo2-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="h0tWiSdRbB0bQvYcXSo2-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-3" parent="1" style="html=1;whiteSpace=wrap;" value="Модуль аналитики" vertex="1">
+          <mxGeometry height="110" width="150" x="900" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-12" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="900" y="425.5" as="sourcePoint" />
+            <mxPoint x="650" y="425.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-20" edge="1" parent="1" source="h0tWiSdRbB0bQvYcXSo2-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="h0tWiSdRbB0bQvYcXSo2-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-4" parent="1" style="html=1;whiteSpace=wrap;" value="Моудль доступа к данным&amp;nbsp;" vertex="1">
+          <mxGeometry height="110" width="150" x="900" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-18" edge="1" parent="1" source="h0tWiSdRbB0bQvYcXSo2-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="h0tWiSdRbB0bQvYcXSo2-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-5" parent="1" style="html=1;whiteSpace=wrap;" value="БД" vertex="1">
+          <mxGeometry height="110" width="150" x="500" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-7" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1. Открыть раздел &quot;Аналитика&quot; и выбрать период и точку питания" vertex="1">
+          <mxGeometry height="30" width="170" x="320" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-9" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="2. Запросить дашборд с выбранными параметрами" vertex="1">
+          <mxGeometry height="30" width="160" x="702" y="77" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-11" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="4. Получить данные для аналитики" vertex="1">
+          <mxGeometry height="30" width="120" x="800" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="5. Найти точки, лоты бронирования партнера" vertex="1">
+          <mxGeometry height="30" width="160" x="702" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-14" edge="1" parent="1" source="h0tWiSdRbB0bQvYcXSo2-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.549;entryY=-0.025;entryDx=0;entryDy=0;entryPerimeter=0;" target="h0tWiSdRbB0bQvYcXSo2-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1070" y="145" />
+              <mxPoint x="1070" y="60" />
+              <mxPoint x="982" y="60" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-16" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="3. Проверить пользователя и роль" vertex="1">
+          <mxGeometry height="30" width="120" x="980" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-19" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="6. Вернуть данные для аналитики" vertex="1">
+          <mxGeometry height="30" width="130" x="710" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-21" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="7. Передать данные для аналитики, рассчитать KPI и подготовить графики" vertex="1">
+          <mxGeometry height="30" width="100" x="1010" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="h0tWiSdRbB0bQvYcXSo2-23" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="8. Передать дашборд" vertex="1">
+          <mxGeometry height="30" width="110" x="727" y="180" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

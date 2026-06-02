@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace ReMealApp.Views.Shell
 {
-    public partial class ModulePlaceholderView : UserControl
+    public partial class AdminHomeView : UserControl
     {
-        public ModulePlaceholderView()
+        public AdminHomeView()
         {
             InitializeComponent();
         }

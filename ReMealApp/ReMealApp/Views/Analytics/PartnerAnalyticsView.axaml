@@ -122,33 +122,6 @@
             <Setter Property="Opacity" Value="0.7"/>
         </Style>
 
-        <Style Selector="Button.refresh-button">
-            <Setter Property="Height" Value="46"/>
-            <Setter Property="Padding" Value="18,0"/>
-            <Setter Property="CornerRadius" Value="8"/>
-            <Setter Property="Background" Value="#75C943"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Foreground" Value="#07100D"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FocusAdorner" Value="{x:Null}"/>
-        </Style>
-
-        <Style Selector="Button.refresh-button:pointerover">
-            <Setter Property="Background" Value="#82D84E"/>
-        </Style>
-
-        <Style Selector="Button.refresh-button:pressed">
-            <Setter Property="Background" Value="#64B83A"/>
-        </Style>
-
-        <Style Selector="Button.refresh-button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#82D84E"/>
-        </Style>
-
-        <Style Selector="Button.refresh-button:pressed /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#64B83A"/>
-        </Style>
-
         <Style Selector="Border.chart-line">
             <Setter Property="Height" Value="1"/>
             <Setter Property="Background" Value="#244038"/>
@@ -184,7 +157,7 @@
             Margin="0"
             Spacing="18">
 
-            <Grid ColumnDefinitions="*,Auto">
+            <Grid ColumnDefinitions="*">
 
                 <StackPanel Spacing="4">
 
@@ -197,34 +170,6 @@
                         Text="Статистика по вашим точкам питания и лотам"/>
 
                 </StackPanel>
-
-                <Button
-                    Grid.Column="1"
-                    Classes="refresh-button"
-                    Command="{Binding RefreshCommand}"
-                    VerticalAlignment="Top">
-
-                    <StackPanel
-                        Orientation="Horizontal"
-                        Spacing="8"
-                        VerticalAlignment="Center">
-
-                        <Path
-                            Width="16"
-                            Height="16"
-                            Data="M13,4 A6,6 0 1 0 14.5,9 M14.5,9 L14.5,5 M14.5,9 L10.5,9"
-                            Stroke="#07100D"
-                            StrokeThickness="2"
-                            StrokeLineCap="Round"
-                            Stretch="Uniform"/>
-
-                        <TextBlock
-                            Text="Обновить"
-                            VerticalAlignment="Center"/>
-
-                    </StackPanel>
-
-                </Button>
 
             </Grid>
 

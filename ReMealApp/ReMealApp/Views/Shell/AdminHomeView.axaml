@@ -1,0 +1,674 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ReMealApp.ViewModels.Shell"
+             xmlns:conv="using:ReMealApp.Converters"
+             x:Class="ReMealApp.Views.Shell.AdminHomeView"
+             x:DataType="vm:AdminHomeViewModel">
+
+    <UserControl.Resources>
+        <conv:ImagePathToBitmapConverter x:Key="ImagePathConverter"/>
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector="TextBlock.title">
+            <Setter Property="Foreground" Value="#F3F8F1"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style Selector="TextBlock.muted">
+            <Setter Property="Foreground" Value="#9EADA5"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <Style Selector="Border.panel">
+            <Setter Property="Background" Value="#101715"/>
+            <Setter Property="BorderBrush" Value="#25362F"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Padding" Value="16"/>
+        </Style>
+
+        <Style Selector="Border.soft-panel">
+            <Setter Property="Background" Value="#0D1513"/>
+            <Setter Property="BorderBrush" Value="#22322C"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="12"/>
+        </Style>
+
+        <Style Selector="Border.icon-tile">
+            <Setter Property="Width" Value="44"/>
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Background" Value="#182A21"/>
+            <Setter Property="BorderBrush" Value="#2D473A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="Button.card-button">
+            <Setter Property="MinHeight" Value="86"/>
+            <Setter Property="Padding" Value="14"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#101816"/>
+            <Setter Property="BorderBrush" Value="#273931"/>
+            <Setter Property="Foreground" Value="#ECF5EF"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
+        <Style Selector="Button.card-button:pointerover">
+            <Setter Property="Background" Value="#14221D"/>
+            <Setter Property="BorderBrush" Value="#416747"/>
+        </Style>
+
+        <Style Selector="Button.card-button:pressed">
+            <Setter Property="Background" Value="#182B22"/>
+        </Style>
+
+        <Style Selector="Button.link-button">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#80D85E"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
+        <Style Selector="Button.link-button:pointerover">
+            <Setter Property="Background" Value="#14221D"/>
+            <Setter Property="Foreground" Value="#9AEE78"/>
+        </Style>
+
+        <Style Selector="Border.table-row">
+            <Setter Property="Background" Value="#101816"/>
+            <Setter Property="BorderBrush" Value="#24342E"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="MinHeight" Value="42"/>
+        </Style>
+
+        <Style Selector="Border.table-row:pointerover">
+            <Setter Property="Background" Value="#14201C"/>
+        </Style>
+
+        <Style Selector="TextBlock.header-cell">
+            <Setter Property="Foreground" Value="#9FAAA5"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+
+        <Style Selector="TextBlock.cell">
+            <Setter Property="Foreground" Value="#EAF2EC"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+
+        <Style Selector="TextBlock.cell-muted">
+            <Setter Property="Foreground" Value="#AAB4AF"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+
+        <Style Selector="Border.status-badge">
+            <Setter Property="CornerRadius" Value="7"/>
+            <Setter Property="Padding" Value="7,3"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#26302C"/>
+            <Setter Property="BorderBrush" Value="#3B4641"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="Border.status-badge.active">
+            <Setter Property="Background" Value="#1D3B22"/>
+            <Setter Property="BorderBrush" Value="#3E7634"/>
+        </Style>
+
+        <Style Selector="Border.status-badge.inactive">
+            <Setter Property="Background" Value="#3A2221"/>
+            <Setter Property="BorderBrush" Value="#70413C"/>
+        </Style>
+
+        <Style Selector="Border.status-badge.warning">
+            <Setter Property="Background" Value="#3A2A13"/>
+            <Setter Property="BorderBrush" Value="#8A651F"/>
+        </Style>
+
+        <Style Selector="Border.status-badge.danger">
+            <Setter Property="Background" Value="#3A2221"/>
+            <Setter Property="BorderBrush" Value="#85443D"/>
+        </Style>
+
+        <Style Selector="Border.status-badge.neutral">
+            <Setter Property="Background" Value="#25302D"/>
+            <Setter Property="BorderBrush" Value="#46524E"/>
+        </Style>
+
+        <Style Selector="TextBlock.badge-text">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Hidden">
+        <StackPanel Spacing="14"
+                    MaxWidth="1540"
+                    HorizontalAlignment="Stretch">
+
+            <Border Classes="panel"
+                    Padding="26,24"
+                    ClipToBounds="True">
+                <Grid ColumnDefinitions="Auto,*"
+                      ColumnSpacing="24">
+                    <Border Width="72"
+                            Height="72"
+                            CornerRadius="18"
+                            BorderBrush="#31503D"
+                            BorderThickness="1"
+                            Background="#182A21">
+                        <Image Source="/Assets/Icons/security-admin.png"
+                               Width="42"
+                               Height="42"
+                               Stretch="Uniform"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                    </Border>
+
+                    <StackPanel Grid.Column="1"
+                                Spacing="12"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="Панель администратора"
+                                   Classes="title"
+                                   FontSize="26"/>
+
+                        <TextBlock Text="Управляйте пользователями, точками питания, лотами и бронированиями, контролируйте работу системы ReMeal."
+                                   Classes="muted"
+                                   FontSize="14"
+                                   LineHeight="21"
+                                   HorizontalAlignment="Left"
+                                   TextAlignment="Left"
+                                   MaxWidth="860"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <ItemsControl ItemsSource="{Binding NavigationCards}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="5"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:AdminHomeNavigationCardViewModel">
+                        <Button Classes="card-button"
+                                Margin="0,0,12,0"
+                                Command="{Binding $parent[UserControl].DataContext.OpenNavigationCardCommand}"
+                                CommandParameter="{Binding}">
+                            <Grid ColumnDefinitions="54,*,Auto"
+                                  ColumnSpacing="12">
+                                <Border Classes="icon-tile">
+                                    <Image Source="{Binding IconPath, Converter={StaticResource ImagePathConverter}}"
+                                           Width="25"
+                                           Height="25"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                                </Border>
+
+                                <StackPanel Grid.Column="1"
+                                            Spacing="5"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Title}"
+                                               Foreground="#F0F6EF"
+                                               FontSize="14"
+                                               FontWeight="SemiBold"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding Subtitle}"
+                                               Classes="muted"
+                                               TextTrimming="CharacterEllipsis"/>
+                                </StackPanel>
+
+                                <Path Grid.Column="2"
+                                      Width="12"
+                                      Height="12"
+                                      Data="M4,2 L9,7 L4,12"
+                                      Stroke="#7B8881"
+                                      StrokeThickness="2"
+                                      StrokeLineCap="Round"
+                                      Stretch="Uniform"
+                                      VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ItemsControl ItemsSource="{Binding KpiCards}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="5"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:AdminHomeKpiCardViewModel">
+                        <Border Classes="panel"
+                                Margin="0,0,12,0"
+                                MinHeight="104">
+                            <Grid ColumnDefinitions="48,*"
+                                  ColumnSpacing="12">
+                                <Border Classes="icon-tile"
+                                        Width="42"
+                                        Height="42">
+                                    <Image Source="{Binding IconPath, Converter={StaticResource ImagePathConverter}}"
+                                           Width="23"
+                                           Height="23"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                                </Border>
+
+                                <StackPanel Grid.Column="1"
+                                            Spacing="4"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Title}"
+                                               Classes="muted"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding Value}"
+                                               Foreground="#83DE5D"
+                                               FontSize="23"
+                                               FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding Subtitle}"
+                                               Classes="muted"
+                                               FontSize="11"
+                                               TextTrimming="CharacterEllipsis"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Grid ColumnDefinitions="1.05*,1.15*"
+                  ColumnSpacing="14">
+                <Border Classes="panel">
+                    <StackPanel Spacing="12">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock Text="Недавно зарегистрированные пользователи"
+                                       Classes="title"
+                                       FontSize="16"
+                                       VerticalAlignment="Center"/>
+                            <Button Grid.Column="1"
+                                    Classes="link-button"
+                                    Content="Смотреть все"
+                                    Command="{Binding OpenAdminCommand}"/>
+                        </Grid>
+
+                        <Border Classes="soft-panel"
+                                Padding="0"
+                                ClipToBounds="True"
+                                IsVisible="{Binding HasRecentUsers}">
+                            <StackPanel>
+                                <Border Height="34"
+                                        Padding="10,0"
+                                        Background="#111B19"
+                                        BorderBrush="#1D2A25"
+                                        BorderThickness="0,0,0,1">
+                                    <Grid ColumnDefinitions="1.2*,1.5*,1.05*,1.3*,0.95*"
+                                          ColumnSpacing="10">
+                                        <TextBlock Text="Логин" Classes="header-cell"/>
+                                        <TextBlock Grid.Column="1" Text="ФИО" Classes="header-cell"/>
+                                        <TextBlock Grid.Column="2" Text="Роль" Classes="header-cell"/>
+                                        <TextBlock Grid.Column="3" Text="Дата регистрации" Classes="header-cell"/>
+                                        <TextBlock Grid.Column="4" Text="Статус" Classes="header-cell"/>
+                                    </Grid>
+                                </Border>
+
+                                <ItemsControl ItemsSource="{Binding RecentUsers}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:AdminHomeUserItemViewModel">
+                                            <Border Classes="table-row">
+                                                <Grid ColumnDefinitions="1.2*,1.5*,1.05*,1.3*,0.95*"
+                                                      ColumnSpacing="10">
+                                                    <TextBlock Text="{Binding Login}" Classes="cell"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding FullName}" Classes="cell-muted"/>
+                                                    <TextBlock Grid.Column="2" Text="{Binding RoleText}" Classes="cell-muted"/>
+                                                    <TextBlock Grid.Column="3" Text="{Binding RegistrationDateText}" Classes="cell-muted"/>
+                                                    <Grid Grid.Column="4">
+                                                        <Border Classes="status-badge active"
+                                                                IsVisible="{Binding IsActive}">
+                                                            <TextBlock Text="{Binding StatusText}"
+                                                                       Classes="badge-text"
+                                                                       Foreground="#9FEA7E"/>
+                                                        </Border>
+                                                        <Border Classes="status-badge inactive"
+                                                                IsVisible="{Binding IsInactive}">
+                                                            <TextBlock Text="{Binding StatusText}"
+                                                                       Classes="badge-text"
+                                                                       Foreground="#F08A7A"/>
+                                                        </Border>
+                                                    </Grid>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Classes="soft-panel"
+                                Height="170"
+                                IsVisible="{Binding IsRecentUsersEmpty}">
+                            <StackPanel Spacing="7"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Пользователи не найдены"
+                                           Classes="title"
+                                           FontSize="16"
+                                           TextAlignment="Center"/>
+                                <TextBlock Text="Нет данных для отображения"
+                                           Classes="muted"
+                                           TextAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1"
+                        Classes="panel">
+                    <StackPanel Spacing="12">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock Text="Точки питания"
+                                       Classes="title"
+                                       FontSize="16"
+                                       VerticalAlignment="Center"/>
+                            <Button Grid.Column="1"
+                                    Classes="link-button"
+                                    Content="Смотреть все"
+                                    Command="{Binding OpenAdminCommand}"/>
+                        </Grid>
+
+                        <Border Classes="soft-panel"
+                                Padding="0"
+                                ClipToBounds="True"
+                                IsVisible="{Binding HasFoodPoints}">
+                            <StackPanel>
+                                <Border Height="34"
+                                        Padding="10,0"
+                                        Background="#111B19"
+                                        BorderBrush="#1D2A25"
+                                        BorderThickness="0,0,0,1">
+                                    <Grid ColumnDefinitions="1.45*,1.2*,1.55*,0.9*,0.6*"
+                                          ColumnSpacing="10">
+                                        <TextBlock Text="Название точки" Classes="header-cell"/>
+                                        <TextBlock Grid.Column="1" Text="Владелец" Classes="header-cell"/>
+                                        <TextBlock Grid.Column="2" Text="Адрес" Classes="header-cell"/>
+                                        <TextBlock Grid.Column="3" Text="Статус" Classes="header-cell"/>
+                                        <TextBlock Grid.Column="4" Text="Лотов" Classes="header-cell"/>
+                                    </Grid>
+                                </Border>
+
+                                <ItemsControl ItemsSource="{Binding FoodPoints}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:AdminHomeFoodPointItemViewModel">
+                                            <Border Classes="table-row">
+                                                <Grid ColumnDefinitions="1.45*,1.2*,1.55*,0.9*,0.6*"
+                                                      ColumnSpacing="10">
+                                                    <TextBlock Text="{Binding Name}" Classes="cell"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding OwnerText}" Classes="cell-muted"/>
+                                                    <TextBlock Grid.Column="2" Text="{Binding Address}" Classes="cell-muted"/>
+                                                    <Grid Grid.Column="3">
+                                                        <Border Classes="status-badge active"
+                                                                IsVisible="{Binding IsActive}">
+                                                            <TextBlock Text="{Binding StatusText}"
+                                                                       Classes="badge-text"
+                                                                       Foreground="#9FEA7E"/>
+                                                        </Border>
+                                                        <Border Classes="status-badge inactive"
+                                                                IsVisible="{Binding IsInactive}">
+                                                            <TextBlock Text="{Binding StatusText}"
+                                                                       Classes="badge-text"
+                                                                       Foreground="#F08A7A"/>
+                                                        </Border>
+                                                    </Grid>
+                                                    <TextBlock Grid.Column="4" Text="{Binding LotCountText}" Classes="cell-muted"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Classes="soft-panel"
+                                Height="170"
+                                IsVisible="{Binding IsFoodPointsEmpty}">
+                            <StackPanel Spacing="7"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Точки питания не найдены"
+                                           Classes="title"
+                                           FontSize="16"
+                                           TextAlignment="Center"/>
+                                <TextBlock Text="Нет данных для отображения"
+                                           Classes="muted"
+                                           TextAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Grid ColumnDefinitions="1.05*,1.15*"
+                  ColumnSpacing="14">
+                <Border Classes="panel">
+                    <StackPanel Spacing="12">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock Text="Контроль лотов"
+                                       Classes="title"
+                                       FontSize="16"
+                                       VerticalAlignment="Center"/>
+                            <Button Grid.Column="1"
+                                    Classes="link-button"
+                                    Content="Смотреть все"
+                                    Command="{Binding OpenAdminCommand}"/>
+                        </Grid>
+
+                        <Border Classes="soft-panel"
+                                Padding="0"
+                                ClipToBounds="True"
+                                IsVisible="{Binding HasProblemLots}">
+                            <StackPanel>
+                                <Border Height="34"
+                                        Padding="10,0"
+                                        Background="#111B19"
+                                        BorderBrush="#1D2A25"
+                                        BorderThickness="0,0,0,1">
+                                    <Grid ColumnDefinitions="1.35*,1.05*,1.55*,1.0*"
+                                          ColumnSpacing="10">
+                                        <TextBlock Text="Лот" Classes="header-cell"/>
+                                        <TextBlock Grid.Column="1" Text="Состояние" Classes="header-cell"/>
+                                        <TextBlock Grid.Column="2" Text="Причина" Classes="header-cell"/>
+                                        <TextBlock Grid.Column="3" Text="Остаток / Дата" Classes="header-cell"/>
+                                    </Grid>
+                                </Border>
+
+                                <ItemsControl ItemsSource="{Binding ProblemLots}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:AdminHomeLotWatchItemViewModel">
+                                            <Border Classes="table-row">
+                                                <Grid ColumnDefinitions="1.35*,1.05*,1.55*,1.0*"
+                                                      ColumnSpacing="10">
+                                                    <TextBlock Text="{Binding Title}" Classes="cell"/>
+                                                    <Grid Grid.Column="1">
+                                                        <Border Classes="status-badge warning"
+                                                                IsVisible="{Binding IsWarning}">
+                                                            <TextBlock Text="{Binding StateText}"
+                                                                       Classes="badge-text"
+                                                                       Foreground="#F3B955"/>
+                                                        </Border>
+                                                        <Border Classes="status-badge danger"
+                                                                IsVisible="{Binding IsDanger}">
+                                                            <TextBlock Text="{Binding StateText}"
+                                                                       Classes="badge-text"
+                                                                       Foreground="#F08A7A"/>
+                                                        </Border>
+                                                        <Border Classes="status-badge neutral"
+                                                                IsVisible="{Binding IsNeutral}">
+                                                            <TextBlock Text="{Binding StateText}"
+                                                                       Classes="badge-text"
+                                                                       Foreground="#C9D5CF"/>
+                                                        </Border>
+                                                        <Border Classes="status-badge active"
+                                                                IsVisible="{Binding IsSuccess}">
+                                                            <TextBlock Text="{Binding StateText}"
+                                                                       Classes="badge-text"
+                                                                       Foreground="#9FEA7E"/>
+                                                        </Border>
+                                                    </Grid>
+                                                    <TextBlock Grid.Column="2" Text="{Binding Reason}" Classes="cell-muted"/>
+                                                    <TextBlock Grid.Column="3" Text="{Binding BalanceOrDateText}" Classes="cell-muted"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Classes="soft-panel"
+                                Height="170"
+                                IsVisible="{Binding IsProblemLotsEmpty}">
+                            <StackPanel Spacing="7"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Проблемных лотов не найдено"
+                                           Classes="title"
+                                           FontSize="16"
+                                           TextAlignment="Center"/>
+                                <TextBlock Text="Активные лоты работают корректно."
+                                           Classes="muted"
+                                           TextAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1"
+                        Classes="panel">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="Состояние модулей системы"
+                                   Classes="title"
+                                   FontSize="16"/>
+
+                        <ItemsControl ItemsSource="{Binding ModuleStates}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="3"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:AdminHomeModuleStateViewModel">
+                                    <Border Classes="soft-panel"
+                                            Margin="0,0,10,10"
+                                            MinHeight="70">
+                                        <Grid ColumnDefinitions="32,*"
+                                              ColumnSpacing="10">
+                                            <Grid Width="24"
+                                                  Height="24"
+                                                  VerticalAlignment="Center">
+                                                <Ellipse Fill="#73D45A"
+                                                         IsVisible="{Binding IsAvailable}"/>
+                                                <Ellipse Fill="#58615D"
+                                                         IsVisible="{Binding IsUnavailable}"/>
+                                                <Path Width="12"
+                                                      Height="12"
+                                                      Data="M4,7 L6.4,9.5 L11,4.5"
+                                                      Stroke="#0E1715"
+                                                      StrokeThickness="2"
+                                                      StrokeLineCap="Round"
+                                                      Stretch="Uniform"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      IsVisible="{Binding IsAvailable}"/>
+                                                <Path Width="11"
+                                                      Height="11"
+                                                      Data="M4,4 L10,10 M10,4 L4,10"
+                                                      Stroke="#101715"
+                                                      StrokeThickness="2"
+                                                      StrokeLineCap="Round"
+                                                      Stretch="Uniform"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      IsVisible="{Binding IsUnavailable}"/>
+                                            </Grid>
+
+                                            <StackPanel Grid.Column="1"
+                                                        Spacing="4"
+                                                        VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Name}"
+                                                           Foreground="#EDF4EE"
+                                                           FontSize="13"
+                                                           FontWeight="SemiBold"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                                <Grid>
+                                                    <TextBlock Text="{Binding StatusText}"
+                                                               Foreground="#92E96E"
+                                                               FontSize="12"
+                                                               IsVisible="{Binding IsAvailable}"/>
+                                                    <TextBlock Text="{Binding StatusText}"
+                                                               Foreground="#AAB4AF"
+                                                               FontSize="12"
+                                                               IsVisible="{Binding IsUnavailable}"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Border Classes="soft-panel"
+                                Padding="12">
+                            <Grid ColumnDefinitions="Auto,*,Auto"
+                                  ColumnSpacing="10">
+                                <Path Width="18"
+                                      Height="18"
+                                      Data="M12,2 A10,10 0 1,0 12,22 A10,10 0 0,0 12,2 Z M12,8 V13 M12,17 H12.01"
+                                      Stroke="#75D45B"
+                                      StrokeThickness="2"
+                                      StrokeLineCap="Round"
+                                      Stretch="Uniform"
+                                      VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding ModulesSummary}"
+                                           Classes="muted"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2"
+                                           Text="{Binding LastCheckText}"
+                                           Classes="muted"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Border Classes="soft-panel"
+                    IsVisible="{Binding HasStatusMessage}">
+                <TextBlock Text="{Binding StatusMessage}"
+                           Foreground="#9FEA7E"
+                           FontWeight="SemiBold"
+                           TextWrapping="Wrap"/>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

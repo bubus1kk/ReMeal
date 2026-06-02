@@ -1,0 +1,138 @@
+<mxfile host="Electron">
+  <diagram name="Страница-1" id="0wBGLrMU-J6_S6Thz19g">
+    <mxGraphModel dx="1030" dy="722" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="RTwX_soSIBivEtqIOcVL-15" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="RTwX_soSIBivEtqIOcVL-5" value="Сохранить бронирование и изменения лота">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="980" y="520" as="sourcePoint" />
+            <mxPoint x="1060" y="520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-13" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" value="Уменьшить доступное количество лота">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="706" y="480" as="sourcePoint" />
+            <mxPoint x="975.5" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-8" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="RTwX_soSIBivEtqIOcVL-4" value="Получить данные выбранного лота">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="710" y="200" as="sourcePoint" />
+            <mxPoint x="790" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-7" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="RTwX_soSIBivEtqIOcVL-3" value="Передать запрос на бронирование">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="450" y="150" as="sourcePoint" />
+            <mxPoint x="530" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-1" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="Покупатель" vertex="1">
+          <mxGeometry height="1020" width="100" x="160" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-2" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="Экран каталога лотов" vertex="1">
+          <mxGeometry height="1020" width="100" x="400" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-21" parent="RTwX_soSIBivEtqIOcVL-2" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="780" width="10" x="45" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-3" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="Модуль бронирований" vertex="1">
+          <mxGeometry height="1020" width="100" x="660" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-22" parent="RTwX_soSIBivEtqIOcVL-3" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="660" width="10" x="45" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-4" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="Модуль доступа к данным" vertex="1">
+          <mxGeometry height="1020" width="100" x="930" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-23" parent="RTwX_soSIBivEtqIOcVL-4" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="45" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-25" parent="RTwX_soSIBivEtqIOcVL-4" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="50" width="10" x="45" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-26" parent="RTwX_soSIBivEtqIOcVL-4" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="290" width="10" x="45" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-5" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="БД" vertex="1">
+          <mxGeometry height="1020" width="100" x="1200" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-24" parent="RTwX_soSIBivEtqIOcVL-5" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="70" width="10" x="45" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-27" parent="RTwX_soSIBivEtqIOcVL-5" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="130" width="10" x="45" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-6" edge="1" parent="1" source="RTwX_soSIBivEtqIOcVL-1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="RTwX_soSIBivEtqIOcVL-2" value="Выбрать лот и нажать кнопку&amp;nbsp;&lt;div&gt;&quot;Забронировать&quot;&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="100" />
+            </Array>
+            <mxPoint x="210" y="80" as="sourcePoint" />
+            <mxPoint x="290" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-9" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="RTwX_soSIBivEtqIOcVL-5" value="Найти лот по ID">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="980" y="240" as="sourcePoint" />
+            <mxPoint x="1060" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-10" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="Данные лота">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1254" y="310" as="sourcePoint" />
+            <mxPoint x="983.5" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-11" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="Передать данные лота">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="984" y="360" as="sourcePoint" />
+            <mxPoint x="713.5" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-16" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="Подтверждение сохранения">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1255" y="650" as="sourcePoint" />
+            <mxPoint x="984.5" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-18" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="Результат сохранения">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="984" y="740" as="sourcePoint" />
+            <mxPoint x="713.5" y="740" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-19" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="Бронирование создано">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="715" y="810" as="sourcePoint" />
+            <mxPoint x="454.5" y="810" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-20" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" target="RTwX_soSIBivEtqIOcVL-1" value="Показать сообщение об&amp;nbsp;&lt;div&gt;успешном бронировании&lt;/div&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="450" y="880" as="sourcePoint" />
+            <mxPoint x="370" y="880" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-14" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" value="Создать бронирование">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="720" y="510" as="sourcePoint" />
+            <mxPoint x="979.5" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RTwX_soSIBivEtqIOcVL-28" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;" value="проверить срок, статус,&amp;nbsp;&lt;div&gt;количество и&amp;nbsp;&lt;/div&gt;&lt;div&gt;лимит бронирований&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" x="0.2484" y="-67" as="geometry">
+            <mxPoint x="134" y="1" as="offset" />
+            <Array as="points">
+              <mxPoint x="773" y="400" />
+              <mxPoint x="773" y="440" />
+            </Array>
+            <mxPoint x="712.5" y="400" as="sourcePoint" />
+            <mxPoint x="712.5" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

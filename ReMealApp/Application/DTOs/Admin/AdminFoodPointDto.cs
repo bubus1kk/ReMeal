@@ -14,6 +14,8 @@ namespace Application.DTOs.Admin
 
         public string OwnerLogin { get; init; } = string.Empty;
 
+        public int LotCount { get; init; }
+
         public bool IsActive { get; init; }
 
         public string StatusText => IsActive ? "Активна" : "Деактивирована";

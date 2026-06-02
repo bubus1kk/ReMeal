@@ -147,6 +147,7 @@ namespace Application.Services
                 OwnerLogin = string.IsNullOrWhiteSpace(foodPoint.Owner?.Login)
                     ? string.Empty
                     : foodPoint.Owner.Login,
+                LotCount = foodPoint.Lots.Count,
                 IsActive = foodPoint.IsActive
             };
         }

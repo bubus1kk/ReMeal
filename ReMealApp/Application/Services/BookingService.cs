@@ -166,15 +166,18 @@ public class BookingService : IBookingService
         return new BookingDto
         {
             Id = booking.Id,
+            FoodLotId = booking.FoodLotId,
             UserName = booking.User?.FullName ?? string.Empty,
             UserLogin = booking.User?.Login ?? string.Empty,
             UserEmail = booking.User?.Email ?? string.Empty,
             LotTitle = booking.FoodLot?.Title ?? string.Empty,
             FoodPointName = booking.FoodLot?.FoodPoint?.Name ?? string.Empty,
             FoodPointAddress = booking.FoodLot?.FoodPoint?.Address ?? string.Empty,
+            FoodLotImagePath = booking.FoodLot?.ImagePath ?? string.Empty,
             Quantity = booking.Quantity,
             PriceAtReservation = booking.PriceAtReservation,
             ReservedAt = booking.ReservedAt,
+            PickupDeadline = booking.FoodLot?.PickupDeadline ?? default,
             CancelledAt = booking.CancelledAt,
             IssuedAt = booking.IssuedAt,
             Status = booking.Status,

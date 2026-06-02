@@ -1,0 +1,431 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ReMealApp.ViewModels.Catalog"
+             xmlns:conv="using:ReMealApp.Converters"
+             x:Class="ReMealApp.Views.Catalog.CustomerLotDetailsView"
+             x:DataType="vm:CustomerLotDetailsViewModel">
+
+    <UserControl.Resources>
+        <conv:ImagePathToBitmapConverter x:Key="ImagePathConverter"/>
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector="Border.detail-card">
+            <Setter Property="Background" Value="#101614"/>
+            <Setter Property="BorderBrush" Value="#2A3934"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="24"/>
+        </Style>
+
+        <Style Selector="Border.divider">
+            <Setter Property="Height" Value="1"/>
+            <Setter Property="Background" Value="#283632"/>
+        </Style>
+
+        <Style Selector="TextBlock.title">
+            <Setter Property="Foreground" Value="#F3F7F2"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="LetterSpacing" Value="0"/>
+        </Style>
+
+        <Style Selector="TextBlock.body">
+            <Setter Property="Foreground" Value="#DDE6E0"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="LineHeight" Value="23"/>
+            <Setter Property="LetterSpacing" Value="0"/>
+        </Style>
+
+        <Style Selector="TextBlock.muted">
+            <Setter Property="Foreground" Value="#9CA9A3"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="LineHeight" Value="20"/>
+            <Setter Property="LetterSpacing" Value="0"/>
+        </Style>
+
+        <Style Selector="TextBlock.green">
+            <Setter Property="Foreground" Value="#69CB4B"/>
+        </Style>
+
+        <Style Selector="Button.back-button">
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#34443F"/>
+            <Setter Property="Background" Value="#111715"/>
+            <Setter Property="Foreground" Value="#EEF5F0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
+        <Style Selector="Button.back-button:pointerover">
+            <Setter Property="Background" Value="#18211E"/>
+            <Setter Property="BorderBrush" Value="#466052"/>
+        </Style>
+
+        <Style Selector="Button.primary-action">
+            <Setter Property="Height" Value="52"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#63CD4F"/>
+            <Setter Property="Foreground" Value="#06100C"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
+        <Style Selector="Button.primary-action:pointerover">
+            <Setter Property="Background" Value="#74DB5D"/>
+        </Style>
+
+        <Style Selector="Button.primary-action:disabled">
+            <Setter Property="Background" Value="#2B352F"/>
+            <Setter Property="Foreground" Value="#8D9B94"/>
+            <Setter Property="Opacity" Value="1"/>
+        </Style>
+
+        <Style Selector="Button.thumbnail-button">
+            <Setter Property="Width" Value="104"/>
+            <Setter Property="Height" Value="62"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="FocusAdorner" Value="{x:Null}"/>
+        </Style>
+
+        <Style Selector="Button.thumbnail-button:pointerover">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Auto">
+        <Grid RowDefinitions="Auto,*"
+              RowSpacing="14"
+              Width="1240"
+              MaxWidth="1240"
+              HorizontalAlignment="Center"
+              Margin="12,0,12,24">
+
+            <Grid Grid.Row="0"
+                  ColumnDefinitions="Auto">
+                <Button Classes="back-button"
+                        Command="{Binding BackCommand}">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="10"
+                                VerticalAlignment="Center">
+                        <Path Width="16"
+                              Height="16"
+                              Data="M11,3 L5,8 L11,13 M5,8 L15,8"
+                              Stroke="#EEF5F0"
+                              StrokeThickness="1.8"
+                              StrokeLineCap="Round"
+                              Stretch="Uniform"/>
+                        <TextBlock Text="Назад к каталогу"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+            <StackPanel Grid.Row="1"
+                        Spacing="16">
+                <Border Classes="detail-card"
+                        IsVisible="{Binding IsNotFound}">
+                    <StackPanel Spacing="12"
+                                HorizontalAlignment="Center"
+                                Margin="0,24">
+                        <TextBlock Text="Лот не найден"
+                                   Classes="title"
+                                   FontSize="24"
+                                   TextAlignment="Center"/>
+                        <TextBlock Text="Возможно, он был удалён или больше недоступен."
+                                   Classes="muted"
+                                   TextAlignment="Center"/>
+                        <Button Classes="back-button"
+                                Content="Вернуться в каталог"
+                                Command="{Binding BackCommand}"
+                                Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Grid ColumnDefinitions="1.18*,0.95*"
+                      ColumnSpacing="16"
+                      IsVisible="{Binding HasLot}">
+                    <Border Classes="detail-card"
+                            Padding="12">
+                        <Grid RowDefinitions="*,Auto"
+                              RowSpacing="10">
+                            <Border Grid.Row="0"
+                                    Height="315"
+                                    CornerRadius="8"
+                                    ClipToBounds="True"
+                                    Background="#171D1A">
+                                <Grid>
+                                    <Image Source="{Binding SelectedImagePath, Converter={StaticResource ImagePathConverter}}"
+                                           Stretch="UniformToFill"
+                                           IsVisible="{Binding HasImage}"/>
+
+                                    <StackPanel IsVisible="{Binding HasNoImage}"
+                                                Spacing="12"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center">
+                                        <Path Width="52"
+                                              Height="52"
+                                              Data="M5,20 C8,10 14,6 25,4 C26,17 20,25 8,28 C12,21 18,15 25,10 C17,12 10,16 5,20 Z"
+                                              Fill="#315B2D"
+                                              Stretch="Uniform"/>
+                                        <TextBlock Text="Фото не добавлено"
+                                                   Classes="muted"
+                                                   FontSize="15"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <ItemsControl Grid.Row="1"
+                                          ItemsSource="{Binding GalleryImages}"
+                                          IsVisible="{Binding HasGalleryThumbnails}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Spacing="8"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:CustomerLotGalleryImageViewModel">
+                                        <Button Classes="thumbnail-button"
+                                                Command="{Binding $parent[UserControl].DataContext.SelectImageCommand}"
+                                                CommandParameter="{Binding}">
+                                            <Border CornerRadius="8"
+                                                    ClipToBounds="True"
+                                                    BorderThickness="2"
+                                                    BorderBrush="{Binding BorderBrush}"
+                                                    Opacity="{Binding Opacity}">
+                                                <Image Source="{Binding ImagePath, Converter={StaticResource ImagePathConverter}}"
+                                                       Stretch="UniformToFill"/>
+                                            </Border>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Column="1"
+                            Classes="detail-card">
+                        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*"
+                              RowSpacing="18">
+                            <TextBlock Grid.Row="0"
+                                       Text="{Binding Title}"
+                                       Classes="title"
+                                       FontSize="24"
+                                       TextWrapping="Wrap"
+                                       MaxLines="2"/>
+
+                            <Grid Grid.Row="1"
+                                  RowDefinitions="Auto,Auto"
+                                  RowSpacing="12">
+                                <Grid ColumnDefinitions="24,*"
+                                      ColumnSpacing="12">
+                                    <Path Width="18"
+                                          Height="18"
+                                          Data="M10,18 C10,18 4,12 4,8 C4,4.7 6.7,2 10,2 C13.3,2 16,4.7 16,8 C16,12 10,18 10,18 Z M10,10.5 C11.4,10.5 12.5,9.4 12.5,8 C12.5,6.6 11.4,5.5 10,5.5 C8.6,5.5 7.5,6.6 7.5,8 C7.5,9.4 8.6,10.5 10,10.5 Z"
+                                          Stroke="#69CB4B"
+                                          StrokeThickness="1.5"
+                                          StrokeLineCap="Round"
+                                          Stretch="Uniform"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding FoodPointName}"
+                                               Classes="body"
+                                               FontSize="16"
+                                               TextWrapping="Wrap"/>
+                                </Grid>
+
+                                <Grid Grid.Row="1"
+                                      ColumnDefinitions="*,24,*"
+                                      ColumnSpacing="12">
+                                    <TextBlock Text="{Binding FoodPointAddress}"
+                                               Classes="body"
+                                               TextWrapping="Wrap"
+                                               MaxLines="2"/>
+
+                                    <Path Grid.Column="1"
+                                          Width="18"
+                                          Height="18"
+                                          Data="M10,2 C5.6,2 2,5.6 2,10 C2,14.4 5.6,18 10,18 C14.4,18 18,14.4 18,10 C18,5.6 14.4,2 10,2 Z M10,5 L10,10 L13,12"
+                                          Stroke="#EEF5F0"
+                                          StrokeThickness="1.5"
+                                          StrokeLineCap="Round"
+                                          Stretch="Uniform"/>
+                                    <StackPanel Grid.Column="2"
+                                                Spacing="2">
+                                        <TextBlock Text="{Binding PickupDeadlineText}"
+                                                   Classes="body"
+                                                   MaxLines="2"/>
+                                        <TextBlock Text="Время получения"
+                                                   Classes="muted"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+
+                            <Border Grid.Row="2"
+                                    Classes="divider"/>
+
+                            <Grid Grid.Row="3"
+                                  ColumnDefinitions="0.9*,1.2*"
+                                  ColumnSpacing="28">
+                                <TextBlock Text="{Binding PriceText}"
+                                           Foreground="#69CB4B"
+                                           FontSize="31"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center"/>
+
+                                <Grid Grid.Column="1"
+                                      ColumnDefinitions="28,*"
+                                      ColumnSpacing="12">
+                                    <Path Width="22"
+                                          Height="22"
+                                          Data="M4,6 L16,6 L16,17 L4,17 Z M7,6 L7,3 L13,3 L13,6 M7,10 L13,10 M7,13 L12,13"
+                                          Stroke="#BFCAC4"
+                                          StrokeThickness="1.5"
+                                          StrokeLineCap="Round"
+                                          Stretch="Uniform"
+                                          VerticalAlignment="Center"/>
+                                    <StackPanel Grid.Column="1"
+                                                Spacing="2">
+                                        <TextBlock Text="{Binding AvailableQuantityText}"
+                                                   Classes="body"
+                                                   FontSize="17"
+                                                   FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+
+                            <Border Grid.Row="4"
+                                    Classes="divider"/>
+
+                            <Button Grid.Row="5"
+                                    Classes="primary-action"
+                                    Command="{Binding BookCommand}"
+                                    Content="{Binding BookButtonText}"
+                                    IsEnabled="{Binding CanBook}"
+                                    HorizontalAlignment="Stretch"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*"
+                      ColumnSpacing="16"
+                      IsVisible="{Binding HasLot}">
+                    <Border Classes="detail-card"
+                            Height="178"
+                            ClipToBounds="True">
+                        <Grid RowDefinitions="Auto,*"
+                              RowSpacing="14">
+                            <Grid ColumnDefinitions="28,*"
+                                  ColumnSpacing="12">
+                                <Image Width="22"
+                                       Height="22"
+                                       Source="/Assets/Icons/Lots/Tinted/composition-green.png"/>
+                                <TextBlock Grid.Column="1"
+                                           Text="Состав набора"
+                                           Classes="title"
+                                           FontSize="21"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <ScrollViewer Grid.Row="1"
+                                          VerticalScrollBarVisibility="Hidden"
+                                          HorizontalScrollBarVisibility="Disabled">
+                                <StackPanel Spacing="8">
+                                    <ItemsControl ItemsSource="{Binding Components}"
+                                                  IsVisible="{Binding HasComponents}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:CustomerLotComponentItemViewModel">
+                                                <Grid ColumnDefinitions="1.15*,0.45*,1.2*"
+                                                      ColumnSpacing="14"
+                                                      Margin="0,0,0,10">
+                                                    <TextBlock Text="{Binding Name}"
+                                                               Classes="body"
+                                                               TextWrapping="Wrap"/>
+                                                    <TextBlock Grid.Column="1"
+                                                               Text="{Binding QuantityText}"
+                                                               Classes="green"
+                                                               FontSize="15"
+                                                               FontWeight="SemiBold"
+                                                               TextWrapping="Wrap"/>
+                                                    <TextBlock Grid.Column="2"
+                                                               Text="{Binding CompositionText}"
+                                                               Classes="muted"
+                                                               TextWrapping="Wrap"
+                                                               IsVisible="{Binding HasComposition}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <TextBlock Text="{Binding CompositionTextOnly}"
+                                               Classes="body"
+                                               TextWrapping="Wrap"
+                                               IsVisible="{Binding HasCompositionTextOnly}"/>
+
+                                    <TextBlock Text="Состав набора не указан"
+                                               Classes="muted"
+                                               FontSize="15"
+                                               IsVisible="{Binding IsCompositionEmpty}"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Column="1"
+                            Classes="detail-card"
+                            Height="178"
+                            ClipToBounds="True">
+                        <Grid RowDefinitions="Auto,*"
+                              RowSpacing="14">
+                            <Grid ColumnDefinitions="28,*"
+                                  ColumnSpacing="12">
+                                <Path Width="21"
+                                      Height="21"
+                                      Data="M5,3 L14,3 L18,7 L18,17 L5,17 Z M14,3 L14,7 L18,7 M8,10 L15,10 M8,13 L15,13"
+                                      Stroke="#69CB4B"
+                                      StrokeThickness="1.5"
+                                      StrokeLineCap="Round"
+                                      Stretch="Uniform"/>
+                                <TextBlock Grid.Column="1"
+                                           Text="Описание"
+                                           Classes="title"
+                                           FontSize="21"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <ScrollViewer Grid.Row="1"
+                                          VerticalScrollBarVisibility="Hidden"
+                                          HorizontalScrollBarVisibility="Disabled">
+                                <TextBlock Text="{Binding Description}"
+                                           Classes="body"
+                                           TextWrapping="Wrap"/>
+                            </ScrollViewer>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <Border Classes="detail-card"
+                        Padding="16"
+                        IsVisible="{Binding HasStatusMessage}">
+                    <TextBlock Text="{Binding StatusMessage}"
+                               Foreground="#9FEA7E"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap"/>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

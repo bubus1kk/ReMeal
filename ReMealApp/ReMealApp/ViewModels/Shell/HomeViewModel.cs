@@ -32,6 +32,7 @@ namespace ReMealApp.ViewModels.Shell
         private readonly IAuthService _authService;
         private readonly Action<string> _showLogin;
         private readonly Action _exitApplication;
+        private readonly ILotService _lotService;
         private readonly IBookingService _bookingService;
         private readonly IAdminService _adminService;
         private readonly IPartnerAnalyticsService _partnerAnalyticsService;
@@ -191,6 +192,7 @@ namespace ReMealApp.ViewModels.Shell
             _showLogin = showLogin;
             _exitApplication = exitApplication;
 
+            _lotService = lotService;
             _bookingService = bookingService;
             _adminService = adminService;
             _partnerAnalyticsService = partnerAnalyticsService;
@@ -200,15 +202,46 @@ namespace ReMealApp.ViewModels.Shell
                 authService,
                 profileStatisticsService,
                 NavigateToSection,
-                showLogin);
+                showLogin,
+                bookingService);
 
-            Catalog = new CatalogViewModel(lotService, bookingService);
+            Catalog = new CatalogViewModel(
+                lotService,
+                bookingService,
+                OpenCustomerLotDetailsAsync);
+            CustomerHome = new CustomerHomeViewModel(
+                authService,
+                lotService,
+                bookingService,
+                NavigateToSection,
+                OpenCustomerLotDetailsAsync);
+            PartnerHome = new PartnerHomeViewModel(
+                authService,
+                foodPointService,
+                lotService,
+                bookingService,
+                NavigateToSection,
+                () =>
+                {
+                    OpenCreateLot();
+                    return Task.CompletedTask;
+                },
+                OpenCreateFoodPointAsync,
+                OpenPartnerLotDetailsAsync,
+                OpenFoodPointDetailsAsync);
+            AdminHome = new AdminHomeViewModel(
+                authService,
+                adminService,
+                NavigateToSection);
             Map = new MapViewModel(mapService, OpenCatalogForFoodPoint);
             FoodPoint = new FoodPointViewModel(foodPointService, lotService, geocodingService, this);
             PartnerLots = new PartnerLotsViewModel(lotService, foodPointService, this);
             PartnerBookings = new PartnerBookingsViewModel(bookingService);
             CreateLot = new CreateLotViewModel(foodPointService, lotService, this);
-            MyBookings = new MyBookingsViewModel(bookingService);
+            MyBookings = new MyBookingsViewModel(
+                bookingService,
+                OpenCustomerLotDetailsAsync,
+                () => NavigateToSectionAsync(CatalogSection));
             AdminPanel = new AdminPanelViewModel(adminService);
 
             Analytics = new PartnerAnalyticsViewModel(
@@ -221,6 +254,12 @@ namespace ReMealApp.ViewModels.Shell
         public UserProfileViewModel Profile { get; }
 
         public CatalogViewModel Catalog { get; }
+
+        public CustomerHomeViewModel CustomerHome { get; }
+
+        public PartnerHomeViewModel PartnerHome { get; }
+
+        public AdminHomeViewModel AdminHome { get; }
 
         public MapViewModel Map { get; }
 
@@ -312,12 +351,10 @@ namespace ReMealApp.ViewModels.Shell
                 {
                     await Catalog.LoadAllAsync();
                 }
-                else if (IsAdmin)
-                {
-                    await AdminPanel.InitializeAsync();
-                }
-
-                await NavigateToSectionAsync(ProfileSection);
+                await NavigateToSectionAsync(
+                    role is UserRole.StudentCustomer or UserRole.FoodPointRepresentative or UserRole.Administrator
+                        ? HomeSection
+                        : ProfileSection);
             }
             catch (Exception ex)
             {
@@ -348,8 +385,7 @@ namespace ReMealApp.ViewModels.Shell
             NavigateToSectionAsync(PartnerBookingsSection);
 
         [RelayCommand]
-        private Task ShowFavoritesAsync() =>
-            NavigateToSectionAsync(FavoritesSection);
+        private Task ShowFavoritesAsync() => Task.CompletedTask;
 
         [RelayCommand]
         private Task ShowFoodPointsAsync() =>
@@ -368,8 +404,7 @@ namespace ReMealApp.ViewModels.Shell
             NavigateToSectionAsync(ProfileSection);
 
         [RelayCommand]
-        private Task ShowSettingsAsync() =>
-            NavigateToSectionAsync(SettingsSection);
+        private Task ShowSettingsAsync() => Task.CompletedTask;
 
         [RelayCommand]
         private void ToggleSidebar()
@@ -401,6 +436,7 @@ namespace ReMealApp.ViewModels.Shell
             await FoodPoint.LoadAsync();
             await PartnerLots.LoadAsync();
             await CreateLot.RefreshAsync();
+            await PartnerHome.LoadAsync();
             await Profile.LoadStatisticsAsync();
         }
 
@@ -439,6 +475,74 @@ namespace ReMealApp.ViewModels.Shell
             return NavigateToSectionAsync(PartnerLotsSection);
         }
 
+        public async Task OpenCreateFoodPointAsync()
+        {
+            try
+            {
+                await FoodPoint.LoadAsync();
+                FoodPoint.NewFoodPointCommand.Execute(null);
+                SetSection(FoodPointsSection, FoodPoint);
+            }
+            catch (Exception ex)
+            {
+                Profile.StatusMessage =
+                    ExceptionMessageFormatter.ToUserMessage(ex);
+            }
+        }
+
+        public async Task OpenPartnerLotDetailsAsync(Guid lotId)
+        {
+            try
+            {
+                await PartnerLots.LoadAsync();
+                await PartnerLots.OpenDetailsByIdAsync(lotId);
+                SetSection(PartnerLotsSection, PartnerLots);
+            }
+            catch (Exception ex)
+            {
+                Profile.StatusMessage =
+                    ExceptionMessageFormatter.ToUserMessage(ex);
+            }
+        }
+
+        public async Task OpenFoodPointDetailsAsync(Guid foodPointId)
+        {
+            try
+            {
+                await FoodPoint.OpenDetailsByIdAsync(foodPointId);
+                SetSection(FoodPointsSection, FoodPoint);
+            }
+            catch (Exception ex)
+            {
+                Profile.StatusMessage =
+                    ExceptionMessageFormatter.ToUserMessage(ex);
+            }
+        }
+
+        private async Task OpenCustomerLotDetailsAsync(Guid lotId)
+        {
+            try
+            {
+                var details = new CustomerLotDetailsViewModel(
+                    lotId,
+                    _lotService,
+                    _bookingService,
+                    async () =>
+                    {
+                        await Catalog.LoadAsync();
+                        SetSection(CatalogSection, Catalog);
+                    });
+
+                await details.LoadAsync();
+                SetSection(CatalogSection, details);
+            }
+            catch (Exception ex)
+            {
+                CustomerHome.StatusMessage =
+                    ExceptionMessageFormatter.ToUserMessage(ex);
+            }
+        }
+
         private async void OpenCatalogForFoodPoint(Guid foodPointId)
         {
             try
@@ -465,12 +569,26 @@ namespace ReMealApp.ViewModels.Shell
                 {
                     case HomeSection:
 
-                        SetSection(
-                            HomeSection,
-                            new ModulePlaceholderViewModel(
-                                "Главная",
-                                "Основной экран будет развиваться отдельно.",
-                                "/Assets/Icons/home.png"));
+                        if (IsCatalogVisible)
+                        {
+                            await CustomerHome.LoadAsync();
+                            SetSection(HomeSection, CustomerHome);
+                        }
+                        else if (IsPartner)
+                        {
+                            await PartnerHome.LoadAsync();
+                            SetSection(HomeSection, PartnerHome);
+                        }
+                        else if (IsAdmin)
+                        {
+                            await AdminHome.LoadAsync();
+                            SetSection(HomeSection, AdminHome);
+                        }
+                        else
+                        {
+                            await Profile.LoadAsync();
+                            SetSection(ProfileSection, Profile);
+                        }
 
                         break;
 
@@ -498,14 +616,6 @@ namespace ReMealApp.ViewModels.Shell
                         break;
 
                     case FavoritesSection:
-
-                        SetSection(
-                            FavoritesSection,
-                            new ModulePlaceholderViewModel(
-                                "Избранное",
-                                "Раздел избранного пока в разработке.",
-                                "/Assets/Icons/favorites.png"));
-
                         break;
 
                     case PartnerBookingsSection:
@@ -570,14 +680,6 @@ namespace ReMealApp.ViewModels.Shell
                         break;
 
                     case SettingsSection:
-
-                        SetSection(
-                            SettingsSection,
-                            new ModulePlaceholderViewModel(
-                                "Настройки",
-                                "Раздел настроек пока в разработке.",
-                                "/Assets/Icons/settings.png"));
-
                         break;
 
                     default:

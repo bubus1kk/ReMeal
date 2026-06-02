@@ -1,0 +1,224 @@
+<mxfile host="Electron">
+  <diagram name="Страница-1" id="INf_OyYgsUU6yvKr4MNi">
+    <mxGraphModel dx="1717" dy="1203" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-1" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="Клиент" vertex="1">
+          <mxGeometry height="1200" width="100" x="20" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-2" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="Экран каталога" vertex="1">
+          <mxGeometry height="1200" width="100" x="290" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-37" parent="DdMnC2I0SceHq-PYPLAJ-2" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="70" width="10" x="45" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-54" parent="DdMnC2I0SceHq-PYPLAJ-2" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="60" width="10" x="45" y="1090" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-4" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="Модуль каталога наборов" vertex="1">
+          <mxGeometry height="1200" width="110" x="550" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-44" parent="DdMnC2I0SceHq-PYPLAJ-4" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="50" width="10" x="50" y="860" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-53" parent="DdMnC2I0SceHq-PYPLAJ-4" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="70" width="10" x="50" y="1020" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-5" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="Модуль доступа к данным" vertex="1">
+          <mxGeometry height="1200" width="100" x="830" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-46" parent="DdMnC2I0SceHq-PYPLAJ-5" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="110" width="10" x="45" y="910" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-6" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="БД" vertex="1">
+          <mxGeometry height="1200" width="100" x="1100" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-7" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" value="Открыть каталог">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="69.5" y="100" as="sourcePoint" />
+            <mxPoint x="339.5" y="100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="60" width="10" x="335" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-9" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-4" value="Запросить доступные лоты">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="335" y="160" as="sourcePoint" />
+            <mxPoint x="595" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="60" width="10" x="600" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-11" edge="1" parent="1" source="DdMnC2I0SceHq-PYPLAJ-10" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;exitX=1;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" target="DdMnC2I0SceHq-PYPLAJ-5" value="Получить доступные лоты">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="610" y="230" as="sourcePoint" />
+            <mxPoint x="690" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="90" width="10" x="875" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-13" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-6" value="Выбрать доступные лоты">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="885" y="230" as="sourcePoint" />
+            <mxPoint x="1144.5" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-14" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-5" value="Список лотов">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1155" y="280" as="sourcePoint" />
+            <mxPoint x="1075" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-15" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="50" width="10" x="1145" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-16" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="600" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-17" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;entryX=1;entryY=0;entryDx=0;entryDy=0;" target="DdMnC2I0SceHq-PYPLAJ-16" value="Список доступных лотов">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="880" y="310" as="sourcePoint" />
+            <mxPoint x="800" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-18" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-2" value="Передать список лотов">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="610" y="350" as="sourcePoint" />
+            <mxPoint x="530" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-19" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-1" value="Показать каталог">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="260" y="392" />
+              <mxPoint x="160" y="392" />
+            </Array>
+            <mxPoint x="340" y="392" as="sourcePoint" />
+            <mxPoint x="69.5" y="372" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-20" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="335" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-21" edge="1" parent="1" source="DdMnC2I0SceHq-PYPLAJ-1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-2" value="Ввести поисковой запрос и/или применить&amp;nbsp;&lt;div&gt;фильтры&lt;/div&gt;">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <Array as="points">
+              <mxPoint x="280" y="460" />
+            </Array>
+            <mxPoint x="70" y="440" as="sourcePoint" />
+            <mxPoint x="150" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-22" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="50" width="10" x="335" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-25" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-4" value="Передать критерии поиска">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="340" y="510" as="sourcePoint" />
+            <mxPoint x="420" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-26" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="600" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-27" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-5" value="Найти лоты по критериям поиска">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="600" y="550" as="sourcePoint" />
+            <mxPoint x="680" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-29" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="110" width="10" x="875" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-30" edge="1" parent="1" source="DdMnC2I0SceHq-PYPLAJ-29" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;exitX=0.5;exitY=0.091;exitDx=0;exitDy=0;exitPerimeter=0;" target="DdMnC2I0SceHq-PYPLAJ-6" value="Поиск лотов">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="890" y="560" as="sourcePoint" />
+            <mxPoint x="970" y="560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-31" edge="1" parent="1" source="DdMnC2I0SceHq-PYPLAJ-6" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="Список подходящих лотов">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1145" y="650" as="sourcePoint" />
+            <mxPoint x="885" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-32" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-4" value="Результаты поиска">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="880" y="660" as="sourcePoint" />
+            <mxPoint x="800" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-33" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-2" value="Передать результаты поиска">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="600" y="710" as="sourcePoint" />
+            <mxPoint x="520" y="710" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-34" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="50" width="10" x="335" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-35" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-1" value="Показать найденные лоты">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340" y="760" as="sourcePoint" />
+            <mxPoint x="260" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-36" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-2" value="Выбрать лот">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="70" y="810" as="sourcePoint" />
+            <mxPoint x="150" y="810" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-43" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-4" value="Запросить информацию о лоте">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="340" y="880" as="sourcePoint" />
+            <mxPoint x="420" y="880" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-45" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-5" value="Получить данные лота">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="600" y="930" as="sourcePoint" />
+            <mxPoint x="680" y="930" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-49" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" value="Выбрать лот">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="885" y="950" as="sourcePoint" />
+            <mxPoint x="1149.5" y="950" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-50" edge="1" parent="1" source="DdMnC2I0SceHq-PYPLAJ-6" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="Данные выбранного лота">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1145" y="1030" as="sourcePoint" />
+            <mxPoint x="885" y="1030" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-51" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-4" value="Информация о лоте">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="880" y="1040" as="sourcePoint" />
+            <mxPoint x="800" y="1040" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-52" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="Передать информацию о лоте">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="600" y="1110" as="sourcePoint" />
+            <mxPoint x="345" y="1110" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DdMnC2I0SceHq-PYPLAJ-55" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" target="DdMnC2I0SceHq-PYPLAJ-1" value="Показать карточку лота">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340" y="1170" as="sourcePoint" />
+            <mxPoint x="260" y="1170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nl9j-9jzOlJcyzS06_P4-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Процесс поиска и просмотра лота в каталоге" vertex="1">
+          <mxGeometry height="30" width="60" x="1250" y="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

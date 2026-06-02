@@ -43,7 +43,7 @@
                 BorderBrush="#26352F"
                 BorderThickness="0,0,0,1"
                 Padding="20,16">
-            <Grid ColumnDefinitions="*,Auto"
+            <Grid ColumnDefinitions="*"
                   ColumnSpacing="16">
                 <StackPanel Spacing="4">
                     <TextBlock Text="Положение точки питания"
@@ -51,11 +51,6 @@
                     <TextBlock x:Name="CoordinatesText"
                                Classes="muted"/>
                 </StackPanel>
-
-                <TextBlock Grid.Column="1"
-                           Text="© OpenStreetMap contributors"
-                           Classes="muted"
-                           VerticalAlignment="Top"/>
             </Grid>
         </Border>
 
@@ -95,10 +90,6 @@
                 Padding="20,14">
             <Grid ColumnDefinitions="*,Auto,Auto"
                   ColumnSpacing="12">
-                <TextBlock Grid.Column="0"
-                           Text="Клик по карте уточняет координаты и адрес."
-                           Classes="muted"
-                           VerticalAlignment="Center"/>
                 <Button Grid.Column="1"
                         Classes="secondary-action"
                         MinWidth="132"

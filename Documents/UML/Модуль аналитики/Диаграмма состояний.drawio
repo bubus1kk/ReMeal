@@ -1,0 +1,110 @@
+<mxfile host="Electron">
+  <diagram name="Страница-1" id="1LT1k1HPebuTVd3wiWNh">
+    <mxGraphModel dx="1030" dy="722" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lGKaDPCT84AR0_26kevN-1" parent="1" style="ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#ff0000;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="460" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-2" edge="1" parent="1" source="lGKaDPCT84AR0_26kevN-1" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-3" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="ЖЦ аналитического дашборда" vertex="1">
+          <mxGeometry height="30" width="60" x="660" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-4" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Проверяется доступ" vertex="1">
+          <mxGeometry height="90" width="160" x="395" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-5" parent="lGKaDPCT84AR0_26kevN-4" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/ получить текущего пользователя и&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237));&quot;&gt;проверить роль пользователя&lt;/span&gt;" vertex="1">
+          <mxGeometry height="60" width="160" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-6" edge="1" parent="1" source="lGKaDPCT84AR0_26kevN-4" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-7" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Загружаются точки питания" vertex="1">
+          <mxGeometry height="90" width="197.5" x="376.25" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-8" parent="lGKaDPCT84AR0_26kevN-7" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/ загрузить точки питания партнера&lt;div&gt;do/ ожидать результат загрузки&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="197.5" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-9" edge="1" parent="1" source="lGKaDPCT84AR0_26kevN-7" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-10" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Пользователь - партнер" vertex="1">
+          <mxGeometry height="30" width="160" x="470" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-11" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Настраиваются параметры" vertex="1">
+          <mxGeometry height="100" width="195" x="378.75" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-12" parent="lGKaDPCT84AR0_26kevN-11" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/ показать фильтры периода и точки питания&lt;div&gt;do/ ожидать выбор периода и точки питания&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="195" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-14" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Точки питания загружены" vertex="1">
+          <mxGeometry height="30" width="110" x="480" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-16" edge="1" parent="1" source="lGKaDPCT84AR0_26kevN-12" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="540" y="570" as="sourcePoint" />
+            <mxPoint x="476" y="560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-17" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Загружаются данные аналитики" vertex="1">
+          <mxGeometry height="90" width="214" x="369.25" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-18" parent="lGKaDPCT84AR0_26kevN-17" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/&amp;nbsp; получить бронирования по точкам партнера и применить фильтры периода и точки питания" vertex="1">
+          <mxGeometry height="60" width="214" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-19" edge="1" parent="1" source="lGKaDPCT84AR0_26kevN-17" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="476" y="710" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-20" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Параметры выбраны" vertex="1">
+          <mxGeometry height="30" width="120" x="480" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-21" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Формуруется дашборд" vertex="1">
+          <mxGeometry height="80" width="160" x="395" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-22" parent="lGKaDPCT84AR0_26kevN-21" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/ рассчитать KPI&lt;div&gt;do/ подготовить графики и диаграммы&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-23" edge="1" parent="1" source="lGKaDPCT84AR0_26kevN-21" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="lGKaDPCT84AR0_26kevN-28" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="830" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-24" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Данные получены" vertex="1">
+          <mxGeometry height="30" width="120" x="475" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-27" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Данные для отображения подготовлены" vertex="1">
+          <mxGeometry height="30" width="199" x="475" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-28" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Дашборд отоброжается" vertex="1">
+          <mxGeometry height="120" width="245" x="352" y="850" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-29" parent="lGKaDPCT84AR0_26kevN-28" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/ отобразить KPI карточки&lt;div&gt;do/ показывать графики и диаграммы&lt;/div&gt;&lt;div&gt;exit/ очистить временные данные отображения&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="245" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-35" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="474" y="970" as="sourcePoint" />
+            <mxPoint x="474" y="1030" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-36" parent="1" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#ff0000;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="460" y="1030" as="geometry" />
+        </mxCell>
+        <mxCell id="lGKaDPCT84AR0_26kevN-37" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Раздел закрыт" vertex="1">
+          <mxGeometry height="30" width="100" x="480" y="980" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
