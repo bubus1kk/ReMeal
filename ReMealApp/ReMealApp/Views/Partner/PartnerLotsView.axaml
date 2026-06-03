@@ -182,8 +182,8 @@
             <Setter Property="BorderBrush" Value="#26352F"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="12"/>
-            <Setter Property="Padding" Value="22"/>
-            <Setter Property="MinHeight" Value="138"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="MinHeight" Value="104"/>
         </Style>
 
         <Style Selector="Border.catalog-shell">
@@ -273,8 +273,7 @@
                 IsVisible="{Binding IsListMode}">
             <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="16">
                 <Grid Grid.Row="0"
-                      RowDefinitions="Auto,Auto"
-                      RowSpacing="12">
+                      RowDefinitions="Auto">
                     <Grid Grid.Row="0"
                           ColumnDefinitions="*,96,150,190,168"
                           ColumnSpacing="12">
@@ -346,62 +345,6 @@
                             </StackPanel>
                         </Button>
                     </Grid>
-
-                    <StackPanel Grid.Row="1"
-                                Orientation="Horizontal"
-                                Spacing="12">
-                        <Button Classes="secondary-action"
-                                Width="180"
-                                Command="{Binding EditSelectedCommand}">
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="9"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center">
-                                <Image Source="/Assets/Icons/Lots/Tinted/edit-muted.png"
-                                       Width="20"
-                                       Height="20"
-                                       VerticalAlignment="Center"/>
-                                <TextBlock Text="Редактировать"
-                                           FontSize="14"
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Classes="secondary-action"
-                                Width="170"
-                                Command="{Binding DuplicateSelectedCommand}"
-                                ToolTip.Tip="Логика дублирования пока не реализована">
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="9"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center">
-                                <Image Source="/Assets/Icons/Lots/Tinted/duplicate-green.png"
-                                       Width="19"
-                                       Height="19"
-                                       VerticalAlignment="Center"/>
-                                <TextBlock Text="Дублировать"
-                                           FontSize="14"
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Classes="danger-action"
-                                Width="220"
-                                Command="{Binding CancelSelectedCommand}">
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="9"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center">
-                                <Image Source="/Assets/Icons/Lots/Tinted/hide-danger.png"
-                                       Width="19"
-                                       Height="19"
-                                       VerticalAlignment="Center"/>
-                                <TextBlock Text="Снять с публикации"
-                                           FontSize="14"
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
                 </Grid>
 
                 <Grid Grid.Row="1"
@@ -410,14 +353,14 @@
                     <Border Classes="stat-card"
                             BorderBrush="#4FC844">
                         <Grid ColumnDefinitions="84,*">
-                            <Border Width="68"
-                                    Height="68"
-                                    CornerRadius="34"
+                            <Border Width="56"
+                                    Height="56"
+                                    CornerRadius="28"
                                     Background="#1D3825"
                                     HorizontalAlignment="Left">
                                 <Image Source="/Assets/Icons/Lots/Tinted/available-green.png"
-                                       Width="32"
-                                       Height="32"
+                                       Width="28"
+                                       Height="28"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
                             </Border>
@@ -442,14 +385,14 @@
                             Classes="stat-card"
                             BorderBrush="#FFA31A">
                         <Grid ColumnDefinitions="84,*">
-                            <Border Width="68"
-                                    Height="68"
-                                    CornerRadius="34"
+                            <Border Width="56"
+                                    Height="56"
+                                    CornerRadius="28"
                                     Background="#3B2D16"
                                     HorizontalAlignment="Left">
                                 <Image Source="/Assets/Icons/Lots/Tinted/time-orange.png"
-                                       Width="32"
-                                       Height="32"
+                                       Width="28"
+                                       Height="28"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
                             </Border>
@@ -474,14 +417,14 @@
                             Classes="stat-card"
                             BorderBrush="#71808A">
                         <Grid ColumnDefinitions="84,*">
-                            <Border Width="68"
-                                    Height="68"
-                                    CornerRadius="34"
+                            <Border Width="56"
+                                    Height="56"
+                                    CornerRadius="28"
                                     Background="#242C33"
                                     HorizontalAlignment="Left">
                                 <Image Source="/Assets/Icons/Lots/Tinted/archive-neutral.png"
-                                       Width="32"
-                                       Height="32"
+                                       Width="28"
+                                       Height="28"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
                             </Border>

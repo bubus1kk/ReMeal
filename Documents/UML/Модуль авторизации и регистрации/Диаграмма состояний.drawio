@@ -1,0 +1,109 @@
+<mxfile host="Electron">
+  <diagram name="Страница-1" id="UGuJd3QEExnPa7jaa8Wk">
+    <mxGraphModel dx="500" dy="714" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="MVKBEwozKeWNBeNa61KE-1" parent="1" style="ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#ff0000;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="480" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-2" edge="1" parent="1" source="MVKBEwozKeWNBeNa61KE-1" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="495" y="100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-3" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Экран регистрации открыт" vertex="1">
+          <mxGeometry height="100" width="190" x="400" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-4" parent="MVKBEwozKeWNBeNa61KE-3" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/ отобразить форму регистрации&lt;div&gt;do/ ожидать ввода данных&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="190" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-6" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="494.5" y="200" as="sourcePoint" />
+            <mxPoint x="494.5" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-7" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Ввод данных" vertex="1">
+          <mxGeometry height="130" width="186" x="402" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-8" parent="MVKBEwozKeWNBeNa61KE-7" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/ активировать поля формы&lt;div&gt;do/ ожидать заполнения полей формы&lt;/div&gt;&lt;div&gt;exit/ передать данные формы на проверку&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="186" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-10" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Пользователь начал ввод&amp;nbsp; данных" vertex="1">
+          <mxGeometry height="30" width="130" x="500" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-13" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="494.5" y="390" as="sourcePoint" />
+            <mxPoint x="494.5" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-14" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Нажата кнопка &quot;Зарегистрироваться&quot;" vertex="1">
+          <mxGeometry height="30" width="140" x="520" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-15" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Проверка данных" vertex="1">
+          <mxGeometry height="70" width="160" x="414" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-16" parent="MVKBEwozKeWNBeNa61KE-15" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/ запустить проверку данных" vertex="1">
+          <mxGeometry height="40" width="160" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-17" edge="1" parent="1" source="MVKBEwozKeWNBeNa61KE-15" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="494" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-18" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Ошибка регистрации" vertex="1">
+          <mxGeometry height="120" width="160" x="730" y="437" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-19" parent="MVKBEwozKeWNBeNa61KE-18" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/ отобразить сообщение об ошибке&lt;div&gt;do/ ожидать исправления данных&lt;/div&gt;&lt;div&gt;exit/ скрыть сообщение&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="160" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-22" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Данные некорректны или логин занят" vertex="1">
+          <mxGeometry height="30" width="140" x="574" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-24" edge="1" parent="1" source="MVKBEwozKeWNBeNa61KE-16" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="MVKBEwozKeWNBeNa61KE-19" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="610" y="460" as="sourcePoint" />
+            <mxPoint x="610" y="520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-26" edge="1" parent="1" source="MVKBEwozKeWNBeNa61KE-18" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;entryX=0.996;entryY=0.324;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="MVKBEwozKeWNBeNa61KE-8" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="320" as="sourcePoint" />
+            <mxPoint x="730" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-28" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Пользователь исправил данные" vertex="1">
+          <mxGeometry height="30" width="120" x="810" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-29" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Создание учетной записи" vertex="1">
+          <mxGeometry height="100" width="186" x="400" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-30" parent="MVKBEwozKeWNBeNa61KE-29" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="entry/ создать объект пользователя&lt;div&gt;do/ сохранить учетную запись в БД&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="186" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-32" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="494.5" y="670" as="sourcePoint" />
+            <mxPoint x="494.5" y="730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-33" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" value="Регистрация завершена" vertex="1">
+          <mxGeometry height="70" width="175" x="407.5" y="730" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-34" parent="MVKBEwozKeWNBeNa61KE-33" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" value="extit/ октрыть личный кабинет или экран входа" vertex="1">
+          <mxGeometry height="40" width="175" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-35" edge="1" parent="1" source="MVKBEwozKeWNBeNa61KE-33" style="edgeStyle=orthogonalEdgeStyle;html=1;verticalAlign=bottom;endArrow=open;endSize=8;strokeColor=#ff0000;rounded=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="495" y="850" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MVKBEwozKeWNBeNa61KE-36" parent="1" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#ff0000;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="480" y="850" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
