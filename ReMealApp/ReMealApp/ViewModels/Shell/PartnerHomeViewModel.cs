@@ -357,7 +357,7 @@ public partial class PartnerHomeViewModel : ViewModelBase
                 "Ожидают выдачи сегодня",
                 pendingTodayCount.ToString(CultureInfo.InvariantCulture),
                 "По активным броням",
-                "/Assets/Icons/time.png",
+                "/Assets/Icons/time-green.png",
                 SolidColorBrush.Parse("#1D3825")),
             new(
                 "Истекают сегодня",
@@ -375,7 +375,7 @@ public partial class PartnerHomeViewModel : ViewModelBase
             CreateUnavailableKpi("Активных лотов", "/Assets/Icons/sets.png"),
             CreateUnavailableKpi("Доступных наборов", "/Assets/Icons/Booking/portions-green.png"),
             CreateUnavailableKpi("Активных бронирований", "/Assets/Icons/bookings.png"),
-            CreateUnavailableKpi("Ожидают выдачи сегодня", "/Assets/Icons/time.png"),
+            CreateUnavailableKpi("Ожидают выдачи сегодня", "/Assets/Icons/time-green.png"),
             CreateUnavailableKpi("Истекают сегодня", "/Assets/Icons/Lots/Tinted/time-orange.png")
         };
     }

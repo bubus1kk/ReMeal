@@ -5,6 +5,7 @@ using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Domain.Entities;
+using Domain.Enums;
 using ReMealApp.ViewModels.Shell;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -77,6 +78,9 @@ namespace ReMealApp.ViewModels.Partner
         [ObservableProperty]
         private bool _isEditing;
 
+        [ObservableProperty]
+        private bool _isDeleteConfirmationOpen;
+
         public FoodPointViewModel(
             IFoodPointService foodPointService,
             ILotService lotService,
@@ -118,6 +122,8 @@ namespace ReMealApp.ViewModels.Partner
         public bool CanDeactivateCurrent => HasCurrentFoodPoint && CurrentDetails?.IsActive == true && !IsBusy;
 
         public bool CanDeleteCurrent => HasCurrentFoodPoint && !IsBusy;
+
+        public bool IsDeleteConfirmationClosed => !IsDeleteConfirmationOpen;
 
         public bool CanSave => !IsBusy && (IsCreateMode || IsEditing);
 
@@ -263,6 +269,15 @@ namespace ReMealApp.ViewModels.Partner
 
         public bool CurrentDetailsHasLots => CurrentDetails?.HasLots == true;
 
+        public string CurrentLotsCountText =>
+            CurrentDetails?.Lots.Count.ToString(CultureInfo.InvariantCulture) ?? "0";
+
+        public string CurrentActiveLotsCountText =>
+            CurrentDetails?.Lots.Count(x => x.Lot.Status == LotStatus.Active).ToString(CultureInfo.InvariantCulture) ?? "0";
+
+        public string CurrentAvailableQuantityText =>
+            CurrentDetails?.Lots.Sum(x => x.Lot.AvailableQuantity).ToString(CultureInfo.InvariantCulture) ?? "0";
+
         private bool HasActiveFilters =>
             !string.IsNullOrWhiteSpace(SearchQuery) ||
             ShowActiveOnly ||
@@ -339,6 +354,7 @@ namespace ReMealApp.ViewModels.Partner
             CurrentDetails = null;
             IsCreateMode = true;
             IsEditing = true;
+            IsDeleteConfirmationOpen = false;
             ClearFormFields();
             StatusMessage = string.Empty;
         }
@@ -357,6 +373,7 @@ namespace ReMealApp.ViewModels.Partner
 
             ApplyFoodPointToForm(CurrentDetails.FoodPoint);
             IsEditing = true;
+            IsDeleteConfirmationOpen = false;
             StatusMessage = string.Empty;
         }
 
@@ -373,6 +390,7 @@ namespace ReMealApp.ViewModels.Partner
                 ApplyFoodPointToForm(CurrentDetails.FoodPoint);
 
             IsEditing = false;
+            IsDeleteConfirmationOpen = false;
             StatusMessage = string.Empty;
         }
 
@@ -556,6 +574,7 @@ namespace ReMealApp.ViewModels.Partner
             {
                 IsBusy = true;
                 var foodPointId = CurrentDetails.Id;
+                IsDeleteConfirmationOpen = false;
                 await _foodPointService.DeactivateFoodPointAsync(foodPointId);
                 await ReloadFoodPointsAsync();
 
@@ -578,11 +597,31 @@ namespace ReMealApp.ViewModels.Partner
         }
 
         [RelayCommand]
-        private async Task DeleteAsync()
+        private void RequestDelete()
         {
             if (CurrentDetails is null || IsBusy)
             {
                 StatusMessage = "Сначала выберите точку питания.";
+                return;
+            }
+
+            IsDeleteConfirmationOpen = true;
+            StatusMessage = string.Empty;
+        }
+
+        [RelayCommand]
+        private void CancelDelete()
+        {
+            IsDeleteConfirmationOpen = false;
+        }
+
+        [RelayCommand]
+        private async Task ConfirmDeleteAsync()
+        {
+            if (CurrentDetails is null || IsBusy)
+            {
+                StatusMessage = "Сначала выберите точку питания.";
+                IsDeleteConfirmationOpen = false;
                 return;
             }
 
@@ -602,6 +641,7 @@ namespace ReMealApp.ViewModels.Partner
             finally
             {
                 IsBusy = false;
+                IsDeleteConfirmationOpen = false;
             }
         }
 
@@ -665,6 +705,7 @@ namespace ReMealApp.ViewModels.Partner
             CurrentDetails = new FoodPointDetailsViewModel(foodPoint, lots);
             IsCreateMode = false;
             IsEditing = false;
+            IsDeleteConfirmationOpen = false;
             ApplyFoodPointToForm(foodPoint);
         }
 
@@ -673,6 +714,7 @@ namespace ReMealApp.ViewModels.Partner
             CurrentDetails = null;
             IsCreateMode = false;
             IsEditing = false;
+            IsDeleteConfirmationOpen = false;
             ClearFormFields();
         }
 
@@ -739,6 +781,7 @@ namespace ReMealApp.ViewModels.Partner
             OnPropertyChanged(nameof(CanCreateLotForCurrent));
             OnPropertyChanged(nameof(CanDeactivateCurrent));
             OnPropertyChanged(nameof(CanDeleteCurrent));
+            OnPropertyChanged(nameof(IsDeleteConfirmationClosed));
             OnPropertyChanged(nameof(CanSave));
             OnPropertyChanged(nameof(HasSelectedCoordinates));
             OnPropertyChanged(nameof(CoordinatesStatusText));
@@ -762,6 +805,9 @@ namespace ReMealApp.ViewModels.Partner
             OnPropertyChanged(nameof(ReadCreatedAtText));
             OnPropertyChanged(nameof(CurrentLots));
             OnPropertyChanged(nameof(CurrentDetailsHasLots));
+            OnPropertyChanged(nameof(CurrentLotsCountText));
+            OnPropertyChanged(nameof(CurrentActiveLotsCountText));
+            OnPropertyChanged(nameof(CurrentAvailableQuantityText));
         }
 
         partial void OnSearchQueryChanged(string value) => ApplyFilters();
@@ -775,6 +821,8 @@ namespace ReMealApp.ViewModels.Partner
         partial void OnIsCreateModeChanged(bool value) => RefreshScreenState();
 
         partial void OnIsEditingChanged(bool value) => RefreshScreenState();
+
+        partial void OnIsDeleteConfirmationOpenChanged(bool value) => RefreshScreenState();
 
         partial void OnIsBusyChanged(bool value) => RefreshScreenState();
 

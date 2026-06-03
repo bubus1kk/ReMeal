@@ -44,13 +44,6 @@
             <Setter Property="CornerRadius" Value="12"/>
         </Style>
 
-        <Style Selector="Border.drop-surface">
-            <Setter Property="Background" Value="#101917"/>
-            <Setter Property="BorderBrush" Value="#3D5549"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="12"/>
-        </Style>
-
         <Style Selector="TextBlock.page-title">
             <Setter Property="Foreground" Value="#F5FAF4"/>
             <Setter Property="FontSize" Value="28"/>
@@ -490,46 +483,28 @@
                                                Classes="card-title"/>
                                 </StackPanel>
 
-                                <Grid ColumnDefinitions="*,152"
-                                      ColumnSpacing="16">
-                                    <Border Grid.Column="0"
-                                            Classes="drop-surface"
+                                <Grid>
+                                    <Border Classes="image-surface"
                                             Height="178"
-                                            DragDrop.AllowDrop="True"
-                                            DragDrop.DragOver="LotImage_DragOver"
-                                            DragDrop.Drop="LotImage_Drop">
-                                        <StackPanel HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    Spacing="10">
-                                            <Image Source="/Assets/Icons/Lots/Tinted/upload-image-green.png"
-                                                   Width="34"
-                                                   Height="34"
-                                                   Opacity="0.9"/>
-                                            <TextBlock Text="Перетащите изображение сюда"
-                                                       Classes="muted"
-                                                       TextAlignment="Center"/>
-                                            <TextBlock Text="PNG, JPG до 10 МБ"
-                                                       Classes="muted"
-                                                       Opacity="0.75"
-                                                       TextAlignment="Center"/>
-                                        </StackPanel>
-                                    </Border>
-
-                                    <Border Grid.Column="1"
-                                            Classes="image-surface"
-                                            Width="152"
-                                            Height="152"
-                                            ClipToBounds="True"
-                                            VerticalAlignment="Top">
+                                            ClipToBounds="True">
                                         <Grid>
                                             <Image Source="{Binding ImagePath, Converter={StaticResource ImagePathConverter}}"
                                                    Stretch="UniformToFill"
                                                    IsVisible="{Binding HasLotImage}"/>
                                             <StackPanel IsVisible="{Binding !HasLotImage}"
+                                                        Spacing="8"
                                                         HorizontalAlignment="Center"
                                                         VerticalAlignment="Center">
+                                                <Image Source="/Assets/Icons/Lots/Tinted/upload-image-muted.png"
+                                                       Width="34"
+                                                       Height="34"
+                                                       Opacity="0.72"/>
                                                 <TextBlock Text="Фото не добавлено"
                                                            Classes="muted"
+                                                           TextAlignment="Center"/>
+                                                <TextBlock Text="PNG или JPG до 10 МБ"
+                                                           Classes="muted"
+                                                           Opacity="0.75"
                                                            TextAlignment="Center"/>
                                             </StackPanel>
                                         </Grid>
@@ -642,10 +617,7 @@
                                                                 <Border Classes="image-surface"
                                                                         Width="112"
                                                                         Height="112"
-                                                                        ClipToBounds="True"
-                                                                        DragDrop.AllowDrop="True"
-                                                                        DragDrop.DragOver="ComponentImage_DragOver"
-                                                                        DragDrop.Drop="ComponentImage_Drop">
+                                                                        ClipToBounds="True">
                                                                     <Grid>
                                                                         <Image Source="{Binding ImagePath, Converter={StaticResource ImagePathConverter}}"
                                                                                Stretch="UniformToFill"
