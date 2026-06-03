@@ -1,0 +1,91 @@
+<mxfile host="Electron">
+  <diagram name="Страница-1" id="cI_xGV7aRQUaZ8yqpVhU">
+    <mxGraphModel dx="500" dy="714" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-3" edge="1" parent="1" source="zIFIWRvPZjFYBPuUhVGh-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="zIFIWRvPZjFYBPuUhVGh-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-1" parent="1" style="html=1;whiteSpace=wrap;" value="Администратор" vertex="1">
+          <mxGeometry height="50" width="110" x="110" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-6" edge="1" parent="1" source="zIFIWRvPZjFYBPuUhVGh-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="zIFIWRvPZjFYBPuUhVGh-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-24" edge="1" parent="1" source="zIFIWRvPZjFYBPuUhVGh-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="zIFIWRvPZjFYBPuUhVGh-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-25" connectable="0" parent="zIFIWRvPZjFYBPuUhVGh-24" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="9. Показать статус &quot;Деактивирована&quot;" vertex="1">
+          <mxGeometry relative="1" x="0.4365" y="5" as="geometry">
+            <mxPoint x="45" y="8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-2" parent="1" style="html=1;whiteSpace=wrap;" value="Административая панель" vertex="1">
+          <mxGeometry height="50" width="110" x="450" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1. Нажать &quot;Деактивировать&quot; у выбранной точки" vertex="1">
+          <mxGeometry height="30" width="220" x="220" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-10" edge="1" parent="1" source="zIFIWRvPZjFYBPuUhVGh-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="zIFIWRvPZjFYBPuUhVGh-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="784" y="120" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-22" edge="1" parent="1" source="zIFIWRvPZjFYBPuUhVGh-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="zIFIWRvPZjFYBPuUhVGh-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-5" parent="1" style="html=1;whiteSpace=wrap;" value="ViewModel административной панели" vertex="1">
+          <mxGeometry height="50" width="110" x="760" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-7" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="2. Передать ID выбранной точки" vertex="1">
+          <mxGeometry height="30" width="150" x="590" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-14" edge="1" parent="1" source="zIFIWRvPZjFYBPuUhVGh-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" target="zIFIWRvPZjFYBPuUhVGh-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-15" connectable="0" parent="zIFIWRvPZjFYBPuUhVGh-14" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="5. Нати точку питания и&amp;nbsp;&lt;div&gt;изменить ее статус&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.531" y="-8" as="geometry">
+            <mxPoint x="53" y="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-8" parent="1" style="html=1;whiteSpace=wrap;" value="Сервис администрирования" vertex="1">
+          <mxGeometry height="50" width="125" x="752.5" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-11" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="3. Передать запрос на деактивацию точки питания" vertex="1">
+          <mxGeometry height="30" width="120" x="650" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-18" edge="1" parent="1" source="zIFIWRvPZjFYBPuUhVGh-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="zIFIWRvPZjFYBPuUhVGh-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-13" parent="1" style="html=1;whiteSpace=wrap;" value="БД" vertex="1">
+          <mxGeometry height="50" width="110" x="460" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-16" edge="1" parent="1" source="zIFIWRvPZjFYBPuUhVGh-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" target="zIFIWRvPZjFYBPuUhVGh-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-17" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="4. Проверить права администратора" vertex="1">
+          <mxGeometry height="30" width="130" x="820" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-19" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="6. Подтвердить сохранение изменений" vertex="1">
+          <mxGeometry height="30" width="140" x="595" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-20" edge="1" parent="1" source="zIFIWRvPZjFYBPuUhVGh-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.822;entryY=1.032;entryDx=0;entryDy=0;entryPerimeter=0;" target="zIFIWRvPZjFYBPuUhVGh-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="850" y="260" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-21" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="7.Вернуть результат операции" vertex="1">
+          <mxGeometry height="30" width="120" x="860" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="zIFIWRvPZjFYBPuUhVGh-23" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="8. Обновить список точек питания" vertex="1">
+          <mxGeometry height="30" width="180" x="570" y="110" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
