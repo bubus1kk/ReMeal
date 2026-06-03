@@ -1,70 +1,82 @@
 <mxfile host="Electron">
   <diagram name="Страница-1" id="uL2mcitFuwueI5ikn-ph">
-    <mxGraphModel dx="1429" dy="1897" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="526" dy="752" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-5" edge="1" parent="1" source="5uw5cbvOpPATeB3kfEbz-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5uw5cbvOpPATeB3kfEbz-2">
+        <mxCell id="bw3VIGGPwHRf389uetZf-3" edge="1" parent="1" source="bw3VIGGPwHRf389uetZf-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="bw3VIGGPwHRf389uetZf-2">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-1" parent="1" style="html=1;whiteSpace=wrap;" value="Пользователь" vertex="1">
-          <mxGeometry height="50" width="110" x="-20" y="40" as="geometry" />
+        <mxCell id="bw3VIGGPwHRf389uetZf-5" edge="1" parent="1" source="bw3VIGGPwHRf389uetZf-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="bw3VIGGPwHRf389uetZf-2">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-7" edge="1" parent="1" source="5uw5cbvOpPATeB3kfEbz-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="5uw5cbvOpPATeB3kfEbz-4">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="414" y="210" />
-              <mxPoint x="75" y="210" />
-            </Array>
+        <mxCell id="bw3VIGGPwHRf389uetZf-6" connectable="0" parent="bw3VIGGPwHRf389uetZf-5" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="2. Изменить данные и нажать &quot;Сохранить&quot;" vertex="1">
+          <mxGeometry relative="1" x="0.055" y="-7" as="geometry">
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-2" parent="1" style="html=1;whiteSpace=wrap;" value="Интерфейс" vertex="1">
-          <mxGeometry height="50" width="110" x="359" y="40" as="geometry" />
+        <mxCell id="bw3VIGGPwHRf389uetZf-1" parent="1" style="html=1;whiteSpace=wrap;" value="Пользователь" vertex="1">
+          <mxGeometry height="50" width="110" x="110" y="80" as="geometry" />
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-3" parent="1" style="html=1;whiteSpace=wrap;" value="БД" vertex="1">
-          <mxGeometry height="50" width="110" x="380" y="330" as="geometry" />
-        </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-9" edge="1" parent="1" source="5uw5cbvOpPATeB3kfEbz-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5uw5cbvOpPATeB3kfEbz-3">
+        <mxCell id="bw3VIGGPwHRf389uetZf-8" edge="1" parent="1" source="bw3VIGGPwHRf389uetZf-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="bw3VIGGPwHRf389uetZf-7">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-4" parent="1" style="html=1;whiteSpace=wrap;" value="Сервис личного кабинета" vertex="1">
-          <mxGeometry height="50" width="110" x="20" y="330" as="geometry" />
+        <mxCell id="bw3VIGGPwHRf389uetZf-24" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="490" y="124" as="sourcePoint" />
+            <mxPoint x="220" y="124" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-6" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1. Открыть личный кабинет() =&amp;gt;" vertex="1">
-          <mxGeometry height="30" width="200" x="130" y="30" as="geometry" />
+        <mxCell id="bw3VIGGPwHRf389uetZf-2" parent="1" style="html=1;whiteSpace=wrap;" value="Интерфейс личного кабинета" vertex="1">
+          <mxGeometry height="50" width="110" x="490" y="80" as="geometry" />
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-8" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;= 2. Запросить данные профиля()" vertex="1">
-          <mxGeometry height="30" width="230" x="140" y="170" as="geometry" />
+        <mxCell id="bw3VIGGPwHRf389uetZf-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1. Нажать кнопку редактирования" vertex="1">
+          <mxGeometry height="30" width="130" x="290" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-10" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="3. Получить данные пользователя() =&amp;gt;" vertex="1">
-          <mxGeometry height="30" width="220" x="145" y="320" as="geometry" />
+        <mxCell id="bw3VIGGPwHRf389uetZf-21" edge="1" parent="1" source="bw3VIGGPwHRf389uetZf-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="bw3VIGGPwHRf389uetZf-2">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-11" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;= 4. Вернуть данные профиля()" vertex="1">
-          <mxGeometry height="30" width="210" x="145" y="360" as="geometry" />
+        <mxCell id="bw3VIGGPwHRf389uetZf-7" parent="1" style="html=1;whiteSpace=wrap;" value="ViewModel профиля" vertex="1">
+          <mxGeometry height="50" width="110" x="770" y="80" as="geometry" />
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-12" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="5. Отобразить данные профиля() =&amp;gt;" vertex="1">
-          <mxGeometry height="30" width="260" x="120" y="210" as="geometry" />
+        <mxCell id="bw3VIGGPwHRf389uetZf-9" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="3. Передать данные формы" vertex="1">
+          <mxGeometry height="30" width="130" x="620" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="6. Изменить данные профиля() =&amp;gt;" vertex="1">
-          <mxGeometry height="30" width="260" x="100" as="geometry" />
+        <mxCell id="bw3VIGGPwHRf389uetZf-14" edge="1" parent="1" source="bw3VIGGPwHRf389uetZf-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" target="bw3VIGGPwHRf389uetZf-13">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-14" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;= 7. Отправить обновлённые данные()" vertex="1">
-          <mxGeometry height="30" width="260" x="130" y="140" as="geometry" />
+        <mxCell id="bw3VIGGPwHRf389uetZf-10" parent="1" style="html=1;whiteSpace=wrap;" value="Сервис профиля" vertex="1">
+          <mxGeometry height="50" width="110" x="780" y="240" as="geometry" />
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-15" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="8. Сохранить изменения профиля() =&amp;gt;" vertex="1">
-          <mxGeometry height="30" width="280" x="110" y="290" as="geometry" />
+        <mxCell id="bw3VIGGPwHRf389uetZf-11" edge="1" parent="1" source="bw3VIGGPwHRf389uetZf-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.162;entryY=-0.025;entryDx=0;entryDy=0;entryPerimeter=0;" target="bw3VIGGPwHRf389uetZf-10">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-16" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;= 9. Подтвердить сохранение()" vertex="1">
-          <mxGeometry height="30" width="230" x="130" y="390" as="geometry" />
+        <mxCell id="bw3VIGGPwHRf389uetZf-12" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="4. Отправить данные профиля для сохранения" vertex="1">
+          <mxGeometry height="30" width="160" x="640" y="162" as="geometry" />
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-17" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="10. Вернуть результат обновления() =&amp;gt;" vertex="1">
-          <mxGeometry height="30" width="260" x="130" y="240" as="geometry" />
+        <mxCell id="bw3VIGGPwHRf389uetZf-16" edge="1" parent="1" source="bw3VIGGPwHRf389uetZf-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="bw3VIGGPwHRf389uetZf-10">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-18" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;= 11. Показать успешное сохранение()" vertex="1">
-          <mxGeometry height="30" width="250" x="100" y="70" as="geometry" />
+        <mxCell id="bw3VIGGPwHRf389uetZf-13" parent="1" style="html=1;whiteSpace=wrap;" value="БД" vertex="1">
+          <mxGeometry height="50" width="110" x="460" y="240" as="geometry" />
         </mxCell>
-        <mxCell id="5uw5cbvOpPATeB3kfEbz-19" parent="1" style="text;whiteSpace=wrap;" value="Диаграмма коммуникации модуля личного кабинета системы ReMeal" vertex="1">
-          <mxGeometry height="40" width="420" x="30" y="-90" as="geometry" />
+        <mxCell id="bw3VIGGPwHRf389uetZf-15" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="5. Обновить данные пользователя" vertex="1">
+          <mxGeometry height="30" width="160" x="590" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="bw3VIGGPwHRf389uetZf-17" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="6. Вернуть результат сохранения" vertex="1">
+          <mxGeometry height="30" width="160" x="590" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="bw3VIGGPwHRf389uetZf-18" edge="1" parent="1" source="bw3VIGGPwHRf389uetZf-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.842;entryY=1.053;entryDx=0;entryDy=0;entryPerimeter=0;" target="bw3VIGGPwHRf389uetZf-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="bw3VIGGPwHRf389uetZf-20" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="7. Обновить данные профиля" vertex="1">
+          <mxGeometry height="30" width="110" x="870" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="bw3VIGGPwHRf389uetZf-23" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="8. Передать результат обновления" vertex="1">
+          <mxGeometry height="30" width="140" x="620" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="bw3VIGGPwHRf389uetZf-25" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="9. Показать обновленный профиль" vertex="1">
+          <mxGeometry height="30" width="200" x="260" y="120" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
